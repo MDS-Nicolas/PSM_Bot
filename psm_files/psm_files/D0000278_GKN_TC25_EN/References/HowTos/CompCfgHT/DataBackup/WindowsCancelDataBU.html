@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>How To &ndash; Cancel Data Backup</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left><h1>How To &ndash; Cancel a Data Backup<a href="#" onClick="window.print(); return false;"><img src="../../../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<p>This <strong>How To</strong> provides the steps required to cancel the data backup process on a Windows based computer.</p>
+<p>Acronis Backup and Recovery Advanced Workstation with Universal Restore software is set up to create backup images of the local hard drive. The backup images are stored on a <a href="#NAS">NAS</a>.</p>
+<p>The automatic backup tasks do not verify if proDAS is scanning before they begin. If testing is performed outside of regular work hours or on weekends, a backup may occur while proDAS is scanning. To ensure performance is not affected, the backup can be manually cancelled.</p>
+<p class="Note">MDS does not recommend cancelling scheduled full or incremental backups because these processes have been staggered on a per computer basis and are expected to be completed quickly. Incremental backups are smaller and processed rapidly and are not expected to have any serious impact on computer performance.</p>
+<p class="Caution">To prevent serious damage to the hard drive, do not perform a hard reset or turn the power off during a backup. If required, you can shut down or restart the computer using the Start menu only.</p>
+<p class="Note">A backup can only be cancelled when the user is logged in as an Administrator.</p>
+ 
+<h2>To Cancel a Backup Process</h2>
+<ol>
+  <li>Log in to the <a href="../../../../CompCfg/MgmtPC/MgmtPCOverview.html">Management GUI PC</a> as <strong>Administrator</strong>.  See the <a href="../../../../CompCfg/DataBR/DataBRVDocs.html">Acronis Backup and Recovery User Guide</a>.</li>
+  <li>Select <strong>Backup plans and tasks</strong> from the Navigation panel on the left side of the Acronis Backup &amp; Recovery window.<br>
+    The <strong>Backup plans and tasks</strong> panel is displayed in the main viewing area.<br>
+    <br>
+  <div class="Container"><img border="0" width="700" height="262" src="images/WindowsCancelDataRec.png" alt="Backup"></div>
+  <br>
+  </li>
+  <li>Select a running backup task.</li>
+
+<p class="Note">Review the task details at the bottom of the screen to verify that this is the correct task to stop.</p>
+
+  <li>In the <strong>Backup Plans and Tasks</strong> panel, click <strong>Stop</strong>.</li>
+</ol>
+<h4><a id="NAS"></a>Network Attached Storage (NAS)</h4>
+<p>The NAS is a network storage device with multiple hard drives. The hard drives are arranged as a mirrored RAID 1 disk set. The NAS is connected to the user switch.</p>
+
+<p>For more information, see the <a href="../../../../CompCfg/DataBR/DataBRVDocs.html">Acronis Backup and Recovery User Guide</a>.</p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

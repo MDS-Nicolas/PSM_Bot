@@ -1,0 +1,457 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>DTCI Subsystem</title>
+<style type="text/css">
+<!--
+.style1 {color: #FF6600}
+-->
+</style>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left>
+<h1 id="ARINC">DTCI (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The DTC Initium (DTCI) subsystem converts pneumatic pressure measurements and engineering units. The Converted measurements are digitally transmitted to the DTCI subsystem and stored in the RTE current value table (CVT). Data is scanned by the RTE at a scan rate of up to 20 Hz.</p>
+<p>The DTCI subsystem supports multiple DTC Initium systems. Each DTC Initium system can support 1 to 8 scanners, and each scanner can support either 32 ports or 64 ports. There is no restriction in the number of channels and scanners that can be configured regardless of how many scanners are connected, up to the maximum number of scanners per DTC Initium system and the maximum number of channels per scanner.</p>
+<h2 id="ConfigDTCIChannel">Configuring a DTCI Channel</h2>
+<p>To configure a DTCI Channel:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<p class="Note">Boolean channels can only be referenced to other boolean channels. If cross referencing a boolean channel to a different channel type, the different channel type must be changed to a boolean channel then changed back to the original channel type after it is referenced. A message warns the user of any inconsistent channel types to ensure the user is referencing the correct channel.</p>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</li>
+  <li>Select the name of the DTCI Subsystem from the list of available subsystems.
+    <div class="Container"><img src="images/SelectSubsystemName.PNG" alt="SelectSubsystemName" width="287" height="394"></div>
+  </li>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a><a href="../ConfigEditors/ConfigEditors.htm#GenCol"></a>.<br>
+    <div class="Container"><img src="images/SubsystemEditor.png" width="850" height="306" alt=""/></div>
+  </li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel  Editor</a>.</li>
+  <div class="Container"><img src="images/ChannelEditor.png" width="850" height="244" alt=""/></div>
+  <ol type="a">
+    <li>Select the <strong>Host Name</strong>.</li>
+    <li>Select the <strong>Scanner Number</strong>.</li>
+    <li>Select the <strong>Scanner Type</strong>.</li>
+    <li>Set the<strong> Port </strong>number.</li>
+    <li>Set the <strong>Samples to Average</strong>.</li>
+    <li>Select the <strong>Measurement Type</strong>.</li>
+    <li>Select the <strong>Ambient Channel</strong>. </li>
+  </ol>
+</ol>
+<h2 id="ConfigFileStructure">Configuration File Structure</h2>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu"> Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import a <strong>DTCI</strong> channel, see <a href="?10#XMLFileStructure">XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import a <strong>DTCI</strong> channel, see <a href="?11#TabDelimitFileStructure"> Tab-Delimited File Structure</a>.</p>
+<h3 id="XMLFileStructure">XML File Structure</h3>
+<h4 id="ChannelsXML">Channels</h4>
+<p>The channels are stored in <em>Channels.xml</em> files in the configuration directories.</p>
+<p>A DTCI Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor - Generic Channel Parameters - XML File Structure</a>, and the specific attributes <strong>Host Name, Scanner Number, Port Number, Number of Samples to Average, Measurement Type, and Ambient Channel Name</strong><strong></strong>. These attributes are explained in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Host Name</td>
+    <td>Host Name</td>
+    <td>HOST_NAME</td>
+    <td>The host name.<br>
+      <br>
+      Defined in the Subsystem Editor.</td>
+    <td>String</td>
+    <td>Read only.</td>
+  </tr>
+  <tr>
+    <td>Scanner Number</td>
+    <td>Scanner Number</td>
+    <td>SCANNER_NO</td>
+    <td>Numerical scanner number associated to the host name.<br>
+      <br>
+      Defined in the Subsystem Editor.</td>
+    <td>Integer</td>
+    <td>Read only (1 &ndash; 8).</td>
+  </tr>
+  <tr>
+    <td>Scanner Type</td>
+    <td>ScannerType</td>
+    <td>SCANNER_TYPE</td>
+    <td>The type of scanner.</td>
+    <td>Integer</td>
+    <td>32 or 64.</td>
+  </tr>
+  <tr>
+    <td>Port Number</td>
+    <td>PortNumber</td>
+    <td>PORT_NO</td>
+    <td>The port number.<br>
+      <br>
+      Based on the type of scanner defined in the Subsystem Editor.</td>
+    <td>Integer</td>
+    <td>For a 32 port scanner: between 1 and 32.<br>
+      <br>
+      For a 64 port scanner: between 1 and 64.</td>
+  </tr>
+  <tr>
+    <td>Number of Samples to Average</td>
+    <td>SamplestoAverage</td>
+    <td>SAMPLES_TO_AVG</td>
+    <td>The number of samples to average against the requested scan rate.<br>
+      <br>
+      Must be the same for all channels on the same DTC Initium system.</td>
+    <td>Integer</td>
+    <td>Between 1 and 127.<br>
+      <br>
+      Default value is 16.</td>
+  </tr>
+  <tr>
+    <td>Measurement Type</td>
+    <td>MeasurementType</td>
+    <td>PRES_TEMP</td>
+    <td>The measurement type.<br>
+      <br>
+      Defines whether the channel provides a pressure reading or a temperature reading.</td>
+    <td>Drop-down list.</td>
+    <td>Pressure or Temperature.</td>
+  </tr>
+  <tr>
+    <td>Ambient Channel Name</td>
+    <td>AmbientChannel</td>
+    <td>AMBIENT_CHANNEL</td>
+    <td>The name of the channel that provides the ambient pressure.<br>
+      <br>
+      Must be empty (greyed out) for temperature channels, and is optional for pressure channels.<br>
+      <br>
+      The ambient channel must have the same engineering units as the corresponding pressure channels.</td>
+    <td>Drop-down list</td>
+    <td>Any pressure channel that has the same engineering units as the DTCI channels.</td>
+  </tr>
+</table>
+<p>The Channel Editor validates the following for DTCI subsystem channels:</p>
+<ul>
+  <li>channels can only be defined as input channels</li>
+  <li>the scan rate for all channels on the same DTC Initium system must be the same; this can be any valid proDAS scan rate from 1 to 200 Hz</li>
+  <li>the number of samples to average must be selected considering the desired scan rate such that the maximum sample rate does not exceed 325 Hz for each channel (e.g. each channel could have a maximum scan rate of 5 Hz if the number of samples to average is 64 and a maximum scan rate of 20 Hz if the number of samples to average is 16; this is information only and is not checked by the editors)</li>
+  <li>the combination of host name, scanner number, port number, and channel type must be unique in the DTCI configuration for all active channels</li>
+  <li>channel type must be FLOAT</li>
+  <li>all channels in each DTCI subsystem must be defined with the same engineering unit</li>
+</ul>
+<p>The structure of an DTCI Channel complies with the following example:</p>
+<blockquote>
+  <pre>
+&lt;Channels LastModificationDate=&quot;<strong>2019-10-25 15:27:15</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Channel Name=&quot;DTCI1_1&quot;
+Description=&quot;&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2019-07-26 09:36:15&quot;
+SubsystemName=&quot;DTCI&quot;
+SubsystemType=&quot;DTCI&quot;
+AlternateName=&quot;&quot;
+DataType=&quot;Float&quot;
+InitialValue=&quot;-999999&quot;
+Format=&quot;4.2f&quot;
+UpdateRate=&quot;1&quot;
+QualityCeiling=&quot;GOOD&quot;
+Critical=&quot;false&quot;
+EngineeringUnit=&quot;psi&quot;
+DisplayMin=&quot;0&quot;
+DisplayMax=&quot;100&quot;
+DeadBand=&quot;0&quot;
+Output=&quot;false&quot;
+ReferenceChannel=&quot;&quot;
+Group=&quot;&quot;
+SignalId=&quot;&quot;
+CalSensor=&quot;&quot;
+CalGroup=&quot;&quot;
+FixedSensor=&quot;&quot;
+CustomerSensor=&quot;&quot;
+FullsetStability=&quot;false&quot;
+ContinuousLog=&quot;true&quot;
+RTDRefChannel=&quot;&quot;
+NddsPublish=&quot;false&quot;
+HostName=&quot;dtci_1&quot;
+ScannerNumber=&quot;2&quot;
+ScannerType=&quot;32&quot;
+PortNumber=&quot;20&quot;
+SamplesToAverage=&quot;16&quot;
+MeasurementType=&quot;Pressure&quot;
+AmbientChannel=&quot;&quot;/&gt;
+&lt;/Channels&gt;</pre>
+</blockquote>
+<h4 id="SubsystemsXML">Subsystems</h4>
+<p>The subsystem definitions are stored in <em>Subsystems.xml</em> files in the configuration directories.</p>
+<p>An DTCI Subsystem contains generic information, described in <a href="../SubsystemEditor/SubsystemEditor.htm#XMLFileStructure"> Subsystem Editor - Generic Subsystem Parameters - XML File Structure</a>, and the specific attribute:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Host Name</td>
+    <td>The host name.<br>
+      <br>
+      Any number of host names can be supported. The host names must be included in the host file on the RTE machine.<br>
+      <br>
+      Each host name must be unique across all DTCI subsystems.</td>
+    <td>String</td>
+    <td>Max 30 characters, no spaces.<br>
+      Permissible characters are: A to Z, a to z, 0 to 9, and underscore.</td>
+  </tr>
+</table>
+<p>The structure of a DTCI Subsystem is shown in the following example:</p>
+<blockquote>
+  <pre>&lt;Subsystem Name=&quot;DTCI&quot;
+Description=&quot;&quot; 
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2019-06-06 14:15:50&quot;
+Id=&quot;0&quot;
+Type=&quot;DTCI&quot;
+CreationDate=&quot;2019-06-06 14:14:48&quot;&gt;
+&lt;Hosts&gt;
+&lt;Host HostName=&quot;dtci_1&quot;/&gt;
+&lt;/Hosts&gt;
+&lt;/Subsystem&gt;</pre>
+</blockquote>
+<h3 id="TabDelimitFileStructure">Tab-Delimited File Structure</h3>
+<p>The DTCI channel configuration contains both the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic channel definition columns</a> and the specific DTCI input parameters defined in the tab-delimited configuration file.</p>
+<p>The rules, syntax and guidelines for creating DTCI channels are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th width="10%">Column Name</th>
+    <th width="40%">Description</th>
+    <th width="15%">Syntax (data type expected in the column)</th>
+    <th width="10%">Multiple Values Allowed (See Note*)</th>
+    <th width="10%">Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>HOST_NAME</td>
+    <td>A descriptive name defined in the Subsystem Editor.</td>
+    <td>30 character string. Permissable characters are A to Z, a to z, 0 to 9, and underscore.</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>SCANNER_NO</td>
+    <td>Numerical scanner number associated to the host name.</td>
+    <td>Number between 1 and 8.</td>
+    <td>no</td>
+    <td>yes</td>
+  </tr>
+  <tr>
+    <td>SCANNER_TYPE</td>
+    <td>Indicates whether the scanner has 32 or 64 ports.</td>
+    <td>Number, 32 or 64.</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>PORT_NO</td>
+    <td>The port number on the scanner.</td>
+    <td>For a 32 port scanner: between 1 and 32.<br>
+      <br>
+      For a 64 port scanner: between 1 and 64.</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>SAMPLES_TO_AVG</td>
+    <td>The number of samples to average against the requested scan rate.<br>
+      <br>
+      Must be the same for all channels on the same DTC Initium system.</td>
+    <td>Number between 1 and 127.</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>PRES_TEMP</td>
+    <td>Defines whether the channel provides a pressure reading (P) or a temperature reading (T).</td>
+    <td>P or T</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>AMBIENT_CHANNEL</td>
+    <td>The name of the channel that provides the ambient pressure.<br></td>
+    <td>Up to 39 characters (a-z, A-Z, 0-9, _, #, %, @). Must start with a letter or an underscore (case sensitive).</td>
+    <td>No</td>
+    <td>Optional if PRES_TEMP is P. Must be empty if PRES_TEMP is T.</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single line of the spread sheet.</p>
+      <p class="Note"> &quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is always optional.</p></td>
+  </tr>
+</table>
+<h3>RTE Configuration File (.config)</h3>
+<p>The RTE configuration file (.config) includes the capability to enable or disable the DTCI subsystem.</p>
+<p>Information  in the configuration file on the RTE machine (.config) regarding the DTCI subsystem includes:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Field</th>
+    <th>Description</th>
+    <th>Syntax</th>
+  </tr>
+  <tr>
+    <td>Trigger</td>
+    <td>Defines a software or hardware trigger.<br>
+      <br>
+      If a software trigger is specified, the scan rate of the configured DTCI channels is used to determine the software trigger rate.<br>
+      <br>
+      If a hardware trigger is specified, the scan rate of the hardware trigger must be set so as to match the scan rate of the configured DTCI channels.</td>
+    <td>HW or SW.</td>
+  </tr>
+  <tr>
+    <td>reply_timeout</td>
+    <td>Defines the time out, in seconds, for communications with the DTC Initium system.</td>
+    <td>The default timeout is 30 seconds.</td>
+  </tr>
+  <tr>
+    <td>engineering_unit</td>
+    <td>Engineering unit and user defined unit conversion factor.</td>
+    <td>The acceptable options include the predefined units listed below, as well as a user defines conversion factor.
+      <ul>
+        <li>user</li>
+        <li>psi</li>
+        <li>inH2O</li>
+        <li>Pa</li>
+        <li>kG/m&sup2;</li>
+        <li>G/cm&sup2;</li>
+        <li>ATM</li>
+        <li>mmHg</li>
+        <li>mmH2O</li>
+        <li>bar</li>
+        <li>kPa</li>
+        <li>mBar</li>
+        <li>PSF</li>
+      </ul>
+      The default value is <strong>user 1</strong>.</td>
+  </tr>
+  <tr>
+    <td>temperature_scan_rate</td>
+    <td>Defines the scan rate in seconds for temperature data.</td>
+    <td>Minimum is one second. Default is five seconds.</td>
+  </tr>
+  <tr>
+    <td>zero_stabilizing_time</td>
+    <td>Calibration stabilisation time in seconds. This is the length of time the DTC Initium waits for each calibration pressure to stabilise before taking a reading.</td>
+    <td>The default interval is five seconds.</td>
+  </tr>
+  <tr>
+    <td>service_name</td>
+    <td>Defines the TCP/IP service name used for communication to the DTC Initium systems.</td>
+    <td>Default is dtc_srv</td>
+  </tr>
+</table>
+<h2 id="SubSysEditorDTCI">Subsystem Editor for DTCI 
+  Channels</h2>
+<p>To edit the&nbsp;DTCI Subsystem, the Subsystem Editor must 
+  be selected from within the Configuration Administrator. The tool bar in the 
+  Configuration Administrator allows the various configuration editors available 
+  for proDAS to be selected. The Subsystem Editor allows new subsystems to be 
+  added to the current configuration.</p>
+<div class="Container"><img src="images/SubsystemEditor.png" width="850" height="306" alt="Subsystem Editor"></div>
+<br>
+<p><strong>To add a new subsystem  to the current configuration:</strong></p>
+<ol type="1" start="1">
+  <li> From the Edit menu, select <strong>Append Data Record</strong> or, in the left pane of the splitter window, click the right mouse button and select <strong>Append Data Record</strong> from the context sensitive menu. The Select Type of Subsystem dialogue box is displayed.<br>
+  </li>
+  <li> Select <strong>DTCI</strong> from the Select Type of Subsystem dialogue box and select <strong>OK</strong>.<br>
+    A new line in the Subsystem Editor is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to <em>DTCI</em>.<br>
+    The user must then assign a name and description to the subsystem. </li>
+  <li>To set the Host Name, right-click in the right pane of the Subsystem Editor window and select Append from the context sensitive menu. <br>
+    The user must enter (assign) a name.</li>
+</ol>
+<h2 id="RTEInitialiseFile">RTE Initialisation File</h2>
+<p>The DTCI Subsystem is configured by the RTE, along with all the 
+  other subsystems, as a request from the Management Interface GUI. For legacy 
+  purposes, the configuration request can also be specified in the command line 
+  of the RTE.</p>
+<p>A typical RTE initialisation file would include the following 
+  DTCI Subsystem information:</p>
+<table width="95%" border="0" cellspacing="1" cellpadding="2">
+  <tr>
+    <td colspan="2">#--------------------------------------------------------------------------<br>
+      # DTCI Subsystem<br>
+      #--------------------------------------------------------------------------</td>
+  </tr>
+  <tr>
+    <td width="19%">SS DTCI</td>
+    <td width="81%">TRUE</td>
+  </tr>
+  <tr>
+    <td colspan="2"># the trigger type (SW  or HW)</td>
+  </tr>
+  <tr>
+    <td width="19%">CI trigger</td>
+    <td width="81%">SW</td>
+  </tr>
+  <tr>
+    <td height="19" colspan="2"># the reply timeout  in seconds</td>
+  </tr>
+  <tr>
+    <td width="19%" height="19">CI reply_timeout </td>
+    <td width="81%" height="19">20</td>
+  </tr>
+  <tr>
+    <td colspan="2"># engineering unit,  or user factor</td>
+  </tr>
+  <tr>
+    <td>CI engineering_unit</td>
+    <td>psi</td>
+  </tr>
+  <tr>
+    <td colspan="2"># intermittent  temperature rate in seconds</td>
+  </tr>
+  <tr>
+    <td>CI temperature_scan_rate</td>
+    <td>5</td>
+  </tr>
+  <tr>
+    <td colspan="2"># zero calibration  stabilization time in seconds</td>
+  </tr>
+  <tr>
+    <td>CI zero_stabilize_time</td>
+    <td>10</td>
+  </tr>
+  <tr>
+    <td colspan="2"># the service name to  communicate to the DTC Initium systems</td>
+  </tr>
+  <tr>
+    <td>CI service_name</td>
+    <td>dtc_srv</td>
+  </tr>
+</table>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click 
+  here to see the RTE Initialisation file</a>.</p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

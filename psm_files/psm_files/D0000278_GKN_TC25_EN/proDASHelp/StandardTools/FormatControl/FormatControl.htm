@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Format Controls</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1>Format Controls<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>Format Controls allow the user to set up the display formats of different data types. The format controls consist of:</p>
+<ul>
+  <li><a href="?4#FixedPointFormat">Float Fixed Point Format</a></li>
+  <li><a href="?5#ScientificPointFormat">Float Scientific Format</a></li>
+  <li><a href="?6#BooleanFormat">Boolean Format</a></li>
+  <li><a href="?7#IntNumberFormat">Integer Number Format</a></li>
+  <li><a href="?8#IntEnumFormat">Integer Enumeration Format</a></li>
+  <li><a href="?9#DateFormat">Date Format</a></li>
+  <li><a href="?10#TimeFormat">Time Format</a></li>
+</ul>
+<h3 id="FixedPointFormat">Float Fixed Point Format</h3>
+<p>The Float Fixed Point Format allows the user to specify the number digits to be printed before and after the decimal for floating decimal point values.</p>
+<div class="Container"><img src="images/FormatFloat2.png" alt="Format Float 2" width="311" height="257"></div>
+<h3 id="ScientificPointFormat">Float Scientific Format</h3>
+<p>The Float Scientific Format sets the scientific format for floating point values. The Float Scientific Format is limited to six significant digits.</p>
+<div class="Container"><img src="images/FormatFloat1.png" alt="Format Float 1" width="311" height="257"> 
+</div>
+<h3 id="BooleanFormat">Boolean Format</h3>
+<p>The Boolean Format allows the specification of two string values which represent TRUE (non-zero) and FALSE (zero) of a boolean value. In a dialogue, a Combo Box is created which allows the selection of the value if the channel is editable.</p>
+<div class="Container"><img src="images/FormatBool.png" alt="Format Bool" width="311" height="257"></div>
+<h3 id="IntNumberFormat">Integer Number Format</h3>
+<p>This format allows the user to specify the number of digits which will be used for the channel value. Leading zeros will be ignored. For example, having 5 in the Number field allows numbers up to 99999 to be displayed.</p>
+<p class="Note">This format supports both hexadecimal and binary numbers.</p>
+<br>
+<div class="Container"><img src="images/FormatInt1.png" alt="Format Intl" width="446" height="425"> 
+</div>
+<h3 id="IntEnumFormat">Integer Enumeration Format</h3>
+<p>The Integer Enumeration Format allows the user to define a list of values which are valid for the channel. In a dialogue, a Combo Box is created which allows the assignment of a value if the entry is editable. In the above example, the numeric values above 0 but less than 1 are represented by the text zero. Numeric values equal to or greater than 1 and less than 2 are  represented by the text one. Numeric values equal to or greater than 2 but less than 3 are represented by the text three. To add values to the list:</p>
+<ol>
+  <li>Select the enumeration boolean.</li>
+  <li>Move the cursor into the combo box and enter the text value that represents values greater than or equal to 0 and less than 1.</li>
+  <li>Type Ctrl/Enter to move the cursor to the next line.</li>
+  <li>Repeat steps 2 and 3 until the desired number of enteries is reached.</li>
+  <li>Select <strong>OK</strong>.</li>
+</ol>
+<div class="Container"><img src="images/FormatInt2.png" alt="Format Intl 2" width="311" height="257"></div>
+<h3 id="DateFormat">Date Format</h3>
+<p>The Date Format allows the user to specify the appearance of Date values <em>(yy or yyyy = year, mm = month and dd = day</em>).</p>
+<div class="Container"><img src="images/FormatDate.png" alt="Format Date" width="311" height="257"></div>
+<h3 id="TimeFormat">Time Format</h3>
+<p>The Time Format allows the user to specify the appearance of Time values (<em>HH = hour, MM = month, SS = seconds and sss = milliseconds</em>).</p>
+<div class="Container"><img src="images/FormatTime.png" alt="Format Time" width="311" height="257"></div>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

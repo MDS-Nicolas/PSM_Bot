@@ -1,0 +1,438 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Pressure Brick Subsystem (PBS)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="PressureBricks">Pressure Brick Subsystem (PBS) (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+
+<h2 id="Overview">Overview</h2>
+<p>The pressure brick subsystem measures transient and steady-state data, providing digitized, temperature compensated, linear, pressure data in engineering units through an Ethernet communications interface to the Host Computer. A typical pressure brick subsystem consists of:</p>
+<ul>
+  <li>pneumatic or liquid pressure scanners</li>
+  <li>power supplies</li>
+  <li>barometric reference</li>
+  <li>pressure bricks functions page</li>
+</ul>
+<p>The pressure brick subsystem starts scanning automatically when proDAS is put into Test Engine (scanning) mode. The pressure brick subsystem measurements are displayed on the proDAS Real-Time displays.</p>
+<p>For the pneumatic or liquid pressure system, the engineering unit (EU) conversion to psig is performed in each scanner. proDAS converts these values to psia, if required, by adding the barometric reading to each channel.</p>
+<p class="Note">If the engineering unit of the ambient channel does not match the engineering unit of the PBS channel, this could result in an incorrect conversion of the channel's value to an absolute pressure reading. If this occurs, a message appears to warn the user of the incorrect conversion.</p>
+<p>The Pressure Brick Subsystem supports the following pressure scanners:</p>
+<ul>
+  <li>Netscanner 9016/9216 Pneumatic intelligent pressure scanners - 10 BaseT Ethernet communication to 16 silicon piezoresistive pressure sensors of any pressure range</li>
+  <li>Netscanner 9022 Liquid intelligent pressure scanners - multiple measurements of liquids and high pressure dry non-corrosive gases on 12 ports</li>
+  <li>Netscanner 9032 Pressure Standard/Pressure Controller - capable of measuring dry non-corrosive gases to an accuracy of &plusmn; 0.01% FS on 1 port</li>
+  <li>Netscanner 9116 Ethernet Intelligent Pressure Scanner - 10/100 BaseT Ethernet communication to 16 silicon piezoresistive pressure sensors of any pressure range</li>
+</ul>
+<h2 id="ConfigPBSChannel">Configuring a PBS Channel</h2>
+<p>To configure a Pressure Bricks Channel:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</li>
+  <li>Select the name of the Pressure Bricks Subsystem from the list of available subsystems.
+    <div class="Container"><img src="images/SelectSubsystemName.PNG" alt="SelectSubsystemName" width="387" height="317"></div>
+  </li>
+  <br>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a>.</li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.</li>
+  <li>Set the <strong>Serial Number</strong> column.</li>
+  <li>Set the <strong>Port</strong>.</li>
+  <li>Set the <strong>Input Type</strong>.</li>
+  <li>Set the <strong>Samples.</strong></li>
+  <li>If required, set the optional parameter <strong>Ambient Pressure Channel</strong>.
+    <div class="Container"><img src="images/ChannelEditor.PNG" alt="ChannelEditor" width="700" height="424"></div>
+  </li>
+</ol>
+<h2 id="ConfigFileStructure">Configuration File Structure</h2>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu"> Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import a <strong>PBS</strong>channel, see <a href="?2#XMLFileStructure"> XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import a <strong>PBS</strong> channel, see <a href="?4#TabDelimitFileStructure"> Tab-Delimited File Structure</a>.</p>
+<h3 id="XMLFileStructure">XML File Structure</h3>
+<h4 id="ChannelsXML">Channels</h4>
+<p>The channels are stored in <em>Channels.xml</em> files in the configuration directories.</p>
+<p>A PBS Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor - Generic Channel Parameters - XML File Structure</a>, and the specific attributes <strong>SerialNumber</strong>, <strong>Port</strong>, <strong>AvgSamples</strong>, and <strong>AmbPressChannel</strong>. These attributes are explained in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Serial Number</td>
+    <td>SerialNumber</td>
+    <td>SENSOR_NAME</td>
+    <td>A unique identifier of a Pressure Brick</td>
+    <td>String</td>
+    <td>Pressure Brick serial number as defined in the  PBS subsystem collection</td>
+  </tr>
+  <tr>
+    <td>Port</td>
+    <td>Port</td>
+    <td>PRESS_PORT</td>
+    <td>The pressure port on the Brick</td>
+    <td>Integer</td>
+    <td>An Integer between 1 and 16</td>
+  </tr>
+  <tr>
+    <td>Input Type</td>
+    <td>InputType</td>
+    <td>INPUT_TYPE</td>
+    <td>The type of input signal being measured, either pressure or temperature.</td>
+    <td>String</td>
+    <td>PRESS or TEMP</td>
+  </tr>
+  <tr>
+    <td>Samples</td>
+    <td>AvgSamples</td>
+    <td>AVG_SAMPLES</td>
+    <td>The numbers of samples to average together to attain one scan value</td>
+    <td>Integer</td>
+    <td>An Integer. This value must be the same for all ports of the same brick. (Maximum: 64)<br>
+      <p class="TableNote">If it is required to scan at sample rates of 100 Hz and 200 Hz, the AVG_SAMPLES should be reduced to a value of 4.</p></td>
+  </tr>
+  <tr>
+    <td>Ambient Pressure Channel</td>
+    <td>AmbPressChannel</td>
+    <td>AMB_PRESS_CHAN</td>
+    <td>The name of the channel which provides the ambient pressure</td>
+    <td>String</td>
+    <td>The name of a channel defined in the Channel  Collection that also belongs to the &quot;Pressure&quot; EU group.</td>
+  </tr>
+</table>
+<p> The structure of a Pressure Bricks Channel complies with the following example:</p>
+<blockquote><code>&lt;Channels LastModificationDate=&quot;<strong>2015-06-11 11:05:24</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;<br>
+  &lt;Channel Name=&quot;ZZPBS1&quot; <br>
+  Description=&quot;&quot; <br>
+  Enabled=&quot;true&quot; <br>
+  LastModificationDate=&quot;2015-06-11 11:05:24&quot; <br>
+  SubsystemName=&quot;ZZPBS&quot; <br>
+  SubsystemType=&quot;PBS&quot; <br>
+  AlternateName=&quot;&quot; <br>
+  DataType=&quot;Float&quot; <br>
+  InitialValue=&quot;-999999&quot; <br>
+  Format=&quot;4.2f&quot; <br>
+  UpdateRate=&quot;1&quot; <br>
+  QualityCeiling=&quot;GOOD&quot; <br>
+  Critical=&quot;false&quot; <br>
+  EngineeringUnit=&quot;psi&quot; <br>
+  DisplayMin=&quot;0&quot; <br>
+  DisplayMax=&quot;100&quot; <br>
+  DeadBand=&quot;0&quot; <br>
+  Output=&quot;false&quot; <br>
+  ReferenceChannel=&quot;&quot; <br>
+  Group=&quot;&quot; <br>
+  SignalId=&quot;&quot; <br>
+  CalSensor=&quot;&quot; <br>
+  CalGroup=&quot;&quot; <br>
+  FixedSensor=&quot;&quot; <br>
+  CustomerSensor=&quot;&quot; <br>
+  FullsetStability=&quot;false&quot; <br>
+  ContinuousLog=&quot;true&quot; <br>
+  SerialNumber=&quot;PB0120&quot; <br>
+  Port=&quot;1&quot; <br>
+  InputType=&quot;PRESS&quot; <br>
+  AvgSamples=&quot;32&quot; <br>
+  AmbPressChannel=&quot;&quot;/&gt;<br>
+  &lt;/Channels&gt;<br>
+</code></blockquote>
+<h4 id="SubsystemsXML">Subsystems</h4>
+<p>The subsystem definitions are stored in <em>Subsystems.xml</em> files in the configuration directories.</p>
+<p>A PBS Subsystem contains generic information, described in <a href="../SubsystemEditor/SubsystemEditor.htm#XMLFileStructure">Subsystem Editor - Generic Subsystem Parameters - XML File Structure</a>, and the specific attributes:</p>
+<ul>
+  <li><strong>Bricks</strong></li>
+  <li><strong>Ports</strong></li>
+</ul>
+<p>The specific attribute <strong>Bricks</strong> defines a collection of pressure bricks implemented for the PBS Subsystem. Each Brick has the following properties:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Serial Number</td>
+    <td>SerialNumber</td>
+    <td>SENSOR_NAME</td>
+    <td>The pressure brick serial number</td>
+    <td>String</td>
+    <td>A unique identifier for a pressure brick on the basis of the Ethernet address</td>
+  </tr>
+  <tr>
+    <td>Scanner Type</td>
+    <td>ScannerType</td>
+    <td>SCANNER_TYPE</td>
+    <td>The pressure brick type of scanner</td>
+    <td>Integer</td>
+    <td>9016/9216, 9116, 9021, 9022, 9032, 9816</td>
+  </tr>
+  <tr>
+    <td>Max. Scan Rate</td>
+    <td>MaxScanRate</td>
+    <td>MAX_SCAN_RATE</td>
+    <td>The maximum scan rate allowed for this brick</td>
+    <td>Integer</td>
+    <td>Defined by the Configuration Server option &quot;ScanRates&quot;. If the option is not defined, the default scan rates 0, 1, 10, 33, 50, 100 and 200 are valid values.</td>
+  </tr>
+  <tr>
+    <td>Cont.Purge</td>
+    <td>ContPurgeEnable</td>
+    <td>CONT_PURGE_ENABLE</td>
+    <td>Flag indicating whether Continuous Purge is enabled for the brick.
+      <p class="Note">Any channel for which this flag is set to true automatically enables purging for the brick.</p></td>
+    <td>Check Box</td>
+    <td>Yes or No</td>
+  </tr>
+  <tr>
+    <td>Default EU</td>
+    <td>DefaultEU</td>
+    <td>DEFAULT_EU</td>
+    <td>The default Engineering Unit</td>
+    <td>String</td>
+    <td>Value(s) displayed are defined in the EU Editor for pressures.</td>
+  </tr>
+</table>
+<p>The specific attribute <strong>Ports</strong> defines a collection of Ports used for the Brick currently selected in the Subsystem.</p>
+<p class="Note">Up to 16 ports can be configured. For 9016/9216 and 9116 pressure scanners, all 16 ports can be defined. For 9022 pressure scanners, only ports 1-12 can be defined. For 9032 pressure scanners, only 1 port can be defined.</p>
+<p>Each Port has the following properties:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Port Number</td>
+    <td>PortNumber</td>
+    <td>PRESS_PORT</td>
+    <td>The pressure port on the brick</td>
+    <td>Integer</td>
+    <td>An integer between 1-16 (9016/9216, 9116), 1-12 (9022) and 1 (9032)</td>
+  </tr>
+  <tr>
+    <td>Max. Pressure Range</td>
+    <td>MaxPressRange</td>
+    <td>PRESS_RANGE_MAX</td>
+    <td>The maximum pressure range allowed for the port</td>
+    <td>Float</td>
+    <td>A float greater than 0.0</td>
+  </tr>
+  <tr>
+    <td>Description</td>
+    <td>Description</td>
+    <td>DESCRIPTION</td>
+    <td>Allows for a description to be associated with the float particular Port</td>
+    <td>String</td>
+    <td>String</td>
+  </tr>
+</table>
+<p>The structure of a PBS Subsystem is shown in the following example:</p>
+<blockquote>
+  <pre>&lt;Subsystems   LastModificationDate=&quot;<strong>2008-09-04   14:13:03</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Subsystem Name=&quot;PBS&quot;
+Description=&quot;PBS Subsystem&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2008-05-05 14:14:44&quot;
+Id=&quot;0&quot;
+Type=&quot;PBS&quot;
+CreationDate=&quot;2008-05-05 14:14:10&quot;&gt;
+&lt;Bricks&gt;
+&lt;Brick ScannerType=&quot;9016&quot;
+DefaulEU=&quot;PSI&quot;
+MaxScanRate=&quot;100&quot;
+SerialNumber=&quot;PB123456&quot;
+ContPurgeEnable=&quot;Y&quot;&gt;
+&lt;Ports&gt;
+&lt;Port
+PortNumber=&quot;1&quot;
+MaxPressRange=&quot;100&quot;
+Description=&quot;&quot; /&gt;
+&lt;/Ports&gt;
+&lt;/Brick&gt;
+&lt;/Bricks&gt;
+&lt;/Subsystem&gt;</pre>
+</blockquote>
+<h3 id="TabDelimitFileStructure">Tab-Delimited File Structure</h3>
+<p>The Pressure Brick Subsystem (PBS) channel definition includes all <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic channel definition columns</a> and the specific PBS Subsystem analogue input parameters defined in the tab-delimited configuration file.</p>
+<p class="Note">If a tab-delimited channel file import fails for the PBS Subsystem, or if the imported updates are not saved, then the changes made to the continuous purge enable field at the subsystem level will not be rolled back.</p>
+<p>The rules, syntax and guidelines for creating PBS Subsystem analogue input channels are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>SENSOR_NAME</td>
+    <td>SENSOR_NAME is the sensor identifier of the pressure brick that contains the distinct part of its Ethernet hardware address in decimal.</td>
+    <td>Alphanumeric string in the form: PBNNNNNN</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>PRESS_PORT</td>
+    <td>PRESS_PORT specifies the port number of the pressure sensor on the pressure brick. The same port number can be used to define both a pressure input type and a temperature input type of signal.</td>
+    <td>Number 1 - 16</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>INPUT_TYPE</td>
+    <td>The type of input signal being measured, either pressure or temperature.
+      <p class="Note">Not included in the tab delimited file.</p></td>
+    <td>PRESS or TEMP</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>AVG_SAMPLES</td>
+    <td>AVG_SAMPLES specifies the number of samples to average together to attain one scan value. This value must be the same for all the channels on the same brick.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>AMB_PRESS_CHAN</td>
+    <td>The name of the channel that provides the ambient pressure.
+      <p class="Note">Only applicable for channels whose INPUT_TYPE is PRESS.</p></td>
+    <td>The same as the generic NAME field.</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>CONT_PURGE_ENABLE</td>
+    <td>Flag indicating whether Continuous Purge is enabled for the brick.
+      <p class="Note">Any channel for which this flag is set to true automatically enables purging for the brick.</p></td>
+    <td>Y or N</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td colspan="6"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. 
+      Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single line of the spread sheet.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is always optional.</p></td>
+  </tr>
+</table>
+<h2 id="SubsystemEditorPBS">Subsystem Editor for PBS Channels</h2>
+<p>To edit the PBS Subsystem, the Subsystem Editor must be selected from within the Configuration Administrator.</p>
+<p>The tool bar in the Configuration Administrator allows the various configuration editors available for proDAS to be selected.</p>
+<p>The Subsystem Editor allows new subsystems to be added to the current configuration.</p>
+<div class="Container"><img src="images/SubsystemEditor.png" alt="SubsystemEditor" width="700" height="423"></div>
+<p>To add a new subsystem:</p>
+<ol>
+  <li>From the Edit menu, select <strong>Append Data Record</strong> or, in the left pane of the splitter window, click the right mouse button and select <strong>Append Data Record</strong> from the context sensitive menu.</li>
+  <li> Selecting <strong>PBS</strong>in the dialogue box to select the type of subsystem.<br>
+    A new line in Subsystem Editor is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to <strong>PBS</strong>. The user must then assign a name and description to the subsystem.</li>
+</ol>
+<h3 id="AddNewBricks">Adding New Bricks to proDAS</h3>
+<p>To add a new brick to the <a href="PressureBricks.htm?5#SubsystemsXML">Subsystem</a>:</p>
+<ol>
+  <li>Select the <strong>Bricks</strong> spreadsheet in the right hand pane of the splitter window where Bricks and Ports are defined.</li>
+  <li>From the <a href="../SubsystemEditor/SubsystemEditor.htm#MenuEdit">Subsystem Editor</a>, select <strong>Subsystem PBS/Bricks/Append</strong>. A new line for a new Brick is added to the list of Bricks in the subsystem.</li>
+  <li>Define the Brick attributes Serial No. (a unique identifier on the basis of its Ethernet Address and Max. Scan Rate (the maximum scan rate of 33, 50, 100 or 200 Hz allowed for the brick).</li>
+  <li>From the <a href="../SubsystemEditor/SubsystemEditor.htm#MenuEdit">Subsystem Editor</a>, select <strong>Subsystem PBS/Bricks/Append</strong>. A new line for a new Port is added to the list of Ports for the Brick that was just created.</li>
+  <li>Define the Port attributes (Port Number, Max Pressure and Description).</li>
+  <li>Repeat steps 4 and 5 for each port to be configured.
+    <p class="Note">All 16 ports can be defined for a 9016/9216 and 9116 scanner but only the first 12 ports can be defined for a 9022 scanner, and only the first port can be defined for a 9032 scanner.</p>
+    <p class="Note">When using the copy and paste (or insert after) features to add content, the new content must be manually processed (e.g. adapting names, identifying numbers) to maintain a consistent configuration. The user must ensure the maximum of 16 channels is not exceeded and delete any channels that exceed the limit.</p>
+  </li>
+</ol>
+<h2 id="RTEInitialisationFile">RTE Initialisation File</h2>
+<p>The pressure brick subsystem is configured by the RTE, along with all the other subsystems, as a request from the Management Interface GUI. For legacy purposes, the configuration request can also be specified in the command line of the RTE.</p>
+<p>A typical RTE initialisation file would include the following pressure brick subsystem information:</p>
+<table width="95%" border="0" cellspacing="1" cellpadding="2">
+  <tr>
+    <td colspan="2">#--------------------------------------------------------------------------<br>
+      # PBS Subsystem<br>
+      #--------------------------------------------------------------------------</td>
+  </tr>
+  <tr>
+    <td width="19%">SS PBS</td>
+    <td width="81%">TRUE</td>
+  </tr>
+  <tr>
+    <td width="19%">CI port</td>
+    <td width="81%">pbs</td>
+  </tr>
+  <tr>
+    <td width="19%">CI zone</td>
+    <td width="81%">20</td>
+  </tr>
+  <tr>
+    <td width="19%">CI trigger</td>
+    <td width="81%">ON 33</td>
+  </tr>
+  <tr>
+    <td width="19%">CI min_days_to_cal</td>
+    <td width="81%">30</td>
+  </tr>
+  <tr>
+    <td width="19%">CI accel_xfer</td>
+    <td width="81%">33</td>
+  </tr>
+  <tr>
+    <td width="19%" height="19">CI reply_timeout </td>
+    <td width="81%" height="19">60</td>
+  </tr>
+  <tr>
+    <td width="19%">CI cal_uel_source</td>
+    <td width="81%">CALCHK</td>
+  </tr>
+  <tr>
+    <td width="19%">CI vent_contol_ch</td>
+    <td width="81%">D001</td>
+  </tr>
+  <tr>
+    <td width="19%">CI vent_feedback_ch</td>
+    <td width="81%">D002</td>
+  </tr>
+  <tr>
+    <td width="19%">CI valve_on_delay</td>
+    <td width="81%">2000</td>
+  </tr>
+  <tr>
+    <td width="19%">CI valve_off_delay</td>
+    <td width="81%">2000</td>
+  </tr>
+</table>
+<p class="Note">In order for the PBS to operate on 100 Hz with a hardware trigger, the CI trigger must be set at ON 100 and proDAS must have a calculated channel toggled at 200 Hz.</p>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click here to see the RTE Initialisation file.</a></p>
+<h2 id="MgmtInitialisationFile">Management GUI Initialisation File</h2>
+<p><a href="../../References/DASIniFiles/SoftwareiniFiles.pdf">Click here to see the Management GUI Initialisation file.</a></p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

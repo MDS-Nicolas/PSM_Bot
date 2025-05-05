@@ -1,0 +1,400 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Tabular Channel Display (TCD)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="TCD">Tabular Channel Display (TCD)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>Tabular Channel Display (TCD) is a stand-alone application used to display online-values of channels in a table. Multiple tabular displays can  run in parallel.</p>
+<p>The Tabular Channel Display can remain active if the RTE is not available (i.e. the connection is lost). Once the connection is restored, TCD resumes displaying values if the according channels are still available.</p>
+<p> Tabular Channel Display is able to continue displaying data after scanning was stopped and restarted. To be consistent Tabular Channel Display reloads data of online channels after the RTE has been restarted and configured.</p>
+<p class="Note">Depending on a flag TCD terminates if the RTE instance terminates. When this happens no reconfiguring is performed.</p>
+<p>Tabular Channel Display supports the following two modes:</p>
+<ul>
+  <li>Display Mode</li>
+  <li>Selection Mode</li>
+</ul>
+<p>The user can specify the following via the command line:</p>
+<ul>
+  <li>The mode in which Tabular Channel Display is run after start</li>
+  <li>The TCD file to be loaded</li>
+</ul>
+<p class="Note">The RTD-Driver toolbar is used to start Tabular Channel Display in Selection Mode.</p>
+<p>If at start a TCD file is specified via the command line, the Tabular Channel Display starts in Display Mode by default; otherwise, it starts in Selection Mode. It is possible to run multiple instances of Tabular Channel Display simultaneously.</p>
+<p class="Note">Each instance of Tabular Channel Display processes a single TCD file only.</p>
+<p>At startup the proDAS default configuration is used; however, the user can specify another configuration to be used.</p>
+<p>Depending on a setting, Tabular Channel Display  terminates itself when the RTE exits or when the RTE stops scanning.</p>
+<h2 id="DisplayMode">Display Mode</h2>
+<p>In Display Mode Tabular Channel Display can:</p>
+<ul>
+  <li>display current values from the CVT</li>
+  <li>display values of the latest fullset (using data stored in the RTE)</li>
+  <li>change values of settable channels</li>
+</ul>
+<p>The Tabular Channel Display displays the values in a table whereby for each channel a new row is allocated. The Tabular Channel Display updates the data continuously.</p>
+<p>If the RTE is not scanning the Tabular Channel Display displays an indication, no dynamic information is displayed (includes engineering value, raw value, quality or alarm status).</p>
+<p>When the RTE is scanning again, the Tabular Channel Display continues displaying values with the updated subset of channels.</p>
+<p class="Note">The subset of displayed channels could have been changed if the set of online channels has been changed.</p>
+<p>As a minimum, TCD displays the following information for each channel ordered:</p>
+<ul>
+  <li>name or alternate name (depending on the respective flag)</li>
+  <li>engineering value</li>
+  <li>quality</li>
+  <li>engineering unit</li>
+  <li>alarm	state (LO, LOLO, HI, HIHI) with an alarm status via colouring of the engineering value</li>
+  <li>raw value (if applicable, otherwise displays raw value)</li>
+</ul>
+<p class="Note">The format of the channel engineering  value is defined in the <a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm">Channel Editor</a>.</p>
+<p>TCD is able to display alternate Engineering Unit (EU) values for selected channels.</p>
+<p>The user can specify whether for each channel either the name or the alternate name is displayed. It is not  possible to specify this individually for each channel.</p>
+<p>The TCD updates the data continuously for all (visible) channels with the same update frequency. The TCD reads the update frequency from the respective TCD file. The user can specify/change the update frequency up to a maximum of 10Hz.</p>
+<p class="Note">If the list of displayed channels is explicitly defined (by enumerating channel names), any channels not existing any more or not enabled are not displayed; there is no warning (these won't be deleted from the TCD file).</p>
+<p class="Note">If the list of displayed channels is implicitly defined (by defining a filter criterion), the resulting channels are displayed in ascending alphabetical order of the displayed channel names (using alternate or original channel names).</p>
+<p>The user can switch TCD from Display Mode to Selection Mode.</p>
+<p>TCD can display the values of at least 300 channels on a common Real-Time Display Computer.</p>
+<p class="Note">TCD can display many more channels but this is dependant on the computer being used.</p>
+<p>TCD allows the user to input data to settable channels (scan rate 0 Hz) via a modal dialogue.</p>
+<h3 id="StripCharts">Strip Charts</h3>
+<p>In Display Mode, TCD  enable the user to select a displayed FLOAT channel to view a strip chart in a separate window where the current value is displayed and the future values are added. The user can display at least five strip charts simultaneously.</p>
+<p>The time axis length is read from an INI file entry where the default value is two minutes. TCD  supports time axis data accumulation lengths of up to 10 minutes.</p>
+<div class="Container"><img src="images/StripChart01.png" alt="Strip Chart 01" width="700" height="270"></div>
+<p class="Note">It is expected that most users want to see values of the last two minutes. The possible maximum range is bigger.</p>
+<p>The time axis length is the same for all strip charts.</p>
+<div class="Container"><img src="images/StripChart02.png" alt="Strip Chart 02" width="700" height="270"></div>
+<p>The user can stop updating values of all strip charts at once and resume data display again or pause each strip chart individually. Later, when the updating continues all previous values are removed. If the RTE stops scanning and TCD does not terminate then all displayed values are cleared from the strip chart. When TCD is terminating all strip charts are closed. The visual update frequency is up to 10 Hz. The TCD automatically adjusts to the range adaptation property of the RTD strip chart.</p>
+<p class="Note">If the visual update frequency is 10 Hz for a 200 Hz channel then 20 values are added during each update.</p>
+<h2 id="SelectMode">Selection Mode</h2>
+<p>In Selection Mode, the user defines an arbitrary subset of channels for subsequent display in Display Mode. The user defines:</p>
+<ul>
+  <li>the subset of channels implicitly (by defining a filter criterion)</li>
+  <li>the subset of channels explicitly by enumerating channel names</li>
+</ul>
+<p>The user can switch between explicit and implicit selection. If the subset of channels is defined implicitly, the filter criterion is applied to the set of available online channels. The subset of displayed channels comprises only those channels that match the filter criterion. The user can filter for certain subsystems or channel names within a subsystem.</p>
+<p>The following filter criteria is supported:</p>
+<ul>
+  <li>regular expression of channel names / alternate names</li>
+  <li>subsystem name</li>
+  <li>subsystem type</li>
+</ul>
+<p>Additionally the minimum  criteria is supported:</p>
+<ul>
+  <li>regular expression of any generic channel attribute (including site-specific attributes)</li>
+  <li>once filtered on a subsystem, the ability to filter on subsystem criterion is provided</li>
+</ul>
+<p> TCD  displays a list of the channels which are selected for Display Mode.</p>
+<p> The user can store the implicit definition of the subset of channels into a TCD file (filter criterion is stored). The user can store the explicit definition of the subset of channels into a TCD file (the channel list is stored).</p>
+<p class="Note">If an explicit Display List from a TCD file is loaded in Selection Mode and there are some channels which are not available in the currently selected proDAS configuration, then a warning is displayed.</p>
+<p>The Display List uses different colors for enabled channels and non-existing channels.</p>
+<p class="Note">Disabled channels are not loaded.</p>
+<p>If the explicit Display List is saved again to a TCD file, the user is prompted to confirm or reject removal of non-existing channels.</p>
+<p>The user can switch TCD from Selection Mode to Display Mode.</p>
+<h2 id="StartTCD">Starting Tabular Channel Display</h2>
+<p>The TCD can be started in one of three ways:</p>
+<ul>
+  <li>via the Management GUI Control Panel (if configured) where the username and password are passed automatically </li>
+  <li>as an independent application where the username and password are not passed automatically</li>
+  <li>via the RTD Driver where the username and password are passed automatically</li>
+</ul>
+<p><strong>To Start TCD as an independent application</strong>:</p>
+<ol>
+  <li>Double-click the TCD application executable.<br>
+    The proDAS login window is displayed.
+    <div class="Container"><img src="images/Login.gif" alt="Login" width="407" height="272"></div>
+  </li>
+  <li>Enter the user name in the <strong>Username:</strong> field.</li>
+  <li>Enter the user password in the <strong>Password:</strong> field and select <strong>Login</strong>.
+    <p class="Note">The password is case sensitive.</p>
+  </li>
+  <li>The TCD application is started and the start-up screen is displayed.
+    <div class="Container"><img src="images/Implicitly.png" alt="Implicitly" width="700" height="455"></div>
+  </li>
+</ol>
+<h2 id="DisplayMenus">Menus</h2>
+<p>There are two main menus for the following modes:</p>
+<ul>
+  <li><a href="?2#SelectMenus">Selection Mode</a></li>
+  <li><a href="?3#DisplayMenus2">Display Mode</a></li>
+</ul>
+<h3 id="SelectMenus">Selection Mode Menus</h3>
+<p>The Selection Mode menu is divided into the following pull-down menus:</p>
+<ul>
+  <li><a href="?4#SMFile">File</a></li>
+  <li><a href="?5#SMEdit">Edit</a></li>
+  <li><a href="?6#SMConfig">Configuration...</a></li>
+  <li><a href="?7#Toggle">Toggle Mode!</a></li>
+  <li><a href="?8#Help">Help</a></li>
+</ul>
+<h4 id="SMFile">File</h4>
+<p>The <strong>File</strong> menu (displayed below) is described in the table below.</p>
+<div class="Container"><img src="images/FileMenu.png" alt="File Menu" width="169" height="169"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>New</td>
+    <td>Clears the Display List, resets the filters, populates the Channel List with the channels of the currently selected configuration, and displays the visible columns as defined in the INI file.</td>
+  </tr>
+  <tr>
+    <td>Open...</td>
+    <td>Allows the user select a TCD file and load data from it.</td>
+  </tr>
+  <tr>
+    <td>Close</td>
+    <td>Closes the current file. If the file has been modified the user is asked whether it is to be saved.</td>
+  </tr>
+  <tr>
+    <td>Save</td>
+    <td>Saves the current settings.</td>
+  </tr>
+  <tr>
+    <td>Save As...</td>
+    <td>Allows the user to specify a file name and create a TCD file with the current settings at the specified path.</td>
+  </tr>
+  <tr>
+    <td>Exit</td>
+    <td>Closes the current file (see Close menu item) and terminates the TCD application.</td>
+  </tr>
+</table>
+<h4 id="SMEdit">Edit</h4>
+<p>The <strong>Edit</strong> menu (displayed below) is described in the table below.</p>
+<div class="Container"><img src="images/EditMenu.png" alt="Edit Menu" width="232" height="207"></div>
+<table width="79%" class="Table-Grey">
+  <tr>
+    <th>Menu or Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Select Channels Implicitly</td>
+    <td>Only available if channels are selected explicitly.<br>
+      <br>
+      <div class="Container"><img src="images/Implicitly.png" alt="Implicitly" width="700" height="455"></div>
+      <p class="Note">This menu item toggles based on channel selection.</p></td>
+  </tr>
+  <tr>
+    <td>Select Channels Explicitly</td>
+    <td>Only available if channels are selected implicitly.<br>
+      <br>
+      <div class="Container"><img src="images/Explicitly.png" alt="Explicitly" width="700" height="455" /></div>
+      <p class="Note">This menu item toggles based on channel selection.</p></td>
+  </tr>
+  <tr>
+    <td>Update Columns...</td>
+    <td>Displays the Select Columns window. The user can select generic channel attributes for display and filtering and subsystem specific attributes once filtering for a subsystem has been selected.<br>
+      <br>
+      <div class="Container"><img src="images/UpdateColumns.png" alt="Update Columns" width="599" height="325"></div></td>
+  </tr>
+  <tr>
+    <td>Restore Default Columns</td>
+    <td>The user can retrieve the default settings from the application INI file.</td>
+  </tr>
+  <tr>
+    <td>Define Columns as Default</td>
+    <td>The user can define the default settings from the application INI file.
+      <p class="Note">This menu item is only displayed if configured in the application INI file.</p></td>
+  </tr>
+  <tr>
+    <td>Set update Frequency...</td>
+    <td>Displays the Specify Update Frequency window. The user can specify the update frequency.<br>
+      <br>
+      <div class="Container"><img src="images/UpdatePanel.png" alt="Update Panel" width="319" height="175"></div></td>
+  </tr>
+  <tr>
+    <td>Use Alternate Channel Names</td>
+    <td>If checked, alternate names are displayed in Display Mode.
+      <p class="Note">This field supports non-English characters.</p></td>
+  </tr>
+  <tr>
+    <td>Set Font for Display Mode...</td>
+    <td>Displays the Font window. Sets the currently used font properties for Display Mode.<br>
+      <br>
+      <div class="Container"><img src="images/FontSelection.png" alt="Font Selection" width="437" height="347"></div></td>
+  </tr>
+  <tr>
+    <td>Save Font for Display Mode</td>
+    <td>Saves the set font properties for Display Mode.<br>
+      <br>
+      <div class="Container"><img src="images/SaveFont.png" alt="Save Font" width="302" height="161"></div>
+      <p class="Note">This menu item is only displayed if configured in the application INI file.</p></td>
+  </tr>
+</table>
+<h4 id="SMConfig">Configuration...</h4>
+<p>The <strong>Configuration...</strong> menu displays the Select proDAS configuration window (displayed below) allowing the user to select a proDAS configuration.</p>
+<div class="Container"><img src="images/SelectConfig.png" alt="Select Config" width="700" height="646"></div>
+<p class="Note">By default, the proDAS default configuration is loaded (displayed in the status bar) and is enabled only when the Display List is empty.</p>
+<p>Switching to another configuration results in populating the Channel List with the enabled channels of the newly selected configuration which comply with the current filter settings.</p>
+<p class="Note">It is not a goal to merge channels from different configurations, but to allow the definition of filtering criteria common to several configurations and to see its effect for the purpose of saving the selection criteria.</p>
+<h4 id="Toggle">Toggle Mode!</h4>
+<p>The <strong>Toggle Mode!</strong> menu switches immediately to the Display Mode when in Selection Mode and to Selection Mode when in Display Mode.</p>
+<p class="Note">If the Display List has not been saved since the last modification the user is prompted to save it.</p>
+<p class="Note">The binary numbers are displayed if the format has been specified appropriately.</p>
+<div class="Container"><img src="images/ToggleMode.png" alt="Toggle Mode" width="700" height="437"></div>
+<br>
+<p>Channel quality is displayed in colours to indicate status:</p>
+<ul>
+  <li>Green if quality to GOOD (when the data is sound)</li>
+  <li>Yellow if quality is SUSPECT (when the data is interpolated or is otherwise suspicious)</li>
+  <li>Red if quality is BAD (when the value cannot be acquired by the hardware)</li>
+</ul>
+<h4>Strip Chart Functionality</h4>
+<p>To view the strip chart for a selected channel:</p>
+<ol>
+  <li>Highlight the required channel, right-click and select <strong>Display Strip Chart </strong> from the context menu.
+    <p class="Note">The channels can only be right-clicked when the Tabular Channel Display is in Display Mode. Use the Toggle Mode! option to select the correct mode.</p>
+    <div class="Container"><img src="images/MenuDisplayStripChart.png" alt="Menu Display Strip Chart" width="199" height="115"></div>
+    <br>
+    The strip chart for the selected channel is displayed on the chart and the values are shown in the data field. Data is continuously updated.</li>
+  <br>
+  <li>Right-click on the strip chart for additional functionality. The following context menu is displayed.
+    <div class="Container"><img src="images/Stripchartpopup.png" alt="Stripchart popup" width="246" height="76"></div>
+  </li>
+</ol>
+<h4>Set Value</h4>
+<p>It is possible to set the channel value for settable channels. To set the channel value:</p>
+<ol>
+  <li>Highlight the required channel, right-click and select <strong>Set Value...</strong> from the context menu.<br>
+    <p class="Note">The channels can only be right-clicked when the Tabular Channel Display is in Display Mode. Use the Toggle Mode! option to select the correct mode.</p>
+    <div class="Container"><img src="images/MenuSetValue.png" alt="Menu Set Value" width="198" height="114"></div>
+  </li>
+  <br>
+  <li>From the Set Channel Value window, enter a new value and click <strong>Apply</strong>.
+    <div class="Container"><img src="images/SetChanValue.png" alt="Set Chan Value" width="250" height="232"></div>
+  </li>
+</ol>
+<h4>Select Engineering Unit</h4>
+<p>Values can be displayed in different engineering units other than acquired or configured in the Channel Editor (i.e. a pressure value can be displayed in kPA even though the channel engineering unit is psi). To set the engineering unit:</p>
+<ol>
+  <li>Highlight the required channel, right-click and select <strong>Select Engineering Unit</strong> from the context menu.<br>
+    <p class="Note">The channels can only be right-clicked when the Tabular Channel Display is in Display Mode. Use the Toggle Mode! option to select the correct mode.</p>
+    <div class="Container"><img src="images/MenuSelectEU.png" alt="MenuSelectEU" width="200" height="116"></div>
+  </li>
+  <br>
+  <li>From the Engineering Unit for channel window, select the desired unit and click <strong>OK</strong>.
+    <div class="Container"><img src="images/SetEU.png" alt="Set EU" width="315" height="492"></div>
+    <p class="Note">The engineering unit in which the channel values are acquired is marked with an asterisk (*).</p>
+  </li>
+</ol>
+<h4>Inspect Channel Dialogue</h4>
+<p>To open the <strong>Inspect Channel</strong> dialogue box for a selected channel:</p>
+<ol>
+  <li>Right-click on the desired channel and select <strong>Display Inspect Dialog</strong>.</li>
+  <p class="Note">The channels can only be right-clicked when the Tabular Channel Display is in Display Mode. Use the Toggle Mode! option to select the correct mode.</p>
+  <div class="Container"><img src="images/MenuDisplayInspect.png" alt="Menu Display Inspect" width="198" height="113"></div>
+  <p>The <strong>Inspect Channel </strong>dialogue box opens.</p>
+  <div class="Container"><img src="images/InspectChannel2.png" alt="Inspect Channel 2" width="700" height="463"></div>
+  <p class="Note">The Display Inspect dialogue box is read-only.</p>
+</ol>
+<h4 id="Help">Help</h4>
+<p>The <strong>Help</strong> menu displays the Help About window for TCD.</p>
+<h3 id="DisplayMenus2">Display Mode Menus</h3>
+<p>The Selection Mode menu is divided into the following pull-down menus:</p>
+<ul>
+  <li><a href="?9#DMFile">File</a></li>
+  <li><a href="?10#DMView">View</a></li>
+  <li><a href="?11#Toggle">Toggle Mode! - same as Selection Mode</a></li>
+  <li><a href="?12#Help">Help - same as Selection Mode</a></li>
+</ul>
+<h4 id="DMFile">File</h4>
+<p>The <strong>File</strong> menu (displayed below) is described in the table below.</p>
+<div class="Container"><img src="images/DMFile.png" alt="DMFile" width="168" height="219"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>New</td>
+    <td>Clears the Display List, resets the filters, populates the Channel List with the channels of the currently selected configuration, and displays the visible columns as defined in the INI file.</td>
+  </tr>
+  <tr>
+    <td>Open...</td>
+    <td>Allows the user select a TCD file and load data from it.</td>
+  </tr>
+  <tr>
+    <td>Close</td>
+    <td>Closes the current file. If the file has been modified the user is asked whether it is to be saved.</td>
+  </tr>
+  <tr>
+    <td>Save</td>
+    <td>Saves the current settings.</td>
+  </tr>
+  <tr>
+    <td>Save As...</td>
+    <td>Allows the user to specify a file name and create a TCD file with the current settings at the specified path.</td>
+  </tr>
+  <tr>
+    <td>Print Snapshot...</td>
+    <td>Prints a snapshot.<br>
+      <br>
+      <div class="Container"><img src="images/Print.png" alt="Print" width="438" height="330"></div></td>
+  </tr>
+  <tr>
+    <td>Export Snapshot...</td>
+    <td>Exports the snapshot.<br>
+      <br>
+      <div class="Container"><img src="images/SaveSnapshot.png" alt="Save Snapshot" width="649" height="469"></div></td>
+  </tr>
+  <tr>
+    <td>Exit</td>
+    <td>Closes the current file (see Close menu item) and terminates the TCD application.</td>
+  </tr>
+</table>
+<h4 id="DMView">View</h4>
+<p>The <strong>View</strong> menu (displayed below) is described in the table below.</p>
+<div class="Container"><img src="images/DMView.png" alt="DM View" width="232" height="135"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Define Columns as Default</td>
+    <td>The user can define the default settings from the application INI file.
+      <p class="Note">This menu item is only displayed if configured in the application INI file.</p></td>
+  </tr>
+  <tr>
+    <td>Fullset Values</td>
+    <td>Displays the last fullset value. If no fullsets are available it displays channel quality as bad and the value is -99999.</td>
+  </tr>
+  <tr>
+    <td>Use Alternate Channel Names</td>
+    <td>Currently the first column displays the channel name. This displays alternate channel name in the first column (if defined).
+      <p class="Note">This field supports non-English characters.</p></td>
+  </tr>
+  <tr>
+    <td>Set Font for Display Mode...</td>
+    <td>Displays the Font window. Sets the currently used font properties for Display Mode.<br>
+      <br>
+      <div class="Container"><img src="images/FontSelection.png" alt="Font Selection" width="438" height="350"></div></td>
+  </tr>
+  <tr>
+    <td>Save Font for Display Mode...</td>
+    <td>Saves the set font properties for Display Mode.<br>
+      <br>
+      <div class="Container"><img src="images/SaveFont.png" alt="Save Font" width="302" height="161"></div>
+      <p class="Note">This menu item is only displayed if configured in the application INI file.</p></td>
+  </tr>
+</table>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

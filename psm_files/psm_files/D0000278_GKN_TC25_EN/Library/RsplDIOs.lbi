@@ -1,0 +1,23 @@
+<table class="Table-Grey">
+  <tr> 
+    <th class="row-RSPLManufacturer">Manufacturer</th>
+    <th class="row-RSPLQty">Quantity</th>
+    <th class="row-RSPLPartNumber">Part Number</th>
+    <th class="row-RSPLDescription">Description</th>
+    <th class="row-RSPLLeadTime">Lead Time</th>
+  </tr>
+  <tr> 
+    <td>Opto 22</td>
+    <td>1</td>
+    <td>IDC5D</td>
+    <td>Opto 22 Isolator Input Module</td>
+    <td>1 week</td>
+  </tr>
+  <tr>
+    <td>Opto 22</td>
+    <td>1</td>
+    <td>ODC5</td>
+    <td>Opto 22 Isolator Output Module</td>
+    <td>1 week</td>
+  </tr>
+</table>

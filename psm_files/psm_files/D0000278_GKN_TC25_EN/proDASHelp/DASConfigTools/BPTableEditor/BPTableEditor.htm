@@ -1,0 +1,168 @@
+<!DOCTYPE HTML>
+<html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Break Point Table Editor</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="BreakpointTableEditor">Break Point Table Editor<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" >
+</a><div float:right></div></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The Break Point Table Editor is used to create and edit break point tables.</p>
+<p>Only break point tables used for calculations (e.g.: in calculated channels), the User Functions, or an External Hook Program are created and edited using this editor. Break point tables used in calibration are covered in the Sensor Editor.</p>
+<p class="Note">Break Point Table Editor supports the import/export of CSV files representing the Break Point Table data.</p>
+<div class="Container"><img src="images/BPTvertical.png" alt="BPT Vertical" width="700" height="424"></div>
+<br>
+<p>The Break Point Table Editor provides the following functionality:</p>
+<ul>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuFile">File</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuEdit">Edit</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuView">View</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuConfiguration">Configuration</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuHelp">Help</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#GenCol">Index, Level, Enabled, Active, LastModDate, Name and Description</a></li>
+  <li><a href="#SpecificProperties">Specific Properties of a Break Point Table</a></li>
+  <li><a href="#ListBreakPoints">The List of Break Points</a></li>
+  <li><a href="#ModificationBp">Modification of the Break Points</a></li>
+  <li><a href="#DisplayBP">Graphical Display of a Break Point Table</a></li>
+</ul>
+<h2 id="layout">Layout</h2>
+<p>It is possible to split the main window horizontally or vertically with an entry in the BreakPointTableEditor.ini file. When split vertically (see sample screen above) the &quot;Selected Data Record&quot; pane and the &quot;Data Records&quot; pane are parallel. When split horizontally (see sample screen below), the &quot;Selected Data Record&quot; pane and the &quot;Data Records&quot; pane are stacked.</p>
+<div class="Container"><img src="images/BPThorizontal.png" alt="BPT Horizontal" width="700" height="424"></div>
+<br>
+<p>The layout can be selected by setting the following ini properties:</p>
+<blockquote>
+  <pre>[General]
+
+# for horizontal layout:
+WindowLayout=stacked
+
+# for vertical layout:
+WindowLayout=parallel</pre>
+</blockquote>
+<h2 id="SpecificProperties">Specific Properties of a Break Point Table</h2>
+<p>If the user appends a new data record, a dialogue is displayed where the user can select the type of the new break point table. Currently two and three dimensional break point tables are supported.</p>
+<div class="Container"><img src="images/BptTypeDialog.png" alt="Bpt Type Dialog" width="285" height="174" align="bottom"></div>
+<br>
+<p>The following specific properties are displayed in the spreadsheet:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Type</td>
+    <td>Type</td>
+    <td>Type of the break point table</td>
+    <td>String</td>
+    <td>2d or 3d (read only)</td>
+  </tr>
+  <tr>
+    <td>#BP</td>
+    <td>n/a</td>
+    <td>Number of break points</td>
+    <td>Integer</td>
+    <td>read-only</td>
+  </tr>
+  <tr>
+    <td>X Unit</td>
+    <td>XEngineeringUnit</td>
+    <td>Engineering unit for the x values</td>
+    <td>String</td>
+    <td>A defined engineering unit</td>
+  </tr>
+  <tr>
+    <td>Y Unit</td>
+    <td>YEngineeringUnit</td>
+    <td>Engineering unit for the&nbsp;y values</td>
+    <td>String</td>
+    <td>A defined engineering unit</td>
+  </tr>
+  <tr>
+    <td>Z Unit</td>
+    <td>ZEngineeringUnit</td>
+    <td>Engineering unit for the&nbsp;z values</td>
+    <td>String</td>
+    <td>A defined engineering unit (only 3d)</td>
+  </tr>
+</table>
+<h2 id="ListBreakPoints">List of Break Points</h2>
+<p>The list of break points from the selected break point table is displayed in the right-hand pane of the window. The pane is called the List of Points View. For each break point, the list contains the following properties:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>X</td>
+    <td>X</td>
+    <td>x value</td>
+    <td>Float</td>
+    <td>arbitrary</td>
+  </tr>
+  <tr>
+    <td>Y</td>
+    <td>Y</td>
+    <td>y value</td>
+    <td>Float</td>
+    <td>arbitrary</td>
+  </tr>
+  <tr>
+    <td>Z</td>
+    <td>Z</td>
+    <td>z value</td>
+    <td>Float</td>
+    <td>arbitrary (only 3d)</td>
+  </tr>
+</table>
+<p>These values can be modified directly. The following screen displays a 3D Break Point Table in the List of Points View.</p>
+<div class="Container"><img src="images/ListofPoints.png" alt="List of Points" width="700" height="424"></div>
+<h3 id="Matrix">Matrix View (3D only)</h3>
+<p>All 3D tables are displayed in a matrix-like structure called Matrix View.</p>
+<p>The Operator can switch between the Matrix View and the Set of Points View providing the existing values of the point coordinates are supported. The Operator can switch from the Matrix View to the Set of Points View (even after the matrix has been partially populated); however, switching from the Set of Points View to the Matrix View is not possible.</p>
+<div class="Container"><img src="images/Matrix.png" alt="Matrix" width="700" height="424"></div>
+<br>
+<h2 id="ModificationBp">Modification of the Break Points</h2>
+<p>The break point list can be modified either using the Break Point menu or the context menu. The context menu is displayed by clicking 
+  the right mouse button.</p>
+<div class="Container"><img src="images/SpecMenuBpt.png" alt="Spec Menu Bpt" width="270" height="272" align="middle"></div>
+<ul>
+  <li>Add Break Point adds a break point at the current cursor position</li>
+  <li>Delete Break Point deletes a break point at the current cursor position. Pushing the down arrow button appends a new break point</li>
+  <li>Cut Break Point copies the selected rows to the clipboard and deletes them</li>
+  <li>Copy Break Point copies the selected rows to the clipboard without deleting them</li>
+  <li>Paste Break Point (Insert) inserts the content of the clipboard at the current cursor position. The following break points are moved downward</li>
+  <li>Paste Break Point (Overwrite) inserts the content of the clipboard at the current cursor position and overwrites existing data</li>
+</ul>
+<h2 id="DisplayBP">Graphical Display of a Break Point Table</h2>
+<p>The break point tables can be displayed graphically by the menu item Break Point - Display Break Point Table or using the last item of the context menu or pushing the button Display Graphics. Three dimensional break point tables are displayed as a set of curves with x as curve parameter and z as independent parameter.</p>
+<h5>2D Break Point Table</h5>
+<div class="Container"><img src="images/Bpt2d.png" alt="Bpt 2 d" width="577" height="368"></div>
+<h5>3D Break Point Table</h5>
+<div class="Container"><img src="images/Bpt3d.png" alt="Bpt 3 d" width="577" height="368"></div>
+
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

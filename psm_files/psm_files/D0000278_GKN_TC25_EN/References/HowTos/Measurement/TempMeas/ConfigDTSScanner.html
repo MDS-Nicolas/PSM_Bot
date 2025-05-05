@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>How To - Configure a DTS3250/DTS4050 Temperature Scanner</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left>
+  <h1>How To - Configure a DTS3250/DTS4050 Temperature Scanner<a href="#" onClick="window.print(); return false;"><img src="../../../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<p>This How To describes the steps required to configure a DTS3250/DTS4050 temperature scanner.</p>
+<h3>To Configure a DTS3250/DTS4050 Temperature Scanner</h3>
+<ol>
+  <li>Ensure the DTS scanner is powered down by disconnecting the power from the DTS scanner itself.</li>
+  <li>Connect a computer with a serial console program to the serial port of the DTS scanner. Refer to DTS user manual for connecting to the DTS. Any serial console program should work, examples are PuTTY.</li>
+  <li>Setup the DTS serial interface to match the configuration windows as displayed.
+    <div class="Container"><img src="images/PuttyConfig1.png" width="466" height="448" alt=""/> <img src="images/PuttyConfig2.png" width="466" height="448" alt=""/></div>
+	  <div class="Container"><img src="images/PuttyConfig3.png" width="466" height="448" alt=""/> <img src="images/PuttyConfig4.png" width="466" height="448" alt=""/></div>
+  </li>
+  <li>Open a session using the serial console software.</li>
+  <li>Apply power to the scanner by reconnecting the scanner power connector.</li>
+	<li>As the scanner begins to power up, press any key on the keyboard. The VxWorks operting system window is displayed.
+	  <div class="Container"><img src="images/VxWorks1.png" width="666" height="415" alt=""/></div>
+	  <p class="Note">If the scanner finishes the boot process, simply cycle the power to the DTS scanner to restart the process.</p>
+	</li>
+  <li>In the VxWorks operating system window, enter <strong>p</strong> and press <strong>Enter</strong>. The scanner boot settings window is displayed. Continue to press <strong>Enter</strong> to cycle through the current boot settings.
+    <div class="Container"><img src="images/VxWorks2.png" width="666" height="413" alt=""/></div>
+  </li>
+  <li>
+    Enter <strong>c</strong> and press <strong>Enter</strong>. This will cycle through each setting allowing you to change them. Press <strong>Enter</strong> if you do not want to make a change.</li>
+  <li>In the <strong>inet on ethernet</strong> setting field, type in the new IP address. 
+    <p class="Note">Do not try to delete the old address. The backspace and delete characters cause the scanner to get confused. It will look odd with the old address and the new address but once you are done it is ok.</p></li>
+  <li>Enter the gate way into the IP <strong>host inet</strong> setting field. Type the new address the same way as Step 8.</li>
+  <li>Continue to cycle through all of the setting fields until they are complete.</li>
+  <li>Enter <strong>p</strong> and press <strong>Enter</strong> to confirm the new settings. Continue to press <strong>Enter</strong> to cycle through the current boot  settings.</li>
+  <li>Type <strong>@ (Shift+2)</strong> and press <strong>Enter</strong> to reboot the scanner.</li>
+</ol>
+<h4>To Confirm and Change TCMAXSLEW with proDAS RTE</h4>
+<ol>
+  <li>Plug the Ethernet connector in the proDAS hub with a 100Base-T to hub cable typology.</li>
+  <li>From the proDAS RTE, type <strong>telnet &lt;DTSHostName&gt;</strong> and press <strong>Enter</strong>.</li>
+  <li>Press <strong>Enter</strong> to tell the scanner to listen for new commands. <p class="Note">Nothing will be displayed on the screen.</p></li>
+  <li>Type <strong>list I</strong> and press <strong>Enter</strong>. A list of parameters are displayed (see below).
+    <div class="Container"><img src="images/RTEHostCommand.png" width="502" height="381" alt=""/></div>
+  </li>
+  <li>To change the TCMAXSLEW, type <strong>set tcmaxslew 0</strong> and press <strong>Enter</strong>. <p class="Note">Nothing will be displayed on the screen but the value has changed.</p></li>
+  <li>Type <strong>save</strong> and press <strong>Enter</strong>. This saves the value to non-volatile memory.</li>
+  <li>Type <strong>reboot</strong> and press <strong>Enter</strong>. This reboots the scanner with the new value.</li>
+</ol>
+<h4>To Confirm and Change TCMAXSLEW with Putty</h4>
+<ol>
+  <li>Plug the Ethernet connector in your computer with a 100Base-T to computer cable typology.</li>
+  <li>Open a session.</li>
+  <li>Press <strong>Enter</strong> to tell the scanner to listen for new commands. <p class="Note">Nothing will be displayed on the screen.</p></li>
+  <li>Type <strong>list i&lt;cr&gt;</strong> and press <strong>Enter</strong>. A list of parameters will be displayed (see below).
+    <div class="Container"><img src="images/PuttyConfig5.png" width="667" height="413" alt=""/></div>
+  </li>
+	<li>To change the TCMAXSLEW, type <strong>set tcmaxslew 0</strong> and press <strong>Enter</strong>.
+	  <p class="Note">Nothing will be displayed on the screen but the value has changed.</p></li>
+  <li>Type <strong>save</strong> and press <strong>Enter</strong>. This saves the value to non-volatile memory.</li>
+  <li>Type <strong>reboot</strong> and press <strong>Enter</strong>. This reboots the scanner with the new value.</li>
+</ol>
+<p>&nbsp;</p>
+<!-- #EndEditable -->
+<br>
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

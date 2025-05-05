@@ -1,0 +1,16 @@
+<table class="Table-Grey">
+  <tr>
+   <th class="row-RSPLManufacturer">Manufacturer</th>
+    <th class="row-RSPLQty">Quantity</th>
+    <th class="row-RSPLPartNumber">Part Number</th>
+    <th class="row-RSPLDescription">Description</th>
+    <th class="row-RSPLLeadTime">Lead Time</th>
+  </tr>
+  <tr>
+    <td>Ballard</td>
+    <td>1</td>
+    <td>111-544</td>
+    <td>Omnibus PCI interface card to MIL-STD-1553, MIL-STD-1553 I/O</td>
+    <td>3 weeks</td>
+  </tr>
+</table>

@@ -1,0 +1,10 @@
+<table class="Table-Grey">
+  <tr>
+    <th class="row-DwgNumber">Drawing Number</th>
+    <th class="row-DwgTitle">Drawing Title</th>
+  </tr>
+  <tr>
+    <td><a href="../References/MDSDrawings/D0000495.pdf">D-0000495</a></td>
+    <td>Block Diagram GKN, Test Cell 25, Top Level</td>
+  </tr>
+</table>

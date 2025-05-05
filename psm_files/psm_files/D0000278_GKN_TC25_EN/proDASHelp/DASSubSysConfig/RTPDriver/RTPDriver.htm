@@ -1,0 +1,297 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>RTP 2000 Subsystem</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="RTPDriver">RTP 2000 Subsystem (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+
+<h2 id="Overview">Overview</h2>
+<p>The Real Time Products (RTP) Subsystem is a set of functions that proDAS uses to exchange data with an RTP chassis over a standard Transmission Control Protocol/Internet Protocol (TCP/IP) interface. The RTP chassis is a Programmable Logic Control (PLC) for monitoring engine test parameters.</p>
+<p>The driver reads and writes data for each chassis independently of the data transfer through a unique TCP/IP connection.</p>
+<p>The RTP Subsystem driver controls the communication between the RTE and the RTP chassis. The driver:</p>
+<ul>
+  <li>can interface with more than one RTP chassis</li>
+  <li>does not configure nor load any programs into the chassis</li>
+  <li>provides functions for configuration and scanning</li>
+  <li>provides an opcode for writing discrete or float channel data to the chassis</li>
+  <li>sends output channel values to the chassis only at proDAS Start Scan or when the values are updated</li>
+  <li>transfers data to the proDAS Current Value Table (CVT) at a maximum 10 Hertz scan rate</li>
+  <li>provides a calculated Heartbeat channel that periodically toggles its value</li>
+</ul>
+<p>The driver incorporates several safety features:</p>
+<ul>
+  <li>if the user sets an initial value field to a BAD value for non-zero Hz output channels, the RTP Subsystem recognizes the value as an indication of Bad Quality</li>
+  <li>the driver raises an Unified Event Log (UEL) message if a connection is broken and attempts to reconnect to the chassis</li>
+  <li>the driver raises a UEL message if there is no match between any output channel and the chassis during the configuration period. The driver is then placed off-line</li>
+  <li>the RTP Subsystem stops if any reference channel that is associated with an output channel cannot be located or linked</li>
+  <li>the RTP Subsystem identifies a channel as Bad Quality if a value of -999999.0 is received from that channel</li>
+  <li>if there is a failure in the RTP chassis between redundant CPUs, the recovery is available from the RTPL library and is controlled by a driver configuration file</li>
+</ul>
+<h2 id="ConfigRTPChannel">Configuring a RTP Channel</h2>
+<p>To configure a Real-Time Product Channel:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</li>
+  <li>Select the name of the RTP Subsystem from the list of available subsystems.
+    <div class="Container"><img src="images/SelectSubsystemName.PNG" alt="SelectSubsystemName" width="387" height="317"></div>
+  </li>
+  <br>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a>.</li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.</li>
+  <li>Set the <strong>Host Name</strong> of the RTP Chassis.</li>
+  <li>If desired, modify the <strong>Tag Name</strong>.
+    <div class="Container"><img src="images/ChannelEditor.PNG" alt="ChannelEditor" width="700" height="424"></div>
+  </li>
+</ol>
+<h2 id="ConfigFileStructure">Configuration File Structure</h2>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu"> Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import an <strong>RTP</strong> channel, see <a href="?10#XMLFileStructure"> XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import an <strong>RTP</strong> channel, see <a href="?11#TabDelimitFileStructure"> Tab-Delimited File Structure</a>.</p>
+<h3 id="XMLFileStructure">XML File Structure</h3>
+<h4 id="ChannelsXML">Channels</h4>
+<p>The channels are stored in files <em>Channels.xml</em> in the configuration directories.</p>
+<p>A RTP Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel 
+  Editor - Generic Channel Parameters - XML File Structure</a>, and the specific attributes <strong>HostName</strong> and <strong>TagName</strong>. These attributes are explained in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Host Name</td>
+    <td>HostName</td>
+    <td>HOST_NAME</td>
+    <td>The host name of the RTP chassis</td>
+    <td>String</td>
+    <td>A Name defined in the RTP Subsystem Collection</td>
+  </tr>
+  <tr>
+    <td>Tag Name</td>
+    <td>TagName</td>
+    <td>TAG_NAME</td>
+    <td>The tag name of the channel in the RTP system</td>
+    <td>String</td>
+    <td>An arbitrary case sensitive string.</td>
+  </tr>
+</table>
+<p> The structure of a Real-Time Product Channel complies with the 
+  following example:</p>
+<blockquote><code>&lt;Channels LastModificationDate=&quot;<strong>2015-06-11 11:06:32</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;<br>
+  &lt;Channel Name=&quot;RTP1&quot; <br>
+  Description=&quot;&quot; <br>
+  Enabled=&quot;true&quot; <br>
+  LastModificationDate=&quot;2015-06-11 11:06:32&quot; <br>
+  SubsystemName=&quot;ZZRTP&quot; <br>
+  SubsystemType=&quot;RTP&quot; <br>
+  AlternateName=&quot;&quot; <br>
+  DataType=&quot;Float&quot; <br>
+  InitialValue=&quot;-999999&quot; <br>
+  Format=&quot;4.2f&quot; <br>
+  UpdateRate=&quot;1&quot; <br>
+  QualityCeiling=&quot;GOOD&quot; <br>
+  Critical=&quot;false&quot; <br>
+  EngineeringUnit=&quot;-&quot; <br>
+  DisplayMin=&quot;0&quot; <br>
+  DisplayMax=&quot;100&quot; <br>
+  DeadBand=&quot;0&quot; <br>
+  Output=&quot;false&quot; <br>
+  ReferenceChannel=&quot;&quot; <br>
+  Group=&quot;&quot; <br>
+  SignalId=&quot;&quot; <br>
+  CalSensor=&quot;&quot; <br>
+  CalGroup=&quot;&quot; <br>
+  FixedSensor=&quot;&quot; <br>
+  CustomerSensor=&quot;&quot; <br>
+  FullsetStability=&quot;false&quot; <br>
+  ContinuousLog=&quot;true&quot; <br>
+  HostName=&quot;RTPHost1&quot; <br>
+  TagName=&quot;ZZTag1&quot;/&gt;<br>
+  &lt;/Channels&gt;<br>
+</code></blockquote>
+<blockquote>
+  <pre>&lt;Channels   LastModificationDate=&quot;<strong>2008-09-04   14:15:19</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Channel Name=&quot;ZZRTP1&quot;
+Description=&quot;&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2008-04-29 10:41:48&quot;
+SubsystemName=&quot;ZZRTP&quot;
+SubsystemType=&quot;RTP&quot;
+AlternateName=&quot;&quot;
+DataType=&quot;Float&quot;
+InitialValue=&quot;-999999&quot;
+Format=&quot;4.2f&quot;
+UpdateRate=&quot;1&quot;
+QualityCeiling=&quot;GOOD&quot;
+Critical=&quot;false&quot;
+EngineeringUnit=&quot;-&quot;
+DisplayMin=&quot;0&quot;
+DisplayMax=&quot;100&quot;
+DeadBand=&quot;0&quot;
+Output=&quot;false&quot;
+ReferenceChannel=&quot;&quot;
+Group=&quot;&quot;
+SignalId=&quot;&quot;
+CalSensor=&quot;&quot;
+CalGroup=&quot;&quot;
+FixedSensor=&quot;&quot;
+HostName=&quot;RTPHost1&quot;
+TagName=&quot;ZZTag1&quot; /&gt;
+&lt;/Channels&gt;</pre>
+</blockquote>
+<h4 id="SubsystemsXML">Subsystems</h4>
+<p>The subsystem definitions are stored in files Subsystems.xml in the configuration directories.</p>
+<p>A RTP Subsystem contains generic information, described in <a href="../SubsystemEditor/SubsystemEditor.htm#XMLFileStructure">Subsystem 
+  Editor - Generic Subsystem Parameters - XML File Structure</a>, and the specific attribute:</p>
+<ul>
+  <li><strong>Host names</strong></li>
+</ul>
+<p>The specific attribute <strong>Host names</strong> defines a collection of host names for the RTP.</p>
+<p>The host name is the name of the RTP chassis that contains the channels.</p>
+<p>The structure of a RTP Subsystem is shown in the following example:</p>
+<blockquote>
+  <pre>&lt;Subsystems   LastModificationDate=&quot;<strong>2008-09-04   14:13:03</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Subsystem Name=&quot;ZZRTP&quot;
+Description=&quot;&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2008-04-28 11:23:34&quot;
+Id=&quot;0&quot;
+Type=&quot;RTP&quot;
+CreationDate=&quot;2008-04-28 11:20:32&quot;&gt;
+&lt;HostNames&gt;
+&lt;HostName
+Name=&quot;RTPHost1&quot; /&gt;
+&lt;/HostNames&gt;
+&lt;/Subsystem&gt;</pre>
+</blockquote>
+<h3 id="TabDelimitFileStructure">Tab-Delimited File Structure</h3>
+<p>The RTP 2000 Subsystem channel definition includes all <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic 
+  channel definition columns</a> and the specific RTP 2000 Subsystem input parameters defined in the tab-delimited configuration file.</p>
+<p>The rules, syntax and guidelines for creating RTP 2000 Subsystem channels are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>HOST_NAME</td>
+    <td>Specifies the host name of the RTP chassis that contains this channel.</td>
+    <td>20 character alphanumeric (case sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>TAG_NAME</td>
+    <td>Specifies the tag name of the channel in the RTP system. If this field is left blank, it will default to the channel name.</td>
+    <td>30 character alphanumeric (case sensitive)</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single line of the spread sheet.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is always optional.</p></td>
+  </tr>
+</table>
+<h2 id="SSRTP">Subsystem Editor for RTP2000 Channels</h2>
+<p>To edit the RTP Subsystem, the Subsystem Editor must be selected from within the Configuration Administrator.</p>
+<p>The tool bar in the Configuration Administrator allows the various configuration editors available for proDAS to be selected.</p>
+<p>The Subsystem Editor allows new subsystems to be added to the current configuration.</p>
+<div class="Container"><img src="images/SubsystemEditor.png" alt="SubsystemEditor" width="700" height="423"></div>
+<br>
+<p><strong>To add a new subsystem:</strong></p>
+<ol>
+  <li>From the Edit menu, select <strong>Append Data Record</strong> or, in the left pane of the splitter window and then click the right mouse button and select <strong>Append Data Record </strong>from the context sensitive menu.</li>
+  <li>Selecting <strong>RTP </strong>in the dialogue box to select the type of subsystem.<br>
+    A new line in Subsystem Editor is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to <strong>RTP</strong>. The user must then assign a name and description to the subsystem.</li>
+</ol>
+<h3 id="AddNewHosts">Adding New Hosts to proDAS</h3>
+<p>To add a New Host to the <a href="RTPDriver.htm?4#SubsystemsXML">Subsystem</a>:</p>
+<ol>
+  <li>Select the <strong>HostName</strong> tab in the right hand pane of the splitter window.</li>
+  <li>From the <a href="../SubsystemEditor/SubsystemEditor.htm#MenuEdit">Subsystem Editor</a>, select <strong>Subsystem RTP/Append</strong>. A new line for a new &quot;Host name&quot; is added to the list of &quot;Host names&quot; in the subsystem.</li>
+  <li>Define the &quot;Host name&quot; (name of the chassis) in the cell.</li>
+</ol>
+<h2 id="RTEInitialiseFile">RTE Initialisation File</h2>
+<p>The RTP 2000 Subsystem is configured by the RTE, along with all the other subsystems, as a request from the Management Interface GUI. For legacy purposes, the configuration request can also be specified in the command line of the RTE.</p>
+<p>The RTE Initialisation file must, as a minimum, include the following information:</p>
+<ul>
+  <li>TCP/IP service name</li>
+  <li>UDP broadcast name</li>
+  <li>reconnect interval in seconds</li>
+  <li>communication time out in milliseconds</li>
+  <li>number of TCP/IP connection retries before failing</li>
+  <li>maximum scan rate</li>
+</ul>
+<p>A typical RTE initialisation file would include the following RTP 2000 Subsystem information:</p>
+<table width="95%" border="0" cellspacing="1" cellpadding="2">
+  <tr>
+    <td colspan="2">#--------------------------------------------------------------------------<br>
+      # RTP 2000 Subsystem<br>
+      #--------------------------------------------------------------------------</td>
+  </tr>
+  <tr>
+    <td width="19%">SS RTP_2000</td>
+    <td width="81%">TRUE</td>
+  </tr>
+  <tr>
+    <td width="19%">CI rtp_service_name</td>
+    <td width="81%">rtp_2000</td>
+  </tr>
+  <tr>
+    <td width="19%">CI rtp_broadcast_name</td>
+    <td width="81%">rtp_2000_broadcast</td>
+  </tr>
+  <tr>
+    <td width="19%">CI rtp_max_timeout</td>
+    <td width="81%">1000</td>
+  </tr>
+  <tr>
+    <td width="19%">CI rtp_max_retries</td>
+    <td width="81%">3</td>
+  </tr>
+  <tr>
+    <td width="19%">CI rtp_retry_interval</td>
+    <td width="81%">60</td>
+  </tr>
+  <tr>
+    <td width="19%" height="19">CI max_scan_rate</td>
+    <td width="81%" height="19">20</td>
+  </tr>
+</table>
+<br>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click here to see the RTE Initialisation file.</a></p>
+<br>
+<p><br>
+</p>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

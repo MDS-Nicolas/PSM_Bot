@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Calibration Data Retrieval (CDR) Utility (Option*)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left>
+  <h1 id="CDS">Calibration Data Retrieval (CDR) Utility (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" >
+</a></h1></div>
+<h2>Overview</h2>
+<p>The Calibration Data Retrieval (CDR) Utility retrieves data from the RAMS remote calibration database and exports the data into a .csv file. The data is retrieved in the form of a list of bar codes.</p>
+<p>The  CDR Utility configuration file  contains: </p>
+<ul>
+  <li>the  remote database name</li>
+  <li>the  remote login name </li>
+  <li>the  remote password </li>
+  <li>the  name of the log file</li>
+  <li>the  data directory path name </li>
+  <li>the sftp user name</li>
+</ul>
+<p>The utility accepts a barcode list in two different ways:</p>
+<ul>
+  <li>a directory path of the mapped folder on the remote server that contains the input barcode list</li>
+  <li>the secure file transfer protocol that copies the input barcode list from the remote server to the local server for processing</li>
+</ul>
+<p>The utility provides an output file in the following two formats, both of which are .csv files:</p>
+<ul>
+  <li>a sample format containing only barcodes and associated due dates</li>
+  <li>a detailed file format containing complete barcode information</li>
+</ul>
+<h5>CDR Flow Chart</h5>
+<div class="Container"><img src="images/BDCDR.png" width="850" height="427" alt=""/></div>
+
+<h2 id="CDROperation">Operation</h2>
+<p>The utility is called by entering <strong>CDRutil</strong> at the command line. The syntax is as follows:</p>
+<p><em>CDRutil&nbsp; [-v] &lt;URL&gt;  || &lt;[dirpath] input file&gt; [&lt;URL&gt;]  || [&lt;[dirpath] output file name&gt;]</em></p>
+<table class="Table-Grey">
+  <tbody>
+    <tr>
+      <th>Syntax Item</th>
+      <th>Description</th>
+    </tr>
+    <tr>
+      <td><em>[-v]</em></td>
+      <td>If defined along with an output file name, the output file contains two additional fields: revision date and certificate number.</td>
+    </tr>
+    <tr>
+      <td><em>URL</em></td>
+      <td>The URL contains the remote server address and a directory path.<br>
+        <br>
+        If the URL is defined:
+        <ul>
+          <li>the secure file transfer protocol (SFTP) uses the URL parameter to transfer the input file from the remote server</li>
+          <li>the URL is used to transfer the output file(s) to the remote server </li>
+        </ul>
+      The URL must be in the following format:<br>
+      <em>sftp://&lt;username@&gt;hostname/directory  Path/filename&gt; </em><br>
+      </td>
+    </tr>
+    <tr>
+      <td><em>&lt;[dirpath] input file&gt;</em></td>
+      <td>The directory path and name of the input file, which contains a list of barcodes.<br></td>
+    </tr>
+    <tr>
+      <td><em>&lt;[dirpath] output file name&gt;</em></td>
+      <td>The directory path and name of the output file. The output file name is an optional input.</td>
+    </tr>
+  </tbody>
+</table>
+<p class="Note">It is the responsibility of the operator to ensure there is enough disk space available for the output files prior to operation. The CDR utility does not verify available disk space, and aborts the process if there is not enough disk space to write the output data file.</p>
+<h3>Processing</h3>
+<p>When the syntax is entered in the command line, the CDR utility creates a list of barcodes that are to be processed.</p>
+<p>The utility only processes barcodes for which a valid calibration certificate exists. The calibration must be flagged as most recent and active for the barcode to be considered valid. An invalid or duplicate barcode is ignored by the utility and is written to a log file.</p>
+<p>Each time a barcode has been processed, a trace message is written to the log file.</p>
+<p>If only the input filename is specified on the command line (and not the output file name), the CDR utility prepares complete calibration data in the existing defined export file formats of the RAMS Sensor Calibration GUI. A separate data file is created for each barcode found in the input file. Each calibration data file is named <strong>inputfilename_barcode.csv</strong>, where <strong>barcode</strong> represents the sensor barcode name. If  the input file does not contain a list of bar codes, an error warning is displayed.</p>
+<p> If  a directory path is included in the file name, the utility searches for the  output file in the included directory path. Otherwise, it will consider the default data path name from the configuration file and search for the input file in the default data directory path.</p>
+<p>If the URL is defined in the command line, then the <strong>inputfilename_barcode.csv</strong> is copied to the remote server using SFTP; if the URL is not defined, the input file is written to the directory path defined as part of the input file name, or, if no directory path is included in the file name, to the default data directory from the configuration file is considered<strong></strong>.</p>
+<p>If both an input filename and an output filename are specified on the command line, the CDR utility prepares a file containing the calibration due dates of the sensor barcodes defined in the input file. If the URL is defined in the command line, then the <strong>outputfilename.csv</strong> is copied to the remote server using SFTP; if the URL is not defined, the output file is written to the directory path defined as part of the output file name, or, if no directory path is included in the file name, to the default data directory from the configuration file is considered<strong></strong>.</p>
+<h3>Output File</h3>
+<p>The output file is a .csv file format and includes up to three data fields:</p>
+<ul>
+  <li>the first data field represents the barcode specified in the input file</li>
+  <li>the second data field represents the calibration due date for the sensor in the format <em>dd</em>/<em>mm</em>/<em>yyyy</em></li>
+  <li>the third data field shows any applicable associated barcodes (i.e. child sensors) and their associated calibration date</li>
+</ul>
+<p class="Note">If -v defined along with an output file  name, the output file contains two additional fields: revision date and certificate number. If the URL option is defined in the command line, the output file contains two additional fields (input unit name and output unit name). </p>
+<p>Invalid or duplicate barcodes are not included in the output file.</p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>
+

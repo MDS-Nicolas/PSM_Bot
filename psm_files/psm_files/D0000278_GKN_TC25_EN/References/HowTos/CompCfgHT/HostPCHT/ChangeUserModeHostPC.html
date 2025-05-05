@@ -1,0 +1,58 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>How To &ndash; Change the User Mode</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left>
+  <h1>How To &ndash; Change the User Mode<a href="#" onClick="window.print(); return false;"><img src="../../../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<p>This <strong>How To</strong> provides the steps required to change the user mode to Multi-User Mode and Single User Mode.</p>
+<h2>To  Change to  Multi-User Mode</h2>
+
+<ol>
+  <li>Log in to the System Console as <strong>root</strong>. </li>
+  <li> Enter the <strong>who</strong> command to see if other users are logged in to the operating system. </li>
+  <li> Notify the other users that the system will be shutting down by entering the <strong>wall</strong> command, and then enter a notification message.</li>
+  <li> Press <strong>Ctrl-d</strong> to send the message.</li>
+  <li> Enter <strong>/sbin/telinit -t 600 5</strong>, where:
+    <ul>
+      <li><strong>-t</strong> indicates the waiting duration before processing the command </li>
+      <li> <strong>600</strong> is the grace period in seconds to allow users to log out</li>
+      <li><strong>5</strong> indicates multi-user mode with X11</li>
+    </ul></li> 
+  <p>After the grace period elapses, the system displays a message to show the change to X11 multi-user mode. The Host Computer then changes to multi-user mode.</p>
+</ol>
+<h2>To Change to Single-User Mode</h2>
+<ol>
+  <li>Log in to the System Console as <strong>root</strong>.</li>
+  <li> Enter the <strong>who</strong> command to see if other users are logged in to the operating system. </li>
+  <li> Notify the other users that the system will be shutting down by  entering the <strong>wall</strong> command, and then enter a notification message.</li>
+  <li>Press <strong>Ctrl-d</strong> to send the message.</li>
+  <li>Enter <strong>/sbin/telinit -t 600 1</strong>, where:
+    <ul>
+      <li><strong>-t</strong> indicates the waiting duration before processing the command</li>
+      <li><strong>600</strong> is the grace period in seconds to allow users to log out</li>
+      <li><strong>1</strong> indicates single-user mode</li>
+    </ul> 
+	  <p>After the grace period elapses, the system displays a message to show the change to single-user mode. The Host Computer then changes to single-user mode.</p></li>
+</ol>      
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

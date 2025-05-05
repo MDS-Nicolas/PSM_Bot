@@ -1,0 +1,1168 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Management GUI</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="MGTGUI">Management GUI <a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" >
+</a><div float:right></div></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The Management GUI is the main interface between the user and the proDAS system, providing a user-friendly interface to control all aspects of the testing process. From the Management GUI, the Real-Time Engine (RTE) can be configured in either acquisition mode or replay mode. The Management GUI also controls access to all other components of proDAS, such as the configuration and calibration tools.</p>
+<p class="Note">The Management GUI automatically resets to acquisition mode when it is closed while in replay mode or when proDAS restarts.</p>
+<p>When started, the Management GUI connects to the RTE. Anytime a connection to the RTE is established, a configurable start-up script is launched. This script starts the Unified Event Log (UEL) Display. The Management GUI Control Panel is also displayed. It is from this panel that the user is able to configure proDAS.</p>
+<p>When the user first logs into the system, prior to the configuration of the RTE, the Management GUI allows the user to:</p>
+<ul>
+  <li>configure proDAS</li>
+  <li>edit the configuration data</li>
+  <li>edit the User Administration settings</li>
+  <li>exit proDAS</li>
+  <li>run post processing software</li>
+</ul>
+<p>When the RTE is configured but not scanning, the Management GUI allows the user to:</p>
+<ul>
+  <li>edit the configuration data</li>
+  <li>start the RTE Scanning</li>
+  <li>run post processing software</li>
+  <li>edit the User Administration settings</li>
+  <li>exit proDAS</li>
+</ul>
+<p class="Note">The RTE will not fully initialise if there is less than the defined amount of disk space available (the defined amount is 250 MB). If less than 250 MB of space is available when the RTE is initialised, a UEL warning message is displayed and the RTE does not fully initialise. The system also checks every five minutes (default) whether there is enough disc space. If there is not, a warning is displayed in the UEL. This automatic checking feature can be disabled in the proDAS initialisation file.</p>
+<p>After the RTE is scanning, the Management GUI  allows the user to:</p>
+<ul>
+  <li>edit the configuration data</li>
+  <li>open the Test Page
+  </li><li>run post processing software</li>
+  <li>run other proDAS Tools and Utilities</li>
+  <li>run pre-run checks and calibration functions</li>
+  <li>stop the RTE from scanning</li>
+  <li>edit the User Administration settings</li>
+  <li>access the Test Information Page</li>
+  <li>exit proDAS  </li>
+</ul>
+<p class="Note">The RTE can support a maximum of 50 hardware subsystems and a total of 64 subsystems.</p>
+
+<h2 id="StartMGTGUI">Starting the Management GUI</h2>
+<p>To start the Management GUI:</p>
+<ol>
+  <li>Double-click the Management GUI icon.<br>
+    The Login window is displayed. <br>
+    <img src="images/Login.gif" width="404" height="276" alt="Login"><br>
+  </li>
+  <li>Enter a valid Username and Password.<br>
+    <p class="Note">The password is case sensitive.</p>
+  </li>
+  <li>Select <strong>Login</strong>.<br>
+    The Management GUI is started and the Management GUI Control Panel is displayed. <br>
+    <img src="images/MGTControlPanelBlank.gif" width="744" height="395" alt="MGT Control Panel"><br>
+  </li>
+</ol>
+
+<h2 id="ControlPanel">Management GUI Control Panel</h2>
+<p>The Management GUI Control Panel (below) comprises the following graphical elements:</p>
+<ul>
+  <li>pull-down menus</li>
+  <li>buttons</li>
+  <li>message window</li>
+  <li>status bar</li>
+</ul>
+<div class="Container"><img src="images/MGTControlPanelBlank.gif" width="744" height="395" alt="MGT Control Panel"></div>
+<p>The main functions of the Management GUI Control Panel are accessed and viewed by the following menus, fields and buttons:</p>
+<ul>
+  <li><a href="?2#MenuFile">File</a></li>
+  <li><a href="?3#MenuRTE">RTE</a></li>
+  <li><a href="?4#MenuTools">Tools</a></li>
+  <li><a href="?6#MenuHelp">Help</a></li>
+  <li><a href="?7#Buttons">Buttons and Fields</a></li>
+  <li><a href="?8#MessageWindow">Message Window</a></li>
+  <li><a href="?9#StatusBar">Status Bar</a></li>
+</ul>
+<h3 id="MenuFile">File</h3>
+<p>The <strong>File</strong> menu (below) is described in the following table.</p>
+<div class="Container"><img src="images/File.gif" width="216" height="92" alt="File Menu"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Exit proDAS</td>
+    <td>Exiting proDAS performs the function of de-configuring proDAS and stopping the Management GUI.<br>
+      <p class="Note">If the RTE is scanning, the Management GUI executes a Stop Scan prior to exiting the RTE.</p>
+      <p class="Note">Whenever the Management GUI commands the RTE to exit, a configurable stop script is launched to stop the UEL Display.</p></td>
+  </tr>
+  <tr>
+    <td>De-configure proDAS</td>
+    <td>De-configuring proDAS stops the current test and allow the user to re-configure by exiting the RTE.
+      <p class="Note">If the RTE is scanning, the Management GUI executes a Stop Scan prior to exiting the RTE.</p>
+      <p class="Note">Whenever the Management GUI commands the RTE to exit, a configurable stop script is launched to stop the UEL Display.</p></td>
+  </tr>
+  <tr>
+    <td>Exit Management GUI</td>
+    <td>Exiting the Management GUI exits the Management GUI Control Panel but it does not affect the state of the RTE (i.e.: if the RTE was scanning data, it continues to scan data).</td>
+  </tr>
+</table>
+<h3 id="MenuRTE">RTE</h3>
+<p>The <strong>RTE</strong> menu (below) is described in the following table.</p>
+<div class="Container"><img src="images/RTE.gif" width="231" height="114" alt="RTE Menu"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Apply Configuration</td>
+    <td><p class="Note">If &quot;ApplyConfigurationScript&quot; is defined in the MgtGUI.ini file the script is launched prior to beginning the RTE configuration process.<br>
+      <br>
+      If the item is not present in the INI file, or the specified script file does not exist, the script is ignored and the Management GUI begins the RTE configuration process.</p>
+      Begins the RTE configuration process.
+      <p class="Note">proDAS automatically begins scanning when configuration has been completed.</p>
+      <p class="Note">A standard configurable auto calibration process is available to verify the VXI hardware's integrity prior to an engine run. The Management GUI Initialisation File enables/disables this feature.<br>
+        <br>
+        If auto calibration is enabled, selecting either Start Scan or Apply displays a confirmation window (below) prompting the operator to calibrate the VXI cards.<br>
+        <br>
+        <img src="images/CalibrateVXIcards.gif" width="347" height="171" alt="Calibrate VXI Cards"><br>
+        <br>
+        If Yes is selected, a calibration command is sent to identify all cards. A UEL message is then written on the results of the calibration for each card. A yellow box UEL message is displayed if any card calibration fails. The calibration time can be quite lengthy depending on the number of cards to be calibrated.</p>
+      <p class="Note">A standard configurable auto calibration process is available to verify the VEXA Subsystem prior to an engine run. The Management GUI Initialisation File enables/disables this feature.<br>
+        <br>
+        If auto calibration is enabled, selecting either Start Scan or Apply displays a confirmation window  prompting the operator to calibrate the VEXA Subsystem.<br>
+        <br>
+        The calibration time can be quite lengthy depending on the subsystem settings.</p>
+      <p class="Note">During configuration, a UEL message is generated for each expired sensor or any sensor about to expire.</p></td>
+  </tr>
+  <tr>
+    <td>Start Scan</td>
+    <td>The RTE begins collecting data. As well, it launches a configurable start scan script. This script launches items such as the Real-Time Displays and Alarm Summary Window. The scan rates being downloaded from the RTE should begin with 0 Hz and follow with the fastest scan rate to the slowest scan rate.
+      <p class="Note">Start Scan is only available when the RTE is configured but not scanning.</p></td>
+  </tr>
+  <tr>
+    <td>Stop Scan</td>
+    <td>Stops the RTE from collecting data. As well, it launches a configurable stop scan script. This script terminates items such as the Real-Time Displays and Alarm Summary Window.
+      <p class="Note">When in replay mode, the Stop Scan script is called prior to sending the exit command to the RTE.</p>
+      <p class="Note">Stop Scan is only available when the RTE is configured and scanning.</p></td>
+  </tr>
+  <tr>
+    <td>Test Page</td>
+    <td>Displays the <a href="?10#TestEnginePage">Test Page</a>. The Test Page allows the user to perform test functions such as Engine Test procedures.</td>
+  </tr>
+</table>
+<h3 id="MenuTools">Tools</h3>
+<p>The <strong>Tools</strong> menu (below) is described in the following table.</p>
+<div class="Container"><img src="images/Tools.gif" width="283" height="261" alt="Tool Menu"></div>
+<p class="Note">The Tools menu is configurable. Additional items may be added under  Pre Test Functions, Post Test Functions, Configuration Editors, Custom Tools and Test Information Page.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Change Password</td>
+    <td>Changes the proDAS user passwords.
+      <div class="Container"><img src="images/ChangePassword.gif" width="404" height="279" alt="Change Password"></div></td>
+  </tr>
+  <tr>
+    <td>Security Settings</td>
+    <td>Allows the user to change security settings for the Management GUI (i.e.: only letting a user with access level 4  modify a channel limit). For more information, see <a href="?11#SecuritySettings">Security Settings</a>.</td>
+  </tr>
+  <tr>
+    <td>Shift Change</td>
+    <td>The shift change feature allows the operators to change shifts &quot;on the fly&quot; during an engine run.</td>
+  </tr>
+  <tr>
+    <td>Comment Editor</td>
+    <td>Opens the Comment Editor allowing the user to add, delete or edit predefined test comments. For more information see, <a href="?12#CommentEditor">Comment Editor</a>.</td>
+  </tr>
+  <tr>
+    <td>Pre Test Functions</td>
+    <td>This menu is configurable and allows the user to access items such as Thermocouple Zero (OTD Zero) or PBS Panel. For more information see, <a href="../../CustomApps/InstrumentControls/InstrumentControls.htm#PreTest">Instrument Controls</a>.</td>
+  </tr>
+  <tr>
+    <td>Post Test Functions</td>
+    <td>This menu is configurable and allows the user to access items such as RAVE or TOCEUM. For more information see, <a href="../../CustomApps/InstrumentControls/InstrumentControls.htm#PostTest">Instrument Controls</a>.</td>
+  </tr>
+  <tr>
+    <td>Configuration Editors</td>
+    <td>This menu is configurable and allows the user to access items such as Configuration Administrator or Subsystem Editor.</td>
+  </tr>
+  <tr>
+    <td>Custom Tools</td>
+    <td>This menu is configurable and allows the user to access items such as the Windows calculator and the <strong>View Log</strong> feature. The <strong>View Log</strong> option from the Test Page Tools menu allows for viewing of the MgtGUI trace file.</td>
+  </tr>
+  <tr>
+    <td>Test Information Page</td>
+    <td>Displays the Test Information Page allowing the user to modify information and save the new data.</td>
+  </tr>
+  <tr>
+    <td>Channel Config Change</td>
+    <td>Launches the RT Channel Configuration Change panel. For details, see <a href="MGTGUI.htm?#ChanConfigChange">RT Channel Configuration Change</a>.</td>
+  </tr>
+</table>
+<h3 id="MenuHelp">Help</h3>
+<p>The <strong>Help</strong> menu (below) is described in the following table.</p>
+<div class="Container"><img src="images/Help.gif" width="329" height="100" alt="Help"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Getting Started</td>
+    <td>Opens the first page of the proDAS Integrated Help.</td>
+  </tr>
+  <tr>
+    <td>Topic</td>
+    <td>Contains all specific help topics referring to the Management GUI.</td>
+  </tr>
+  <tr>
+    <td>About MGT GUI</td>
+    <td>Displays information about the Management GUI, comprising the name, version number, and copyright. Clicking the Copyright hyperlink opens the client's proDAS license information.
+      <p class="TableNote">The licence information can be accessed from the About page on any proDAS application.</p>
+      <div class="Container"><img src="images/AboutMGTGUI.gif" width="404" height="276" alt="About MGT GUI"></div></td>
+  </tr>
+</table>
+<h3 id="Buttons">Buttons and Fields</h3>
+<p>The Management GUI Control Panel (below) main buttons and fields are described in the following table.</p>
+<div class="Container"><img src="images/MGTGUIscanning.gif" width="734" height="385" alt="MGT GUI Scanning"></div>
+<p class="Note">When started, the Management GUI Control Panel defaults to displaying the most recent test and configuration data.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Button or Field</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><img src="images/BtnStartScan.gif" width="114" height="28" alt="Button Start Scan"></td>
+    <td>When Start Scan is selected, the RTE begins collecting data. As well, it launches a configurable start scan script. This script launches items such as the Real-Time Displays and Alarm Summary Window.
+      <p class="Note">Start Scan is only available when the RTE is configured but not scanning.</p>
+      <p class="Note">A standard configurable auto calibration process is available to verify the VXI hardware's integrity prior to an engine run. The Management GUI Initialisation File enables/disables this feature.<br>
+        <br>
+        If auto calibration is enabled, selecting either Start Scan or Apply displays a confirmation window (below) prompting the operator to calibrate the VXI cards.
+      <div class="Container"><img src="images/CalibrateVXIcards.gif" width="347" height="171" alt="Calibrate VXI Cards"></div>
+      If Yes is selected, a calibration command is sent to identify all cards. A UEL message is then written on the results of the calibration for each card. A yellow box UEL message is displayed if any card calibration fails. The calibration time can be quite lengthy depending on the number of cards to be calibrated.
+      </p></td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnStopScan.gif" width="114" height="28" alt="Button Stop Scan"></td>
+    <td>Stops the RTE from collecting data. As well, it launches a configurable stop scan script. This script terminates items such as the Real-Time Displays and Alarm Summary Window.
+      <p class="Note">When in replay mode, the Stop Scan script is called prior to sending the exit command to the RTE.</p>
+      <p class="Note">Stop Scan is only available when the RTE is configured and scanning.</p></td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnTestEngine.gif" width="114" height="28" alt="Button Test Engine"></td>
+    <td>Displays the <a href="?13#TestEnginePage">Test Page</a>. The Test Page allows the user to perform test functions such as Engine Test procedures.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnExitproDAS.gif" width="114" height="28" alt="Button exit proDAS"></td>
+    <td>Exiting proDAS performs the function of de-configuring proDAS and stopping the Management GUI.
+      <p class="Note">If the RTE is scanning, the Management GUI executes a Stop Scan prior to exiting the RTE.</p>
+      <p class="Note">Whenever the Management GUI commands the RTE to exit, a configurable stop script is launched to stop the UEL Display.</p></td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnAcquisition.gif" width="114" height="28" alt="Button Acquisition"> <img src="images/BtnReplay.gif" width="114" height="28" alt="Button Replay"></td>
+    <td>One of these toggle buttons must be selected prior to configuration. These buttons indicate to the RTE whether it is to configure in Acquisition mode (runtime) or Replay mode.<br>
+      <br>
+      If Replay is selected, the Start Scan and Stop Scan buttons are disabled and the Replay Control GUI is launched when the configuration is downloaded. For more information, see <a href="../../StandardTools/Replay/Replay.html">Replay Control</a>.
+      <p class="Note">The button displayed in &quot;blue&quot; is the selected button.</p></td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnApply.gif" width="114" height="28" alt="Button Apply"></td>
+    <td>Begins the  configuration process. Apply is disabled until all required fields on the Management GUI Control Panel have been completed.<br>
+      <p class="Note">proDAS automatically begins scanning when configuration has been completed.</p>
+      <p class="Note">A standard configurable auto calibration process is available to verify the VXI hardware's integrity prior to an engine run. The Management GUI Initialisation File enables/disables this feature.<br>
+        <br>
+        If auto calibration is enabled, selecting either Start Scan or Apply displays a confirmation window (below) prompting the operator to calibrate the VXI cards.<br>
+        <br>
+        <img src="images/CalibrateVXIcards.gif" width="347" height="171" alt="Calibrate VXI Cards"><br>
+        <br>
+        If Yes is selected, a calibration command is sent to identify all cards. A UEL message is then written on the results of the calibration for each card. A yellow box UEL message is displayed if any card calibration fails. The calibration time can be quite lengthy depending on the number of cards to be calibrated.</p>
+      <p class="Note">During configuration, a UEL message is generated for each expired sensor or any sensor about to expire.</p>
+      <p class="Note">When the Apply button is selected, a copy of the configuration is automatically saved to the SVN repository if the configuration management is enabled and changes have not been committed through the Configuration Administrator.</p></td>
+  </tr>
+  <tr>
+    <td><img src="images/Pin1.gif" width="21" height="21" alt="Pin 1"> <img src="images/Pin2.gif" width="21" height="21" alt="Pin 2"></td>
+    <td>A toggle button which indicates to the user where to begin selecting the configuration. The button pointing down indicates the starting point for the selection process (i.e.: if the thumbtack next to the Master Configuration is pointing down, the user starts by selecting the desired Master Configuration).</td>
+  </tr>
+  <tr>
+    <td>Test Name</td>
+    <td>Contains a list of all tests in the <a href="../../StandardTools/TRSCDB/TRSCDB.htm">Test Results and Sensor Calibration Database (TRSCDB)</a> which have not been archived plus an additional entry for a new test. The test names are displayed along with their test date and ordered chronologically, with the most recent test at the top.<br>
+      <br>
+      <strong>New Test</strong> is also available in the Test Name drop-down list and is used when creating a new test.<br>
+      <br>
+      <p class="Note">Only letters a to z (lower and upper case), numbers 0 to 9, underscore, and period can be used in test names (e.g.: Tb_G.5).</p>
+      <p class="Note">The New Test Dialogue box is configurable. The user has the option to enable/disable the Engine Build No. field through an INI parameter.</p>
+      <p> Regular expressions are used to validate the Engine Serial Number, Test Name and Build Number provided additional parameters (see [NewTestRules] sample below) are set in the ManagementGUI.ini file. </p>
+      <blockquote> [NewTestRules]<br>
+        TestName=\d{6}\z<br>
+        TestNameErrorMessage=The test name should be a 6 digits number<br>
+        <br>
+        SerialNumber=\A[a-zA-Z]*\z<br>
+        SerialNumberErrorMessage=Only alpha characters<br>
+        <br>
+        BuildNumber=\d{3}\z<br>
+        BuildNumberErrorMessage=3 digits number </blockquote>
+      <p>When New Test is selected, A New Test Info window is displayed (below). Once the Test Name, Engine Serial No., and Engine Build No. have been entered the Apply button is enabled. If the information entered doesn't conform to the NewTestRules section of the ManagementGUI.ini file then a tip message will warn the user to input data correctly.<br>
+        <br>
+        <img src="images/NewTestInfo.gif" width="343" height="276" alt="New Test Info"></p></td>
+  </tr>
+  <tr>
+    <td>Test Cell</td>
+    <td>Contains a list of all test cells defined in the <a href="../../StandardTools/TRSCDB/TRSCDB.htm">Test Results and Sensor Calibration Database (TRSCDB)</a>.</td>
+  </tr>
+  <tr>
+    <td>Engine Type</td>
+    <td>Contains a list of all engine types available in the selected test cell in the configuration database.</td>
+  </tr>
+  <tr>
+    <td>Engine Standard</td>
+    <td>Contains a list of all engine standards defined for the selected engine type in the configuration database.</td>
+  </tr>
+  <tr>
+    <td>Customer</td>
+    <td>Contains a list of all customers defined for the selected engine standard and engine type in the configuration database.</td>
+  </tr>
+  <tr>
+    <td>Configuration</td>
+    <td>Contains a list of all configurations defined for the selected customer, engine standard, engine type and test cell in the configuration database.<br>
+      <br>
+      <p class="Note">For each configuration, the configuration id and the first 40 characters of the description are displayed.</p></td>
+  </tr>
+  <tr>
+    <td><img src="images/CloseIcon.gif" width="31" height="17" alt="Close Icon"></td>
+    <td>Allows the user to both exit the RTE and exit the Management GUI at the same time.<br>
+      <p class="Note">If the RTE is scanning, the Management GUI executes a Stop Scan prior to exiting the RTE.</p>
+      <p class="Note">Whenever the Management GUI commands the RTE to exit, a configurable stop script is launched to stop the UEL Display.</p></td>
+  </tr>
+</table>
+<p>When selecting a configuration, if there is only one option the Management GUI will default to this option. It is only after all drop-down fields contain a valid entry that the configuration is applied to the RTE. </p>
+<p>When the user selects Apply, the Management GUI  sets the selected configuration as the Current Configuration. When this occurs a consistency check is done on the configuration. This consistency check performs checks such as ensuring channel and hardware definitions match what is listed in the Subsystem Editor. If the configuration fails the consistency check, the Management GUI notifies the user that the configuration is inconsistent. If the configuration is successfully made Current, and if the test name selected was a new test, a dialogue box is displayed prompting for the test name, the engine serial number and the engine build number.</p>
+<p class="Note">If the test name entered is not unique, it is rejected by the <a href="../../StandardTools/TRSCDB/TRSCDB.htm">Test Results and Sensor Calibration Database (TRSCDB)</a>.</p>
+<p>In the case of a new test, the engine serial number, engine build number and test name is written to the database prior to sending the configuration command. After the selected configuration is set as Current and the Test Header table data has been updated, the Management GUI sends the command to configure the RTE.</p>
+<p>The Management GUI displays a  Test Information Page to the user while the RTE is configuring.</p>
+<p class="Note">If a customer specific Test Information Page is not available, the default Test Information Page is displayed.</p>
+<p>This happens regardless of whether the test is a new test or an existing test. Once the RTE is successfully configured the Management GUI  sets the configuration as the Default Configuration and starts the RTE scanning. If in replay mode, the Management GUI  starts the Replay Control GUI.</p>
+<h3 id="MessageWindow">Message Window</h3>
+<p>The Message Window (below) displays the current RTE status.</p>
+<div class="Container"><img src="images/MessageWindow.gif" width="411" height="46" alt="Message Window"></div>
+<p class="Note">The information in the Message Window is not accessible by the user.</p>
+<h3 id="StatusBar">Status Bar </h3>
+<p>The Status Bar (below) displays the following:</p>
+<ul>
+  <li>time</li>
+  <li>current activity of the Management GUI</li>
+  <li>user and access level</li>
+</ul>
+<div class="Container"><img src="images/StatusBar.gif" width="700" height="25" alt="Status bar"></div>
+<p class="Note">The information in the Status Bar is not accessible by the user.</p>
+<h2 id="TestInfoPage">Test Information Page</h2>
+<p>The Test Information Page (below) is used to store test specific information such as the engine serial number, build number, engine type, engine standard, test cell and test name to the <a href="../../StandardTools/TRSCDB/TRSCDB.htm">Test Results and Sensor Calibration Database (TRSCDB)</a>. It also has the ability to write values to settable channels which can be used for defining the engine model being tested. The Test Information Page is automatically displayed under the following two conditions:</p>
+<ul>
+  <li>if the Management GUI is started after the RTE has already been configured</li>
+  <li>when the Management GUI Control Panel Apply button is selected</li>
+</ul>
+<p>From the Management GUI Control Panel, the Test Information Page can be manually accessed by the Tools pull-down menu.</p>
+<p class="Note">All editable fields in the Test Information Page support non-English characters. The length of the comments in each field is limited to the settings defined in the database.</p>
+<div class="Container"><img src="images/TestInfoPage.gif" width="700" height="555" alt="Test Info Page"></div>
+<h3>Default Test Information Page</h3>
+<p>If a customer specific Test Information Page is not available the Management GUI displays a default Test Information Page (above). The default Test Information Page:</p>
+<ul>
+  <li>when displayed, is populated with any existing data for the current test</li>
+  <li>allows the user to directly update the test information contained in the Test Header table of the <a href="../../StandardTools/TRSCDB/TRSCDB.htm">Test Results and Sensor Calibration Database (TRSCDB)</a>, except for customer, engine serial number, build number, engine type, engine standard, test cell, configuration and test name</li>
+  <li>will not update the Customer Specific Table</li>
+  <li>will not set channels in the CVT (maintained only by customer specific Test Information Pages)</li>
+  <li>allows the user to set/reset the Test Completed flag</li>
+  <li>allows the user to reset all fields to the original data which existed for the current test</li>
+  <li>is displayed if a customer specific Test Information Page returns an error</li>
+  <li>allows the user to apply the information entered by the user</li>
+</ul>
+<p class="Note">When the Abort button on the default Test Information Page is pressed, the user cannot close the Test Information Page until the RTE configuration is fully aborted.</p>
+<h3>Customer Specific Test Information Page</h3>
+<p>If a customer specific Test Information Page is available, the Management GUI ensures that it is displayed and passes to it any required information. The customer specific Test Information Page:</p>
+<ul>
+  <li>(in the case of a new test) is populated with the data from the last existing test with the same engine serial number</li>
+  <li>stores any changes to the test information to the <a href="../../StandardTools/TRSCDB/TRSCDB.htm">Test Results and Sensor Calibration Database (TRSCDB)</a> in the test header and customer specific tables</li>
+  <li>logs any changes to the test information to the Event Table in the <a href="../../StandardTools/TRSCDB/TRSCDB.htm">Test Results and Sensor Calibration Database (TRSCDB)</a></li>
+  <li>allows the user to set channels in the CVT</li>
+  <li>allows the user to apply the information entered by the user</li>
+</ul>
+<p class="Note">Please refer to the &quot;Home&quot; section of the PSM for details on your current Test Information Page.</p>
+<h2 id="TestEnginePage">Test Page</h2>
+<p>The Test Page (below) controls the progress of test procedures and collects and displays engine test data. The Test Page is accessed by selecting the Test Page button from the Management GUI Control Panel.</p>
+<p class="Note">If there are any errors or warnings when accessing the Test Page, a message box will be displayed.</p>
+<p class="Note">If the HSV log is running in continuous mode, a Save HSV Log button will be displayed under the Save Critical Log button.</p>
+<p class="Note">It is not possible to set NaN (special value for real channels and variables) to a channel from the Test Page. For more information, see <a href="../../DASConfigTools/UserFunctions/UFLanguage.htm">Data Types and Assignments</a>.</p>
+<div class="Container"><img src="images/TestEnginePage.gif" width="700" height="503" alt="Test Engine Page"></div>
+<p>The Test Page allows the user to:</p>
+<ul>
+  <li>record fullset data</li>
+  <li>start and stop transient log recording</li>
+  <li>save the Critical Log and/or the High Speed Log</li>
+  <li>manually Set Channel values and quality settings</li>
+  <li>manually alter the limits defined in the RTE</li>
+  <li>start and stop dynamic manoeuvres and change the DDS test definition in use</li>
+  <li>start and stop a manual stop watch</li>
+  <li>run and control predefined engine test procedures</li>
+  <li>store comments to the TRSCDB, test procedure result window, or the UEL</li>
+  <li>edit the list of predefined comments</li>
+  <li>run other proDAS Tools and Utilities</li>
+  <li>run pre-run checks and calibration functions</li>
+  <li>run post processing software</li>
+  <li>access the Test Information Page</li>
+  <li>exit the Test Page </li>
+</ul>
+<p>The Test Page consists of the following main elements:</p>
+<ul>
+  <li><a href="?14#Logs">Logs Panel</a></li>
+  <li><a href="?15#Fullset">Fullset Panel</a></li>
+  <li><a href="?16#Comments">Comments Panel</a></li>
+  <li> <a href="?17#SetChannel"> Set Channel Panel</a></li>
+  <li><a href="?18#SetChannelLimits">Set Channel Limits Panel</a></li>
+  <li><a href="?19#DDScontrol">DDS Control Panel</a></li>
+  <li><a href="?20#Timer">Timer Panel</a></li>
+  <li><a href="?21#TestProcedures">Test Procedures Window</a></li>
+  <li><a href="?22#Results">Test Results Window</a></li>
+  <li><a href="?30#Diary">Test Diary Window </a></li>
+</ul>
+<h3 id="Logs">Logs Panel</h3>
+<p>The Logs Panel allows the user to start and stop logs as well as displays a list of logs that are currently running. The Logs Panel (below) is described in the following table.</p>
+<div class="Container"><img src="images/PnlLogs.gif" width="630" height="196" alt="Panel logs"></div>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="2" rowspan="1">Logs Panel</th>
+  </tr>
+  <tr>
+    <th>Button and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td>Refresh</td>
+    <td>Refreshes the Logs Panel. Refresh is used if a new log has been added or an existing log's name has been modified.</td>
+  </tr>
+  <tr>
+    <td>Log Definitions</td>
+    <td>List of available transient logs. These logs are defined in the <a href="../../DASConfigTools/TransLogDefnEditor/TransLogDefnEditor.htm">Transient Log Editor</a>.</td>
+  </tr>
+  <tr>
+    <td>Test Step</td>
+    <td>A drop-down list containing all predefined fullset test steps from the initialisation file. It may also contain auto-increment if the initialisation file has been configured for this feature.</td>
+  </tr>
+  <tr>
+    <td>Comments</td>
+    <td>A drop-down list containing all available predefined comments.</td>
+  </tr>
+  <tr>
+    <td>Running Logs</td>
+    <td>Displays a list of the transient logs currently running in proDAS.</td>
+  </tr>
+  <tr>
+    <td>Comments (0/80 characters)</td>
+    <td>Displays the selected comment from the Comments drop-down list. The selected comment can  be modified prior to starting the log or a new comment can be entered.
+      <p class="Note">Comments are limited to a maximum of 80 characters.</p>
+      <p class="Note">A spell-check feature can be accessed by right-clicking in the comment box.</p>
+      <p class="Note">This field supports non-English characters.</p>
+      <p class="Note">If a comma (&quot;,&quot;) is used in a comment, it is represented in the Test Diary, UEL Display, and Database Tables (Event_Comment) as a vertical bar (&quot;|&quot;).</p>
+      <p class="Note">The comment field does not support multi-line comments.</p></td>
+  </tr>
+  <tr>
+    <td>Right Arrow</td>
+    <td>Clicking on the right arrow starts the selected (highlighted) log in the Log Definitions window and displays the selected log in the Running Logs window.
+      <p class="Note">Double-clicking a log in the Log Definitions window also performs this function.</p></td>
+  </tr>
+  <tr>
+    <td>Left Arrow</td>
+    <td>Clicking on the left arrow stops the selected (highlighted) log in the Running Logs window.
+      <p class="Note">Double-clicking a log in the Running Logs window also performs this function.</p></td>
+  </tr>
+  <tr>
+    <td>Save Critical Log</td>
+    <td>Saves the Critical Log. For more information see, <a href="?23#CriticalLog">Critical Log</a>.
+      <p class="Note">When DDS is configured this button is changed to Save Critical / Sentry.</p></td>
+  </tr>
+</table>
+<p>The Logs Panel:</p>
+<ul>
+  <li> displays a list of all available log definitions for the current configuration</li>
+  <li>displays a list of all running logs</li>
+  <li>starts any selected log definition</li>
+  <li>allows the user to associate a test step, from a list of pre-defined test steps, with the log when starting it</li>
+  <li>allows the user to stop any running log</li>
+  <li>allows the user to associate a comment</li>
+</ul>
+<p>For more information, see <a href="../../StandardTools/SetupDataRecording/SetupDataRecording.htm">Transient Logs</a> in Setup Data Recording. </p>
+<h4 id="CriticalLog">Critical Log</h4>
+<p>The critical log is a rotating log which is started automatically when Start Scan is selected on the Management GUI Control Panel. The critical log records data continuously from all of the channels defined as critical in the current configuration.</p>
+<p>The critical log records a rotating data buffer in seconds. The length of the buffer is determined by adding the <strong>crit_pre-event</strong> and the <strong>crit_post_event values</strong>, where:</p>
+<ul>
+  <li><strong>crit_pre_event </strong>is the maximum length of time that data is recorded before the critical event which triggers the log to be saved. The value for <strong>crit_pre_event </strong>(in seconds) is defined in the RTE initialisation file</li>
+  <li><strong>crit_post_event </strong>is the length of time that data is recorded after the critical event which triggers the log to be saved. The value for <strong>crit_post_event </strong>(in seconds) is defined in the RTE initialisation file</li>
+</ul>
+<p>If proDAS has been monitoring an engine test for less than the <strong>crit_pre_event </strong>seconds, then only the number of seconds recorded since the start of scanning plus <strong>crit_post_event </strong>seconds will be saved in the critical log.</p>
+<p class="Note">Maximum total time in seconds of a critical log is 300 seconds (5 minutes).</p>
+<p>A critical log can be saved whenever a record of the activity on all the critical channels is required. When the critical log is saved by the user, the buffered data is saved to the critical log file.</p>
+<p class="Note">For detailed information on configuring a critical channel, see the <a 
+href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm">Channel Editor</a>.</p>
+<p>Critical logs can be saved:</p>
+<ul>
+  <li>by selecting the <strong>Save Critical Log</strong> button on the Test Page displayed on the Management Interface Computer</li>
+  <li>automatically as an action to an alarm or warning. The alarm conditions and the actions associated with each limit are specified in the individual channel's configuration (for detailed information on adding an action to an alarm, see the <a 
+href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm">Channel Editor</a>)</li>
+</ul>
+<p>The log is saved to the hard disk, of the Host Computer, in the file:</p>
+<p class="Indented1">/users/RTE/logs/&lt;<em><strong>enginename</strong></em>&gt;&lt;<em><strong>testname</strong></em>&gt;/hist_logs/cr<em><strong>YYMMDDHHmmss</strong></em></p>
+<p>where:</p>
+<ul>
+  <li>enginename is the name of the engine tested </li>
+  <li>testname is the name of the test on the Test Information Page</li>
+  <li>cr identifies the file as a critical log </li>
+  <li>YYMMDD is the current year, month, and day </li>
+  <li>HHmmss is the hour (0-23), minute, and second at which the log was saved</li>
+</ul>
+<p>When a critical log has been saved a message will be written to the UEL.</p>
+<h3 id="Fullset">Fullset Panel</h3>
+<p>A fullset is a scan of all channels averaged over a given period of time. The Fullset Panel allows the user to determine the duration, associated comments, and test step for a given fullset. The user can also start recording the fullset from this panel. The Fullset Panel (below) is described in the following table.</p>
+<div class="Container"><img src="images/PnlFullset.gif" width="631" height="203" alt="Panel Fullset"></div>
+<table class="Table-Grey">
+  <caption>
+  </caption>
+  <tr>
+    <th colspan="2" rowspan="1">Fullset Panel</th>
+  </tr>
+  <tr>
+    <th>Button and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td>Test Step</td>
+    <td>A drop-down list containing all predefined fullset test steps from the initialisation file. It may also contain auto-increment if the initialisation file has been configured for this feature.
+      <p class="Note">For Customer specific requirements, the &quot;Test Step&quot; box is configurable. If required, enter ScanIdentifier = True, (located in the Test Engine section of the Management GUI.ini file), the Fullset Panel Test Step field changes to Scan ID. The Scan ID is comprised of three sub-boxes (alphabetic, numeric, numeric). Each sub-box menu enables the operator to uniquely identify the &quot;test step&quot;, for example &quot;A09&quot;.</p>
+      <div class="Container"><img src="images/ScanID.gif" width="500" height="161" alt="Scan ID"></div>
+      <p class="Note">For Customer specific requirements, if the ScanIdentifier = True, (located in the Test Engine section of the Management GUI.ini file), the user can choose an auto increment Scan ID.</p>
+      <p class="Note">If required, enter ScanIdentifier4Long=Yes and ScanIdentifierAutoLetters=A..F. The Scan ID is comprised of two sub-boxes ( alphabetic, numeric). The scan number increments automatically for each subsequent scan that is recorded.</p></td>
+  </tr>
+  <tr>
+    <td>Comments</td>
+    <td>A drop-down list containing all available predefined comments.</td>
+  </tr>
+  <tr>
+    <td>Duration</td>
+    <td>Length of time the fullset is logged.
+      <p class="Note">The fullset duration defaults to a value between 0 and 300 seconds. The default value is configurable.</p></td>
+  </tr>
+  <tr>
+    <td>Circular Arrow</td>
+    <td>Refreshes the Fullset panel clearing all fields.</td>
+  </tr>
+  <tr>
+    <td>Comments (0/80 characters)</td>
+    <td>Displays the selected comment from the Comments drop-down list. The selected comment can  be modified prior to starting the fullset.
+      <p class="Note">Comments are limited to a maximum of 80 characters.</p>
+      <p class="Note">This field supports non-English characters.</p>
+      <p class="Note">If a comma (&quot;,&quot;) is used in a comment, it is represented in the Test Diary, UEL Display, and Database Tables (Event_Comment) as a vertical bar (&quot;|&quot;).</p>
+      <p class="Note">The comment field does not support multi-line comments.</p></td>
+  </tr>
+  <tr>
+    <td>Start Fullset</td>
+    <td>Starts a fullset. When a Fullset has been started, the Management GUI passes the test step, comment and fullset duration to the RTE. The test step, comment and fullset duration are recorded in the Events table of the <a href="../../StandardTools/TRSCDB/TRSCDB.htm">Test Results and Sensor Calibration Database (TRSCDB)</a> by the RTE.
+      <p class="Note">After recording a fullset, the Management GUI does not clear the selected comment and test step entered by the user.</p></td>
+  </tr>
+  <tr>
+    <td>Fullset Status</td>
+    <td>A fullset status indicator which is illuminated when the fullset is in progress. It is displayed as grey when there is no fullset in progress, red when data is being acquired and yellow until the data is safely stored in the database.</td>
+  </tr>
+  <tr>
+    <td>ABC</td>
+    <td>Launches the auto spell check feature.
+      <p class="Note">This feature can also be launched from the Test Page Tools menu.</p></td>
+  </tr>
+</table>
+<p>For more information, see <a href="../../StandardTools/SetupDataRecording/SetupDataRecording.htm">Fullsets (Steady-State Test Data)</a> in Setup Data Recording. </p>
+<h3 id="Comments">Comments Panel </h3>
+<p>The Comments Panel allows the user to save comments to the UEL, TRSCDB and Test Results Window. The Comments Panel (below) is described in the following table.</p>
+<div class="Container"><img src="images/PnlComments.gif" width="374" height="195" alt="Panel Comments"></div>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="2" rowspan="1">Comments Panel</th>
+  </tr>
+  <tr>
+    <th>Button and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td>Category Filter</td>
+    <td>A drop-down list of Categories used to filter the Comments. This list of Comments and Categories are stored in an XML file and edited in the <a href="?24#CommentEditor">Comment Editor</a>. Once a Category has been selected, the user is able to select a comment from the selected category.
+      <div class="Container"> <img src="images/CategoryPulldown.gif" width="150" height="227" alt="Category Pulldown"></div>
+      The categories can be expanded to display a list of available comments.</td>
+  </tr>
+  <tr>
+    <td>Test Step</td>
+    <td>A drop-down list containing all predefined fullset test steps from the initialisation file.</td>
+  </tr>
+  <tr>
+    <td>Comments</td>
+    <td>Displays selected predefined User comments and allows the user to edit  the selected comment or create a new comment.
+      <p class="Note">A comment up to 256 characters in length can be entered by the user; however, the comment is separated into smaller comment subsets of up to 80 characters.</p>
+      <p class="Note">If a comma (&quot;,&quot;) is used in a comment, it is represented in the Test Diary and Database Tables (Event_Comment) as a vertical bar (&quot;|&quot;).</p>
+      <p class="Note">The comment field does not support multi-line comments.</p></td>
+  </tr>
+  <tr>
+    <td>Editor</td>
+    <td>Launches the Comment Editor used for creating and editing comments. For more information see, <a href="?25#CommentEditor">Comment Editor</a>.</td>
+  </tr>
+  <tr>
+    <td>Save</td>
+    <td>Saves the comment.</td>
+  </tr>
+  <tr>
+    <td>ABC</td>
+    <td>Launches the auto spell check feature.
+      <p class="Note">This feature can also be launched from the Test Page Tools menu.</p></td>
+  </tr>
+</table>
+<p>User Comments can be sent to one or more of the following  destinations:</p>
+<ul>
+  <li>UEL</li>
+  <li>Test Results Window (configurable)</li>
+  <li>TRSCDB (configurable)</li>
+</ul>
+<p>The specification of whether a comment is to be sent to the Test Results Window and/or to the TRSCDB is configurable in the Management GUI Initialisation File.</p>
+<h3 id="SetChannel">Set Channel Panel</h3>
+<p>The Set Channel Panel is displayed after the Set Channel tab is selected on the Test Page. The Set Channel Panel allows the user to alter and monitor channel values and qualities. The Set Channel Panel (below) is described in the following table.</p>
+<div class="Container"><img src="images/PnlSetChannel.gif" width="631" height="200" alt="Panel Set Channel"></div>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="2" rowspan="1">Set Channel Panel</th>
+  </tr>
+  <tr>
+    <th>Button and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td><img src="images/Btndots.gif" width="30" height="26" alt="Button Dots"> Channel Value</td>
+    <td>Displays the Select a Channel window (below). The Select a Channel window provides an alphabetical list of the available channels to be set. These channels can be filtered using the drop-down list.
+      <p class="Note">Internal channels and channels controlled by the Test Information Page are not available in the list.</p>
+      <div class="Container"><img src="images/SelectChannel.gif" width="350" height="337" alt="Select Channel"></div></td>
+  </tr>
+  <tr>
+    <td>Channel Value field</td>
+    <td>The channel that was highlighted and selected from the Channel Value list, is displayed in this field.</td>
+  </tr>
+  <tr>
+    <td>Value</td>
+    <td>Displays the current value of the channel displayed in the Channel Value field. This value gets updated at a rate of 1 Hz.</td>
+  </tr>
+  <tr>
+    <td>Quality</td>
+    <td>Displays the current quality of the channel displayed in the Channel Value field. This is automatically updated if the quality of the channel is changed.</td>
+  </tr>
+  <tr>
+    <td>Ceiling</td>
+    <td>Displays the maximum channel quality available for the selected channel.
+      <p class="Note">This can be set in the the current panel or predefined in the channel configuration.</p></td>
+  </tr>
+  <tr>
+    <td>Constant</td>
+    <td>Used for setting the value of a channel to a constant value (e.g.: 10). When the radio button is selected and a valid number has been entered into the constant field, the <strong>Set Value</strong> button becomes active.
+      <p class="Note">If a settable channel (0 Hz) is selected in the Channel Value field, the Channel radio button and field are disabled.</p></td>
+  </tr>
+  <tr>
+    <td>Channel</td>
+    <td>Used for redirecting the value of one channel to the channel selected in the Channel Value field. When the radio button is selected and a valid channel has been entered into the Channel field, the <strong>Set Value</strong> button becomes active.</td>
+  </tr>
+  <tr>
+    <td><img src="images/Btndots.gif" width="28" height="27" alt="BUtton Dots"> Channel</td>
+    <td>Displays the Select a Channel window. The Select a Channel window provides an alphabetical list of the available channels.</td>
+  </tr>
+  <tr>
+    <td><img src="images/Arrowfield.gif" width="124" height="27" alt="Arrow Field"></td>
+    <td>Displays the selected channel from the Channel field. The arrow indicates that the value from this channel is written to the channel displayed in the Channel Value field.</td>
+  </tr>
+  <tr>
+    <td>Remove</td>
+    <td>If the channel in the Channel Value field has been redirected to the value of another channel, this button removes the redirection and set the channel back to its current value.</td>
+  </tr>
+  <tr>
+    <td>Set Value</td>
+    <td>Sets the selected value depending on whether the Channel or Constant radio button is selected.
+      <p class="Note">The redirection is automatically cancelled if the RTE is reconfigured.</p></td>
+  </tr>
+  <tr>
+    <td>Quality Ceiling</td>
+    <td>A pulldown list allowing the user to select and display the proDAS quality (GOOD, BAD or SUSPECT) to be assigned to the channel displayed in the Channel Value field.</td>
+  </tr>
+  <tr>
+    <td>Set</td>
+    <td>Applies the Quality Ceiling to the channel displayed in the Channel Value field.</td>
+  </tr>
+  <tr>
+    <td><img src="images/CNSbtn.gif" width="28" height="27" alt="Channel Name Search Button"> Search</td>
+    <td>Launches the Channel Name Search application. For details, see <a href="../../StandardTools/ChanNameSearch/ChanNameSearch.htm">Channel Name Search</a>.</td>
+  </tr>
+</table>
+<h3 id="SetChannelLimits">Set Channel Limit Panel</h3>
+<p>The Set Channel Limit Panel is displayed after the Set Channel Limit tab is selected on the Test Page. The Set Channel Limit Panel allows the user to set and alter channel limits. The Set Channel Limit Panel (below) is described in the following table.</p>
+<div class="Container"><img src="images/PnlSetChannelLimit.png" width="631" height="202" alt="Panel Set Chanel Limit"></div>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="2" rowspan="1">Set Channel Limit Panel</th>
+  </tr>
+  <tr>
+    <th>Button and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td>Target</td>
+    <td>Displays the channel that had been selected from the Select a Channel window.</td>
+  </tr>
+  <tr>
+    <td><img src="images/Btndots.gif" width="28" height="27" alt="BUtton Dots"></td>
+    <td>Displays the Select a Channel window (below). The Select a Channel window provides an alphabetical list of the available channels to be set. The list is automatically filtered to display only channels with limits.
+      <div class="Container"><img src="images/SelectChannel.gif" width="350" height="347" alt="Select Channel"></div></td>
+  </tr>
+  <tr>
+    <td>Limit</td>
+    <td>A drop-down list of all available limit types associated with the channel displayed in the Target field (e.g.: HI LO).</td>
+  </tr>
+  <tr>
+    <td>Current Setting</td>
+    <td>Displays the current value of the limit selected in the Limit field.
+      <p class="Note">When a sliding limit is selected the word &quot;sliding&quot; is displayed.</p></td>
+  </tr>
+  <tr>
+    <td>Original Settings</td>
+    <td>Displays the limit value that has been originally set in the channel configuration.
+      <p class="Note">When a sliding limit is selected the name of the limit's reference channel is displayed.</p></td>
+  </tr>
+  <tr>
+    <td>Range High</td>
+    <td>Displays the upper value the limit can be set at.
+      <p class="Note">The upper value is determined by a % of the original limit as defined in the initialisation file.</p></td>
+  </tr>
+  <tr>
+    <td>Range Low</td>
+    <td>Displays the lower value the limit can be set at.
+      <p class="Note">The lower value is determined by a % of the original limit as defined in the initialisation file.</p></td>
+  </tr>
+  <tr>
+    <td>New Value</td>
+    <td>Allows the user to enter a new limit value for the channel.</td>
+  </tr>
+  <tr>
+    <td>Set</td>
+    <td>Sets the new limit value for the channel. The Set button is only enabled after the value in the new value field is within the range high and range low values for the limit.</td>
+  </tr>
+  <tr>
+    <td><img src="images/CNSbtn.gif" alt="Search Button" width="28" height="27"> Search</td>
+    <td>Launches the Channel Name Search application. For details, see <a href="../../StandardTools/ChanNameSearch/ChanNameSearch.htm">Channel Name Search</a>.</td>
+  </tr>
+</table>
+<h3 id="DDScontrol">DDS Control Panel</h3>
+<p class="Note">The DDS Panel tab is only available when DDS is setup in the initialisation file.</p>
+<p>The DDS Control Panel is displayed after the DDS Control tab is selected on the Test Page. The DDS Control Panel allows the user to re-configure the DDS Subsystem, start and stop dynamic manoeuvres and save a sentry operation. The DDS Control Panel (below) is described in the following table.</p>
+<div class="Container"><img src="images/PnlDDScontrol.gif" width="633" height="201" alt="Panel DDS Control"></div>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="2" rowspan="1">DDS Control Panel</th>
+  </tr>
+  <tr>
+    <th>Button and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td>Scheduled Manoeuvre</td>
+    <td>Selecting the Scheduled Manoeuvre button initiates a scheduled recording. The start of the Manoeuvre is reported in the Test Diary window.
+      <p class="Note">When a manoeuvre is started, the recording will continue until either the user switches the system out of recording mode, or there is no more available disk space.</p>
+      <p class="Note">If a Scheduled Manoeuvre is active and the user starts another Scheduled Manoeuvre, the first one will be stopped and the second one will be started.</p></td>
+  </tr>
+  <tr>
+    <td>Unscheduled Manoeuvre</td>
+    <td>Selecting the Unscheduled Manoeuvre button initiates recordings. If the user input Elapsed time is greater than zero, the previously recorded history information that is equivalent to the elapsed time duration will be pre-pended to the manoeuvre. This button is only enabled if the Elapsed Time field is greater than zero. The start of the Manoeuvre is reported in the Test Diary window.
+      <p class="Note">When a manoeuvre is started, the recording will continue until either the user switches the system out of recording mode, or there is no more available disk space.</p>
+      <p class="Note">If an Unscheduled Manoeuvre is active and the user starts another Unscheduled Manoeuvre, the first one will be stopped and the second one will be started.</p></td>
+  </tr>
+  <tr>
+    <td>Stop Manoeuvre</td>
+    <td>Selecting the Stop Manoeuvre button stops the current recording and switches the system back to monitoring mode. This button is only enabled if a recording is active. The stop of the Manoeuvre is reported in the Test Diary window.</td>
+  </tr>
+  <tr>
+    <td>Available Time field</td>
+    <td>Indicates how much disk space is left for recording in minutes.</td>
+  </tr>
+  <tr>
+    <td>Elapsed Time field</td>
+    <td>Allows the user to input elapsed time of history recording to be pre-pended to an unscheduled manoeuvre.</td>
+  </tr>
+  <tr>
+    <td>History field</td>
+    <td>Indicates how much history time is available for a save sentry operation or an unscheduled manoeuvre.</td>
+  </tr>
+  <tr>
+    <td>Current Test Definition</td>
+    <td>Displays the current Test Definition file that is loaded on the DDS.</td>
+  </tr>
+  <tr>
+    <td>Re-Config DDS</td>
+    <td>Selecting the Re-Config DDS button initiates a re-configuration of the DDS from proDAS. The DDS Control Panel continues monitoring the DDS System. The enable/disable of the Re-Config DDS button is based on the status of the DDS.
+      <p class="Note">This button is only enabled while the system is not in the recording state.</p></td>
+  </tr>
+  <tr>
+    <td>Mode</td>
+    <td>Indicates the current state of the DDS. The following modes are available:
+      <ul>
+        <li>Failed</li>
+        <li>Ready</li>
+        <li>Configuring</li>
+        <li>Monitoring</li>
+        <li>Recording</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Connect LED</td>
+    <td>The connect status LED indicates the current state of the TCP/IP connection of the DDS Control Panel to the DDS. The LED is green when the connection is established.<br>
+      <br>
+      The LED changes to red and is enabled if the connection is broken. The LED can be selected by the user to request the UI to re-connect with the DDS, when the LED is red.
+      <p class="Note">Click the Connect LED to build the connection.</p></td>
+  </tr>
+  <tr>
+    <td>Recording LED</td>
+    <td>The Recording status LED turns green when the user starts a recording. It changes to grey when the recording is stopped.</td>
+  </tr>
+</table>
+<h4 id="Manoeuvre">Manoeuvre</h4>
+<p>A manoeuvre is defined as a single recording, of specified duration, of dynamic data. During a test, the system operator can opt to record chunks of data (i.e.: manoeuvres) rather than record all of the data. For example, during a two hour period, six separate, eight minute manoeuvres could be recorded and saved to disk or two consecutive manoeuvres could be recorded and saved to disk. Manoeuvres are available for manual post-processing immediately after writing to disk. Manoeuvres are processed automatically, if the system is configured for on-line analysis, immediately after writing to disk.</p>
+<p>The system operator can specify the Elapsed Time of an unscheduled manoeuvre (i.e.: in minutes) by entering the time in the Elapsed Time field. The time, in minutes, can be incremented or decremented by using the up and down arrows at the right of the Elapsed Time field. The manoeuvre stops automatically, when the available time is reached, and the system switches to the <strong>Monitor</strong> mode from the <strong>Recording</strong> mode. When monitoring resumes, a new background file is created.</p>
+<p>The analyst can perform post-processing on the data either during the test or immediately after the test as the manoeuvre data is accessible immediately after the recording of the manoeuvre has been completed  and for a set time after the test (until the data has been archived). Post-processing can be carried out on a separate PC at the same time the system is monitoring and recording new data.</p>
+<p class="Note">Archived and restored tests cannot be resumed.</p>
+<h4 id="SaveSentry">Save Sentry</h4>
+<p class="Note">The Save Critical Log function shall trigger the saving of the DDS Sentry.</p>
+<p> From the  Test Page, selecting the <strong>Save Critical Log/Save Sentry</strong> button starts the save sentry operation. This results in the collection of the background files from all pertinent disk sets as well as the disk set switching. Confirmation of the <strong>Save Sentry</strong> is displayed in the Test Diary window.</p>
+<h3 id="Timer">Timer Panel</h3>
+<p>The Timer Panel has a digital display that can either count up or count down during testing. The Timer Panel (below) is described in the following table.</p>
+<div class="Container"><img src="images/PnlTimer.gif" width="186" height="200" alt="Panel Timer"></div>
+<table class="Table-Grey">
+  <caption>
+  </caption>
+  <tr>
+    <th colspan="2" rowspan="1">Timer Panel</th>
+  </tr>
+  <tr>
+    <th>Button and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td>Minutes</td>
+    <td>The number of minutes to count down from.
+      <p class="Note">This field is disabled when count up is selected.</p></td>
+  </tr>
+  <tr>
+    <td>Seconds</td>
+    <td>The number of seconds to count down from.
+      <p class="Note">This field is disabled when count up is selected.</p></td>
+  </tr>
+  <tr>
+    <td>Down/Up Arrows (toggle)</td>
+    <td>Indicates whether the counter counts up or counts down. If the timer is set as  count up, it counts up until manually stopped by the user. If the timer is set as  count down, the user has to indicate the start point and the timer counts down to zero or until the user manually stops the timer.</td>
+  </tr>
+  <tr>
+    <td>Play/Pause (toggle)</td>
+    <td>Play starts the count up or count down sequence. When Play is selected the button toggles to the Pause button. Pause pauses the counting timer.</td>
+  </tr>
+  <tr>
+    <td>Reset/Stop (toggle)</td>
+    <td>Resets or stops the counter. When Play is selected the button toggles to the Stop button. When the Stop button is selected the button toggles to the Reset button.</td>
+  </tr>
+  <tr>
+    <td>Circular Arrows</td>
+    <td>Resets the timer to either zero (for a count up timer) or the original start point (for a count down timer).</td>
+  </tr>
+</table>
+<h3 id="TestProcedures">Test Procedures Window</h3>
+<p>The Test Procedures Window allows the user to start and control engine test procedures.</p>
+<div class="Container"><img src="images/TestProcedureWindow.gif" width="700" height="204" alt="Test Procedure Window"></div>
+<p>The Test Procedures Window is divided into the following sections:</p>
+<ul>
+  <li><a href="?110#TestProcPnl">Test Procedure Panel</a></li>
+  <li><a href="?111#TestProcExecPnl">Test Procedure Execution Panel</a></li>
+  <li><a href="?112#Results">Test Results Window</a></li>
+</ul>
+<h4 id="TestProcPnl">Test Procedure Panel</h4>
+<p>The Test Procedure Panel displays the test procedure steps. Functionality is described in the following table.</p>
+<div class="Container"><img src="images/TestProcPnl.gif" width="388" height="373" alt="Test Procedure Panel"></div>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="2" rowspan="1">Test Procedures Window</th>
+  </tr>
+  <tr>
+    <th>Button and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td><img src="images/BtnPlay.gif" width="58" height="27" alt="Button Play"></td>
+    <td>Starts the loaded test procedure and performs actions between instructions.
+      <p class="Note">Once the current step in the test procedure is completed, the button flashes to indicate it is ready to proceed to the next step of the procedure.</p>
+      <p class="Note">The instruction command is displayed in the Test Procedure Panel as either an Instruction, Note or Warning.</p></td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnStop.gif" width="58" height="27" alt="Button Stop"></td>
+    <td>Aborts the current test procedure.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnFont.gif" width="30" height="28" alt="Button Font"></td>
+    <td>Displays a Font window allowing the user to change the font properties (i.e. font, font style, font size) for the Test Results Window.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnPrint.gif" width="30" height="28" alt="Button Print"></td>
+    <td>Prints the contents of the Test Results Window.</td>
+  </tr>
+</table>
+<h4 id="TestProcExecPnl">Test Procedure Execution Panel</h4>
+<p>The Test Procedure Execution Panel displays the current Test Procedure execution requirements. The following is a list of execution panels:</p>
+<ul>
+  <li>Selected TP</li>
+  <li>Prompt Command</li>
+  <li>TP Feedback</li>
+</ul>
+<div class="Container"><img src="images/TestProcExecPnl.gif" width="231" height="303" alt="Test procedure Execution Panel"></div>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="2" rowspan="1">Test Procedures Window</th>
+  </tr>
+  <tr>
+    <th>Button and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td>Selected TP</td>
+    <td>Displays information on the selected test procedure.</td>
+  </tr>
+  <tr>
+    <td>Prompt Commands</td>
+    <td>The following types of prompt commands are available:
+      <ul>
+        <li>string - prompts the user to select <strong>OK</strong></li>
+        <li>number - prompts the user to select <strong>OK</strong></li>
+        <li>boolean - prompts the user to select <strong>Yes</strong> or <strong>No</strong></li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>TP Feedback</td>
+    <td>Displays test procedure feedback information.</td>
+  </tr>
+  <tr>
+    <td>Instruction Command</td>
+    <td>An instruction command suspends the current test procedure step (highlights the current instruction) until the user selects the next step in the procedure.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnSkip.gif" width="92" height="27" alt="Button Skip"></td>
+    <td>The skip button allows the user to skip a section of the test procedure. It is only enabled if the instruction is configured for it.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnJump.gif" width="92" height="27" alt="Button Jump"></td>
+    <td>The jump button allows the user to jump to any instruction within the test procedure. To jump to another instruction:
+      <ol>
+        <li>Select Pause.</li>
+        <li>Highlight the instruction that you would like to jump to and select the jump button.<br>
+          A warning message is displayed.</li>
+        <p class="Warning">Jumping changes the normal test sequence of the test procedure and may compromise engine health or invalidate test results.</p>
+        <li>Select <strong>OK</strong> to proceed or <strong>Cancel</strong> to abort the jump.</li>
+        <li>Select <strong>Pause</strong> to continue with the test procedure.</li>
+      </ol></td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnContinue.gif" width="92" height="27" alt="Button Continue"></td>
+    <td>The continue button moves to the next instruction in the test procedure.</td>
+  </tr>
+</table>
+<h4 id="Results">Test Results Window</h4>
+<p>The Test Results Window (below) displays results written from the test procedure or comments saved from the Comments Panel. For details see, <a href="?26#Comments">Comments Panel</a>.</p>
+<div class="Container"><img src="images/ResultsWindow.gif" width="652" height="298" alt="Results Window"></div>
+<h3 id="Diary">Test Diary Window</h3>
+<p>The Test Diary Window is used to record the test history information including all data recordings, operator comments and the test header information. The Test Page screen contains a Test Diary tab which lists the most recent 200 Test Diary entries. The entries are listed in chronological order, with the most recent events at the bottom of the list. The Test DiaryWindow refreshes each time the Management GUI writes data to the Test Diary. A Pause button above the Test Diary Window, when selected, pauses the updating of the Test Diary Window enabling the operator to scroll back to review earlier entries. Selecting the Play button, above the Test Diary Window, refreshes the Test Diary Window.</p>
+<p>The Management GUI checks to determine if the Test Diary Window needs to be refreshed with the latest database entries every 10 seconds. The Management GUI records the following events to the Test Diary:</p>
+<ul>
+  <li>fullset recorded, with Scan Identifier, Comment, and Extract Id, whether started manually from the Management GUI or via a Test Procedure</li>
+  <li>HAMS fullset recorded, with Comment and Extract Id</li>
+  <li>Critical log saved </li>
+  <li>Logs recorded, with LogName.Instance# and Extract Id, whether started manually from the Management GUI or via a Test Procedure</li>
+  <li>Dynamic Manoeuvres recorded with dynamic data file identifier (both start and stop events)</li>
+  <li>Quality Ceiling changes</li>
+  <li>Set Limit changes</li>
+  <li>Set Channel Values</li>
+  <li>Shift Change information (logged to the Test Dairy with a unique Test Step of TEST_INFO)</li>
+  <li>Result statements from Test Procedures</li>
+  <li>Test procedure execution result (retry, abort, continue)</li>
+  <li>Comments entered by the user</li>
+</ul>
+<p>The user is able to add comments to the Test Diary as free format text or from a list of pre-defined comments using the <a href="?28#Comments">Comments Panel</a>. The comments field is limited up to 255 characters. The user is able to cut and paste one entry at a time (using <strong>Ctrl-C</strong> and <strong>Ctrl-V</strong> keys only) from the Test Diary Window to the comment entry field.</p>
+<p>The Test Diary header information is updated through the Test Information Page or Shift Change panel. Changes to any field in the Test Information Page is logged to the Test Diary with a unique Test Step of TEST_INFO.</p>
+<p class="Note">If a Test Step is not specified with an event, it is written to the database as N/A.</p>
+<p class="Note">Non-English comments entered in fields that allow non-English characters are displayed in the Test Diary Window the way they are entered in the field.</p>
+<div class="Container"><img src="images/TestDiary.gif" width="700" height="204" alt="Test Diary"></div>
+<h2 id="CommentEditor">Comment Editor</h2>
+<p>The Comment Editor provides an authorised user with the capability to create, edit or delete a comment or category. The Comment Editor (below) is described in the following table.</p>
+<p class="Note">Depending on user access levels the user may not be able to perform certain tasks below.</p>
+<div class="Container"><img src="images/CommentEditor.gif" width="665" height="460" alt="Comment Editor"></div>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="2">Comment Editor Window</th>
+  </tr>
+  <tr>
+    <th>Button and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td>File</td>
+    <td>The File menu allows the user to perform the following:
+      <ul>
+        <li>Save Changes</li>
+        <li>Save Changes and Quit</li>
+        <li>Quit Discard Unsaved Changes</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Category Panel</td>
+    <td>A tree control listing all categories and their associated comments.
+      <p class="Note">The Fullset/Log Comment category is a predefined category and cannot be changed. The categories in the tree control list appears in the Category Filter drop-down list on the <a href="?27#Comments">Comments Panel</a> of the Test Page.</p></td>
+  </tr>
+  <tr>
+    <td>Comment Text</td>
+    <td>Displays the selected comment or the location to enter a new comment.
+      <p class="Note">This field supports non-English characters.</p></td>
+  </tr>
+  <tr>
+    <td>Category</td>
+    <td>Displays information on the category or comments depending on the options selected.
+      <p class="Note">A comment category can be set to either Fullset or User but not both.</p></td>
+  </tr>
+  <tr>
+    <td>Add as New</td>
+    <td>Adds the entered or modified comment as a new comment.</td>
+  </tr>
+  <tr>
+    <td>Update</td>
+    <td>Updates the selected comment with the entered changes.</td>
+  </tr>
+  <tr>
+    <td><img src="images/Spellcheck.gif" width="29" height="29" alt="Spellcheck"></td>
+    <td>Performs a spell check on the comment</td>
+  </tr>
+</table>
+<h3>Adding a New Category Using the Category Information Panel</h3>
+<p>To add a new category:</p>
+<ol>
+  <li>From the Comment Editor, right-click a category  and select <strong>Add New Category</strong>. The Category Information Panel is displayed.
+    <div class="Container"><img src="images/CategoryInfoPanel.gif" width="606" height="107" alt="Category Info Panel"></div>
+  </li>
+  <li>Enter a category name in the Category field.</li>
+  <li> Select <strong>Add as New</strong> to add a new category.</li>
+</ol>
+<h3>Adding a New Comment Using the Comment Information Panel</h3>
+<p>To add a new comment:</p>
+<ol>
+  <li>From the Comment Editor, right-click a comment and select <strong>Add New Comment</strong>. The Comment Information Panel is displayed.
+    <div class="Container"><img src="images/CommentInfoPanel.gif" width="638" height="202" alt="Comment Info Panel"></div>
+  </li>
+  <li>Enter a comment in the Comment Text field.
+    <p class="Note">The comment can be no longer than 255 characters.</p>
+  </li>
+  <li>Select either Fullset, Log or User to determine the type of comment. The Update button is enabled.
+    <p class="Note">If the User comment check box is not selected, the Category filter drop-down list is greyed out because the filter has no effect on the Fullset comments.</p>
+    <p class="Note">The Fullset comment appears in the Fullset Comment drop-down list in the Fullset Panel (on the Test Page) and the User comment appears in the Comment drop-down list of the Comments Panel (on the Test Page).</p>
+    <p class="Note">The Log comment appears in the Log Comment drop-down list in the Log Panel (on the Test Page) and the User comment appears in the Comment drop-down list of the Comments Panel (on the Test Page).</p>
+  </li>
+  <li>Select the category from the Category drop-down list.</li>
+  <li>Select <strong>Add as New</strong> to add a new comment or <strong>Update</strong> to change an existing comment.</li>
+</ol>
+
+<h2 id="SecuritySettings">Security Settings</h2>
+<p>Accessed from the Tools menu, the Security Settings Window allows the user to modify the access levels required to perform certain Management GUI functions such as access to the TSM Panel. The Security Settings Window (below) is described in the following table.</p>
+<div class="Container"><img src="images/SecuritySettings.gif" width="700" height="487" alt="Security Settings"></div>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="2">Security Settings Window</th>
+  </tr>
+  <tr>
+    <th>Button and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td>Security Key / Access Level</td>
+    <td>Displays a list of the current Management GUI functions along with their access level.</td>
+  </tr>
+  <tr>
+    <td>Security Key</td>
+    <td>Displays the selected function (e.g.: TSM) from the Security Key / Access Level field.</td>
+  </tr>
+  <tr>
+    <td>Permanent</td>
+    <td>Selecting the Permanent check box defines whether the security key can be removed from the system.</td>
+  </tr>
+  <tr>
+    <td>Required Security Level</td>
+    <td>The user enters the desired security level for the selected function. The security levels available are 0-5 where 0 is the most restrictive access and 5 an administrator level.</td>
+  </tr>
+  <tr>
+    <td>Update</td>
+    <td>Updates the selected function to the indicated security level in the Security Key / Access Level field but does not save the new setting.</td>
+  </tr>
+  <tr>
+    <td>Add as New</td>
+    <td>Adds new security keys.</td>
+  </tr>
+  <tr>
+    <td>Remove</td>
+    <td>Removes security keys.
+      <p class="Note">This button is disabled if it is &quot;Permanent&quot;.</p></td>
+  </tr>
+  <tr>
+    <td>OK</td>
+    <td>Applies the selected function to the indicated security level in the Security Key / Access Level field, saves the new setting and exits the Security Settings window.</td>
+  </tr>
+  <tr>
+    <td>Cancel</td>
+    <td>Closes the Security Settings window without saving any updated information.</td>
+  </tr>
+</table>
+
+<h2 id="ChanConfigChange">RT Channel Configuration Change</h2>
+<p>The RT Channel Configuration Change (3C Panel) allows users to make on-line changes to the RTE during runtime for the following:</p>
+<ul>
+  <li>Engineering Units</li>
+  <li>Equation of a configured calculated channel (including the modification of the look-up table definition within a calculated expression)</li>
+  <li>Add/remove configured channels to/from the critical log</li>
+  <li>Sensors assigned to a configured channel</li>
+  <li>Add, modify or remove a limit value associated with a configured channel</li>
+  <li>Update the corresponding configuration data, provided the configuration is not already locked by another user</li>
+</ul>
+<p class="Note">The Channel Config Change feature cannot be accessed while proDAS is scanning. Only the Administrator has the authorization to perform the task.</p>
+<h4>To access the RT Channel Configuration Change panel:</h4>
+<ol>
+  <li>From the Management GUI Tools menu, select <strong> Channel Config Change</strong>. The Management GUI - Channels to display window is displayed.
+    <div><img src="images/3Cchandisp.gif" width="381" height="307" alt="3 C Channels to Display"></div>
+    <br>
+  </li>
+  <li>Set the criteria for the channels to display on the Change Panel and select <strong>Continue</strong>. The configuration data is loaded and the RT Channel Configuration Change panel is displayed.
+    <div class="Container"><img src="images/3CPanel.gif" width="700" height="482" alt="3 C Panel"></div>
+  </li>
+  <li>Enter the desired changes, select <strong>Update Current</strong> or <strong>Update All</strong> to apply the changes.</li>
+  <p class="Note">When the changes are applied and the configuration control is enabled, all changes are automatically committed to the SVN repository.</p>
+  <li>To exit the RT Channel Configuration Change panel, select <strong>Close</strong>.</li>
+</ol>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

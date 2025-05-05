@@ -1,0 +1,741 @@
+<!DOCTYPE HTML PUBliC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>How To &ndash; Modify the Configuration Files</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left>
+  <h1><a name="Configuration"></a>Reference &ndash;  Configuration Files<a href="#" onClick="window.print(); return false;"><img src="../../../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<p>This section contains information on  the configuration files used by the Throttle System.</p>
+<p class="Note">Only operators familiar with XML and the Throttle System configuration files should modify the configuration files. Errors in the configuration file will cause the system to behave unpredictably, or not run.</p>
+<p>The Throttle System uses configuration files to determine the configuration of the system components. The configuration files are .xml files that are stored in the display computer in the throttle quadrant.</p>
+<p>The block diagram below describes the location and content of the configuration files.</p>
+<br><div class="Container"><img src="images/BDConfigfile.png" alt="Block Diagram Configuration File" width="851" height="492"></div><br>
+<p>When the Throttle System's display computer starts, the display software automatically opens. You must close the display software to view the configuration files in the Windows 7 desktop.</p>
+<p class="Note">MDS does not recommend using the display computer to edit the configuration files. Edit the configuration files using a standard desktop computer or laptop connected remotely.</p>
+<h2><a name="configFiles"></a>Configuration Files</h2>
+<p>There are three configuration files:</p>
+<ul>
+  <li><a href="#alarmConfigFile">Alarm Configuration File (alarmConfig.xml)</a></li>
+  <li><a href="#calConfigFile">Channel Calibration Data Configuration File (calibrationData.xml)</a></li>
+  <li><a href="#ThrottleConfigFile">Master Configuration File (ThrottleConfig.xml)</a></li>
+</ul>
+<h3>To Access the Configuration Files</h3>
+<ol>
+  <li>Start the Throttle System. For details, see <a href="StartUECU500.html">Starting the UECU-500 Mark III Throttle.</a><br>
+  The display computer displays the Throttle System operator screens.</li>
+  <li>In the top-left-hand corner of the screen, press the <strong>MDS Logo</strong>.<br>
+  The <strong>About</strong> window is displayed.</li>
+  <br><div class="Container"><img src="images/About.png" alt="About Window" width="454" height="81"></div><br>
+  <li>Press the <strong>Exit</strong> button.</li>
+  <li>Using Windows Explorer, navigate to the <strong>Config</strong> folder.</li>
+</ol>
+<h3>To Start the Display Computer GUI</h3>
+<ol>
+  <li>Press the UECU-500 <strong>shortcut </strong> <img src="images/ShortCut.png" alt="UECU-500 Icon Short Cut" width="75" height="69">.<br>
+    The display computer GUI starts.</li>
+</ol>
+<h3><a name="alarmConfigFile"></a>Alarm Configuration File (alarmConfig.xml)</h3>
+<p>The alarm configuration file contains all of the alarm messages.</p>
+<p class="Note">This file should not be modified unless there is a requirement to translate the alarm messages into a different language.</p>
+<p>The table below describes the elements in the configuration file.</p>
+<table width="73%" cellspacing="1" class="Table-Grey">
+    <tr>
+      <th>Element</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Possible Values</th>
+    </tr>
+    <tr>
+      <td width="16%">&lt;alarm&gt;</td>
+      <td width="63%">Parent element. Contains all the elements pertaining to a single alarm.</td>
+      <td width="21%">--</td>
+      <td width="21%">--</td>
+    </tr>
+    <tr valign="top">
+      <td>&lt;ID&gt;</td>
+      <td>Child element of &lt;alarm&gt;. Contains the alarm ID number.</td>
+      <td>String ID x format</td>
+      <td>--</td>
+    </tr>
+    <tr valign="top">
+      <td>&lt;Type&gt;</td>
+      <td>Child element of &lt;alarm&gt;. Contains the alarm type number.</td>
+      <td>Integer value</td>
+      <td>0 = Log<br>
+        1 = Information<br>
+        2 = Warning<br>
+        3 = Error</td>
+    </tr>
+    <tr valign="top">
+      <td>&lt;Message&gt;</td>
+      <td>Child element of &lt;alarm&gt;. Contains a string which is the message that is displayed on the display computer GUI when an alarm is tripped.</td>
+      <td>String (Shown on screen)</td>
+      <td>--</td>
+    </tr>
+    <tr valign="top">
+      <td>&lt;Description&gt;</td>
+      <td>Child element of &lt;alarm&gt;. Contains a string which is the description of the alarm.</td>
+      <td>Message written to log</td>
+      <td>--</td>
+    </tr>
+    <tr valign="top">
+      <td>&lt;PLCTag&gt;</td>
+      <td>Child element of &lt;alarm&gt;. Contains the alarm channel number.</td>
+      <td>alarmCh1 to alarmCh13<br>
+        <br>_not_used_alarmCh14</td>
+      <td>--</td>
+    </tr>
+    <tr valign="top">
+      <td>&lt;BitIndex&gt;</td>
+      <td>Contains the Bitindex number.</td>
+      <td>Integer value 0-31</td>
+      <td>--</td>
+    </tr>
+</table>
+<h4>Example of the alarm configuration file</h4>
+<p class="Note">The example below is not a complete configuration file.</p>
+<br><div class="Container"><img src="images/AlarmConfig.png" alt="Alarm Configuration" width="468" height="342"></div><br>
+<p>Return to <a href="#configFiles">Configuration Files</a>.</p>
+<h3><a name="calConfigFile"></a>Channel Calibration Data Configuration File (calibrationData.xml)</h3>
+<p class="Caution">To prevent rendering the Throttle System inoperable, the Master Configuration file should only be modified by trained operators familiar with the Throttle System, the configuration files and XML.</p>
+<p>The channel calibration data configuration file contains all of the calibration data for the channels that are able to be calibrated. The calibration is saved whenever a calibration is completed.</p>
+<p class="Note">Do not modify this file  manually! For details, see <a href="CalibrateChannel.html">Calibrating a Channel</a>. The only exception is when calibrating an analogue channel.</p>
+<p>The table below describes the elements in the configuration file.</p>
+<table width="74%" cellspacing="1" class="Table-Grey">
+<tr>
+    <th>Element</th>
+    <th>Description</th>
+    <th>Possible Values</th>
+    <th>Possible Attributes</th>
+  </tr>
+  <tr>
+    <td width="16%">&lt;lever#&gt;</td>
+    <td width="63%">Parent element of the elements that define the configuration of the lever# channel.<br>
+    <p class="Note"><strong><em>Lever1 defines the Right Lever configuration and Lever2 defines the Left Level configuration</em></strong>.</p></td>
+    <td width="21%">--</td>
+    <td width="21%">dateStamp: Indicates date calibrated (in YYYY/MM/DD format).</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;actuators&gt;</td>
+    <td>Parent element of the elements that define the configuration of all of the Actuators.</td>
+    <td>--</td>
+    <td>-</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;actuator&gt;</td>
+    <td>Child element of &lt;actuators&gt;. Contains the elements that define the configuration of all of the Actuators for an engine.</td>
+    <td>--</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;actuator#&gt;</td>
+    <td>Child element of &lt;actuator&gt;. Contains the elements that define the configuration of an Actuator for an engine.<br>
+    <p class="Note">Actuator1 defines the Right Actuator configuration and Actuator2 defines the Left Actuator configuration.</p></td>
+    <td>--</td>
+    <td>dateStamp: Indicates date calibrated (in YYYY/MM/DD format).</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;eng_id&gt;</td>
+    <td>Child  element of &lt;actuator&gt;. Contains the ID number indicating the engine type.</td>
+    <td>String ID x format</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;autoChannels&gt;</td>
+    <td>Parent element of the elements that define the configuration of all of the Analog Input Output channels.</td>
+    <td>--</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;remCmdRaw &gt;</td>
+    <td>Child element of &lt;autoChannels&gt;. Contains the values that represent the input&rsquo;s Raw values.<br>
+     <p class="Note">The value is inside the &lt;Values&gt; element.</p>
+     </td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;remCmdEu &gt;</td>
+    <td>Child element of &lt;autoChannels&gt;. Contains the  values that represent the input&rsquo;s  Raw values.<br>
+      <p class="Note">The value is inside the &lt;Values&gt; element.</p>
+    </td>
+    <td>Number value</td>
+    <td>---</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;fb#Raw &gt;</td>
+    <td>Child element of &lt;autoChannels&gt;. Contains the  raw reading for the feedback channel.<br>
+      <p class="Note">The value is inside the &lt;Values&gt; element.</p>
+      </td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;fb#Eu &gt;</td>
+    <td>Child element of &lt;autoChannels&gt;. Contains readings that have been converted into engineering units for the feedback channel<strong>.<br>
+      </strong>
+      <p class="Note">The value is inside the &lt;Values&gt; element.</p>
+     </td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;fb#CalDate&gt;</td>
+    <td>Child element of &lt;autoChannels&gt;. Contains a string value (in YYYY/MM/DD format), indicating the last calibration date   of the channel.</td>
+    <td>Date</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;raw&gt;</td>
+    <td>Element that contains  a raw reading (example voltage) before it is converted into an engineering unit.</td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;eu&gt;</td>
+    <td>Element that contains a reading that has been converted into an engineering unit.</td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;Values&gt;</td>
+    <td>An element that contains the value of its parent element.</td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+</table>
+<h4>Example calibrationData.xml Configuration File</h4>
+<p class="Note">The example below is not a complete configuration file.</p>
+<br><div class="Container"><img src="images/ChanCalibration.png" alt="Channel Calibration XML File" width="540" height="1014"></div><br>
+<p>Return to <a href="#configFiles">Configuration Files</a>.</p>
+<h3><a name="ThrottleConfigFile"></a>Master Configuration File (ThrottleConfig.xml)</h3>
+<p class="Note">In this example, the file name for the Master Configuration file is ThrottleConfig.xml. This name can be changed according to customer preference.</p>
+<p>The master Configuration file contains the main configuration parameters for the Throttle System. Some of the parameters such as <em>Actuator rigging data</em> and <em>Stop locations</em> can be modified during normal operation.</p>
+<p class="Caution">To prevent rendering the Throttle System inoperable, the  Master Configuration file should only be modified by trained operators familiar with the Throttle System, the configuration files and XML.</p>
+<p>The Master Configuration file has the following four main elements which contain all of the other elements:</p>
+<ul>
+  <li>systemConfig - Contains system parameters</li>
+  <li>engineList - Contains engine parameters such as engine name, ID, defined Actuator/resolver/RVDT, Actuator rigging data, Trips and Stops</li>
+  <li>autoMode - Contains Auto Throttle Mode configuration data</li>
+  <li>calibrationData - Contains default channel configuration data</li>
+</ul>
+<p class="Note">New calibration data is saved in the Master Configuration file in conjunction with the calibrationData.xml configuration file, but the Throttle System only reads calibration data from the calibrationData.xml configuration file.</p>
+<p>The table below describes the elements in the configuration file.</p>
+<table width="74%" cellspacing="1" class="Table-Grey">
+<tr>
+    <th>Element</th>
+    <th>Description</th>
+    <th>Possible Values</th>
+    <th>Possible Attributes</th>
+  </tr>
+  <tr>
+    <td width="15%">&lt;systemConfig&gt;</td>
+    <td width="50%">Parent element of the elements that define the system configuration.</td>
+    <td width="17%">--</td>
+    <td width="18%">--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;version&gt;</td>
+    <td>Child element of &lt;systemConfig&gt;. It can be used by the customer to track the version of master configuration file if they make changes to the file.</td>
+    <td>String</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;leverToTrip&gt;</td>
+    <td>Child element of &lt;systemConfig&gt;. Determines which lever output is affected when a trip is commanded.</td>
+    <td>Both = Both levers are affected <br>
+        <br>Right = The right lever is affected<br>
+    <br>Left = The left lever is affected</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;leverToAuxTrip&gt;</td>
+    <td>Child element of &lt;systemConfig&gt;. Determines which lever output is affected when an auxiliary trip is commanded (Usually to Cut off).</td>
+    <td>Both = Both levers are affected<br>
+      <br>Right = The right lever is affected<br>
+      <br>Left = The left lever is affected</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;powerToTrip&gt;</td>
+    <td>Child element of &lt;systemConfig&gt;. Sets the state for the input signals to command a trip. If set to <strong>Apply</strong>, a trip is commanded when a 24 VDC signal is sent to the system. If set to <strong>Remove</strong>, a trip is commanded when 24 VDC is removed.</td>
+    <td>Apply = Command Trip when 24 VDC is sent.<br>
+    <br>Remove = Command Trip when 24 VDC is removed.</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;digitalFeedback&gt;</td>
+    <td>Child element of &lt;systemConfig&gt;. Sets the PLC to use channels from proDAS for feedback during Auto Throttle.</td>
+    <td>True = Control from proDAS (digital feedback)<br>
+      <br>False = analogue feedback<br></td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;utiEmulation&gt;</td>
+    <td>Child element of &lt;systemConfig&gt;. Controls whether the Throttle emulates the UTI System. This changes the way the discrete  input for remote mission start and remote mission stop are used.</td>
+    <td>True = utiEmulation is enabled<br>
+      <br>False = utiEmulation is disabled</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;plcChannelList&gt;</td>
+    <td>Child element of &lt;systemConfig&gt;. Contains the plcChannel elements.</td>
+    <td>--</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;plcChannel&gt;</td>
+    <td>Child element of &lt;plcChannelList&gt;. This elements is used to add channels outside of the default channels.</td>
+    <td>--</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td> &lt;hasRemoteChassis&gt;</td>
+    <td>Child element of &lt;systemConfig&gt;. Controls whether a remote controller chassis is used to read the signals from the quadrant.
+      <p class="Note">A remote controller chassis is required when there is a long distance between the control room and the test cell.</p>
+    </td>
+    <td>True = Remote chassis is used<br>
+      <br>False = Remote chassis is not required</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;controllerType&gt;</td>
+    <td>Child element of  &lt;systemConfig&gt;. Sets the Boolean value of <strong>I_NewActuatorChassis_Enabled_Bool</strong></td>
+    <td>Velocity = 0<br>
+      <br>
+Position = 1</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;engineList&gt;</td>
+    <td>Parent element of the elements that define engine configuration.</td>
+    <td>--</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;engine&gt;</td>
+    <td>Child element of &lt;engineList&gt;. Contains all the elements that define the parameters for a specific engine and determines the Throttle configuration for that engine.</td>
+    <td>--</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;name&gt;</td>
+    <td>Child element of &lt;engine&gt;. Contains the name of the engine which appears in the Select Engine list box in the Engine Selection screen.</td>
+    <td>--</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;id&gt;</td>
+    <td>Child element of &lt;engine&gt;. An ID number, indicating the engine type.
+       <p class="Note">This number must be unique across all engine types as it is the number used when selecting an engine via remote inputs or proDAS.</p>
+    </td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;minRange#&gt;</td>
+    <td>Child element of &lt;engine&gt;. This is the value the system is at when the lever is at its minimum position.
+       <p class="Note">There is a minRange1 and a minRange2.</p>
+    </td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;maxRange#&gt;</td>
+    <td>Child element of &lt;engine&gt;. This is the value the system is at when the lever is at its maximum position.
+       <p class="Note">There is a maxRange1 and a maxRange2. The value of maxRange must be larger than minRange.</p>
+    </td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;actuator#&gt;</td>
+    <td>Child element of &lt;engine&gt;. Contains all the elements that define the parameters for a specific actuator. There are two possible &lt;actuator#&gt; elements. &lt;actuator1&gt; and &lt;actuator2&gt;.
+    <p class="Note">Actuator1 defines the Right Actuator configuration and Actuator2 defines the Left Actuator configuration.</p></td>
+    <td>--</td>
+    <td>dateStamp: Indicates date calibrated (in YYYY/MM/DD format).</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;serialNum&gt;</td>
+    <td>Child element of &lt;actuator&gt;. Contains the serial number for the defined actuator. The serial number is displayed on the Rigging Mode Screen.
+      <p class="Note">The serial number is defined by MDS at the factory and should not be changed.</p>
+    </td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;hardwareType &gt;</td>
+    <td>Child element of &lt;actuator&gt;. Contains the hardware type for the defined actuator. The hardware type is displayed on the Rigging Mode Screen.</td>
+    <td>Actuator
+    <br>Resolver<br>RVDT<br> Actuator_Resolver<br>Actuator_RVDT</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;stopsTable&gt;</td>
+    <td>Child element of &lt;actuator#&gt;. This table defines the Stops setup on the system. These Stops are for the applicable actuator.</td>
+    <td>--</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;directions&gt;</td>
+    <td>Child element of &lt;stopsTable&gt;. It determines whether the actuator stops when the lever passes through the Stop position.
+		<p class="Note">If no Stop has been defined, this element remains empty.</p>
+        <p class="Note">The value is inside the &lt;Values&gt; element.</p>
+    </td>
+    <td>Both<br>
+    <br>Up<br>
+    <br>Down</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;positions&gt;</td>
+    <td>Child element of &lt;stopsTable&gt;. It determines the location of the stop.
+	  <p class="Note">If no Stop has been defined, this element remains empty.</p>
+      <p class="Note">The value is inside the &lt;Values&gt; element.</p>
+    </td>
+    <td>Number range between 0 and 180.</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;rigging&gt;</td>
+    <td>Child element of &lt;actuator#&gt;. Contains the parameters the define the rigging.</td>
+    <td>--</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;positions&gt;</td>
+    <td>Child element of &lt;rigging&gt;. Contains the values (in degrees) that the Actuator uses at its know locations during rigging. There can be up to 3 positions.
+      <p class="Note">The value is inside the &lt;Values&gt; element.</p>
+    </td>
+    <td>Numbers range between -180 and 180.</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;defaultSlope&gt;</td>
+    <td>Child element of &lt;rigging&gt;. Contains the default slope value that is used to calculate the rig offset. This is used when using a single point rig.</td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;direction&gt;</td>
+    <td>Child element of &lt;actuator#&gt;. Determines the direction that the Actuator turns. The direction is assuming the operator is looking at the actuator shaft. Clockwise means that the actuator turns in a clockwise direction as the power to the engine is increasing.  Counterclockwise means that the actuator turns in a counterclockwise direction as the power to the engine is increasing.</td>
+    <td>Clockwise<br>
+      <br>Counterclockwise</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;travel&gt;</td>
+    <td>Child element of &lt;actuator#&gt;. This is the total travel in degrees of the Actuator.
+      <p class="Note">This is set by MDS at the factory and should never be modified.</p>
+      </td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;tripIdlePosition&gt;</td>
+    <td>Child element of &lt;actuator#&gt;. Contains the value that determines the angle in degrees where the actuator moves to when the Trip button is pushed.</td>
+    <td>Number value</td>
+    <td>buttonTitle: Creates button title. If no attribute is present then the default button title is used.</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;tripIdleResetBand&gt;</td>
+    <td>Child element of &lt;actuator#&gt;. Contains the value that determines the range around the &lt;tripIdle&gt; (trip angle) in degrees where the lever must be, before the trip can be de-activated.</td>
+    <td>&nbsp;</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;tripIdleRampRate&gt;</td>
+    <td>Child element of &lt;actuator#&gt;. Contains the value that determines the rate at which the output moves to the tripped position.<br>
+      <br>      
+      Units are &deg;/sec</td>
+    <td>0.01 to 400</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;tripCutOffPosition&gt;</td>
+    <td>Child element of &lt;actuator#&gt;. Contains the value that determines the angle in degrees where the actuator moves to when the Cut Off button is pushed.</td>
+    <td>Number value</td>
+    <td>buttonTitle: Creates button title. If no attribute is present then the default button title is used.</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;tripCutOffResetBand&gt;</td>
+    <td>Child element of  &lt;actuator#&gt;. Contains the value that determines the range around the &lt;tripCutOffPosition&gt; ( trip angle) in degrees where the lever must be, before the trip can be de-activated. </td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;tripCutOffRampRate&gt;</td>
+    <td>Child element of &lt;actuator#&gt;. Contains the value that determines the rate at which the output moves to the tripped position.<br>
+<br>Units are &deg;/sec</td>
+    <td>0.01 to 400</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;lever#&gt;</td>
+    <td>Child element of  &lt;engine&gt;. Contains all the elements that define the parameters for  a lever. There are two possible &lt;lever#&gt; elements. &lt;lever1&gt;and &lt;lever2&gt;.
+    <p class="Note"><strong><em>Lever1 defines the Right Lever configuration and Lever2 defines the Left Level configuration</em></strong>.</p></td>
+    <td>--</td>
+    <td>dateStamp: Indicates date calibrated (in YYYY/MM/DD format).</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;caption&gt;</td>
+    <td>Child element of &lt;lever#&gt;. It contains the label that appears above the lever gauge on the Run Mode Screen.<br>
+      <br>
+    This is the value that must be specified in Auto Move commands.</td>
+    <td>--</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;PID_min &gt;</td>
+    <td>Child element of  &lt;lever#&gt;. The PID minimum value. This value can be used to limit the output of the PID.</td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;PID_max &gt;</td>
+    <td>Child element of &lt;lever#&gt;. The PID maximum value. This value can be used to limit the output of the PID.</td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;PID_kp &gt;</td>
+    <td>Child element of &lt;moveChannel&gt;. The PID proportional gain value. Primary element used to tune the PID loop.</td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;PID_ki &gt;</td>
+    <td>Child element of &lt;moveChannel&gt;. The PID integral gain value. Used to tune the PID loop.</td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;PID_kd &gt;</td>
+    <td>Child element of &lt;moveChannel&gt;. The PID derivative gain value. Used to tune the PID loop.</td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;PID_ff &gt;</td>
+    <td>Child element of &lt;moveChannel&gt;. The PID feed forward value.</td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;PID_db &gt;</td>
+    <td>Child element of &lt;moveChannel&gt;. The deadband value.</td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;fuelOnPosition&gt;</td>
+    <td>Child element of &lt;engine&gt;. Sets the position at which the fuel is turned on when the left lever moves above the position. A negative value of <strong>-99999</strong> indicates that the <strong>Fuel</strong> button is used to control the fuel supply. A positive value indicates that the left lever is used to control the fuel supply. A value of 20 turns on the fuel supply when the left lever is at 20 degrees.</td>
+    <td>Number value</td>
+    <td>buttonTitle: Creates button title. If no attribute is present then the default button title is used.</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;flightIdlePosition&gt;</td>
+    <td>Child element of &lt;engine&gt;. Sets the position at which flight idle is turned on when the left lever moves above the position. A negative value of <strong>-99999 </strong>indicates that the Flight Idle button is used to control flight Idle.<br>
+    <p class="Note">This value must be greater than fuelOnPosition.</p></td>
+    <td>Number value</td>
+    <td>buttonTitle: Creates button title. If no attribute is present then the default button title is used.</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;autoMission&gt;</td>
+    <td>Child element of &lt;engine&gt;. A discrete value used to determine whether auto mission controls are enabled for that engine.</td>
+    <td>True = Auto Throttle Mode is enabled<br>
+      <br>False =Auto Throttle Mode is disabled</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;aoChannel#&gt;</td>
+    <td>Child element of &lt;engine&gt;. Contains the elements that define the parameters for the analogue output channels.</td>
+    <td>--</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;outputSelect&gt;</td>
+    <td>Child element of &lt;aoChannel#&gt;. Selects the source of the channel.</td>
+    <td>Lever1<br>
+      <br>Lever2<br>
+      <br>Acuator1<br>
+    <br>Actuator2</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;scalingTable&gt;</td>
+    <td>Child element of &lt;aoChannel#&gt;. The table is used to convert the lever or actuator position in degrees to an analogue output value in volts.  Typically used to send to a DAS or control system.</td>
+    <td>--</td>
+    <td>dateStamp: Indicates date calibrated (in YYYY/MM/DD format).</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;raw&gt;</td>
+    <td>Child element of &lt;scalingTable&gt;. The value in degrees to use as the x axis in an output conversion curve.
+<p class="Note">The value is inside the &lt;Values&gt; element.</p></td>
+    <td>-180 to +180</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;eu&gt;</td>
+    <td>Child element of &lt;scalingTable&gt;. The value in volts to use as the y axis in an output conversion curve.
+    <p class="Note">The value is inside the &lt;Values&gt; element.</p></td>
+    <td>-10 to +10</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;analogueIO&gt;</td>
+    <td>Contains a list of the Input and Output channels that are used for Analogue  Auto Mission (AAM) mode auto Throttle control.</td>
+    <td>--</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;ai#Scaling&gt;</td>
+    <td>Child element of &lt;analogueIO&gt;. The element is used to convert the voltage (raw value) to an EU value (degrees or velocity or any feedback signal).
+      <p class="Note">The value is inside the &lt;Values&gt; element.</p></td>
+    <td>--</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;autoMode&gt;</td>
+    <td>Contains all of the elements that contain the parameters for Auto Throttle Mode.</td>
+    <td>--</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;registeredClients&gt;</td>
+    <td>Child element of &lt;autoMode&gt;. Contains elements that contains the client name.</td>
+    <td>--</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;clientName&gt;</td>
+    <td>Child element of &lt;autoMode&gt;. Contains a string that represents the client name. The client is an external device that has scripts for controlling the Throttle System during auto mode missions. If the client name does not match the name contained in the &lt;clientName&gt; element, it is not be allowed to download a script to the Throttle System.
+      <p class="Note">The string &quot;_gui&quot; is reserved for control from the throttle display computer using Auto Mission procedures.</p></td>
+    <td>String</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;moveChannels&gt;</td>
+    <td>Child element of &lt;autoMode&gt;. Contains the elements that contain the parameters for configuration of outside channels that can control the Throttle System.</td>
+    <td>--</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;moveChannel&gt;</td>
+    <td>Child element of &lt;moveChannels&gt;. Indicates what channel is used.</td>
+    <td>FB1 to FB5</td>
+    <td>alias: name that is displayed on the throttle display computer.<br>
+        <br>
+LeverIndex: 1 or 2, determines which lever is controlled.<br>
+<br>
+target: Contains the channel used. Options are FB1 to FB5.<br>
+<br>
+unit: Contains the engineering unit used. Example, deg, km/h, mph<br></td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;min&gt;</td>
+    <td>Child element of &lt;moveChannel&gt;. Contains the moveChannel minimum value.</td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;max&gt;</td>
+    <td>Child element of &lt;moveChannel&gt;. Contains the moveChannel maximum value.</td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;PID_kp &gt;</td>
+    <td>Child element of  &lt;moveChannel&gt;. The PID proportional gain value. </td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;PID_ki &gt;</td>
+    <td>Child element of  &lt;moveChannel&gt;. The PID integral gain value.</td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;PID_kd &gt;</td>
+    <td>Child element of &lt;moveChannel&gt;. The PID derivative gain value.</td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;PID_ff &gt;</td>
+    <td>Child element of &lt;moveChannel&gt;. The PID feed forward value.</td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;PID_db &gt;</td>
+    <td>Child element of &lt;moveChannel&gt;. The deadband value.</td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;setChannels&gt;</td>
+    <td>Child element of &lt;autoMode&gt;. Defines which channels are allowed to be set by the mission file.</td>
+    <td>--</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;setChannel&gt;</td>
+    <td>Child element of &lt;setChannels&gt;. Defines a particular channel which is allowed to be set by the mission file.</td>
+    <td>--</td>
+    <td>alias: channel alias</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;calibrationData&gt;</td>
+    <td>Contains all of the elements that contain the parameters for the configurable channels. These are the same elements found in the calibrationData.xml configuration file. For details see, calibrationData.xml Configuration File.
+      <p class="Note">The Throttle System only reads calibration data from the calibrationData.xml Configuration File.</p></td>
+    <td>--</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;eu&gt;</td>
+    <td>Element that contains a reading that has been converted into an engineering unit.
+      <p class="Note">The value is inside the &lt;Values&gt; element.</p>
+    </td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;raw&gt;</td>
+    <td>Element that contains a raw reading (example voltage) before it is converted into an engineering unit.
+      <p class="Note">The value is inside the &lt;Values&gt; element.</p>
+     </td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td>&lt;Values&gt;</td>
+    <td>An element that contains a numerical value.</td>
+    <td>Number value</td>
+    <td>--</td>
+  </tr>
+</table>
+<h4>Example ThrottleConfigMaster.xml Configuration File</h4>
+<p class="Note">The example below is not a complete configuration file.</p>
+<br><div class="Container"><img src="images/MasterConfig.png" alt="Master Configuration" width="552" height="2067"></div><br>
+<p>Return to <a href="#configFiles">Configuration Files</a>.</p>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

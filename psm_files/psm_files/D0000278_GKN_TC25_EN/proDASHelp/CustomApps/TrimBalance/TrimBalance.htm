@@ -1,0 +1,902 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Engine Trim Balance</title><!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="TrimBalanceSystem">Engine Trim Balance (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The Trim Balance system is used in conjunction with the CEC Vibration Monitoring System that addresses engine vibration problems during test. 
+  The system is configured to collect data at predetermined engine speeds from vibration monitoring hardware. The data is evaluated and displayed in table 
+and plot formats in the form of a balancing solution. The solution directs an operator to place various Original Equipment Manufacturer (OEM) balance weights at specific locations on an engine fan Low Pressure Turbine (LPT) or high pressure compressor (Core). Similar to the balance weights on the wheel rims of a car, the weights and their distribution pattern trim or lower vibration that occurs at specific rotational speeds.</p>
+<p>The system uses two types of data (vibration phase angle and amplitude), measured on up to 3 vibration transducers, to produce a balancing 
+  solution for the fan, LPT or core. The balance weight part numbers and effective weights are presented to the user to allow for easy engine plane configuration. The solution is expressed with phase lag and sensitivity coefficients that indicate the response of the fan, LPT or core to the installed balance weights. The sensitivity coefficient is a measure of the amount of weight per unit of vibration change. It is used to calculate the magnitude of the weight to install. The phase lag is used to calculate the weight location. Vibration severity varies at different rotational speeds, thus several sets of coefficients are 
+generated to calculate an overall balance solution. A record of coefficients is created after each successful balance. These coefficients apply to a family of engines, and are used to calculate the first weight (one-shot) solution during the next engine balance session.</p>
+<p>The system allows the operator to view the cumulative effect of combining (summing) a balancing solution with another solution. Data from previous tests may also be retrieved.</p>
+<p>Residual vibration is also predicted by Trim Balance after the software calculates the solution at the Residual Vibration Levels screen. At this screen, the operator may elect to provide a &quot;User&quot; weight solution. The user solution can, for example, be &quot;tuned&quot; for specific speeds, instead of using the &quot;MDS&quot; solution that is &quot;averaged&quot; for all speeds.</p>
+<p>The system provides real time display of vibration amplitudes and phase angles. The Trim Balance System is configured to collect data at predetermined engine speeds from vibration monitoring hardware. The data is evaluated and displayed in table and plot formats in the form of a balancing solution. The vibration measurement system receives signals for the velocity transducers (voltage output), accelerometers with charge output (pC/g) and accelerometers with integral charge amplifiers (ICP type voltage outputs).</p>
+<p>The CEC Vibration System tracks against either N1, N2, N3 vibration signals to produce relevant tracked orders. Additional vibration/trim balance displays are available to the test cell operator. The system reconfigures the CEC amplifiers to produce tracked order vibration and phase angle outputs. Tracking filters allow vibration levels that change with rotational speed to be analysed.</p>
+<p>If an Endevco Vibration System is being used, the Trim Balance software can reconfigure the Endevco TFAS Vibration Signal Conditioner to Trim Balance 
+mode allowing it to output the phase angle needed for engine balancing. The system restores the Endevco to initial values after balancing is complete.</p>
+<p>During test, the system:</p>
+<ul>
+  <li>starts and stops test data logs at predetermined test speeds</li>
+  <li>indicates data quality (good, suspect or bad) and automatically selects good data while excluding bad data</li>
+  <li>expresses data in graphical and tabular form</li>
+  <li>generates and retrieves reports</li>
+  <li>updates sensitivity and phase lag coefficients to reflect test results for a specific family of engines</li>
+  <li>records imbalance data at multiple speeds</li>
+</ul>
+<p>The process flow for a Fan or LPT balance session is displayed in the following flowchart.</p>
+<div class="Container"><img src="images/BDTrimBalFlowA.gif" alt="BD Trim Balance FlowA" width="677" height="735"></div>
+<br>
+<p>The process flow for a Core balance session is displayed in the following flowchart.</p>
+<div class="Container"><img src="images/BDCoreBalFlow.gif" alt="BD Core Balance Flow" width="689" height="843"></div>
+<br>
+<p>The system is configured with a unique tb log definition using the Transient Log Editor. A tb.def log file definition stores the channel identifiers that are used by the Trim Balance. The 'new' and 'specifics.ini' files, within the Trim Balance directory, identifies channels that proDAS uses to receive data for the test, and other engine-specific balance configuration settings.</p>
+<p>The operator selects  up to three vibration transducers to be used for balancing. Each transducer requires an amplitude and phase angle channel assignment. The speed data channel is common to all sensors, thus, up to seven data channels may be required by proDAS per test. An auto-report configuration parameter is included within tb.def to convert data into a tab-delimited text file.</p>
+<p>After the Record Data button is selected on the Vibration Measurement GUI, Trim Balance sends the command to proDAS to start and stop data acquisition in the tb log. proDAS creates a report from the data using tb.def that is sent to Trim Balance for analysis. The analysis results are displayed on the Imbalance Vector Data GUI. A balance weight solution (weights and their distribution pattern on the engine fan, LPT or core) is displayed on the Balance Weight Vector GUI.</p>
+<p>The system resides on the Management Interface Computer and communicates with the Endevco AVM System via an IEEE 488 interface (i.e. GPIB connection), if applicable, and communicates with proDAS through an Ethernet link.</p>
+<p>The Trim Balance System handles the following:</p>
+<ul>
+  <li><a href="#FanLPTBal">Fan or Low Pressure Turbine (LPT) Balancing</a></li>
+  <li><a href="#CoreBal">Core Balancing</a></li>
+</ul>
+<h2 id="StartTrimBalance">Starting the Trim Balance System</h2>
+<p>The Trim Balance System can be started in one of two ways:</p>
+<ul>
+  <li>via the Management GUI Control Panel where the username and password are passed automatically</li>
+  <li>as an independent application where the username and password are not passed automatically</li>
+</ul>
+<h4 id="startfromproDAS">To start Trim Balance from the Management GUI Control Panel:</h4>
+<ol>
+  <li>From the Tools menu, select <strong>Trim Balance</strong>.
+    <p class="Note">The operator is automatically logged into the editor with the same user name and privileges as entered for the Management GUI.</p>
+    Trim Balance is started and the <a href="?95#WelcomeScrn">Welcome to the Trim Balance Application</a> screen is displayed.</li>
+</ol>
+<h4 id="startstandalone">To start Trim Balance as an independent application:</h4>
+<ol>
+  <li>Double-click the Trim Balance executable file, from your directory structure.<br>
+    The Login window is displayed.
+    <div class="Container"><img src="images/Login.png" alt="Login" width="407" height="272"></div>
+  </li>
+  <li>Enter a valid Username and Password.
+    <p class="Note">The user name and password must be a minimum of three characters and five characters long, respectively, to enable the Login button.</p>
+  </li>
+  <li>Select <strong>Login</strong>.<br>
+    Trim Balance is started and the Welcome to the Trim Balance Application screen (below) is displayed.</li>
+  <li>To close the Login window, select <strong>Cancel</strong>.<br>
+    <p id="WelcomeScrn">The Welcome to the Trim Balance Application screen provides access to the Balance Plane Configuration screen and the Retrieve Report screen. The Welcome to the Trim Balance Application screen displays the Trim Balance Session Log. The operator can scroll through the session log by using the scroll bar on the right-hand side of the session log window.</p>
+    <div class="Container"><img src="images/TBWelcomeNew.gif" alt="Trim Balance Welcome New" width="700" height="550"></div>
+  </li>
+</ol>
+<h2 id="FanLPTBal">Fan or Low Pressure Turbine (LPT) Balancing</h2>
+<p>To begin a Fan or LPT balance session:</p>
+<ol>
+  <li>From the Welcome to the Trim Balance Application screen, select <strong>Balance Engine</strong>. The <a href="#BalancePlaneConfiguration">Balance Plane Configuration screen</a> is displayed.</li>
+  <li>To retrieve, generate, and print reports, select <strong>Get Report</strong>. The <a href="#RetrieveReportPage">Retrieve Report screen</a> is displayed.</li>
+  <li>To close the Trim Balance Application and return to the Test Ending Utility screen, select <strong>Exit</strong>.</li>
+  <li>For on-line help, select <strong>Help</strong>. The <a href="#Help">On-line Help screen</a> is displayed.</li>
+  <li>For information on the Trim Balance Application, select <strong>About Trim Balance</strong>. The <a href="#AboutTrimBal">About Trim Balance screen</a> is displayed.</li>
+  <li>To minimise the Trim Balance Application, select <strong>Minimize</strong>.</li>
+</ol>
+<h2 id="BalancePlaneConfiguration">Balance Plane Configuration Screen</h2>
+<p>The Balance Plane Configuration screen allows the operator to review and change the current balance weight configuration for the engine being balanced.</p>
+<p>To initialise the Balance Plane Configuration screen:</p>
+<ol>
+  <li>From the Welcome to the Trim Balance Application screen, select <strong>Balance Engine</strong>.<br>
+    A &quot;Please select...&quot; window is displayed.
+    <p class="Note">Depending on how the system is configured for the given engine model the following possibilities are available: <br>
+      &bull; &nbsp; &nbsp; &nbsp; Fan only balance - the screen below is omitted<br>
+      &bull; &nbsp; &nbsp; &nbsp; Fan or LPT balance - the user chooses between provided options<br>
+      &bull; &nbsp; &nbsp; &nbsp; Core balance - is displayed only if the Core balance, in the &quot;new file&quot;, is set to True. For Core Balance details, see <a href="TrimBalance.htm">Core Balancing</a>.<br>
+    </p>
+    <div class="Container"><img src="images/TBFanBalSelect.gif" alt="Trim Balance Fan Balance Select" width="350" height="213"></div>
+  </li>
+  <li>From the &quot;Please select...&quot; window, select <strong>Fan/LPT </strong> to perform FAN/LPT balancing.</li>
+  <li>Select <strong>OK</strong>. The Balance Plane Configuration screen is displayed.
+    <div class="Container"><img src="images/TBbalplaneconfig01.gif" alt="TBbalplaneconfig01" width="700" height="545"></div>
+  </li>
+  <li>If the weight values are unknown, select <strong>OK</strong>. The Limits and Tolerances screen is displayed. For further details, see <a href="#LimitsTolerances">Limits and Tolerances screen</a>.
+    <p class="pNote">The user can continue to acquire a first data set of imbalance data with the Initial Weight Configuration &quot;unknown&quot;. The current balance weights can be surveyed and entered into the Trim Balance Application after the engine is shut down. For details, see <a href="#WeightUnknown">Balance Weight Positions procedure, step 5</a>.</p>
+    <div class="Container"><img src="images/TBLimitsandTolerances01.gif" alt="TBLimitsandTolerances01" width="700" height="545"></div>
+  </li>
+  <li>If the weight values are known, select <strong>Update</strong>. A new Balance Plane Configuration screen is displayed.
+    <div class="Container"><img src="images/TBbalplaneconfig01b.gif" alt="TBbalplaneconfig01b" width="700" height="545"></div>
+  </li>
+  <li>To add the current weight configuration, select Add Weights. A new Balance Plane Configuration screen is displayed.
+    <div class="Container"><img src="images/TBbalplaneconfig01c.gif" alt="TBbalplaneconfig01c" width="700" height="545"></div>
+  </li>
+  <li>To clear the information in the Initial Configuration panel, select <strong>Clear</strong>.<br>
+    The information in the Initial Configuration panel is cleared and the Clear button changes to a Revert button.</li>
+  <li>To restore the information in the Initial Configuration panel, select <strong>Revert</strong>.<br>
+    The information is restored to the Initial Configuration panel and the Revert button changes to a Clear button.<br>
+  </li>
+  <li id="AddItem">To add an item to the Initial Configuration panel, select the location and part number from the Location and Part Number lists, respectively, and select <img src="images/TBArrowRight.jpg" alt="Trim Balance Arrow Right" width="33" height="23">.<br>
+    If a location is unavailable (see the Balance Plane Configuration screen below), select the location and select <img src="images/TBXbutton.jpg" alt="Trim Balance X-button" width="32" height="25">.<br>
+    If the part number is not known, select the location and then select <strong>Unknown</strong>. The blade location will be added to the Initial Configuration panel and the part number will be listed as Unknown.</li>
+  <li>To remove an item from the Initial Configuration panel, select the corresponding blade number from the Location list and select <img src="images/TBArrowLeft.jpg" alt="Trim Balance Arrow Left" width="33" height="23">.</li>
+  <li>When the Initial Configuration list has been completed, select <strong>Continue</strong>. 
+    The following Balance Plane Configuration screen is displayed.
+    <div class="Container"><img src="images/TBbalplaneconfig04.gif" alt="Trim Balance balplaneconfig04" width="700" height="550"></div>
+  </li>
+  <li>To make other changes to the Initial Configuration, select <strong>Update</strong>.
+    <p class="Note">This step can be performed until the user is satisfied with the results.</p>
+  </li>
+  <li>If the Initial Configuration is acceptable, select <strong>OK</strong>.<br>
+    The test parameters are retrieved.</li>
+  <li id="BPCstep13">When the test parameters have been retrieved, the <a href="#LimitsTolerances">Limits and Tolerance screen</a> is displayed.</li>
+  <li>If required, to close the Balance Plane Configuration screen and return to the Welcome to the Trim Balance Application screen, select <strong>Exit</strong>. A confirmation window is displayed.
+    <div class="Container"><img src="images/TBabortConfirm.gif" alt="Trim Balance Abort Confirm" width="326" height="126"></div>
+  </li>
+</ol>
+<h2 id="LimitsTolerances">Limits and Tolerances Screen</h2>
+<p>The Limits and Tolerances screen is displayed when the test parameters have been retrieved (see <a href="#BPCstep13">Balance Plane Configuration procedure, Step 13</a>) or when <strong>Previous Screen</strong> is selected on the Vibration Measurement screen.</p>
+<div class="Container"><img src="images/TBLimitsandTolerances01.gif" alt="Trim Balance Limits and Tolerances 01" width="700" height="545"></div>
+<h4>To set the limits and tolerances for the selected engine configuration:</h4>
+<ol>
+  <li>Modify the target tolerance (in RPM or Percent) in the Target Tolerance field, if required.<br>
+    Use the up and down arrows to make incremental adjustments to the target tolerance value.</li>
+  <li>Modify the selection of the transducer(s) from the Select Transducer panel, if required.<br>
+    Any combination of up to three transducers can be selected.<br>
+    <div class="Container"><img src="images/TBLimitsandTolerances01.gif" alt="Trim Balance Limits and Tolerances 01" width="700" height="545"></div>
+  </li>
+  <li>For each transducer selected, the user has the option to enter, or modify the High Limit and the High High Limit.<br>
+    Use the up and down arrows to make incremental adjustments to the limits.</li>
+  <li>To return to the Balance Plane Configuration screen, select <strong>Previous</strong>.</li>
+  <li>If all parameter settings are acceptable, select <strong>Continue</strong>.<br>
+    When the system has been prepared for data acquisition, the <a href="#VibMeasurement"> Vibration Measurement screen</a> is displayed.</li>
+</ol>
+<h2 id="VibMeasurement">Vibration Measurement Screen</h2>
+<p>The acquisition of vibration measurement data is initiated from the Vibration Measurement screen. The appearance of the Vibration Measurement screen depends on the number of transducers selected from the Limits and Tolerances screen (any combination of up to three transducers  can be selected). If only one transducer is selected, only one set of gauges is displayed. Each additional transducer adds a set of gauges to the Vibration Measurement screen. Magnitude, Phase, and Quality columns are added to the table for each additional transducer.</p>
+<div class="Container"><img src="images/TBVibeMeasure02.gif" alt="TBVibeMeasure02" width="700" height="550"></div>
+<p class="Note">To return to the Limits and Tolerances screen at any time:<br>
+  <br>
+  1. Select Previous Screen.<br>
+  The Previous Screen Selected panel is displayed.<br>
+  <img src="images/TBpreviousScrn.jpg" alt="TBpreviousScrn" width="318" height="119"><br>
+  2. Select Yes.<br>
+  The Previous Screen Selected panel and the Vibration Measurement screen are closed and the Limits and Tolerances screen is opened.<br>
+</p>
+<p class="Note">To resume vibration measurement:<br>
+  <br>
+  1. Select No from the Previous Screen Selected panel.<br>
+  The Previous Screen Selected panel is closed and the vibration measurement is resumed at the Vibration Measurement screen.<br>
+</p>
+<h4 id="StartAcquisitionData">To start the acquisition of vibration measurement data:</h4>
+<ol>
+  <li>Wait until the N1 speed is within the target speed range.<br>
+    The At Target and Captured LEDs are red while N1 is out of the tolerance range.<br>
+    The Vibration and Phase gauges are updated continuously.</li>
+  <li>When N1 is within tolerance range of the target speed, the At Target LED changes from red to green and the <strong>Acquire</strong> button is displayed and enabled.
+    <div class="Container"><img src="images/TBVibeMeasure03.gif" alt="TB Vibe Measure03" width="700" height="550"></div>
+  </li>
+  <li>To record the data for the current target speed, select <strong>Acquire</strong>.<br>
+    The Acquire button is removed from the Vibration Measurement screen (below) and the Skip and Previous Screen buttons are disabled. While recording data the Captured LED changes from red to yellow. After approximately five seconds, the data is recorded and the Captured and At Target LEDs turn red and the Skip button is enabled.
+    <div class="Container"><img src="images/TBVibeMeasure04.gif" alt="TBVibeMeasure04" width="700" height="550"></div>
+  </li>
+  <li>To advance to the next Target Speed without recording the data 
+    for the current target, select <strong>Skip</strong>.
+    <p class="Note">Skip is normally only selected if the target speed cannot be safely obtained (i.e. if the vibration level is too high or target speed is above take-off speed).</p>
+  </li>
+  <li>Repeat Steps 1 through 4 until all target speeds have been processed (i.e.: Acquire or Skip).</li>
+  <li>When all target speeds have been acquired, the Restart Acquisition, Engine Balanced, and Continue buttons are enabled and the At Target and Captured LEDs and the Vibration and Phase gauges are removed from the Vibration Measurement screen (below).
+    <div class="Container"><img src="images/TBVibeMeasure05.gif" alt="TBVibeMeasure05" width="700" height="545"></div>
+  </li>
+  <li>If required, to restart data acquisition, select <strong>Restart Acquisition</strong> and <a href="?44#StartAcquisitionData">go to Step 1 of the Vibration Measurement Screen</a>.</li>
+  <li>If the engine balance is acceptable, select <strong>Engine Balanced</strong>.<br>
+    The Vibration Measurement screen is closed and the <a href="#EngineBalanced"> Engine Balanced Screen</a> is opened. An Update Coefficients confirmation box is displayed following a One Shot Solution. To update the coefficients file, select <strong>OK</strong>.</li>
+  <li>To view the imbalance vector data and progress towards calculating a new balance solution, select <strong>Continue</strong>.<br>
+    The Vibration Measurement screen is closed and the <a href="#AddingWeights"> Imbalance Vector Data Screen</a> is opened.</li>
+</ol>
+<h2 id="AddingWeights">Imbalance Vector Data Screen</h2>
+<p>The Imbalance Vector Data screen is displayed by selecting:</p>
+<ul>
+  <li>the Continue button on the Vibration Measurement screen</li>
+  <li>the Previous Screen button on the Weight Vector Data screen</li>
+</ul>
+<div class="Container"><img src="images/TBimbvecdata01.gif" alt="TBimbvecdata01" width="700" height="545"></div>
+<ol>
+  <li id="IVDstep1">By default, all imbalance vector data is selected for viewing on the weight vector plot.</li>
+  <li>Select <strong>Previous</strong> or <strong>Next</strong> to display different transducer data.</li>
+  <li>To remove data from the plot view or to affect weight determination, click on the corresponding buttons in the Select column.<br>
+    <p class="Note">Green quality vectors are always included regardless of the selection; red quality are always excluded regardless of the selection; yellow quality inclusion is dependant on the selection.</p>
+  </li>
+  <li>When the vector data selections have been completed, a plot of the selected imbalance vector data can be viewed by selecting <strong>Plot Selections</strong>.</li>
+  <li>To view a plot of the selected imbalance vector data, select <strong>Plot Selections</strong>. <br>
+    The plot is displayed on the Imbalance Vector Data screen (below) and the Plot Selections button changes to Update Plot.
+    <div class="Container"><img src="images/TBimbvecdata02.gif" alt="TBimbvecdata02" width="700" height="545"></div>
+  </li>
+  <li>To change or update the imbalance vector data selections, enable or disable the buttons in the Select column and select <strong>Update Plot</strong> (repeat as required).
+    <div class="Container"><img src="images/TBimbvecdata03.gif" alt="TBimbvecdata03" width="700" height="550"></div>
+  </li>
+  <li>If the imbalance vector data is acceptable, but the engine requires further balancing, select <strong>Continue</strong> to proceed with the balance weight calculations. A dialogue box (below) is displayed, prompting the operator to either cancel or proceed with the solution determination.
+    <p class="Note">The &quot;red&quot; data is automatically excluded.</p>
+    <div class="Container"><img src="images/TBGreenYellowDialog.gif" alt="TB Green Yellow Dialog" width="491" height="126"></div>
+  </li>
+  <li >Select <strong>Cancel</strong> to abort the solution determination and <a href="?24#IVDstep1">return to Step 1</a>.</li>
+  <li>To continue with the solution determination, select <strong>OK</strong>.<br>
+    The weight vectors are calculated and the <a href="#WeightVectorDataPage">Weight Vector Data screen</a> is displayed.</li>
+  <li>If the vibration is within acceptable limits, select <strong>Engine Balanced</strong>. 
+    The <a href="#EngineBalanced"> Engine Balanced</a> screen is displayed.</li>
+  <li>To re-run the test, select <strong>Re-Run Test</strong> and <a href="#StartAcquisitionData">go to Step 1 of the Vibration Measurement screen</a>.</li>
+  <li>To close the Imbalance Vector Data screen, select <strong>Exit</strong>.<br>
+    When the report has been printed or the balance session has been terminated, the <a href="TrimBalance.htm?#WelcomeScrn">Welcome to the Trim Balance Application screen</a> is displayed.</li>
+</ol>
+<h2 id="WeightVectorDataPage">Weight Vector Data Screen</h2>
+<p>If the imbalance vector data was acceptable on the Imbalance Vector Data screen and the <strong>Continue</strong> button is selected, the Weight Vector Data screen is displayed.</p>
+<div class="Container"><img src="images/TBweightvector01.gif" alt="TB weight vector01" width="700" height="545"></div>
+<ol>
+  <li>By default, all weight vector data is selected for weight (&quot;Outlier&quot;) determination (i.e.: all buttons in the Select column are enabled).</li>
+  <li>To delete data from the Select Data for Outlier Determination table, make sure the corresponding buttons in the Select column are disabled.
+    <p class="Note">Green quality vectors are always included regardless of the selection; red quality are always excluded regardless of the selection; yellow quality inclusion is dependant on the selection.</p>
+    If the <strong>Previous</strong> or <strong>Next</strong> buttons are enabled, check these pages and make sure only the required data entries are selected.</li>
+  <li>When the vector data selections have been completed, <a href="?49#WVDstep6">go to Step 6</a>.</li>
+  <li>To view a plot of the selected weight vector data, select <strong>Plot Selections</strong>.<br>
+    The plot is displayed on the Weight Vector Data screen and the <strong>Plot Selections</strong> button changes to <strong>Update Plot</strong>.<br>
+    <div class="Container"><img src="images/TBweightvector02.gif" alt="TB weight vector02" width="700" height="550"></div>
+  </li>
+  <li>To change or update the weight vector data selections, enable or disable the buttons in the Select column and select <strong>Update Plot</strong> (repeat as required).
+    <div class="Container"><img src="images/TBweightvector03.gif" alt="TB weight vector03" width="700" height="550"></div>
+  </li>
+  <li id="WVDstep6">To proceed with weight solution calculations, select <strong>Continue</strong>.<br>
+    A dialogue box (below) is displayed, prompting the operator to either cancel or proceed with the solution determination.
+    <div class="Container"><img src="images/TBGreenYellowDialog.gif" alt="TB Green Yellow Dialog" width="491" height="126"></div>
+  </li>
+  <li>Select <strong>Cancel</strong> to abort the solution determination and <a href="?51#WeightVectorDataPage">return to the Weight Vector Data screen</a>.</li>
+  <li id="WVDstep8">To continue with the solution determination, select <strong>OK</strong>.<br>
+    When the solutions and residual values have been calculated, the Weight Vector Data screen is closed and the <a href="#ResidVibrationLevels"> Residual Vibration Levels screen</a> is displayed.</li>
+  <li>To return to the <a href="#AddingWeights">Imbalance Vector Data screen</a>, select <strong>Previous Screen</strong>.</li>
+  <li>To close Weight Vector Data screen, select <strong>Exit</strong>.<br>
+    When the report has been printed or the balance session terminated, the <a href="TrimBalance.htm?#WelcomeScrn">Welcome to the Trim Balance Application screen</a> is displayed.</li>
+</ol>
+<h2 id="ResidVibrationLevels">Residual Vibration Levels Screen</h2>
+<p>The Residual Vibration Levels Screen (below) allows the operator to:</p>
+<ul>
+  <li>adjust the Fan / LPT weight solutions</li>
+  <li>display plots of Fan / LPT vectors along with MDS and User Solution weight vectors</li>
+  <li>display plots of predicted residual vibration levels for Fan / LPT  for MDS and User Solutions</li>
+  <li>print the residual vibration level screens</li>
+</ul>
+<p>The Residual Vibration Levels screen displays the initial MDS Trim Balance solution in the MDS Solution panel.</p>
+<div class="Container"><img src="images/TBresidVibLevel01.gif" alt="TB resid Vib Level01" width="700" height="545"></div>
+<ol>
+  <li>To try another weight solution and see its effect on the residual vibration levels, select <strong>Adjust Values</strong>.<br>
+    A User Solution panel is opened on the Residual Vibration Levels screen (below).
+    <div class="Container"><img src="images/TBresidVibLevel02.gif" alt="TB resid Vib Level02" width="700" height="550"></div>
+  </li>
+  <li id="EnterMagnitudeStep2">Enter the weight magnitude in the User Solution panel and press the <strong>Tab</strong> key or the <strong>Enter</strong> key on the keyboard.</li>
+  <li>Enter the angle (in degrees) in the User Solution Angle field and press the <strong>Tab</strong> key or the <strong>Enter</strong> key on the keyboard.</li>
+  <li>When the magnitude and angle have been entered, a User Solution box is added to the Residual Vibration Levels screen (below) and User Residual column is  added to the Plane Values table.
+    <div class="Container"><img src="images/TBresidVibLevel03.gif" alt="TB resid Vib Level03" width="700" height="550"></div>
+  </li>
+  <li>To modify the User Solution and recalculate and view the associated residual vibration levels, select <strong>Adjust Values</strong> and <a href="?38#EnterMagnitudeStep2">go to Step 2</a>.</li>
+  <li>To view the plots of the residual vibration levels, select <strong>See Plots</strong>. The Residual Vibration Levels screen is closed and the <a href="#ViewPlots"> View Plots Residual Vibration Levels</a> screen is displayed.</li>
+  <li>To get the weight locations, select Get Weight Locations. The Residual Vibration Levels screen is closed and the <a href="#BalweightPosition"> Balance Weights Position</a> screen is displayed.</li>
+  <li>To print the screen, select <strong>Print Screen</strong>.</li>
+  <li>To close Residual Vibration Levels screen, select <strong>Exit</strong>.<br>
+    When the report has been printed or the balance session terminated, the <a href="TrimBalance.htm?#WelcomeScrn">Welcome to the Trim Balance Application screen</a> is displayed.</li>
+</ol>
+<h2 id="ViewPlots">Viewing Plots of the Residual Vibration Levels</h2>
+<p>To view plots of the weight vectors and MDS and User Solution weight vectors:</p>
+<ol>
+  <li>When <strong>See Plots</strong> is selected on the Residual Vibration Levels screen, the weight vectors and MDS and User Solution weight vectors are displayed on a polar plot (below).
+    <div class="Container"><img src="images/TBresidVibLevel04.gif" alt="TB resid Vib Level04" width="700" height="550"></div>
+  </li>
+  <li>To print the Weight and Position Data (Polar Plot) screen, select <strong>Print Screen</strong>.</li>
+  <li>To see the bar graphs for the MDS and User Solution Residual Vibration levels, select <strong>Show Residuals</strong>.<br>
+    The MDS and User Solution Residual Vibration level bar graphs are displayed on the Residual Vibration Levels screen (below) and the Show Residuals button changes to a Polar Plot button.
+    <div class="Container"><img src="images/TBresidVibLevel05.gif" alt="TB resid Vib Level05" width="700" height="550"></div>
+  </li>
+  <li>To print the screen, select <strong>Print Screen</strong>.</li>
+  <li>To return to the Polar Plot display, select <strong>Polar Plot</strong>.</li>
+  <li>To return to the Fan Plane Values table on the Residual Vibration Values screen, select <strong>Return</strong>.</li>
+</ol>
+<h2 id="BalWeightPosition">Balance Weight Positions Screen</h2>
+<p>The Residual Vibration Levels screen allows the operator to choose between proceeding to calculate an MDS weight solution or a user weight solution.</p>
+<p>The Residual Vibration Levels screen (below) is displayed when the solutions and residual values have been calculated (see <a href="#WVDstep8">Weight Vector Data procedure, Step 8</a>).</p>
+<div class="Container"><img src="images/TBresidVibLevel03.gif" alt="TB resid Vib Level03" width="700" height="550"></div>
+<ol>
+  <li>From the Residual Vibration Levels screen (above), select <strong>Get Weight Locations</strong>.<br>
+    The Residual Vibration Levels screen (below), with a Select Solution slider switch and Reconsider and Continue buttons, is displayed. The Adjust Values, See Plots, and Print Screen buttons are disabled.
+    <div class="Container"><img src="images/TBresidVibLevel06.gif" alt="TB resid Vib Level06" width="700" height="550"></div>
+  </li>
+  <li>To change the User Solution, select <strong>Reconsider</strong>. The initial <a href="#ResidVibrationLevels">Residual Vibration Levels</a> screen is displayed.</li>
+  <li>Select the solution (Operator or MDS) by clicking in the Select Solution slider bar field.</li>
+  <li id="WeightUnknown">Select <strong>Continue</strong>. If the initial weight is <strong>unknown</strong> the Balance Plane Configuration screen is displayed.
+    <div class="Container"><img src="images/TBbalplaneconfig01.gif" alt="TB bal plane config01" width="700" height="545"></div>
+  </li>
+  <li>Select <strong>Update</strong>. A new Balance Plane Configuration screen is displayed.
+    <div class="Container"><img src="images/TBbalplaneconfig03.gif" alt="TB bal plane config03" width="700" height="550"></div>
+  </li>
+  <li>Add weights to the Initial Configuration. When the Initial Configuration list has been completed, select <strong>Continue</strong>. The following Balance Plane Configuration screen is displayed.
+    <div class="Container"><img src="images/TBbalplaneconfig05.gif" alt="TB bal plane config05" width="700" height="550"></div>
+  </li>
+  <li>If the Initial Configuration is acceptable, select <strong>OK</strong>.<br>
+  </li>
+  <li>When the new weight locations have been determined, the Balance Weight Positions screen (below) is displayed.
+    <div class="Container"><img src="images/TBbalweightspos01.gif" alt="TB bal weights pos01" width="700" height="550"></div>
+  </li>
+  <li>Select the sum values (YES or NO) by clicking in the Sum Values slider bar field (e.g.: YES). If <strong>Yes</strong> is selected, the new weights are summed with the current weight and a new final weight is displayed. If <strong>No</strong> is selected, the new weight is installed and the current weight remains installed.</li>
+  <li>Select <strong>Final Solution</strong>.<br>
+    The Balance Weight Positions screen (below) is displayed.
+    <div class="Container"><img src="images/TBbalweightspos02.gif" alt="TBbalweightspos02" id="TB bal weights pos02" width="700" height="550"></div>
+  </li>
+  <li >To close Balance Weight Positions screen, select <strong>Exit</strong>.<br>
+    When the report has been printed or the balance session terminated, the <a href="TrimBalance.htm?#WelcomeScrn">Welcome 
+      to the Trim Balance Application screen</a> is displayed.</li>
+</ol>
+<h2 id="BalPlaneReConfig">Balance Plane Re-Configuration Screen</h2>
+<p>The Balance Plane Re-Configuration screen (below) can be accessed by selecting:</p>
+<ul>
+  <li>the <strong>Continue</strong> button on the Balance Weight Positions screen</li>
+  <li>the <strong>Update</strong> button on the Balance Plane Configuration screen</li>
+  <li>the <strong>Continue</strong> button on the Balance Plane Re-Configuration screen</li>
+</ul>
+<div class="Container"><img src="images/TBbalplanereconfig01.gif" id="BalPlaneReconfig-1" alt="TBbalplanereconfig01" width="700" height="550"></div>
+<p>To reconfigure the balance plane:</p>
+<ol>
+  <li>To clear the weights for the Current Configuration panel, select <strong>Clear</strong>.<br>
+    The weights in the current configuration box are cleared and the Clear button changes to a Revert button.</li>
+  <li> To restore the weights in the current configuration box, select <strong>Revert</strong>.<br>
+    The information is restored to the Current Configuration panel and the Revert button changes to a Clear button.<br>
+  </li>
+  <li id="AddItem2CurrentConfigPanel">To add a weight to the Current Configuration panel, select the location and part number from the Location and Part Number 
+    lists and select <img src="images/TBArrowRight.jpg" alt="TBArrowRight" width="33" height="23">.<br>
+    Or select the location and select <img src="images/TBXbutton.jpg" alt="TBXbutton" width="32" height="25"> if the part number is not available to install a weight. For example, if the weight position is occupied by a shop weight that cannot be removed during balancing.</li>
+  <li>To remove an item from the Current Configuration panel, select the corresponding blade number from the Location panel and select <img src="images/TBArrowLeft.jpg" alt="TBArrowLeft" width="33" height="23">.</li>
+  <li>When the current configuration list has been completed, select <strong>Continue</strong>. <br>
+    The Re-configuration Completed dialogue box is displayed.
+    <div class="Container"><img src="images/TBReconCompDialog.jpg" alt="TBReconCompDialog" width="239" height="119"></div>
+  </li>
+  <li>To close the Re-configuration Completed dialogue box, without applying the part list to the new configuration, select <strong>No</strong> and <a href="?10#BalPlaneReconfig-1">go to the Balance Plane Re-Configuration screen</a>.</li>
+  <li>To apply the part list to the new configuration, select <strong>Yes</strong>. <br>
+    The Re-configuration Completed dialogue box is closed and the Balance Plane Re-Configuration screen (below), showing the current (new) configuration, is 
+    displayed.<br>
+    <div class="Container"><img src="images/TBbalplanereconfig02.gif" id="BalPlaneReconfig2" alt="TBbalplanereconfig02" width="700" height="550"></div>
+  </li>
+  <li>To update the configuration and begin a new test, select <strong>Update</strong> and <a href="?11#BalPlaneReconfig-1">go to the initial Balance Plane Re-Configuration screen</a>.</li>
+  <li>To continue, select <strong>Continue</strong>.<br>
+    The Engine Configuration dialogue box is displayed.
+    <div class="Container"><img src="images/TBEngConfigDialog.jpg" alt="TB Eng Config Dialog" width="338" height="119"></div>
+  </li>
+  <li>Select <strong>No</strong> to close the Engine Configuration dialogue box and <a href="?12#BalPlaneReconfig-1">return to the Balance Plane     Re-Configuration screen</a>.</li>
+  <li>To update the configuration and begin the next engine test, select <strong>Yes</strong>. <br>
+    A series of summed solutions are calculated. When the calculations are completed, the Balance Plane Re-Configuration screen is closed and the Vibration Measurement screen is displayed.
+    <div class="Container"><img src="images/TBVibeMeasure07.gif" alt="TBVibeMeasure07" id="TB Vibe Measure 07" width="700" height="550"></div>
+  </li>
+  <li>Begin collecting data. If the vibration levels are excessive, that is approaching or exceeding the safe operating limit, abort the data collecting process by selecting <strong>Previous Screen</strong>. The Balance Plane Re-Configuration screen is displayed.
+    <p class="Note">Using the Previous Screen button from the Vibration Measurement screen can only be used to reposition the first weight solution. Once subsequent weight solutions are applied using the Balance Plane Re-Configuration screen, they cannot be repositioned. A new solution will have to be calculated and applied based on a newly acquired data set.</p>
+    <div class="Container"><img src="images/TBbalplanereconfig05.gif" alt="TB bal plane reconfig05" width="700" height="550"></div>
+  </li>
+  <li>Move the weights the equivalent of 90 or 180 degrees in order to decrease vibration levels to the point where a second set of vibration data can be safely obtained thereby allowing the Trim Balance System to calculate a new solution. Select <strong>Continue</strong>. The Vibration Measurement screen is displayed.
+    <div class="Container"><img src="images/TBVibeMeasure09.gif" alt="TB Vibe Measure09" width="700" height="550"></div>
+    If vibration levels allow for data to be safely recorded, see <a href="#StartAcquisitionData">Start Acquisition of Vibration Measurement Data</a> to record new data and generate a new balance solution. If the vibration levels are still excessive, select <strong>Previous Screen</strong> and reposition the weight to another location. Repeat the process until the vibration levels are adequate. </li>
+</ol>
+<h2 id="EngineBalanced">Engine Balanced</h2>
+<p>When the Engine Balanced button is selected, the records are updated and the <strong>Update Coefficients?</strong> panel (below) is displayed.</p>
+<p>The Engine Balanced button is available on the following Trim Balance screens:</p>
+<ul>
+  <li>Imbalance Vector Data</li>
+  <li>Vibration Measurement</li>
+  <li>Weight Vector Data</li>
+</ul>
+<div class="Container"><img src="images/TBupdateCoeffs.jpg" alt="TBupdateCoeffs" width="323" height="119"></div>
+<ol>
+  <li>Select <strong>Yes</strong> from the Update Coefficients? panel.<br>
+    The sensitivity and phase lag coefficients will be updated and the configuration will be reset.<br>
+    If <strong>No</strong> is selected, the system is reconfigured but the vibration coefficient update will be by-passed.</li>
+  <li>When the sensitivity and phase lag coefficients have been updated and the configuration has been reset, the Balance Session Completed panel is displayed.
+    <div class="Container"><img src="images/TBbalsessioncomplete.jpg" alt="TB bal session complete" width="278" height="119"></div>
+  </li>
+  <li>To print a report, select <strong>Yes</strong>.<br>
+    When the report has been printed, the operator is returned to the <a href="TrimBalance.htm?#WelcomeScrn">Welcome to the Trim Balance Application screen</a><a href="?20#WelcomeScrn"></a>.</li>
+  <li>If <strong>No</strong> is selected, the balancing session is terminated and the operator is returned to the <a href="TrimBalance.htm?#WelcomeScrn">Welcome to the Trim Balance Application screen</a>.</li>
+</ol>
+<h2 id="RetrieveReportPage">Retrieve Report Screen</h2>
+<p>To open the Retrieve Report screen:</p>
+<ol>
+  <li>Click <strong>Get Report</strong> on the Welcome to the Trim Balance Application screen. <br>
+    The Retrieve Report screen (below) is displayed.<br>
+    The available engine types (i.e.: all engines listed in the TB supported.ini file) are listed in the Engine Type window.<br>
+    The prompt <em>Select Engine Type</em> is displayed in the Serial Number and Test Date/Time/Session windows.
+    <div class="Container"><img src="images/TBRetrieveReportPage.jpg" alt="TB Retrieve Report Page" width="700" height="544"></div>
+  </li>
+  <li>Select the engine type (i.e.: ENGINE1) from the Engine Type list (below).
+    <div class="Container"><img src="images/TBPickEng01.jpg" alt="TB Pick Engine 01" width="700" height="544"></div>
+  </li>
+  <li id="RetrieveStep3">Double-click the selected engine or select <img src="images/TBArrowRight.jpg" alt="TBArrowRight" width="33" height="23"> located under the Engine Type window.<br>
+    The serial numbers for all engines of the selected engine type are displayed in the Serial Number window and the prompt <em>Select Engine Serial Number</em> is displayed in the Test Date/Time/Session window (below).
+    <div class="Container"><img src="images/TBPickEng02.jpg" alt="TB Pick Engine 02" width="700" height="544"></div>
+  </li>
+  <li>If there are no matches for the selected engine type, the message <em>No Engines Found</em> is displayed in the Serial Number window and the prompt <em>Select Engine Type</em> is displayed in the Test Date/Time/Session window.</li>
+  <li>If there are no matches for the selected engine type, <a href="?56#RetrieveStep3">go to Step 3 of Retrieve Report</a> or select <strong>Exit</strong> to close the Retrieve Report screen and return to the Welcome to the Trim Balance Application screen.</li>
+  <li>Select the serial number (i.e.: 123456) from the Serial Number list.</li>
+  <li id="SerialNumStep7">Double-click the selected serial number or select <img src="images/TBArrowRight.jpg" alt="TBArrowRight" width="33" height="23"> located under the Serial Number window.<br>
+    The tests for all engines of the selected engine type and serial number are displayed in the Test Date/Time/Session window (below).<br>
+    To change the selected serial number or engine type, select <img src="images/TBArrowLeft.jpg" alt="TBArrowLeft" width="33" height="23"> as required, to return to the <a href="?57#SerialNumStep7">Serial Number selection window (Step 7)</a> or the <a href="?58#RetrieveStep3">Engine Type selection window (Step 3)</a>.
+    <div class="Container"><img src="images/TBPickEng03.jpg" alt="TB Pick Engine 03" width="700" height="544"></div>
+  </li>
+  <li>Select a test (i.e.: 1999-Dec-12 20:50:53 1) from the Test Date/Time/Session window.</li>
+  <li>Double-click the selected test or select <img src="images/TBArrowRight.jpg" alt="TBArrowRight" width="33" height="23"> under the Test Date/Time/Session window.<br>
+    The <strong>Get Report</strong> and <strong>Reconsider</strong> buttons are enabled on the Retrieve Report screen (below).
+    <div class="Container"><img src="images/TBPickEng05.jpg" alt="TB Pick Engine 05" width="700" height="544"></div>
+  </li>
+  <li>To start over, select <strong>Reconsider</strong> and <a href="?59#RetrieveStep3">go to Step 3 of Get Report</a>.</li>
+  <li>To get the report for the selected engine type, serial number, and test date/time/session, select <strong>Get Report</strong>.<br>
+    A Generating Report panel is displayed.</li>
+  <li>When the report has been generated, the Report Generated Successfully panel is displayed.
+    <div class="Container"><img src="images/TBGeneratedSuccessfully.jpg" alt="TB Generated Successfully" width="345" height="119"></div>
+  </li>
+  <li>To print the report, select <strong>Yes</strong>. A Printing Report panel is displayed.<br>
+    If <strong>No</strong> is selected, <a href="?60#RetrieveStep15">go to Step 15 of Retrieve Report</a>. </li>
+  <li>When the report has been printed, the Printing Report panel is closed and the operator is returned to the <a href="?61#RetrieveStep3">Retrieve Report 
+    screen</a>.</li>
+  <li id="RetrieveStep15">If <strong>No</strong> is selected from the Report Generated Successfully dialogue box, the Retrieving Reports panel is displayed. When the reports have been retrieved, the Retrieving Reports panel is closed and the operator is returned to the <a href="?62#RetrieveStep3">Retrieve Report screen</a>.</li>
+</ol>
+<h2 id="CoreBal">Core Balancing</h2>
+<p>To begin a Core balance session:</p>
+<ol>
+  <li>Start the Trim Balance System. For details, see <a href="#StartTrimBalance">Starting the Trim Balance System.</a></li>
+  <li>From the Welcome to the Trim Balance Application screen, select <strong>Balance Engine</strong>. A &quot;Please select...&quot; window is displayed.
+    <div class="Container"><img src="images/TBCoreBalSelect.gif" alt="TB Core Bal Select" width="350" height="213"></div>
+  </li>
+  <li>From the &quot;Please select FAN Balance or Core Balance&quot; panel, select <strong>Core</strong>.</li>
+  <li>From the &quot;Do you want to continue previous Core Balance?&quot; panel, select <strong>No</strong>.
+    <p class="Note">This message is only displayed if Core Trim Balance for the current engine serial number had previously been initiated.</p>
+    The Balance Plane Configuration screen is displayed.
+    <div class="Container"><img src="images/TBbalplaneconfig01.gif" alt="TBbalplaneconfig01" width="700" height="545"></div>
+  </li>
+  <li>If the location of the core weights are Known, select <strong>Update</strong> and proceed to <a href="#UpdateConfig2">Step 26</a>.<br>
+    If the location of the core weights is Unknown, leave the Initial Configuration as Unknown and select <strong>OK</strong>.
+    <p class="Note">Any RESTRICTED parts are used to make the locations permanently unavailable since they are adjacent to the locking blade.</p>
+    <p class="Note">For details on updating the Initial Configuration with known weights, see <a href="TrimBalance.htm">Balance Plane Configuration Screen</a> before proceeding to the next step.</p>
+    The Limits and Tolerances screen is displayed.
+    <div class="Container"><img src="images/TBLimitsandTolerances01.gif" alt="TB Limits and Tolerances01" width="700" height="545"></div>
+  </li>
+  <li>Set the desired limits and tolerances and select <strong>Continue</strong>.
+    <p class="Note">For details on setting limits and tolerances, see <a href="#LimitsTolerances">Limits and Tolerances Screen</a>.</p>
+    The Vibration Measurement screen is displayed.
+    <div class="Container"><img src="images/TBVibeMeasure01.gif" alt="TB Vibe Measure01" width="700" height="545"></div>
+  </li>
+  <li id="AcquireData">Acquire all required target speeds.
+    <p class="Note">For details on acquiring target speeds, see <a href="#VibMeasurement">Vibration Measurement Screen</a>.</p>
+    When all target speeds have been acquired, <strong>Restart Acquisition</strong>, <strong>Engine Balanced</strong> and <strong>Continue</strong> buttons are displayed.
+    <div class="Container"><img src="images/TBVibeMeasure05.gif" alt="TBVibeMeasure05" width="700" height="545"></div>
+  </li>
+  <li>To restart data acquisition, select <strong>Restart Acquisition</strong>. Repeat <a href="#AcquireData">Step 7</a> and Continue acquiring data until sufficient data is available before proceeding to the next step.</li>
+  <li>To accept the engine balance, select <strong>Engine Balanced</strong>. Go to <a href="#EngBalanced">Step 46</a>.</li>
+  <li>To view the imbalance vector data and progress towards calculating a new balance solution, select <strong>Continue</strong>.<br>
+    The Imbalance Vector Data screen is displayed.
+    <div class="Container"><img src="images/TBimbvecdata01.gif" alt="TB imbalance vecdata01" width="700" height="545"></div>
+    <p class="Note">For details on Imbalance Vector Data, see <a href="#AddingWeights">Imbalance Vector Data Screen</a>.</p>
+    If the engine is balanced go to step <a href="#EngBalanced">Step 46</a>. </li>
+  <li>If the imbalance vector data is acceptable, select <strong>Continue</strong>. A dialogue box is displayed, prompting the operator to either cancel or proceed with the solution determination.
+    <div class="Container"><img src="images/TBGreenYellowDialog.gif" alt="TB Green Yellow Dialog" width="491" height="126"></div>
+  </li>
+  <li>To continue with the solution determination, select <strong>OK</strong>. 
+    The Weight Vector Data Screen is displayed.
+    <div class="Container"><img src="images/TBweightvector01.gif" alt="TB weight vector 01" width="700" height="545"></div>
+    <p class="Note">For details on Weight Vector Data, see <a href="#WeightVectorDataPage">Weight Vector Data Screen</a>.</p>
+  </li>
+  <li>To proceed with the weight solution calculations, select <strong>Continue</strong>. A dialogue box is displayed, prompting the operator to either cancel or proceed with the solution determination.
+    <div class="Container"><img src="images/TBGreenYellowDialog.gif" alt="TBGreenYellowDialog" width="491" height="126"></div>
+  </li>
+  <li>To continue with the solution determination, select <strong>OK</strong>. The Residual Vibration Levels Screen is displayed.
+    <div class="Container"><img src="images/TBresidVibLevel01.gif" alt="TBresidVibLevel01" width="700" height="545"></div>
+    <p class="Note">For details on Residual Vibration Levels, see <a href="#ResidVibrationLevels">Residual Vibration Levels Screen</a>.</p>
+  </li>
+  <li>Select <strong>Get Weight Locations</strong>. The Balance Weight Positions screen is displayed.
+    <div class="Container"><img src="images/TBBalWeight01.gif" alt="TBBalWeight01" width="700" height="545"></div>
+    <ol type="a">
+      <li>If the initial weight has not been input, proceed to the next step.</li>
+      <li>If the initial weight has been input, proceed to <a href="#FinalSolution">Step 30</a>. The Balance Weight Positions screen is displayed.</li>
+    </ol>
+  </li>
+  <li>Select <strong>Exit</strong>. A confirmation dialogue box is displayed.
+    <div class="Container" id="Exit"><img src="images/TBabortConfirm.gif" alt="TBabortConfirm" width="326" height="126"></div>
+  </li>
+  <li>Select <strong>Yes</strong>. The Welcome to the Trim Balance Application screen is displayed.</li>
+  <li>Close the Trim Balance Application, select <strong>Exit</strong>.</li>
+  <li>Determine the current weight configuration on the engine.</li>
+  <li>Restart the Trim Balance Application.</li>
+  <li>From the Welcome to the Trim Balance Application screen, select <strong>Balance Engine</strong>.</li>
+  <li>From the &quot;Please select FAN Balance or Core Balance&quot; panel, select <strong>Core</strong>.</li>
+  <li>From the &quot;Do you want to continue previous Core Balance?&quot; panel, select <strong>Yes</strong>. The Please select file to load window is displayed.
+    <p class="Note">The load window is only displayed if Core Trim Balance for the current engine serial number has been initiated more than once.</p>
+    <div class="Container"><img src="images/TBselectFile.gif" alt="TBselect File" width="563" height="419"></div>
+  </li>
+  <li>From the list of available data, choose the desired file and select <strong>OK</strong>. The Balance Weight Positions screen is displayed.
+    <div class="Container"><img src="images/TBBalWeight02.gif" alt="TBBalWeight02" width="700" height="545"></div>
+  </li>
+  <li id="UpdateConfig">Select <strong>Update Configuration</strong>. The Balance Plane Configuration screen is displayed.
+    <div class="Container"><img src="images/TBbalplaneconfig01.gif" alt="TBbalplaneconfig01" width="700" height="545"></div>
+  </li>
+  <li id="UpdateConfig2">Select <strong>Update</strong>. A new Balance Plane Configuration screen is displayed.
+    <div class="Container"><img src="images/TBbalplaneconfig01b.gif" alt="TBbalplaneconfig01b" width="700" height="545"></div>
+  </li>
+  <li>To add the current weight configurations, select <strong>Add Weights</strong>. A new Balance Plane Configuration screen is displayed.<br>
+    <p class="Note">Use the X button to indicate positions that are unavailable.</p>
+    <div class="Container"><img src="images/TBbalplaneconfig01c.gif" alt="TBbalplaneconfig01c" width="700" height="545"></div>
+  </li>
+  <li>When the current weight configurations have been added, select <strong>Continue</strong>. A new Balance Plane Configuration screen is displayed.
+    <div class="Container"><img src="images/TBbalplaneconfig01d.gif" alt="TB bal plan econfig01d" width="700" height="545"></div>
+  </li>
+  <li> Select <strong>OK</strong>. The Balance Weight Positions screen is displayed.
+    <div class="Container"><img src="images/TBBalWeight03.gif" alt="TB Bal Weight03" width="700" height="545"></div>
+  </li>
+  <li id="FinalSolution">Select <strong>Final Solution</strong>. A new Balance Weight Positions screen is displayed.
+    <div class="Container"><img src="images/TBBalWeight04.gif" alt="TBBalWeight04" width="700" height="545"></div>
+  </li>
+  <li>Select <strong>Continue</strong>. A new summed weight solution is generated using the current weight solution and the weight solution calculated from the first engine run. The Balance Plane Re-Configuration screen is displayed.
+    <div class="Container"><img src="images/TBBPReconfig01.gif" alt="TB BP Reconfig01" width="700" height="545"></div>
+  </li>
+  <li>Select <strong>Exit</strong>. A confirmation dialogue box is displayed.
+    <div class="Container"><img src="images/TBabortConfirm.gif" alt="TBabortConfirm" width="326" height="126"></div>
+  </li>
+  <li>Select <strong>Yes</strong>. The Welcome to the Trim Balance Application screen is displayed.</li>
+  <li>Close the Trim Balance Application, select <strong>Exit</strong>.</li>
+  <li>Physically install the weight configuration on the engine.</li>
+  <li>Restart the Trim Balance Application.</li>
+  <li>From the Welcome to the Trim Balance Application screen, select <strong>Balance Engine</strong>.</li>
+  <li>From the &quot;Please select FAN Balance or Core Balance&quot; panel, select <strong>Core</strong>.</li>
+  <li>From the &quot;Do you want to continue previous Core Balance?&quot; panel, select <strong>Yes</strong>.</li>
+  <li>Update the current weight configuration (use the <strong>X</strong> button to indicate positions that are unavailable).</li>
+  <li>Select <strong>Continue</strong>.</li>
+  <li>Continue with a data acquisition (same as with FAN). If the engine is balanced, select <strong>Engine Balanced</strong>. Proceed to <a href="#EngBalanced">Step 46</a> to update the coefficients files.</li>
+  <li>If the engine is not balanced, proceed to the Residual Vibration Levels page and select <strong>Get Weight Locations</strong>.</li>
+  <li>Proceed as you would for a Fan balance to calculate a &quot;summed solution&quot;.</li>
+  <li>Repeat steps 32 through 45 if another weight solution is required to balance the engine.</li>
+  <li id="EngBalanced">After selecting <strong>Engine Balanced</strong>:
+    <ol type="a">
+      <li>For a One-Shot Solution the One-Shot Solution window is displayed.
+        <div class="Container"><img src="images/OneShotSolutn.gif" alt="One Shot Solutn" width="278" height="104"></div>
+        Select <strong>OK</strong>. The Coefficients File is updated and the Welcome to the Trim Balance Application screen is displayed. </li>
+      <li>For a first or second vector solution the following window is displayed.
+        <div class="Container"><img src="images/2ndSolution.gif" alt="2ndSolution" width="332" height="126"></div>
+      </li>
+    </ol>
+  </li>
+</ol>
+<h2 id="AboutTrimBal">About Trim Balance</h2>
+<p>The About Trim Balance button is available on the Welcome to the Trim Balance Application screen.</p>
+<p>For information on the Trim Balance application (such as the version number):</p>
+<ol>
+  <li>Click <strong>About Trim Balance</strong>.<br>
+    The About Trim Balance screen is displayed.
+    <div class="Container"><img src="images/AboutTrimBalance.png" alt="About Trim Balance" width="404" height="276"></div>
+  </li>
+  <li>To exit the About Trim Balance screen and return to the Welcome to the Trim Balance Application screen, click anywhere in the About Trim Balance window.</li>
+</ol>
+<h2 id="Help">Help</h2>
+<p>The Help file provides information and instructions on using the Trim Balance Application.</p>
+<p>To access the help utility:</p>
+<ol>
+  <li>Click <strong>Help</strong> on the Welcome to the Trim Balance Application screen.</li>
+</ol>
+<h2 id="ConfigFiles">Configuration Files</h2>
+<p>The following configuration files must be present and properly configured before starting the Trim Balance Application:</p>
+<ul>
+  <li>tbconfig.ini</li>
+  <li>specifics.ini</li>
+  <li>new</li>
+  <li><em>engine type</em>.FAN.coef.txt</li>
+  <li><em>engine type</em>.LPT.coef.txt files</li>
+  <li><em>engine type</em>.rct.txt</li>
+  <li>template.rct.txt<br>
+  </li>
+</ul>
+<p class="Note">Engine type must match one of the engine types defined in the tbconfig.ini file.</p>
+<p>The following files must be available if lookup tables are required for a solution weight and/or if the system is used in the Demonstration mode:</p>
+<ul>
+  <li>FanOn0</li>
+  <li>FanOff0</li>
+  <li>LPTOn0</li>
+  <li>LPTOff0</li>
+  <li>Iteration0 - 4 (Demo mode)</li>
+</ul>
+<h3 id="TBConfigIni">Main TBS Configuration File (tbconfig.ini)</h3>
+<p><strong>File Path: proDAS\ini</strong></p>
+<p>The tbconfig.ini file contains the generic configuration information required to start the trim balance application. The text file is 
+  read at start-up and contains details pertinent to the functioning of the program.</p>
+<p><a href="tbconfigini.pdf">Click here for a typical configuration file (<strong>tbconfig.ini</strong>)</a>.</p>
+<p class="Note">Lines beginning with an asterisk (*) are the remarks added to assist in file creation and verification.</p>
+<p>The above file is demarcated by the heading keys within square brackets. The file information identifies:</p>
+<blockquote>
+  <p><strong>[Mode]</strong></p>
+  <blockquote>
+    <p><strong>proDAS</strong>: the mode of operation (0 is for demonstration purposes, 1 for proDAS with Endevco and 2 for proDAS with CEC).<br>
+      <strong>Version</strong>: the current version number. This information in only for MDS.</p>
+  </blockquote>
+  <p><strong>[APP]</strong></p>
+  <blockquote>
+    <p><strong>RTEHost</strong>: the RTEHost computer name.<br>
+      <strong>RTEPort<em></em></strong>: the parameter in the UI_SERVER section of the RTE initialisation file.<br>
+      <strong>DSN<em></em></strong>: the Database Source name.<br>
+      <strong>DSNConStr<em></em></strong>: the DSN Connection String (User Name and Password).</p>
+  </blockquote>
+  <p><strong>[Trace]</strong></p>
+  <blockquote>
+    <p><strong>FileName</strong>: the file name and location. <br>
+      <strong>Tag</strong>: the trace file tag.<br>
+      <strong>SQLTrace</strong>: type of tracing, with 0 indicating tracing to a trace file using the COM utility and 1 indicating to trace to the VisualStudio output pane.<br>
+      <strong>SQLTraceFile</strong>: the tracefile name and location.</p>
+  </blockquote>
+  <p><strong>[Supported Eng]</strong></p>
+  <blockquote>
+    <p><strong>Number</strong>: the number of supported engines should equal the number of types specified.<br>
+      <strong>Typ<em>en</em></strong>: engine names must be identical with those specified 
+      in the proDAS database.</p>
+  </blockquote>
+  <p><strong>[Setup]</strong></p>
+  <blockquote>
+    <p><strong>Limits</strong>: a Boolean setting that permits or prohibits setting the 
+      HiHi and Hi limits of the vibration transducer(s) in the Test Configuration 
+      Panel. Limits can only be reset if this switch is set to True and if the 
+      security level is greater than Operator level.</p>
+  </blockquote>
+  <p><strong>[Logs]</strong></p>
+  <blockquote>
+    <p>The log file that should be recorded during and after a balancing session.</p>
+    <p>The logs that should be recorded after a balancing session, whether real-time 
+      report generation is enabled (normally set to TRUE), and an overwrite engine 
+      information option (i.e.: update balance weight components and the location 
+      of each balance weight component in the engine configuration file for that 
+      serial number - normally set to TRUE).</p>
+    <p><strong>Event: &lt;yyyy-mm-dd-hh-mm-ss&gt;</strong>.log trace file for the TB Application.<br>
+      <strong>Data: &lt;yyyy-mm-dd-hh-mm-ss&gt;</strong>.log.datn file used to track imbalance 
+      data, calculation results and installed weights.<br>
+      <strong>Imbal: &lt;yyyy-mm-dd-hh-mm-ss&gt;</strong>.log.imbaln file logs imbalance 
+      vector data and total installed effective weight. <br>
+      <strong>Datlog: &lt;yyyy-mm-dd-hh-mm-ss&gt;</strong>.log.datlogn file contains all 
+      proDAS log files used to acquire TB data.<br>
+      <strong>Report</strong>: real-time report generation is enabled (normally set to TRUE).<br>
+      <strong>Overwrite_Config</strong>: update the update balance weight components and 
+      the location of each balance weight component in the engine configuration 
+      file for that serial number - normally set to TRUE.</p>
+  </blockquote>
+  <p><strong>[VISA]</strong></p>
+  <blockquote>
+    <p><strong>AddNum</strong>: the number of VISA instruments (i.e.: Endevco chassis) and their GPIB addresses.<br>
+      <strong>Add<em>n</em></strong>: GPIB address of Endevco chassis.</p>
+  </blockquote>
+  <p><strong>[GPIB]</strong></p>
+  <blockquote>
+    <p><strong>Speed</strong>: the speed of the GPIB/E-NET switch. Use 100 only for the 100 Mbps switch, and either 10 or 100 for the 10Mbps switch.<br>
+      <strong>Wait</strong>: the delay in milliseconds given before the GPIB status byte is read following a GPIB send command (default setting is 500).<br>
+      <strong>2nd Reset</strong>: when the second Reset = T, the Endevco will be reset a second time; all the VISA sections will be re-opened; and the Endevco configurations will be read and written back. If 2nd Reset = F, the Endevco will be reset only once.</p>
+  </blockquote>
+  <p><strong>[Buffer]</strong></p>
+  <blockquote>
+    <p>the number of samples stored in the data buffer and averaged, when presenting vibration, phase, and N1 speed during the data acquisition stage (normally set to 5).</p>
+  </blockquote>
+  <p><strong>[Report]</strong></p>
+  <blockquote>
+    <p><strong>Header</strong>: the header displayed during report generation.<br>
+    </p>
+  </blockquote>
+  <p><strong>[Demo]</strong></p>
+  <blockquote>
+    <p>the default engine name and serial number used in demonstration mode. This key is for MDS purpose only.</p>
+  </blockquote>
+</blockquote>
+<p>File Maintenance is a customer dependent file, therefore the report header information and the number of supported engines and engine types will vary. For each new software release, the version information must be updated. If necessary, a new config.ini file can be generated using the read-only config.ini.dot template (in the Templates folder). If a new config.ini file is generated, make sure the new config.ini file is saved as a flat text file.</p>
+<h3 id="TBSEngineSpecificFile">Engine Specifics File (specifics.ini)</h3>
+<p><strong>File Path: proDAS\Data\Trimbal\engines\engine name</strong> (see the figure below)</p>
+<div class="Container"><img src="images/TBSEngineSpecificFile.png" alt="TBSEngineSpecificFile" width="290" height="284"></div>
+<p>The specifics.ini file contains engine specific information required to configure the Vibration System, the names of the channels to be collected, and the statistical quality limits for data sample inclusion/exclusion.</p>
+<p><a href="Fanspecificsini.pdf">Click here for a typical engine specific configuration file for Fan/LPT Balancing</a>.</p>
+<p><a href="Corespecifics.pdf">Click here for a typical engine specific configuration file for Fan/Core Balancing.</a></p>
+<p>The above files are demarcated by the Heading keys within square brackets. The file information provides:</p>
+<blockquote>
+  <p><strong>[AVM]</strong></p>
+  <blockquote>
+    <p>command sequences used to configure the Endevco.</p>
+    <p><strong>CmdNum</strong>: number of configuration commands to be sent to the Endevco chassis.</p>
+    <p><strong>Cmdn</strong>: the command sets follow in sequence and are preceded by either a 0 or 1 in order to differentiate which GPIB device is being addressed.</p>
+    <p><strong>Stat<em>n</em></strong>: commands to check the status of the tracking filters</p>
+    <p><strong>Resp<em>n</em></strong>: expected response to each Stat<em>n</em> command.</p>
+    <p class="Note">A period (.) designates a wildcard match for comparing the status and expected strings. The command sequence should be carefully examined to ensure that the correct tracking filter channel is being checked against an appropriate response.</p>
+  </blockquote>
+  <p><strong>[Channels]</strong> and <strong>[ChannelsCore]</strong></p>
+  <blockquote>
+    <p><strong>Number</strong>: the number of channels to be processed by TB Application.</p>
+    <p><strong>Ch0 to Ch6</strong>: the names of the channels providing the speed, vibration, and phase information from the channel registry. Channel names must be an exact match with those in the registry and must be presented in order: tach input, vibration channel 1, phase channel 1, vibration channel 2, phase channel 2, vibration channel 3, and phase channel 3.</p>
+  </blockquote>
+  <p><strong>[Stats]</strong> and <strong>[StatsCore]</strong></p>
+  <blockquote>
+    <p>the red and yellow data quality thresholds used for data acquisition quality indices. For speed, vibration, and phase factors, a maximum level is specified (FxMax=), followed by the red (FxRLim=) and yellow (FxYLim=) limits. P1P2SumAvg and ValAvgWts are measures of how closely weight solution vectors are grouped.  P1P2SumAvg and ValAvgWts are used for first and second level outlier determination respectively. Only red and yellow limits are required for each of these  parameters.</p>
+  </blockquote>
+  <p><strong>[Threshold]</strong> and <strong>[ThresholdCore]</strong></p>
+  <blockquote>
+    <p><strong>VibLim<em>n</em></strong>: the threshold limit under which the vibration level is considered too low for the AVM to accurately provide phase data. If vibration is less than this limit, and data quality is bad, vibration and phase are set to 0 for the subsequent analyses.</p>
+  </blockquote>
+  <p><strong>[Coefficients]</strong> and <strong>[CoefficientsCore]</strong></p>
+  <blockquote>
+    <p><strong>CPFKeep<em>n</em></strong>: the keep factor for coefficients computation. This value is used, as threshold, to remove some phase lag and sensitivity values form computation. </p>
+  </blockquote>
+</blockquote>
+<p>The specifics.ini file is an engine dependent file. If the AVM tracking filter mappings and/or the reference tachometer input is altered, this file must be changed accordingly.</p>
+<h3 id="TBNewEngineTemplateFile">New Engine Template File</h3>
+<p><strong>File Path: proDAS\Data\Trimbal\engines\engine name</strong></p>
+<p>The New Engine Template file is used as a template to establish the basic engine information when a new engine is encountered. The Trim Balance System copies the template data into the appropriate engine directory and renames the file according to the serial number.</p>
+<p><a href="FanNewEngTemplate.pdf">Click here for a sample file for a new engine (Fan/LPT Balancing).</a></p>
+<p><a href="CoreNewEngTemplate.pdf">Click here for a sample file for a new engine (Fan/Core Balancing).</a></p>
+<p>The new file initially contains known configuration information that will not vary with engine balancing. Fields that change as a result of a balancing attempt (i.e.: those left blank in the above Sample new Files) will be added by the software at a later stage. The required fields are:</p>
+<blockquote>
+  <p><strong>[Engine Details]</strong></p>
+  <blockquote>
+    <p><strong>Name and Planes</strong>: the engine name and the number of balance planes.<br>
+      <strong>RotationFLA</strong>: the direction of rotation<br>
+      <strong>CoreBalance</strong>: True = Fan or Core, False = Fan or LPT<br>
+      <strong>NoPos<em>n</em></strong>: the number of balance weight locations. For this and the following 3 commands, use (n=0) for the Fan and(n=1)for the LPT.<br>
+      <strong>Angle<em>n</em></strong>: not currently used, set to 0.<br>
+      <strong>CurrWt<em>n</em></strong>: not currently used, set to 0.<br>
+      <strong>MaxWt<em>n</em></strong>: maximum allowable total installed weight.<br>
+      <strong>100%RPM</strong>: the speed that corresponds to 100% rpm (left blank if speed is measured and displayed in rpm).<br>
+    </p>
+  </blockquote>
+  <p><strong>[Transducer Info]</strong></p>
+  <blockquote>
+    <p><strong>Number, T<em>n</em>Name, T<em>n</em>HiHi and T<em>n</em>Hi</strong>: the number of vibration transducers and the respective names of the transducers, as well as the Hi Hi and Hi Limits (where <em>n</em> is the index of the transducer).</p>
+  </blockquote>
+  <p><strong>[Tracking Speeds]</strong> and <strong>[Core Tracking Speeds]</strong></p>
+  <blockquote>
+    <p>the number and values of speeds used for balancing.</p>
+  </blockquote>
+  <p><strong>[SpdFact]</strong> and <strong>[Core SpdFact]</strong></p>
+  <blockquote>
+    <p>weighting factor assigned to each balance speed. The sum of these factors must be 1.</p>
+  </blockquote>
+  <p><strong>[PUFact]</strong></p>
+  <blockquote>
+    <p>weighting factor assigned to each pickup (transducer). Values are specified for Fan and LPT balancing. Factors are grouped according to the transducers  used for balancing: Factors 0 &amp; 1 are used when balancing using TXs (transducers) 1 &amp; 2, factors 2 &amp; 3 are used for TXs 1 &amp; 3, factors 3 &amp; 4 are used for TXs 2 &amp; 3, and factors 6, 7 &amp; 8 are used for TXs 1, 2 and 3. The sum of these factors in each group must equal 1.</p>
+  </blockquote>
+  <p><strong>[Sensitivity]</strong></p>
+  <blockquote>
+    <p><strong><em>x</em>&lt;plane&gt;Sens<em>y</em></strong>: sensitivity is the vibration response of the engine to one unit of applied weight. Sensitivities are of this form where plane is Fan or LPT, x (0 to 2) is the index of the transducer, and y is the index of the balance speed. For example, 0FanSens0 would represent the sensitivity of the fan at the first balancing speed for the first transducer.<br>
+      <strong><em>x</em>&lt;plane&gt;Plag<em>y</em></strong>: Phase Lag is the difference between the required angular position of the balance weight and the Phase of the measured vibration. Plane and index representations are as above for Sens.</p>
+  </blockquote>
+  <p><strong>[Fan Weights]</strong></p>
+  <blockquote>
+    <p>the number of Fan weights, their part numbers, pan and effective weights.</p>
+  </blockquote>
+  <p><strong>[LPT Weights]</strong></p>
+  <blockquote>
+    <p>the number of LPT weights, their part numbers, pan and effective weights.</p>
+  </blockquote>
+  <p><strong>[Fan Config]</strong></p>
+  <blockquote>
+    <p>the number and part numbers and location of installed Fan weights to be used for the start of the current balance session.</p>
+  </blockquote>
+  <p><strong>[LPT Config]</strong></p>
+  <blockquote>
+    <p>the number and part numbers and location of installed LPT weights to be used for the start of the current balance session.</p>
+  </blockquote>
+  <p><strong>[Units &amp; Tables]</strong> and <strong>[Core Units &amp; Tables]</strong></p>
+  <blockquote>
+    <p><strong>Weights &amp; Vibs</strong>: engineering units of the effective weight and vibration.<br>
+      <strong>Tables</strong>: a Boolean setting indicating if there are weight solution lookup tables available.</p>
+  </blockquote>
+</blockquote>
+<p>The TB Application assumes weight locations are evenly distributed around the balance plane. Some engines use some of these weight locations for bolts used to retain the Fan spinner. If this is the case, or if some of the holes are permanently unavailable by design, these locations are annotated in the Fan plane configuration section as: <strong>Part#<em>n</em></strong>=&quot;Spinner Hole&quot; at the appropriate <strong>Loc<em>n</em></strong>.</p>
+<p> The new file is an engine dependent file. Improper modifications to this file will impair software functioning. Be careful when editing and saving changes to this file.</p>
+<h3 id="TBRecentTemplateFile">Recent Template File (template.rct.txt)</h3>
+<p><strong>File Path: proDAS\Data\Trimbal\coefficients.</strong></p>
+<p>When a recent file is not found in the proDAS\Data\Trimbal\coefficients directory for the current engine type and the user level is greater than that of operator, this file (template.rct.txt) is used as a template for generating the engine name.rct.txt information. The software copies the template to a properly named file in the requisite folder, opens the new file with Notepad, allowing the user to enter the data in pre-specified fields. After the data has been entered, the user may then save the data (the file length is checked against the starting value) or exit Notepad without saving. If no additional information is added to the file or the user exits Notepad without saving, then the trim balance session will be aborted.</p>
+<h2 id="TBSLookupDemoModeFiles">Lookup and Demonstration Mode Files</h2>
+<h3 id="TBSFanLPTLookupTables">Fan and LPT Lookup Tables (FanOn0, FanOff0, LPTOn0, LPTOff0, CoreOn0, CoreOff0)</h3>
+<p><strong>File Path: proDAS\Data\Trimbal\tables\engine name</strong> (see the figure below).</p>
+<div class="Container"><img src="images/TBSFanLPTFile.png" alt="TBS Fan LPT File" width="317" height="262"></div>
+<p>The files are lookup tables that provide part and component locations to provide a given weight solution. On signifies a solution centered on a hole, while Off identifies a solution centered between two holes. A portion of a lookup table for an on-hole solution for an engine is shown in Figure 4 below:</p>
+<table class="Table-Grey">
+  <tr>
+    <th> Figure 4: Portion of the Lookup Table for an Engine Used for an on-hole Solution</th>
+  </tr>
+  <tr>
+    <td>. 83 PO1 <br>
+      161 PO2 <br>
+      236 PO3 <br>
+      243.3 PO1 PO1 PO1 <br>
+      305 PO4 <br>
+      321.3 PO1 PO2 PO1 <br>
+      371 PO5 <br>
+      396.3 PO1 PO3 PO1 <br>
+      465.3 PO1 PO4 PO1 <br>
+      504.5 PO1 PO1 PO1 PO1 PO1 PO1 PO1<br>
+      531.3 PO1 PO5 PO1 <br>
+      547 PO2 PO3 PO2 <br>
+      582.5 PO1 PO1 PO1 PO2 PO1 PO1 PO1<br>
+      609.1 PO1 PO1 PO4 PO1 PO1 <br>
+      616 PO2 PO4 PO2 <br>
+      657.5 PO1 PO1 PO1 PO3 PO1 PO1 PO1<br>
+      682 PO2 PO5 PO2 <br>
+      691.9 PO3 PO3 PO3 <br>
+      726.5 PO1 PO1 PO1 PO4 PO1 PO1 PO1 <br>
+      760.9 PO3 PO4 PO3 <br>
+      792.5 PO1 PO1 PO1 PO5 PO1 PO1 PO1 <br>
+      826.9 PO3 PO5 PO3 <br>
+      875.5 PO1 PO1 PO1 PO1 PO5 PO1 PO1 PO1 PO1<br>
+      894.2 PO4 PO4 PO4 <br>
+      960.2 PO4 PO5 PO4 <br>
+      <br>
+      [Rows Deleted]<br>
+      <br>
+      2300.1 PO3 PO3 PO5 PO5 PO5 PO5 PO5 PO3 PO3<br>
+      2322.6 PO2 PO4 PO5 PO5 PO5 PO5 PO5 PO4 PO2<br>
+      2338 PO1 PO5 PO5 PO5 PO5 PO5 PO5 PO5 PO1<br>
+      2397.6 PO3 PO4 PO5 PO5 PO5 PO5 PO5 PO4 PO3<br>
+      2416 PO2 PO5 PO5 PO5 PO5 PO5 PO5 PO5 PO2<br>
+      2466.6 PO4 PO4 PO5 PO5 PO5 PO5 PO5 PO4 PO4<br>
+      2491 PO3 PO5 PO5 PO5 PO5 PO5 PO5 PO5 PO3<br>
+      2560 PO4 PO5 PO5 PO5 PO5 PO5 PO5 PO5 PO4. 83 PO1 <br>
+      161 PO2 <br>
+      236 PO3 <br>
+      243.3 PO1 PO1 PO1 <br>
+      305 PO4 <br>
+      321.3 PO1 PO2 PO1 <br>
+      371 PO5 <br>
+      396.3 PO1 PO3 PO1 <br>
+      465.3 PO1 PO4 PO1 <br>
+      504.5 PO1 PO1 PO1 PO1 PO1 PO1 PO1<br>
+      531.3 PO1 PO5 PO1 <br>
+      547 PO2 PO3 PO2 <br>
+      582.5 PO1 PO1 PO1 PO2 PO1 PO1 PO1<br>
+      609.1 PO1 PO1 PO4 PO1 PO1 <br>
+      616 PO2 PO4 PO2 <br>
+      657.5 PO1 PO1 PO1 PO3 PO1 PO1 PO1<br>
+      682 PO2 PO5 PO2 <br>
+      691.9 PO3 PO3 PO3 <br>
+      726.5 PO1 PO1 PO1 PO4 PO1 PO1 PO1 <br>
+      760.9 PO3 PO4 PO3 <br>
+      792.5 PO1 PO1 PO1 PO5 PO1 PO1 PO1 <br>
+      826.9 PO3 PO5 PO3 <br>
+      875.5 PO1 PO1 PO1 PO1 PO5 PO1 PO1 PO1 PO1<br>
+      894.2 PO4 PO4 PO4 <br>
+      960.2 PO4 PO5 PO4 <br>
+      <br>
+      [Rows Deleted]<br>
+      <br>
+      2300.1 PO3 PO3 PO5 PO5 PO5 PO5 PO5 PO3 PO3<br>
+      2322.6 PO2 PO4 PO5 PO5 PO5 PO5 PO5 PO4 PO2<br>
+      2338 PO1 PO5 PO5 PO5 PO5 PO5 PO5 PO5 PO1<br>
+      2397.6 PO3 PO4 PO5 PO5 PO5 PO5 PO5 PO4 PO3<br>
+      2416 PO2 PO5 PO5 PO5 PO5 PO5 PO5 PO5 PO2<br>
+      2466.6 PO4 PO4 PO5 PO5 PO5 PO5 PO5 PO4 PO4<br>
+      2491 PO3 PO5 PO5 PO5 PO5 PO5 PO5 PO5 PO3<br>
+      2560 PO4 PO5 PO5 PO5 PO5 PO5 PO5 PO5 PO4</td>
+  </tr>
+</table>
+<p>The first column in the lookup table (see Figure 4) is the effective weight of the solution. Columns 2 through 10 identify the balance weight part numbers required for 9 sequential hole locations. Column 6 coincides with the center hole location, columns 2 and 10 are four positions left and right, respectively, from the center hole.</p>
+<p>This file is very format dependent. The position of the center column must always be respected. This position is used to map a blade number during the balance session. If this position is not at the right place, the balancing will be done but all solutions will have a angle shift.</p>
+<p>The ON &amp; OFF file(s) should not require any maintenance. Lookup tables are engine specific. If lookup tables have been generated, ensure that the Tables Boolean key is set to true in the Units and Tables section of the new file for the specific engine type. New tables can be formulated using the TABLEmain.vi utility (refer to the Readme.txt file before starting).</p>
+<h3 id="TBSDemoTestDataSets">Demonstration/Test Data Sets</h3>
+<p><strong> File Path: proDAS\Data\Trimbal\demo data\<em>name</em></strong> (see below).</p>
+<div class="Container"><img src="images/TBSDemoDataFile.png" alt="TBS Demo DataFile" width="263" height="233"></div>
+<p>The folder names under demo data folder are the engine names that are available for demo mode. When Trim Balance is started, a demo panel is displayed, allowing the user to select the engine type. The selected engine name should match the engine specified in the Demo section of the tbconfig.ini file.</p>
+<p>The naming convention for the files is speedxxxx.y, where xxxx represents a specific balance speed in revolutions-per-minute (RPM) and y represents the current iteration of the balance session.</p>
+<div class="Container"><img src="images/TBSdemoFiles.png" alt="TBS demo Files" width="130" height="498"></div>
+<p id="TBTabDelineatedInfo">Each file contains tab-delineated speed, amplitude, and phase information for each tracking speed. The format for each line of an iteration file is: time, actual speed, and the vibration amplitudes and phase angles for each transducer.</p>
+<p>During execution of trim balance in the demo mode, if a speed file does not exist, then the operator must select skip during data acquisition.</p>
+<p>A dialogue box is displayed and the operator can select which data-set to use during the balancing session. The operator can update the coefficient database and recent files while in the demonstration mode.</p>
+<br>
+<br>
+
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

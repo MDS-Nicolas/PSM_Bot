@@ -1,0 +1,72 @@
+<table class="Table-Grey">
+<tr>
+	<th class="row-RSPLManufacturer">Manufacturer</th>
+    <th class="row-RSPLQty">Quantity</th>
+    <th class="row-RSPLPartNumber">Part Number</th>
+    <th class="row-RSPLDescription">Description</th>
+    <th class="row-RSPLLeadTime">Lead Time</th>
+</tr>
+  <tr>
+    <td>Eaton</td>
+    <td>2</td>
+    <td>GDB-4A</td>
+    <td>Fuse Cartridge, 5x20mm, Glass, 250 VAC, 5A, Fast Acting Glass Fuse</td>
+    <td>1 week</td>
+  </tr>
+  <tr>
+    <td>Eaton</td>
+    <td>2</td>
+    <td>EDCC15</td>
+    <td>Fuse Cartridge, Class-CC, Melamine, 600VAC/300VDC, 15A, Time Lag-Surge with Stand</td>
+    <td>3 weeks</td>
+  </tr>
+  <tr>
+    <td>Eaton</td>
+    <td>2</td>
+    <td>GDB-500MA</td>
+    <td>Fuse Cartridge, 5x20mm, Glass, 250 VAC, 1A Fast Acting</td>
+    <td>1 week</td>
+  </tr>
+  <tr>
+    <td>Eaton</td>
+    <td>2</td>
+    <td>GDB-1A</td>
+    <td>Fuse Cartridge, 5x20mm, Glass, 250 VAC, 1A Fast Actinig</td>
+    <td>1 week</td>
+  </tr>
+  <tr>
+    <td>Eaton</td>
+    <td>2</td>
+    <td>GDB-6.3A</td>
+    <td>Fuse Cartirdge, 5x20mm, Glass, 250 VAC, 6.3A Fast Acting</td>
+    <td>1 week</td>
+  </tr>
+  <tr>
+    <td>Eaton</td>
+    <td>2</td>
+    <td>EDCCA</td>
+    <td>Fuse Cartridge, Class-CC, Melamine, 600VAC/300 VDC, 4A, Time Lag-Surge with Stand</td>
+    <td>3 weeks</td>
+  </tr>
+  <tr>
+    <td width="15%">Phoenix Contact</td>
+    <td width="5%">1</td>
+    <td width="20%">2938714</td>
+    <td width="45%">5 VDC Power Supply, Phoenix (CE Approved)</td>
+    <td width="10%">4 weeks</td>
+  </tr>
+  <tr>
+    <td>Phoenix Contact</td>
+    <td>1</td>
+    <td>2938756</td>
+    <td>12 VDC Power Supply, Phoenix</td>
+    <td>4 weeks</td>
+  </tr>
+  <tr>
+    <td>TDK-Lambda</td>
+    <td>1</td>
+    <td>GEN 30-50</td>
+    <td>Programmable DC Power Supply, 50A</td>
+    <td>6 weeks</td>
+  </tr>
+</table>

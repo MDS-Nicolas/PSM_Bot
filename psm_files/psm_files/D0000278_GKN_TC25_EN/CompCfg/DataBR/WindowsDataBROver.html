@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Data Backup & Recovery for Windows Based Computers</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left><h1>Data Backup & Recovery for Windows Based Computers<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<h2>Overview</h2>
+<p>Proper data backup is key to preventing loss of information and reducing facility down-time.</p>
+<p>All data on the Windows based computers is protected with Acronis Backup and Recovery Advanced Workstation with Universal Restore software which creates backup images of the local hard drive. The backup images are stored on a NAS (Network Attached Storage).</p>
+<p class="Caution">MDS recommends reviewing the backup log files weekly to verify successful completion of the backup operation. Failing to do so could result in permanent loss of data.</p>
+<p>Acronis Backup and Recovery Advanced Workstation with Universal Restore software is also used to restore data. </p>
+<p>The Acronis software is used for the following tasks:</p>
+<ul>
+  <li>Data Backup</li>
+  <li>Data Recovery</li>
+  <li>Disaster Recovery</li>
+  <li>Reviewing Scheduled Tasks</li>
+  <li>Reviewing Logs</li>
+</ul>
+<h3 id="RescueMedia">Window Data Backup</h3>
+<p> Data backup tasks, as configured by MDS, are designed for maximum protection against data loss. MDS highly recommends that the following tasks not be changed:</p>
+<ul>
+  <li> Full backup on Saturday</li>
+  <li> Incremental back-ups Sunday through Monday inclusively</li>
+</ul>
+<p> Typically full backups are performed once a week and are part of an overall back-up plan.</p>
+<p>Each Saturday, the full backup replaces the back-up image created the previous Saturday. The incremental backup saves time and disk space by only backing up changed files. The incremental backups scheduled Sunday to Friday will only backup the data that has changed since the last full backup or last incremental backup. On Monday this will be the differences between the disk on Monday and Sunday. Tuesday's image is the difference between the disk on Tuesday and Monday. Incremental back-ups are scheduled through the week until Friday.</p>
+<p>For the backup schedule, see <a href="BackUpSchedule.html">Facility Computers Backup Schedule</a>.</p>
+
+<h3>Rescue Bootable Media CD</h3>
+<p>As part of the backup strategy, it is recommended that an Acronis Bootable Rescue Media be created for the Windows based computers before the initial engine testing.</p>
+<p class="Caution">It is highly recommended that an Acronis Bootable Rescue Media be created using the Acronis Backup and Recovery Advanced Workstation with Universal Restore software before testing begins for the first time. The Acronis Bootable Rescue Media is an integral part of the recovery process. Failure to create the Acronis Bootable Rescue Media could result in permanent loss of data.</p>
+<p>For further information on creating an Acronis Bootable Rescue Media, see the <a href="../MgmtPC/MgmtPCVDocs.html">Acronis Backup and Recovery Advanced Workstation with Universal Restore User Guide</a>.</p>
+<p class="Note">Acronis Backup and Recovery Advanced Workstation with Universal Restore is very powerful software for data backup and recovery. It has many useful functions that are not covered by this Product Support Manual (PSM). For more information, see the <a href="../MgmtPC/MgmtPCVDocs.html">Acronis Backup and Recovery Advanced Workstation with Universal Restore User Guide</a></p><br>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

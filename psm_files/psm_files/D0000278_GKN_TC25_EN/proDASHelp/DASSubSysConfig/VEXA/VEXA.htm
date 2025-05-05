@@ -1,0 +1,725 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>VTI EX10xxA (VEXA) Subsystem (Option*)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="VEXADriver">VTI EX10xxA (VEXA) Subsystem (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+
+<h2 id="Overview">Overview</h2>
+<p>The VTI EX10xxA (VEXA) Subsystem is used to communicate with the VTI EX10xxA family of products using Ethernet communication. The supported products include:</p>
+<ul>
+  <li>EX1000A</li>
+  <li>EX1000A-TC</li>
+  <li>EX1016A</li>
+  <li>EX1032A</li>
+  <li>EX1048A</li>
+</ul>
+<p>The VEXA Subsystem  supports the following trigger types:</p>
+<ul>
+  <li>software trigger - using the device's internal timer</li>
+  <li>hardware trigger - using a proDAS discrete output or an external hardware trigger</li>
+</ul>
+<p class="Note">The hardware trigger should always be connected to DIO channel 1.</p>
+<p>Different hardware triggers can be defined for each unit when multiple units are hooked up.</p>
+<p class="Note">When using an external hardware trigger and the desired scan rate is 200 Hz then the maximum scan rate for the trigger must be set to 100 Hz in order for proDAS to scan at 200 Hz.</p>
+<p class="Note">With only discrete input and float input channels configured, 100 Hz is the maximum scan rate recommended for each channel.</p>
+<p class="Note">With at least one discrete output in addition to discrete input and float input channels, 66Hz is the maximum scan rate recommended for each channel.</p>
+<p>The float channels are  all scanned at the same scan rate. The discrete channels can each be  individually scanned at their own scan rate. </p>
+<p>Each EX10xxA unit has eight Digital Input/Output channels which can be configured as general purpose DIO channels, or used for a hardware trigger source.</p>
+<p>Prior to configuration, the VEXA Subsystem initiates a reset command followed by a self-calibration of the device during initialisation. Self calibration on multiple EX10xxA units is performed at the same time, to avoid undue configuration delays. The VEXA Subsystem issues a &ldquo;lock&rdquo; command to the device when proDAS configures and an &ldquo;unlock&rdquo; command  when proDAS deconfigures.</p>
+<p class="Caution">The web interface to EX10xxA devices must not be used when proDAS is scanning. Running the web interface can result in configuration changes that proDAS is unaware of which could produce incorrect data.</p>
+<p>The VEXA Subsystem driver provides the instrument EU converted value as the raw channel value. The VEXA Subsystem driver supports multiple instances of the subsystem.</p>
+<p>The RTE configuration file holds a section to define the VEXA Subsystem specific parameters. The parameters are:</p>
+<ul>
+  <li>trigger - defines a software or hardware trigger</li>
+</ul>
+<p>The VEXA Subsystem reads the configuration data from proDAS Configuration and Retriever server and stores this information in the Current Value Table (CVT).</p>
+<h2 id="ConfigVEXAChannel">Configuring a VEXA Channel</h2>
+<p>To configure a VEXA Channel:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a><a href="../ConfigEditors/ConfigEditors.htm#MenuEdit"></a>.</li>
+  <li>Select the name of the VEXA Subsystem from the list of available subsystems.
+    <div class="Container"><img src="images/SelectSubsystemName.PNG" alt="SelectSubsystemName" width="387" height="317"></div>
+  </li>
+  <br>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a><a href="../ConfigEditors/ConfigEditors.htm#GenCol"></a>.</li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.</li>
+  <li>Set the <strong>Host Name</strong>.</li>
+  <li>Set the <strong>Channel Function</strong> column.</li>
+  <li>Set the <strong>ChannelNo.</strong> column.</li>
+  <li>Set the <strong>TC Type</strong> column.</li>
+  <li>Set the <strong>Output EU</strong> column.</li>
+  <li>Set the <strong>Filter Freq.</strong> column.</li>
+  <li>Set the <strong>Input</strong> column.</li>
+  <li>Set the <strong>OTD Enable</strong> column (if required).</li>
+  <li>Set the <strong>Static Level</strong> column. Only available when discrete output channel is selected.</li>
+  <li>Set the <strong>Output Latch</strong> column. Only available when discrete output channel is selected.
+    <div class="Container"><img src="images/ChannelEditor.PNG" alt="ChannelEditor" width="700" height="424"></div>
+  </li>
+</ol>
+<h2 id="ConfigFileStructure">Configuration File Structure</h2>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu"> Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import a <strong>VEXA</strong> channel, see <a href="?10#XMLFileStructure"> XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import a <strong>VEXA</strong>channel, see <a href="?11#TabDelimitFileStructure"> Tab-Delimited File Structure</a>.</p>
+<h3 id="XMLFileStructure">XML File Structure</h3>
+<h4 id="ChannelsXML">Channels</h4>
+<p>The channels are stored in files <em>Channels.xml</em> in the configuration directories.</p>
+<p>A VEXA Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor - Generic Channel Parameters - XML File Structure</a>, and the specific attributes <strong>HostName</strong>, <strong>Category</strong>, <strong>ChannelNumber</strong>,<strong> TCType</strong>,<strong> OutputEu</strong>,<strong> FilterFrequency</strong>,<strong> VoltageRange</strong>,<strong> OtdEnabled</strong>,<strong> StaticLevel</strong> and<strong> OutputLatch</strong>. These attributes are explained in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Host Name</td>
+    <td>HostName</td>
+    <td>HOST_NAME</td>
+    <td>The unique name used to identify each device.</td>
+    <td>String</td>
+    <td>One of the host names defined at the VEXA subsystem level.</td>
+  </tr>
+  <tr>
+    <td>Channel Function</td>
+    <td>Category</td>
+    <td>CHAN_FUNC</td>
+    <td>Channel function: analog input (voltage or thermocouple), cold  junction or Discrete Input/Output.
+      <p class="Note"><strong><em>The Channel Type of the  module at the Subsystem level will determine the type of analog input signal (Voltage  or Thermocouple) </em></strong></p>
+      <p class="Note">If the channel is defined as a Boolean, then only a DIO type is allowed to be defined.</p></td>
+    <td>String</td>
+    <td><em>AnalogInput </em>= Voltage or thermocouple<br>
+      <em>CJC</em> = Cold Junction<br>
+      <em>DIO </em>= Discrete Input/Output</td>
+  </tr>
+  <tr>
+    <td>ChannelNo.</td>
+    <td>ChannelNumber</td>
+    <td>CHANNEL_NO</td>
+    <td>Number of the channel on the device.<br>
+      <br>
+      The total number of available CJC channels varies depending on the device model.</td>
+    <td>Integer</td>
+    <td>0-47 for thermocouple/voltage channels,<br>
+      0-11 for CJC channels and<br>
+      0-7 for Digital Input or Output channels</td>
+  </tr>
+  <tr>
+    <td>Output EU</td>
+    <td>OutputEu</td>
+    <td>OUTPUT_EU</td>
+    <td>Final Engineering Unit conversion applied to the value returned by the instrument.<br>
+      <br>
+      Only applicable for channels defined as a channel type of Thermocouple.</td>
+    <td>String<br></td>
+    <td>C<br>
+      F<br>
+      K<br>
+      R</td>
+  </tr>
+  <tr>
+    <td>TC Type</td>
+    <td>ThermocoupleType</td>
+    <td>TC_TYPE</td>
+    <td>For thermocouple channels or any voltage channel which is configured as a thermocouple.<br>
+      <br>
+      Only applicable for channels defined as a channel type of Thermocouple.</td>
+    <td>String</td>
+    <td>Type J<br>
+      Type K<br>
+      Type T<br>
+      Type E<br>
+      Type B<br>
+      Type S<br>
+      Type R<br>
+      Type N</td>
+  </tr>
+  <tr>
+    <td>Filter Freq.</td>
+    <td>AiFilterFrequency</td>
+    <td>FILTER_FREQ</td>
+    <td>Low pass filter cut-off frequency only applies to voltage or thermocouple channel types.</td>
+    <td>Integer</td>
+    <td>4<br>
+      15<br>
+      40<br>
+      100<br>
+      500<br>
+      1000<br>
+      (in Hz)</td>
+  </tr>
+  <tr>
+    <td>Input Range</td>
+    <td>AiVoltageRange</td>
+    <td>INPUT_RANGE</td>
+    <td>Channel type specific input voltage range. (Applies only to analog input channels).
+      <p class="Note">EX1000A-TC is a special case where thermocouple inputs are used for voltage measurement, hence all input ranges for voltage channels are made available.</p></td>
+    <td>Number dependent on Physical thermocouple type</td>
+    <td>[Physical thermocouple defined as Thermocouple]<br>
+      <br>
+      67<br>
+      <br>
+      [Physical thermocouple defined as Voltage]<br>
+      67 (default)<br>
+      100<br>
+      <br>
+      [Physical Voltage Input]<br>
+      10<br>
+      67<br>
+      100<br>
+      1000<br>
+      10000 (default)<br>
+      <br>
+      (in mV)</td>
+  </tr>
+  <tr>
+    <td>OTD Enable</td>
+    <td>AiOtdEnabled</td>
+    <td>OTD_ENABLE</td>
+    <td>Open Thermocouple Detection enable flag. (Applicable for channels configured as channel type Thermocouple).</td>
+    <td>String</td>
+    <td>true = Enabled<br>
+      false = Disabled</td>
+  </tr>
+  <tr>
+    <td>--</td>
+    <td>--</td>
+    <td>SLOPE</td>
+    <td>Display only cell for EU conversion slope determined by the signal conditioner.<br>
+      <br>
+      Enables the user to display the Signal Conditioner Definition Window in read-only mode.</td>
+    <td>--</td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td>--</td>
+    <td>--</td>
+    <td>OFFSET</td>
+    <td>Display only cell for EU conversion offset determined by the signal conditioner.<br>
+      <br>
+      Enables the user to display the Signal Conditioner Definition Window in read-only mode.</td>
+    <td>--</td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td>Static Level</td>
+    <td>DioStaticLevel</td>
+    <td>STATIC_LEVEL</td>
+    <td>Determines whether the signal is high or low for the on or off states. Applies to Digital Output only.<br></td>
+    <td>String</td>
+    <td>true = LOW (off state is low, on is high)<br>
+      <br>
+      false = HIGH (off state is  high, on is low)</td>
+  </tr>
+  <tr>
+    <td>Output Latch</td>
+    <td>DioOutputLatch</td>
+    <td>OUTPUT_LATCH</td>
+    <td>Constant or pulsed output. Applies to Digital Output only.</td>
+    <td>String</td>
+    <td>true = Latched (output stays on until commanded off)<br>
+      <br>
+      false = Not Latched (a  single output pulse is generated when turned on)</td>
+  </tr>
+</table>
+<p> The structure of a VEXA Channel complies with the 
+  following example:</p>
+<blockquote><code>&lt;Channels LastModificationDate=&quot;<strong>2015-06-11 13:17:58</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;<br>
+  &lt;Channel Name=&quot;Vexa1&quot; <br>
+  Description=&quot;&quot; <br>
+  Enabled=&quot;true&quot; <br>
+  LastModificationDate=&quot;2015-06-11 13:17:58&quot; <br>
+  SubsystemName=&quot;ZZVEXA&quot; <br>
+  SubsystemType=&quot;VEXA&quot; <br>
+  AlternateName=&quot;&quot; <br>
+  DataType=&quot;Float&quot; <br>
+  InitialValue=&quot;-999999&quot; <br>
+  Format=&quot;4.2f&quot; <br>
+  UpdateRate=&quot;1&quot; <br>
+  QualityCeiling=&quot;GOOD&quot; <br>
+  Critical=&quot;false&quot; <br>
+  EngineeringUnit=&quot;-&quot; <br>
+  DisplayMin=&quot;0&quot; <br>
+  DisplayMax=&quot;100&quot; <br>
+  DeadBand=&quot;0&quot; <br>
+  Output=&quot;false&quot; <br>
+  ReferenceChannel=&quot;&quot; <br>
+  Group=&quot;&quot; <br>
+  SignalId=&quot;&quot; <br>
+  CalSensor=&quot;&quot; <br>
+  CalGroup=&quot;&quot; <br>
+  FixedSensor=&quot;&quot; <br>
+  CustomerSensor=&quot;&quot; <br>
+  FullsetStability=&quot;false&quot; <br>
+  ContinuousLog=&quot;true&quot; <br>
+  HostName=&quot;ZZEX10xxA&quot; <br>
+  Category=&quot;AnalogInput&quot; <br>
+  ChannelNumber=&quot;0&quot; <br>
+  OutputEu=&quot;&quot; <br>
+  ThermocoupleType=&quot;-&quot; <br>
+  AiFilterFrequency=&quot;4&quot; <br>
+  AiVoltageRange=&quot;10000&quot; <br>
+  AiOtdEnabled=&quot;false&quot; <br>
+  DioStaticLevel=&quot;false&quot; <br>
+  DioOutputLatch=&quot;true&quot;/&gt;<br>
+  &lt;/Channels&gt;<br>
+</code></blockquote>
+<h4 id="SubsystemsXML">Subsystems</h4>
+<p>The subsystem definitions are stored in files Subsystems.xml in the configuration directories.</p>
+<p>A VEXA Subsystem contains generic information, described in <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor - Generic Subsystem Parameters - XML File Structure</a>, and the specific attributes:</p>
+<ul>
+  <li><strong>Device</strong></li>
+  <li><strong>Module/Channel</strong></li>
+  <li><strong>Signal Conditioners</strong></li>
+</ul>
+<p>For each VEXA <strong>Device</strong>, the following subsystem configuration data is defined.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Host Name</td>
+    <td>HostName</td>
+    <td>HOST_NAME</td>
+    <td>The unique name used to identify each device. This name must be defined in the /etc/hosts file of the RTE.</td>
+    <td>String</td>
+    <td>One of the host names defined at the subsystem level.</td>
+  </tr>
+  <tr>
+    <td>Model No.</td>
+    <td>Model</td>
+    <td>MODEL_NO</td>
+    <td>Device model type.</td>
+    <td>String</td>
+    <td>EX1000A<br>
+      EX1000A-TC<br>
+      EX1016A<br>
+      EX1032A<br>
+      EX1048A</td>
+  </tr>
+  <tr>
+    <td>Unit Scan Rate</td>
+    <td>UnitScanRate</td>
+    <td>UNIT_SCAN_RATE</td>
+    <td>Specifies the maximum scan rate for the EX10xxA device up to 200 Hz.</td>
+    <td>Integer</td>
+    <td>Any valid proDAS scan rate</td>
+  </tr>
+  <tr>
+    <td>Default EU</td>
+    <td>DefaultEu</td>
+    <td>DEFAULT_EU</td>
+    <td>Defines the engineering unit the channel returns from the device to proDAS.</td>
+    <td>String</td>
+    <td>This setting is applicable to thermocouple channels only<br>
+      C (default)<br>
+      F</td>
+  </tr>
+</table>
+<p>For each <strong>Module/Channel</strong> of a VEXA Device, the following subsystem configuration data is defined.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Channel No.</td>
+    <td></td>
+    <td>CHANNEL_NO</td>
+    <td>Number of the channel on the device.</td>
+    <td>Number</td>
+    <td>0-47</td>
+  </tr>
+  <tr>
+    <td>Channel Type</td>
+    <td>AnalogType</td>
+    <td>CHAN_TYPE</td>
+    <td>The default selection of Voltage or Thermocouple is determined by the MODEL_NO and the selected CHANNEL_NO as per the hardware configuration of the device. It is possible to change this to any value.<br>
+      <br>
+      Disabled results in not allowing the channel to be defined in the Channel Editor.<br>
+      <br>
+      <p class="Note">For the EX1000A-TC the default selection for all channels should be Thermocouple.</p></td>
+    <td>-- </td>
+    <td>Voltage<br>
+      Thermocouple<br>
+      Disabled</td>
+  </tr>
+  <tr>
+    <td>Signal Conditioner</td>
+    <td>ScModel</td>
+    <td>SIG_COND</td>
+    <td>Signal Conditioner Type.
+      <p class="Note">Only available for voltage channels.</p></td>
+    <td>-- </td>
+    <td>EX10010SC-8B32-02<br>
+      EX10010SC-8B33-03<br>
+      EX10010SC-8B33-04<br>
+      EX10010SC-8B33-05<br>
+      EX10010SC-8B34-04<br>
+      EX10010SC-8B35-04<br>
+      EX10010SC-8B36-04<br>
+      EX10010SC-8B38-01<br>
+      EX10010SC-8B38-02<br>
+      EX10010SC-8B41-01<br>
+      EX10010SC-8B41-03<br>
+      EX10010SC-8B41-07<br>
+      EX10010SC-8B41-09<br>
+      EX10010SC-8B41-12<br>
+      EX10010SC-8B42-01 <br>
+      EX10010SC-8B45-02<br>
+      EX10010SC-8B45-05<br>
+      EX10010SC-8B45-08<br>
+      EX10010SC-8B47J-12<br>
+      EX10010SC-8B47K-13<br>
+      EX10010SC-8B47T-06<br></td>
+  </tr>
+  <tr>
+    <td>Description</td>
+    <td>Description</td>
+    <td>DESC</td>
+    <td>Description field for each channel.</td>
+    <td>String</td>
+    <td></td>
+  </tr>
+</table>
+<p>The structure of a VEXA Subsystem is shown in the following example:</p>
+<blockquote>
+  <pre>&lt;Subsystems   LastModificationDate=&quot;<strong>2010-11-18   11:09:32</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Subsystem Name=&quot;VEXA&quot;
+Description=&quot;VEXA SS&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2010-11-18 11:09:32&quot;
+Id=&quot;0&quot;
+Type=&quot;VEXA&quot;
+CreationDate=&quot;2010-10-13 10:24:07&quot;&gt;
+&lt;Devices&gt;
+&lt;Device HostName=&quot;ex1032_1&quot;
+Model=&quot;EX1032A&quot;
+UnitScanRate=&quot;200&quot;
+DefaultEu=&quot;C&quot;
+&lt;AnalogInputs&gt;
+&lt;AnalogInput Enabled=&quot;true&quot;
+AnalogType=&quot;Voltage&quot;
+ScModel=&quot;&quot;
+Description=&quot;&quot; /&gt;
+&lt;/AnalogInputs&gt;
+&lt;/Device&gt;
+&lt;/Subsystem&gt;</pre>
+</blockquote>
+<p>For the VEXA Subsystem a list of <strong>Signal Conditioners</strong> with the following information can be defined.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Name</td>
+    <td>ModelName</td>
+    <td>NAME</td>
+    <td>Unique name for the Signal Conditioner.</td>
+    <td>String</td>
+    <td>User Defined</td>
+  </tr>
+  <tr>
+    <td>Type</td>
+    <td>Type</td>
+    <td>TYPE_DESCRIPTION</td>
+    <td>Description of the Signal Conditioner.</td>
+    <td>String</td>
+    <td>User Defined</td>
+  </tr>
+  <tr>
+    <td>InputRange min.</td>
+    <td>InputRangeMin</td>
+    <td>INPUT_RANGE_MIN</td>
+    <td>Minimum input value of the signal conditioner.</td>
+    <td>Float</td>
+    <td>User Defined</td>
+  </tr>
+  <tr>
+    <td>InputRange max.</td>
+    <td>InputRangeMax</td>
+    <td>INPUT_RANGE_MAX</td>
+    <td>Maximum input value of the signal conditioner.</td>
+    <td>Float</td>
+    <td>User Defined</td>
+  </tr>
+  <tr>
+    <td>EU</td>
+    <td>InputUnit</td>
+    <td>INPUT_EU</td>
+    <td>Any available engineering unit as defined at the root level of the configuration to be presented to the user in the form of a drop down list of all available units to be selected.</td>
+    <td>String</td>
+    <td>User Defined</td>
+  </tr>
+  <tr>
+    <td>OutputRange min.</td>
+    <td>OutputRangeMin</td>
+    <td>OUTPUT_RANGE_MIN</td>
+    <td>Minimum output value of the signal conditioner in V.</td>
+    <td>Float</td>
+    <td>User Defined</td>
+  </tr>
+  <tr>
+    <td>OutputRange max.</td>
+    <td>OutputRangeMax</td>
+    <td>OUTPUT_RANGE_MAX</td>
+    <td>Maximum output value of the signal conditioner in V.</td>
+    <td>Float</td>
+    <td>User Defined</td>
+  </tr>
+</table>
+<p class="Note">Signal conditioners are independent of each VEXA Subsystem instance. Extending the list of signal conditioners allows use in any other VEXA Subsystem.</p>
+<p>The structure of a VEXA Signal Conditioner is shown in the following example:</p>
+<blockquote>
+  <pre>&lt;VexaSignalConditionerModels LastModificationDate=&quot;<strong>2011-02-22   11:09:32</strong>&quot; Version=&quot;<strong>1</strong>&quot;&gt;
+&lt;VexaSignalConditionerModel ModelName=&quot;EX10SC-8B47T-06&quot;
+Description=&quot;&quot;
+Type=&quot;T-thermocouple&quot;
+InputUnit=&quot;C&quot;
+InputRangeMin=&quot;-100&quot;
+InputRangeMax=&quot;400&quot;
+OutputRangeMin=&quot;0&quot;
+OutputRangeMax=&quot;5&quot; /&gt;
+&lt;/VexaSignalConditionerModels&gt;
+</pre>
+</blockquote>
+<h3 id="TabDelimitFileStructure">Tab-Delimited File Structure</h3>
+<p>The VEXA Subsystem channel definition includes all <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic channel definition columns</a> and the specific VEXA Subsystem input parameters defined in the tab-delimited configuration file.</p>
+<p>The rules, syntax and guidelines for creating VEXA Subsystem channels are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th> Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>HOST_NAME</td>
+    <td>Specifies the host name of the RTP chassis that contains this channel.</td>
+    <td>String, one of the host names defined at the subsystem level.</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>CHAN_FUNC</td>
+    <td>Channel function: voltage, thermocouple, CJC or DIO.
+      <p class="Note">If the Channel Type of the module at the Subsystem level is defined as Voltage, then CHAN_FUNC does not include T/C, and if the Type is defined as Thermocouple, then CHAN_FUNC does not include Volts.</p>
+      <p class="Note">If the channel is defined as a Boolean, then only a DIO type is allowed to be defined.</p></td>
+    <td>String, one of:<br>
+      Volts<br>
+      T/C<br>
+      CJC<br>
+      DIO</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>CHANNEL_NO</td>
+    <td>Number of the channel on the device.<br>
+      <br>
+      The total number of available CJC channels varies depending on the device model.</td>
+    <td>Number from 0-47 for thermocouple/voltage channels,<br>
+      0-11 for CJC channels and<br>
+      0-7 for Digital Input or Output channels</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>TC_TYPE</td>
+    <td>For thermocouple channels or any voltage channel which is configured as a thermocouple.<br>
+      <br>
+      Only applicable for channels defined as a channel type of Thermocouple.</td>
+    <td>String, one of:<br>
+      Type J<br>
+      Type K<br>
+      Type T<br>
+      Type E<br>
+      Type B<br>
+      Type S<br>
+      Type R<br>
+      Type N</td>
+    <td>No</td>
+    <td>See Description.</td>
+  </tr>
+  <tr>
+    <td>OUTPUT_EU</td>
+    <td>Final Engineering Unit conversion applied to the value returned by the instrument.<br>
+      <br>
+      Only applicable for channels defined as a channel type of Thermocouple.</td>
+    <td>String, one of:<br>
+      C<br>
+      F<br>
+      K<br>
+      R</td>
+    <td>No</td>
+    <td>See Description.</td>
+  </tr>
+  <tr>
+    <td>FILTER_FREQ</td>
+    <td>Low pass filter cut-off frequency only applies to voltage or thermocouple channel types.</td>
+    <td>Integer, one of:<br>
+      4<br>
+      15<br>
+      40<br>
+      100<br>
+      500<br>
+      1000<br>
+      (in Hz)</td>
+    <td>No</td>
+    <td>See Description.</td>
+  </tr>
+  <tr>
+    <td>INPUT_RANGE</td>
+    <td>Channel type specific input voltage range. (Applies only to voltage channels).
+      <p class="Note">EX1000A-TC is a special case where thermocouple inputs are used for voltage measurement, hence all input ranges for voltage channels are made available.</p></td>
+    <td>Number dependent on Physical thermocouple type and CHAN_TYPE:<br>
+      <br>
+      [Physical thermocouple defined as CHAN_TYPE Thermocouple]<br>
+      <br>
+      67 (default)<br>
+      <br>
+      [Physical thermocouple defined as CHAN_TYPE Voltage]<br>
+      67 (default)<br>
+      100<br>
+      <br>
+      [Physical Voltage Input]<br>
+      10<br>
+      67<br>
+      100<br>
+      1000<br>
+      10000 (default)<br>
+      <br>
+      (in mV)</td>
+    <td>No</td>
+    <td>See Description.</td>
+  </tr>
+  <tr>
+    <td>OTD_ENABLE</td>
+    <td>Open Thermocouple Detection enable flag (Applicable for channels configured as channel type Thermocouple).</td>
+    <td>Y or N</td>
+    <td>No</td>
+    <td>See Description.</td>
+  </tr>
+  <tr>
+    <td>STATIC_LEVEL</td>
+    <td>Determines whether the signal is high or low for the on or off states. Applies to Digital Output only.<br>
+      <br>
+      HIGH - off state is high, on is low<br>
+      LOW - off state is low, on is high (default)</td>
+    <td>HIGH or LOW</td>
+    <td>No</td>
+    <td>See Description.</td>
+  </tr>
+  <tr>
+    <td>OUTPUT_LATCH</td>
+    <td>Constant or pulsed output. Applies to Digital Output only.<br>
+      <br>
+      Y (Selected): output stays on until commanded off<br>
+      <br>
+      N (UnSelected): a single output pulse is generated when turned on</td>
+    <td>Y (default) or N</td>
+    <td>No</td>
+    <td>See Description.</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines 
+      follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel 
+      to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. 
+      Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single line of the spread sheet.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is always optional.</p></td>
+  </tr>
+</table>
+<h2 id="SSVEXA">Subsystem Editor for VEXA Channels</h2>
+<p>To edit the VEXA Subsystem, the Subsystem Editor must be selected from within the Configuration Administrator.</p>
+<p>The tool bar in the Configuration Administrator allows the various configuration editors available for proDAS to be selected.</p>
+<p>The Subsystem Editor allows new subsystems to be added to the current configuration.</p>
+<div class="Container"><img src="images/SubsystemEditor.png" alt="SubsystemEditor" width="700" height="423"></div>
+<br>
+<p><strong>To add a new subsystem:</strong></p>
+<ol>
+  <li>From the Edit menu, select <strong>Append Data Record</strong> or, in the left pane of the splitter window and then click the right mouse button and select <strong>Append Data Record</strong> from the context sensitive menu.</li>
+  <li> Selecting <strong>VEXA</strong> in the dialogue box to select the type of subsystem.<br>
+    A new line in Subsystem Editor is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to <strong>VEXA</strong>. The user must then assign a name and description to the subsystem.</li>
+</ol>
+<h3 id="SetVEXAscType">Setting the VEXA Signal Conditioner Type</h3>
+<p>To set the VEXA Signal Conditioner Type:</p>
+<ol>
+  <li>From the Modules / Channels pane double-click the Signal Conditioners field. The VEXA Signal Conditioner Types Editor is displayed.
+    <div class="Container"><img src="images/VexaSigCondEditor.png" alt="VexaSigCondEditor" width="554" height="373"></div>
+  </li>
+  <br>
+  <li>Create a new Signal Conditioner type or modify an existing type.</li>
+  <li>To save your changes and have the new or modified signal conditioner available, select <strong>Save</strong>.</li>
+</ol>
+<h2 id="RTEInitialiseFile">RTE Initialisation File</h2>
+<p>The VEXA Subsystem is configured by the RTE, along with all the other subsystems, as a request from the Management Interface GUI. For legacy purposes, the configuration request can also be specified in the command line of the RTE.</p>
+<p>The RTE Initialisation file must, as a minimum, include the following information:</p>
+<ul>
+  <li>trigger type</li>
+</ul>
+<p>A typical RTE Initialisation file would include the following VEXA Subsystem information:</p>
+<table width="95%" border="0" cellspacing="1" cellpadding="2">
+  <tr>
+    <td colspan="2">#--------------------------------------------------------------------------<br>
+      # VEXA Subsystem<br>
+      #--------------------------------------------------------------------------</td>
+  </tr>
+  <tr>
+    <td width="19%">SS VEXA</td>
+    <td width="81%">TRUE</td>
+  </tr>
+  <tr>
+    <td colspan="2"># software or hardware trigger: SW or HW</td>
+  </tr>
+  <tr>
+    <td width="19%">CI trigger</td>
+    <td width="81%">SW</td>
+  </tr>
+</table>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click here to see the RTE Initialisation file.</a></p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

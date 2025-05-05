@@ -1,0 +1,201 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Weather Station (WS) Subsystem</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="WeatherStation">Weather Station (WS) Subsystem (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The Weather Station (WS) Subsystem is a proDAS external hook program connected to a MET3A/MET4A meteorological unit. The MET3A/MET4A is a customer-specific device and the WS module is not part of the generic proDAS subsystem structure.</p>
+<p>The WS application is an independent process that starts automatically when proDAS initialises the External Hook driver. The WS application requests the temperature, pressure and humidity from the MET3A/MET4A every three seconds and sends the formatted data to proDAS (using the EPHL library for communication)  through the relevant External Hook floating-point input channels (there is one float channel for each of temperature, pressure, and humidity).</p>
+<p>If the WS stops updating the three data channels, proDAS displays a message in the Unified Event Log (UEL) to alert the operator. The application periodically writes a zero to the External Hook Heartbeat Channel, which is incremented regularly by proDAS. If the External Hook Heartbeat channel increases above a predetermined tolerance, proDAS, assuming that the WS has failed, warns the operator and automatically attempts to restart the WS (as determined by the proDAS .config file).</p>
+<p>If proDAS stops scanning, the WS External Hook application enters an idle state waiting for proDAS to return to scan mode. The WS does not stop when proDAS exits scan mode. The WS stops and restarts automatically when proDAS is reconfigured.</p>
+<h2 id="ConfigWSChannel">Configuring a WS Channel</h2>
+<p>The following five channels are available for configuration for the WS Subsystem:</p>
+<ul>
+  <li>Barometric pressure - a measured channel coming from the Weather Station. The channel name is taken from the config.ws file</li>
+  <li> Relative humidity - a measured channel coming from the Weather Station. The channel name is taken from the config.ws file</li>
+  <li>Air temperature - a measured channel coming from the Weather Station. The channel name is taken from the config.ws file</li>
+  <li>Weather Station error - a discrete status channel coming from the Weather Station. The channel name is taken from the .config file</li>
+  <li>Weather Station heartbeat - a discrete  channel coming from the Weather Station that ensures communication. The channel name is taken from the .config file</li>
+</ul>
+<h4>To configure a WS Channel:</h4>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm">Configuration Editors</a>.</li>
+  <li> Select <strong>WS</strong> from the list of available subsystems.
+    <div class="Container"><img src="images/SelectSubsystemName.gif" alt="Select Subsystem Name" width="335" height="180"></div>
+  </li>
+  <li>Fill the category independent columns as described in <a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a>.</li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.
+    <div class="Container"><img src="images/ChannelEditor.png" alt="Channel Editor" width="700" height="418"></div>
+  </li>
+</ol>
+<h2 id="ConfigFileStructure">Configuration File Structure</h2>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+<p>To import configuration information from an XML file, see <a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm"> Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import a <strong>WS channel</strong>, see <a href="?10#XMLFileStructure"> XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import a <strong>WS</strong> channel, see <a href="?11#TabDelimitFileStructure">Tab-Delimited File Structure</a>.</p>
+<h3 id="XMLFileStructure">XML File Structure</h3>
+<h4 id="ChannelsXML">Channels</h4>
+<p>The channels are stored in files Channels.xml in the configuration directories.</p>
+<p>A WS Channel contains generic information, described in <a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor - Generic Channel Parameters - XML File Structure</a>. There are no subsystem specific columns.</p>
+<p>The structure of a Weather Station Channel complies with the following example:</p>
+<blockquote>
+  <pre>&lt;Channels LastModificationDate=&quot;2003-02-21 10:55:21&quot;&gt; 
+   &nbsp;&lt;Channel Name=&quot;WS_AirTemp&quot; 
+   &nbsp;&nbsp;Description=&quot;WS channel&quot; 
+   &nbsp;&nbsp;Enabled=&quot;true&quot; 
+   &nbsp;&nbsp;LastModificationDate=&quot;2003-02-21 10:55:21&quot; 
+   &nbsp;&nbsp;SubsystemName=&quot;WS&quot; 
+   &nbsp;&nbsp;SubsystemType=&quot;External&quot; 
+   &nbsp;&nbsp;AlternateName=&quot;&quot; 
+   &nbsp;&nbsp;DataType=&quot;Float&quot; 
+   &nbsp;&nbsp;InitialValue=&quot;-999999&quot; 
+   &nbsp;&nbsp;Format=&quot;5.1f&quot; 
+   &nbsp;&nbsp;UpdateRate=&quot;1&quot; 
+   &nbsp;&nbsp;QualityCeiling=&quot;GOOD&quot; 
+   &nbsp;&nbsp;Critical=&quot;true&quot; 
+   &nbsp;&nbsp;EngineeringUnit=&quot;Cel&quot; 
+   &nbsp;&nbsp;DisplayMin=&quot;-30&quot; 
+   &nbsp;&nbsp;DisplayMax=&quot;50&quot; 
+   &nbsp;&nbsp;DeadBand=&quot;0&quot; 
+   &nbsp;&nbsp;Output=&quot;false&quot; 
+   &nbsp;&nbsp;ReferenceChannel=&quot;&quot; 
+   &nbsp;&nbsp;Group=&quot;Weather&quot;&nbsp;
+   &nbsp;&lt;/Channel&gt; 
+   &lt;/Channels&gt;</pre>
+</blockquote>
+<h3 id="TabDelimitFileStructure">Tab-Delimited File Structure</h3>
+<p>The Weather Station Subsystem channel definition includes all <a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic channel definition columns</a>. No subsystem specific configuration information is required.</p>
+<h2 id="SubsysEditor">Subsystem Editor for WS Channels</h2>
+<p>To edit the WS Subsystem, the Subsystem Editor must be selected from within the Configuration Administrator.</p>
+<p>The tool bar in the Configuration Administrator allows the various configuration editors available for proDAS to be selected.</p>
+<p>The Subsystem Editor allows new subsystems to be added to the current configuration.</p>
+<div class="Container"><img src="images/SubsystemEditor.gif" alt="Subsystem Editor" width="700" height="120"></div>
+<p>&nbsp;</p>
+<p><strong>To add a new subsystem</strong>:</p>
+<ol>
+  <li>From the Edit menu, select <strong>Append Data Record</strong> or, in the left pane of the splitter window, click the right mouse button and select <strong>Append Data Record</strong> from the context sensitive menu.</li>
+  <li>Select <strong>External</strong> in the dialogue box to select the type of subsystem.<br>
+    A new line in Subsystem Editor is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to <strong>External</strong>. The name assigned to the subsystem must be <strong>WS</strong>.</li>
+</ol>
+<h2 id="RTEInitialiseFile2">RTE Initialisation File</h2>
+<p>The following standard proDAS External Hook parameters are stored in the proDAS .config file for the WS:</p>
+<ul>
+  <li>Command line to start the WS: we -c .config.ws -s</li>
+  <li>Type of connection with proDAS: SHARED_MEMORY</li>
+  <li>Service key for shared memory: 34</li>
+  <li>Tolerance value for heartbeat reset: 30</li>
+  <li>Number of tries to restart the application: 3</li>
+  <li>Delay time to restart the application: 10</li>
+  <li>Allow disable flag: No</li>
+  <li>Heartbeat channel name: WS_HEARTBEAT *</li>
+  <li>Error channel name: WS_ERROR *</li>
+</ul>
+<p>A typical RTE initialisation file would include the following 
+  Weather Station Subsystem information:</p>
+<p>#--------------------------------------------------------------------------<br>
+  # Weather Station Subsystem<br>
+  #--------------------------------------------------------------------------</p>
+<p>SS WS TRUE<br>
+  # Command line to start WS<br>
+  CI program ws -c .config.ws -s<br>
+  # Type of IPC communication used<br>
+  CI connection SHARED_MEMORY<br>
+  # Shared memory service key number<br>
+  CI serv_key 34 <br>
+  # Heartbeat channel tolerance value <br>
+  CI tolerance 30<br>
+  CI init_tolerance 120 <br>
+  # Number of program restarts allowed<br>
+  CI retry 3<br>
+  # Heartbeat channel delay value<br>
+  CI delay 10<br>
+  # Enable/Disable EXT HOOKS button in GUI<br>
+  CI allow_disable No<br>
+  # Name of Heartbeat channel<br>
+  CI heartbeat WS_HEARTBEAT<br>
+  # Name of Error channel<br>
+  CI error WS_ERROR</p>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click here to see the RTE Initialisation file.</a></p>
+<h2 id="WSinifile">WS Initialisation File</h2>
+<p>The following parameters are read from the WS configuration file (.config) when the WS application initialises:</p>
+<ul>
+  <li>Trace file name: /users/RTE/bin/tmp/Trace.ws</li>
+  <li>Humidity channel name: WS_HUMIDITY *</li>
+  <li>Pressure channel name: WS_PRESSURE *</li>
+  <li>Temperature channel name: WS_TEMPERATURE *</li>
+  <li>Port name for the TTY connection: /dev/ttydM0</li>
+  <li>Connection string: 9600,8,N,1</li>
+  <li>Trace file verbosity level: 60</li>
+  <li>Flag to dump coefficient values: FALSE</li>
+  <li>Scan rate in milliseconds: 3000</li>
+  <li>UEL registration name: WS</li>
+  <li>Conversion factor: default pressure from MET3A/MET4A is in units of bar</li>
+</ul>
+<p class="Note">* indicates that the parameter must be in the WS Subsystem Configuration file of the proDAS System.</p>
+<p>A typical WS initialisation file would include the following information:</p>
+<p>#=======================================================================<br>
+  # Module for WS information setup<br>
+  MD WTHR_STN<br>
+  #-----------------------------------------------------------------------<br>
+  # The directory path and file name of the WS trace file<br>
+  CI ws_trace_file /users/RTE/bin/tmp/Trace.ws<br>
+  #-----------------------------------------------------------------------<br>
+  # The name of the humidity channel<br>
+  CI humidity WS_HUMIDITY<br>
+  #-----------------------------------------------------------------------<br>
+  # The name of the pressure channel<br>
+  CI pressure WS_PRESSURE<br>
+  #-----------------------------------------------------------------------<br>
+  # The name of the temperature channel<br>
+  CI temperature WS_TEMPERATURE<br>
+  #-----------------------------------------------------------------------<br>
+  # The name of the serial port<br>
+  CI serial_port /dev/ttydM0<br>
+  #-----------------------------------------------------------------------<br>
+  # Connection string consists of the following:<br>
+  # - Baud rate in bits per second (keep at 9600, unless MET3A/MET4A changes)<br>
+  # - Data bits (number of data bits per character, 7 or 8)<br>
+  # - Parity bits (O = odd, E = even, N = none)<br>
+  # - Stop bits (number of stop bits, 1 or 2)<br>
+  CI connect_string 9600 8 N 1<br>
+  #-----------------------------------------------------------------------<br>
+  # The verbosity level for WS trace file.<br>
+  CI verbosity_level 60<br>
+  #-----------------------------------------------------------------------<br>
+  # The dump coefficients to trace file, flag. (Should be left at false<br>
+  # unless you really believe the MET3A/MET4A is malfunctioning.)<br>
+  CI dump_coefficients FALSE<br>
+  #-----------------------------------------------------------------------<br>
+  # The scan rate in milliseconds (range 3000 - 10000)<br>
+  CI scan_rate 3000<br>
+  #-----------------------------------------------------------------------<br>
+  # The UEL registration name (same as defined in .config UEL section)<br>
+  CI uel_regname WS<br>
+  #-----------------------------------------------------------------------<br>
+  # Conversion factor. Pressure from MET3A/MET4A is bar, the example<br>
+  # shown here is multiplier to give PSI<br>
+  CI pres_conv 14.50377<br>
+  #=======================================================================<br>
+  &lt;!&gt; END OF CONFIG &lt;!&gt;</p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

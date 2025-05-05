@@ -1,0 +1,674 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>ARINC 429 Subsystem</title>
+<style type="text/css">
+<!--
+.style1 {color: #FF6600}
+-->
+</style>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="ARINC">ARINC 429 Subsystem (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>Aeronautical Radio Inc. (ARINC) is a hardware and software standard for engine data collection. Performance data from the Electronic Engine Control (EEC) module on an engine is collected by the professional Data Acquisition System (proDAS) through an ARINC 429 Subsystem. proDAS supports  both a VME ARINC429 card or a PCI ARINC 429 Interface card configuration. The VME ARINC card is mounted in the VME chassis and processes ARINC data into a form that can be used by proDAS in the Host Computer. The PCI ARINC 429 Interface card is mounted in the Host Computer.</p>
+<p>ARINC transmit and receive formats are in binary coded decimal, fractional binary notation and discrete digital data. Data is encoded in a 32-bit word format that is unique to ARINC. The data types vary with the type of engine under test. Data transmit and receive rates are at 12.5 Kbps (390 words/second) or 100 Kbps (3125 words/second). High or low rates depend upon bus bandwidth, the number of channels and channel configuration.</p>
+<p>ARINC 429 software performs Engineering Unit (EU) conversion during data decoding and encoding. The software corrects interface errors and displays hardware and software status on proDAS.</p>
+<h2 id="ConfigARINCChannel">Configuring an ARINC 429 Channel</h2>
+<p>To configure an ARINC 429 Channel:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<p class="Note">Boolean channels can only be referenced to other boolean channels. If cross referencing a boolean channel to a different channel type, the different channel type must be changed to a boolean channel then changed back to the original channel type after it is referenced. A message warns the user of any inconsistent channel types to ensure the user is referencing the correct channel.</p>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</li>
+  <li>Select the name of the ARINC 429 Subsystem from the list of available subsystems.
+    <div class="Container"><img src="images/SelectSubsystemName.PNG" alt="SelectSubsystemName" width="387" height="317"></div>
+  </li>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a><a href="../ConfigEditors/ConfigEditors.htm#GenCol"></a>.</li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel  Editor</a>.</li>
+  <li>Set the <strong>Pinout</strong> column.</li>
+  <li>Set the <strong>Port</strong> column.</li>
+  <li>Set the <strong>SDI</strong> column.</li>
+  <li>Set the <strong>Label</strong> column.</li>
+  <li>If the channel data type is Boolean, set the <strong>Bit</strong> column.</li>
+  <li>If the channel data type is Float, set the <strong>Coding</strong> column.</li>
+  <li>If the Coding is not set to BCD, set the <strong>SSM</strong> column.</li>
+  <li>If the channel data type is Float, set the <strong>Significant Bits</strong> column.</li>
+  <li>If the channel data type is Float, set the <strong>Scale</strong> column.</li>
+  <li>If the channel is Output, set the <strong>Output Rate</strong> column</li>
+  <li>If the channel is Input, set the <strong>Time Out</strong> column.
+    <div class="Container"><img src="images/ChannelEditor.png" alt="ChannelEditor" width="700" height="424"></div>
+  </li>
+</ol>
+<h3 id="StandardARINCchan">Standard ARINC Channels</h3>
+<p>The Standard ARINC Channels include the Flight Number, Greenwich Mean Time (GMT) and Date. These channels send specific textual information to the EEC while the RTE is scanning.</p>
+<p>The Flight No may be sent to the EEC via labels 233, 234, 235 and 236. To generate the Flight No, create four new Boolean output channels with the labels 233, 234, 235 and 236 and a Format equal to the flight number followed by /True (e.g.: AC8125/True), an SSM of 0 and an SDI of 0. When scanning, the RTE will pass the entered Flight No to the EEC.</p>
+<p class="Note">The flight number is limited to 8 characters and must be the same on all four channels.</p>
+<p>The time channel is configured as a Float output channel with a label of 125. When scanning, the RTE will generate the current time, convert it to Greenwich Mean Time, and pass this value to the EEC on label 125.</p>
+<p>The date channel can be configured as a Float output channel with a label of 260. The RTE will generate the current date, format it as required by the EEC, and pass it to the EEC.</p>
+<p>Both the Date and Time channels require a coding type of BNR, an SSM of 0 and an SDI of 0.</p>
+<p class="Note">Although the Standard ARINC Channels are configured as Output channels, they do not make use of the reference channel or initial value. The initial value field should therefore, be set to zero (0).</p>
+<p>Summary of Standard ARINC Channels:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Channel</th>
+    <th>Label</th>
+    <th>Type</th>
+    <th>SDI</th>
+    <th>SSM</th>
+    <th>Coding</th>
+    <th>Format</th>
+  </tr>
+  <tr>
+    <td>GMT</td>
+    <td>125</td>
+    <td>Float</td>
+    <td>0</td>
+    <td>0</td>
+    <td>BNR</td>
+    <td>N/R</td>
+  </tr>
+  <tr>
+    <td>Date</td>
+    <td>260</td>
+    <td>Float</td>
+    <td>0</td>
+    <td>0</td>
+    <td>BNR</td>
+    <td>N/R</td>
+  </tr>
+  <tr>
+    <td>FlightNo1</td>
+    <td>233</td>
+    <td>Boolean</td>
+    <td>0</td>
+    <td>0</td>
+    <td>N/R</td>
+    <td>&lt;FLIGHTNO&gt;/True</td>
+  </tr>
+  <tr>
+    <td>FlightNo2</td>
+    <td>234</td>
+    <td>Boolean</td>
+    <td>0</td>
+    <td>0</td>
+    <td>N/R</td>
+    <td>&lt;FLIGHTNO&gt;/True</td>
+  </tr>
+  <tr>
+    <td>FlightNo3</td>
+    <td>235</td>
+    <td>Boolean</td>
+    <td>0</td>
+    <td>0</td>
+    <td>N/R</td>
+    <td>&lt;FLIGHTNO&gt;/True</td>
+  </tr>
+  <tr>
+    <td>FlightNo4</td>
+    <td>236</td>
+    <td>Boolean</td>
+    <td>0</td>
+    <td>0</td>
+    <td>N/R</td>
+    <td>&lt;FLIGHTNO&gt;/True</td>
+  </tr>
+</table>
+<h2 id="ConfigFileStructure">Configuration File Structure</h2>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu"> Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import an <strong>ARINC 429</strong> channel, see <a href="?10#XMLFileStructure">XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see<a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import an <strong>ARINC 429</strong> channel, see <a href="?11#TabDelimitFileStructure"> Tab-Delimited File Structure</a>.</p>
+<h3 id="XMLFileStructure">XML File Structure</h3>
+<h4 id="ChannelsXML">Channels</h4>
+<p>The channels are stored in <em>Channels.xml</em> files in the configuration directories.</p>
+<p>An ARINC 429 Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor 
+- Generic Channel Parameters - XML File Structure</a>, and the specific attributes <strong>Pinout, SDI, Label, Bit, Coding, SSM, Significant Bits, Scale, Output Rate,</strong> and <strong>Time Out</strong>. These attributes are explained in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Pinout</td>
+    <td>Pinout</td>
+    <td>PINOUT</td>
+    <td>The name of the ARINC Port</td>
+    <td>String</td>
+    <td>A Name defined in the Arinc Pinouts Collection defined in the ARINC 429 Subsystem</td>
+  </tr>
+  <tr>
+    <td>SDI</td>
+    <td>SDI</td>
+    <td>SDI</td>
+    <td>Source/Destination Identifier</td>
+    <td>Integer</td>
+    <td>An integer between 0 and 3</td>
+  </tr>
+  <tr>
+    <td>Label</td>
+    <td>Label</td>
+    <td>LABEL</td>
+    <td>Unique identifier for the Arinc data word/channel inOctal</td>
+    <td>Integer</td>
+    <td>An Octal integer between 000 and 377</td>
+  </tr>
+  <tr>
+    <td>Bit</td>
+    <td>Bit</td>
+    <td>BIT</td>
+    <td>The bit in the ARINC word between 11 (least significant bit) and  29 (most significant bit) to be handled by a Boolean or Integer channel <br>
+      <br>
+      For Float channels,  this value should be set to 0</td>
+    <td>Integer</td>
+    <td>Integer value 0, or 11 to 29</td>
+  </tr>
+  <tr>
+    <td>Coding</td>
+    <td>Coding</td>
+    <td>CODING</td>
+    <td>The Arinc word encoding, only applicable for Integer or Float channels.  Should be kept blank for Boolean channels.</td>
+    <td>String</td>
+    <td>BNR or BCD</td>
+  </tr>
+  <tr>
+    <td>SSM</td>
+    <td>SSM</td>
+    <td>SSM</td>
+    <td>Sign/Status Matrix, used to specify the corresponding  &quot;GOOD&quot; quality value</td>
+    <td>Integer</td>
+    <td>An integer between 0 and 3</td>
+  </tr>
+  <tr>
+    <td>Significant Bits</td>
+    <td>SignificantBits</td>
+    <td>SIG_BITS</td>
+    <td>Number of significant bits in Arinc word starting from the most significant bit</td>
+    <td>Integer</td>
+    <td>The number of significant bits in the Arinc word between 1 (most significant bit) and 19 (least significant bit)</td>
+  </tr>
+  <tr>
+    <td>Scale</td>
+    <td>Scale</td>
+    <td>SCALE</td>
+    <td>The value of the most significant bit of the Arinc word (a power of 2 between 2^0 and 2^18).</td>
+    <td>Integer</td>
+    <td>An integer, as a power of 2 between 2^0 and 2^18,  between 1 - 262144</td>
+  </tr>
+  <tr>
+    <td>Output Rate</td>
+    <td>OutputRate</td>
+    <td>MSEC</td>
+    <td>For output channels, specifies the interval  between transmissions in milliseconds</td>
+    <td>Integer</td>
+    <td>An integer greater than 12</td>
+  </tr>
+  <tr>
+    <td>Time Out</td>
+    <td>TimeOut</td>
+    <td>TIMEOUT</td>
+    <td>For input channels, specifies the interval  allowed between 2 ARINC word updates in milliseconds</td>
+    <td>Integer</td>
+    <td>An integer. The default value shall be set to twice the channel scan rate</td>
+  </tr>
+</table>
+<p class="Note">BNR channels assume that there is a significant bit if the number of significant bits is 18 or less. If the number of significant bits is 19, then the ARINC subsystem assumes that there is no significant bit and treats the most significant bit as part of the data.<br>
+  <br>
+  In this situation, to have the most significant bit interpreted as the significant bit, the number of significant bits should be specified as 18 and the scaling should be set to 262144.</p>
+<p>The structure of an ARINC Channel complies with the following example:</p>
+<blockquote>
+  <pre>
+&lt;Channels LastModificationDate=&quot;<strong>2015-06-10 14:12:15</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Channel Name=&quot;ZZArinc&quot;
+Description=&quot;&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2015-06-10 14:12:15&quot;
+SubsystemName=&quot;ZZArinc&quot;
+SubsystemType=&quot;Arinc429&quot;
+AlternateName=&quot;&quot;
+DataType=&quot;Float&quot;
+InitialValue=&quot;-999999&quot;
+Format=&quot;4.2f&quot;
+UpdateRate=&quot;1&quot;
+QualityCeiling=&quot;GOOD&quot;
+Critical=&quot;false&quot;
+EngineeringUnit=&quot;-&quot;
+DisplayMin=&quot;0&quot;
+DisplayMax=&quot;100&quot;
+DeadBand=&quot;0&quot;
+Output=&quot;false&quot;
+ReferenceChannel=&quot;&quot;
+Group=&quot;&quot;
+SignalId=&quot;&quot;
+CalSensor=&quot;&quot;
+CalGroup=&quot;&quot;
+FixedSensor=&quot;&quot;
+CustomerSensor=&quot;&quot;
+FullsetStability=&quot;false&quot;
+ContinuousLog=&quot;true&quot;
+Pinout=&quot;atppinout1&quot;
+Label=&quot;127&quot;
+Bit=&quot;0&quot;
+SDI=&quot;1&quot;
+Coding=&quot;BNR&quot;
+SSM=&quot;1&quot;
+SignificantBits=&quot;11&quot;
+Scale=&quot;32&quot;
+TimeOut=&quot;2&quot;
+OutputRate=&quot;-1&quot;/&gt;
+&lt;/Channels&gt;
+</pre>
+</blockquote>
+<h4 id="SubsystemsXML">Subsystems</h4>
+<p>The subsystem definitions are stored in <em>Subsystems.xml</em> files in the configuration directories.</p>
+<p>An ARINC 429 Subsystem contains generic information, described in <a href="../SubsystemEditor/SubsystemEditor.htm#XMLFileStructure"> Subsystem Editor - Generic Subsystem Parameters - XML File Structure</a>, and the specific attribute:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Name</td>
+    <td>Name</td>
+    <td>PINOUT</td>
+    <td>The unique identifier to each connections point (pinout)</td>
+    <td>String</td>
+    <td>Non-empty, unique</td>
+  </tr>
+  <tr>
+    <td>Port</td>
+    <td>Port</td>
+    <td>PORT</td>
+    <td>The port number on the ARINC card</td>
+    <td>Integer</td>
+    <td>Receive ports shall be 5 through 12, while transmit ports shall be designated 3 to 6. From the user perspective, these port  numbers are shifted to start from 1, i.e. the receive ports appearas 1 - 8 and the transmit ports appear as 1 - 4</td>
+  </tr>
+  <tr>
+    <td>Source</td>
+    <td>Source</td>
+    <td>IN_OUT</td>
+    <td>Represents the data transfer direction</td>
+    <td>String</td>
+    <td>'I':input and 'O':output for the port, where inputmeans data transfer from the EEC to the RTE</td>
+  </tr>
+  <tr>
+    <td>Group</td>
+    <td>n/a</td>
+    <td>n/a</td>
+    <td>This is the group number. Only one instance of each group number can appear for each transmission direction. For input channels, the group number is equal to <em>ceil</em>(port/2). For output channels, the  group number is equal to the port number.</td>
+    <td>Integer</td>
+    <td>read-only</td>
+  </tr>
+  <tr>
+    <td>Port Speed</td>
+    <td>Speed</td>
+    <td>PORTSPEED</td>
+    <td>The port speed which can be either high or low. This must be the same for all channels on the same port. Furthermore, the speeds for channels on adjacent ports i.e. 5 and 6, 7 and 8, ... 11 and 12) must also be the same. </td>
+    <td>String</td>
+    <td>'L' for low or 'H' for high</td>
+  </tr>
+</table>
+<p>The structure of an ARINC 429 Subsystem is shown in the following example:</p>
+<blockquote>
+  <pre>&lt;Subsystems   LastModificationDate=&quot;<strong>2008-09-04 14:13:03</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Subsystem Name=&quot;ZZARINC&quot;
+Description=&quot;ATP&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2008-09-04 13:48:59&quot;
+Id=&quot;0&quot;
+Type=&quot;Arinc429&quot;
+CreationDate=&quot;2008-09-04 13:44:43&quot;&gt;
+&lt;Pinouts&gt;
+&lt;Pinout Port=&quot;1&quot;
+Name=&quot;atpPinout1&quot;
+Source=&quot;I&quot;
+Speed=&quot;L&quot; /&gt;
+&lt;Pinout Port=&quot;2&quot;
+Name=&quot;atpPinout2&quot;
+Source=&quot;O&quot; Speed=&quot;H&quot; /&gt;
+&lt;/Pinouts&gt;
+&lt;/Subsystem&gt;</pre>
+</blockquote>
+<h3 id="TabDelimitFileStructure">Tab-Delimited File Structure</h3>
+<p>The ARINC 429 channel configuration contains both the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic channel definition columns</a> and the specific ARINC 429 input parameters defined in the tab-delimited configuration file.</p>
+<p>The rules, syntax and guidelines for creating ARINC 429 channels are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>PINOUT</td>
+    <td>The unique identifier given to each connection  point. Either this field or PORT must be specified. If both are entered, they must match (i.e.: specify the same physical lane).</td>
+    <td>40 character string (case sensitive)</td>
+    <td>No</td>
+    <td>See Description.</td>
+  </tr>
+  <tr>
+    <td>PORT</td>
+    <td>Specifies the port number on the ARINC card.<br>
+      Input (or RX) ports may be designated 1 through 8, output (or TX) ports 1 through 4.</td>
+    <td>Number 1 - 8</td>
+    <td>No</td>
+    <td>See Description.</td>
+  </tr>
+  <tr>
+    <td width="10%" height="2">SDI</td>
+    <td width="40%" height="2">Source/Destination ID.</td>
+    <td width="15%" height="2">Number 0 - 3</td>
+    <td width="10%" height="2">No</td>
+    <td width="10%" height="2">Yes</td>
+  </tr>
+  <tr>
+    <td>LABEL</td>
+    <td width="40%">Unique identifier for an ARINC data word/channel in Octal.</td>
+    <td>Octal number 000 - 377</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td width="10%" height="59">BIT</td>
+    <td width="40%" height="59">If the channel is DISCRETE, this specifies the bit number. 11 represents the least significant bit, 29 represents the most significant bit. <br>
+      <br>
+      If the channel is FLOAT, this field is ignored and is set to 0.</td>
+    <td width="15%" height="59">Number 0 or 11 - 29</td>
+    <td width="10%" height="59">No</td>
+    <td width="10%" height="59">See Description.</td>
+  </tr>
+  <tr>
+    <td>CODING</td>
+    <td width="40%">Specifies the encoding type of the ARINC data. Ignored for discrete channels.</td>
+    <td>BNR or BCD</td>
+    <td>No</td>
+    <td>See Description.</td>
+  </tr>
+  <tr>
+    <td width="10%" height="34">SSM</td>
+    <td width="40%" height="34">Sign/Status Matrix. Specifies the SSM value corresponding to GOOD quality. Must be specified for all channels, though it is ignored for BCD encoded channels.</td>
+    <td width="15%" height="34">Number 0 - 3</td>
+    <td width="10%" height="34">No</td>
+    <td width="10%" height="34">Yes</td>
+  </tr>
+  <tr>
+    <td>PORTSPEED</td>
+    <td width="40%">Specifies the speed of the port. Must be the same for all channels defined for the same port. Furthermore, the speeds for channels on adjacent input ports (1 and 2, 3 and 4, ..., <br>
+      7 and 8) must also be the same. The speeds of output ports are independent of each other. <br>
+      <br>
+      Low Speed (12.5 kHz)<br>
+      High Speed (100 kHz)</td>
+    <td>L or H</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td width="10%" height="66">SIG_BITS</td>
+    <td width="40%" height="66">The number of significant bits in the data word starting from the most significant bit. <br>
+      <br>
+      Required for FLOAT channels only.</td>
+    <td width="15%" height="66">Number 1 - 19 for BNR encoded channels. <br>
+      <br>
+      One of 11, 15, 19, or 21 for BCD encoded channels (i.e.: for 3, 4, 5,or 6 digit BCD values, respectively).</td>
+    <td width="10%" height="66">No</td>
+    <td width="10%" height="66">See Description.</td>
+  </tr>
+  <tr>
+    <td>SCALE</td>
+    <td width="40%">The value of the most significant bit of the data word.<br>
+      <br>
+      Required for FLOAT channels only.</td>
+    <td>Number 1 - 262144</td>
+    <td>No</td>
+    <td>See Description.</td>
+  </tr>
+  <tr>
+    <td width="10%" height="47">MSEC</td>
+    <td width="40%" height="47">For output channels only. Specifies the interval between transmissions in milliseconds.</td>
+    <td width="15%" height="47">Number greater than or equal to 25</td>
+    <td width="10%" height="47">No</td>
+    <td width="10%" height="47">No</td>
+  </tr>
+  <tr>
+    <td width="10%" height="5">TIMEOUT</td>
+    <td width="40%" height="5">For input channels only. Specifies the interval, in milliseconds, allowed to receive the word twice. Default is twice the channel SCAN_RATE.</td>
+    <td width="15%" height="5">Number</td>
+    <td width="10%" height="5">No</td>
+    <td width="10%" height="5">No</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single line of the spread sheet.</p></td>
+  </tr>
+</table>
+<p class="Note"> &quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+  <br>
+  &quot;No&quot; indicates that the field is always optional.</p>
+<h2 id="SubSysEditorARINC">Subsystem Editor for ARINC 
+  Channels</h2>
+<p>To edit the&nbsp;ARINC 429 Subsystem, the Subsystem Editor must 
+  be selected from within the Configuration Administrator. The tool bar in the 
+  Configuration Administrator allows the various configuration editors available 
+  for proDAS to be selected. The Subsystem Editor allows new subsystems to be 
+  added to the current configuration. </p>
+<div align="center"><img src="images/SubsystemEditor.png" width="700" height="423" alt="Subsystem Editor"></div>
+<br>
+<p><strong>To add a new subsystem  to the current configuration:</strong></p>
+<ol type="1" start="1">
+  <li> From the Edit menu, select <strong>Append Data Record</strong> or, in the left pane of the splitter window, click the right mouse button and select <strong>Append Data Record</strong> from the context sensitive menu. The Select Type of Subsystem dialogue box is displayed.<br>
+  </li>
+  <li> Select <strong>ARINC429</strong> from the Select Type of Subsystem dialogue box andselect <strong>OK</strong>.<br>
+    A new line in the Subsystem Editor is appended to the current subsystem configurationin the left pane of the splitter window and the subsystem type is set to <em>ARINC429</em>.<br>
+    The user must then assign a name and description to the subsystem. </li>
+  <li>To set the pinouts for the new ARINC429 Subsystem, right-click in the rightpane of the Subsystem Editor window and select Append from the context sensitive menu. <br>
+    The user must enter (assign) a name and then select the Port, the Source,and the Port Speed from the corresponding pull-down list boxes.<br>
+    <br>
+    Each pinout (i.e.: connection point) has attributes as described in <a href="?2#SubsystemsXML">Subsystem</a>. The possible values for each attribute, where the definition is limited toa number of predefined values, are shown in a pull-down list box for each respective parameter. </li>
+</ol>
+<h2 id="RTEInitialiseFile">RTE Initialisation File</h2>
+<p>The ARINC 429 Subsystem is configured by the RTE, along with all the 
+  other subsystems, as a request from the Management Interface GUI. For legacy 
+  purposes, the configuration request can also be specified in the command line 
+  of the RTE.</p>
+<p>A typical RTE initialisation file would include the following 
+  ARINC 429 Subsystem information:</p>
+<table width="95%" border="0" cellspacing="1" cellpadding="2">
+  <tr>
+    <td colspan="2">#--------------------------------------------------------------------------<br>
+      # ARINC Subsystem<br>
+      #--------------------------------------------------------------------------</td>
+  </tr>
+  <tr>
+    <td width="19%">SS ARINC_BALLARD</td>
+    <td width="81%">TRUE</td>
+  </tr>
+  <tr>
+    <td width="19%">CI a16</td>
+    <td width="81%"> 0xf700</td>
+  </tr>
+  <tr>
+    <td width="19%">CI a32</td>
+    <td width="81%">0x17000000</td>
+  </tr>
+  <tr>
+    <td width="19%">CI tx</td>
+    <td width="81%">3</td>
+  </tr>
+  <tr>
+    <td width="19%">CI TX</td>
+    <td width="81%">4</td>
+  </tr>
+  <tr>
+    <td width="19%">CI TX</td>
+    <td width="81%">5</td>
+  </tr>
+  <tr>
+    <td width="19%">CI TX</td>
+    <td width="81%">6</td>
+  </tr>
+  <tr>
+    <td width="19%">CI T800_type</td>
+    <td width="81%">TRENT_800</td>
+  </tr>
+  <tr>
+    <td>CI T800_type</td>
+    <td>TRNT8104</td>
+  </tr>
+  <tr>
+    <td>CI T800_type</td>
+    <td>T800PRD</td>
+  </tr>
+  <tr>
+    <td>CI T800_type</td>
+    <td>ATP_Calibration</td>
+  </tr>
+  <tr>
+    <td width="19%">CI T800_priority</td>
+    <td width="81%">5</td>
+  </tr>
+  <tr>
+    <td>#CI T800_reset_time </td>
+    <td>100</td>
+  </tr>
+  <tr>
+    <td width="19%">CI T800_scan_rate</td>
+    <td width="81%">10</td>
+  </tr>
+  <tr>
+    <td>CI T800_gui_cmd </td>
+    <td>oms_rte</td>
+  </tr>
+  <tr>
+    <td>CI T800_gui_host</td>
+    <td>stn1_rtd3</td>
+  </tr>
+  <tr>
+    <td>CI T800_gui_serv</td>
+    <td>oms_gui</td>
+  </tr>
+  <tr>
+    <td>CI T700_type</td>
+    <td>ATP_Calibration</td>
+  </tr>
+  <tr>
+    <td width="19%">CI T700_type</td>
+    <td width="81%">TRENT700</td>
+  </tr>
+  <tr>
+    <td>CI T700_gui_cmd </td>
+    <td>oms_rte</td>
+  </tr>
+  <tr>
+    <td>CI T700_gui_host</td>
+    <td>stn1_rtd3</td>
+  </tr>
+  <tr>
+    <td>CI T700_gui_serv</td>
+    <td>oms_gui</td>
+  </tr>
+  <tr>
+    <td width="19%">CI T700_oms_rate</td>
+    <td width="81%">100</td>
+  </tr>
+  <tr>
+    <td width="19%">CI T700_priority</td>
+    <td width="81%">5</td>
+  </tr>
+  <tr>
+    <td width="19%">CI acl_key</td>
+    <td width="81%">17</td>
+  </tr>
+  <tr>
+    <td width="19%">CI SSM_string</td>
+    <td width="81%">TRENT800 DIS FW NCD FT NOP </td>
+  </tr>
+  <tr>
+    <td>CI SSM_string</td>
+    <td>T800PRD DIS FW NCD FT NOP </td>
+  </tr>
+  <tr>
+    <td>CI SSM_string</td>
+    <td>TRNT8104 DIS FW NCD FT NOP </td>
+  </tr>
+  <tr>
+    <td colspan="2">#&lt;!-- NEW ARINC PCI CONFIGURATION--&gt;</td>
+  </tr>
+  <tr>
+    <td>CI device </td>
+    <td>BT1429</td>
+  </tr>
+  <tr>
+    <td>CI rx_start_port </td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>CI tx_start_port </td>
+    <td>8</td>
+  </tr>
+  <tr>
+    <td>CI acl_srvname</td>
+    <td>acl_srv</td>
+  </tr>
+  <tr>
+    <td>CI ignore_SSM </td>
+    <td>TRUE</td>
+  </tr>
+  <tr>
+    <td>CI card_number</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>CI label_fln_disable</td>
+    <td>FALSE</td>
+  </tr>
+  <tr>
+    <td>CI label_time_disable</td>
+    <td>FALSE</td>
+  </tr>
+  <tr>
+    <td>CI label_date_disable</td>
+    <td>FALSE</td>
+  </tr>
+  <tr>
+    <td>#&lt;!--END--&gt;</td>
+    <td></td>
+  </tr>
+</table>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click 
+  here to see the RTE Initialisation file</a>.</p>
+<h2 id="ManagementInitialiseFile">Management Initialisation 
+  File</h2>
+<p><a href="../../References/DASIniFiles/SoftwareiniFiles.pdf">Click 
+  here to see the Management Initialisation file</a>.</p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

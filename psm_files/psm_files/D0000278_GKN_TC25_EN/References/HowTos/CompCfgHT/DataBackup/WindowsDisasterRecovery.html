@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>How To &ndash; Recover Data from an Operating System or Hard Drive Failure on a Windows Based Computer</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left><h1>How To &ndash; Recover Data from an Operating System or Hard Drive Failure on a Windows Based Computer<a href="#" onClick="window.print(); return false;"><img src="../../../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<p>This <strong>How To</strong> provides the steps required to perform a crash recovery in the event that the computer's   hard drive or Windows operating system fails.</p>
+<h2>To Recover the Data</h2>
+<ol>
+  <li>Power <strong>off</strong> the computer.</li>
+  <li>Replace the damaged hard drive with a hard drive that has the same capacity as, or greater capacity than, the damaged hard drive.</li>
+  <li>Power <strong>on</strong> the computer.</li>
+  <p class="Note">Ensure that only the keyboard and mouse are connected to the computer while performing a recovery.</p>
+  <li>Press <strong>F9</strong> and verify that <strong>Boot from CD</strong> is the first item on the list.</li>
+  <li>Insert the Acronis Bootable Rescue Media (CD or DVD) into the computer.</li>
+  <p class="Note">In the event that an Acronis Bootable Rescue Media for Windows is not available or has been misplaced, the Acronis Bootable Rescue Media can be created using another proDAS Windows based computer which is running Acronis.</p>
+<li>Reboot the computer.</li>
+<li>A screen with three (3) options <em>might</em> be displayed. The options are:<br>
+    <ul>
+      <li>continue Acronis with a 32 bit system </li> 
+    <li>continue Acronis with a 64 bit system  </li>
+    <li>continue booting the OS from the hard drive</li>
+      </ul> 
+      Select either <strong>32</strong> or <strong>64 bit system</strong>, as required for the system configuration of the computer.</li>
+<li>From the <strong>Acronis Bootable Agent</strong> window, select <strong>Configure Network</strong>.</li>
+  <li>Deselect the <strong>Auto Configuration</strong> check box.</li>
+  <li>Specify the <strong>IP address</strong> previously assigned for the computer on the proDAS network. See <a href="../GenInfo/SubnetMaskGateway.html">To obtain the subnet mask and default gateway</a> for more information.</li>
+
+<p class="Note">The IP address, Subnet Mask and Default Gateway information should be noted and saved to be used in the following step in the disaster recovery procedure.</p>
+
+  <li>Specify the <strong>Subnet Mask </strong>and<strong> Default Gateway </strong>previously assigned to the computer.</li>
+  <li>Click <strong>OK</strong> to close the <strong>Network Settings</strong> window.</li>
+  <li>Select <strong>Manage this machine locally</strong>.</li>
+  <li>Select the <strong>Recover</strong> option on the Acronis main window.<br>
+    <br>
+    <div class="Container"><img border="0" width="446" height="60" src="images/RecoverOption.png" alt="Recover"></div>
+    <br>
+    The <strong>Recover data</strong> window is displayed.</li>
+  <li>In the <strong>What to recover</strong> section, select <strong>Select data...</strong><br>
+    The <strong>Data to Recover Selection</strong> window is displayed.</li>
+  <li>In the <strong>Data to Recover Selection</strong> window, select <strong>Browse</strong>.</li>
+  <li>In the <strong>Path</strong> field, enter <strong>\\</strong><em><strong>&lt;backupfoldername&gt;</strong></em><strong>\Backups</strong></li>
+  <li>Log in as <strong>Administrator</strong>.</li>
+  <li>Select the Archive file to recover and click <strong>OK</strong>.<br>
+    The <strong>Recover Data</strong> window is displayed.</li>
+  <li>In the <strong>Where to recover</strong> section, select <strong>Required</strong>.</li>
+  <li>In the <strong>Backup contents</strong> drop down menu, select <strong>Disks</strong>.</li>
+  <li>Select the<strong> Disk 1 </strong>checkbox and click <strong>OK</strong>.</li>
+  <br>
+  <div class="Container"><img border="0" width="700" height="368" src="images/WindowsDisasterDisk.png" alt="Archive"></div>
+  <br>
+  <p>The <strong>Recover Data</strong> window is displayed.</p>
+
+  <li>Click <strong>OK</strong>.<br>
+    Data recovery proceeds.
+  </li>
+</ol>
+
+
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

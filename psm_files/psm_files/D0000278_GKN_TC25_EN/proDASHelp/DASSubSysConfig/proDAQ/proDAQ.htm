@@ -1,0 +1,1285 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>ProDAQ VXI Subsystem (Option*)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left>
+<h1 id="VEXADriver">ProDAQ VXI Subsystem (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The ProDAQ VXI subsystem is a data acquisition front end system that uses PCI Express VXIbus to communicate to the host computer. The hardware is used for analogue input and output, frequency input, and discrete input and output signals, based on user installed plug-in function cards. Analogue input channels are further enhanced via external signal conditioning units for special signals such as RTD's or strain gauges. The signal conditioning units are fully integrated with the analogue input channels for configuration, calibration, and operation.</p>
+<p>The ProDAQ VXI hardware consists of a 13 slot Smart VXIbus chassis, which can hold 12 motherboard modules and one slot-0 interface. Each motherboard can hold up to eight function cards (with each function card having 8, 16, or 48 channels). The function cards can be installed in the motherboard independently of the other installed cards.</p>
+<p class="Note">Bustec's ProDAQ VXI hardware should only be used with other Bustec ProDAQ hardware and not interchanged with VXI hardware from other manufacturers.</p>
+<h2 id=ConfigProDAQ>Configuring a ProDAQ VXI Subsystem</h2>
+<p>To configure a ProDAQ VXI subsystem:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<ol>
+  <li>Append a channel by selecting Append from the Edit Menu as described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</li>
+  <li>Select the name of the ProDAQ Subsystem from the list of available subsystems.<br>
+    <div class="Container"><img src="images/AppendDataRecord.png" width="380" height="313" alt=""/></div>
+  </li>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a>.</li>
+  <li>Fill the channel specific columns as described in <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.</li>
+  <li>Fill the ProDAQ specific columns as required.<br>
+    <br>
+  </li>
+</ol>
+<h2 id="ConfigFile">Configuration File Structure</h2>
+<p>Channel configuration information (e.g. hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu"> Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import a<strong> ProDAQ </strong>channel, see <a href="#XMLFileStructure"> XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import a<strong> ProDAQ</strong> channel, see <a href="#TabDelimitFileStructure"> Tab-Delimited File Structure</a>.</p>
+<h2 id="XMLFileStructure">XML File Structure</h2>
+<h3>Channels</h3>
+<p>The channels are stored in <em>Channels.xml</em> files in the configuration directories.</p>
+<p>A ProDAQ Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor - Generic Channel Parameters - XML File Structure</a>, and the specific attributes explained in the tables below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Pinout</td>
+    <td>Pinout</td>
+    <td>ProdaqvxiPinout</td>
+    <td>The unique identifier given to each connection point.
+      <p class="TableNote">After a pinout has been selected, it is removed from the drop-down list in the channel editor.</p></td>
+    <td>String</td>
+    <td>Any Pinout that is defined by the Subsystem Editor.</td>
+  </tr>
+  <tr>
+    <td>Chassis</td>
+    <td>Chassis</td>
+    <td>ProdaqvxiChassis</td>
+    <td>The VXI Chassis that contains the plugin card. <br>
+      <br>
+      The field can be filled in manually, but also automatically populates (if Pinout is selected) based on the Pinout chosen from the drop-down list.</td>
+    <td>Integer</td>
+    <td>Any available chassis.</td>
+  </tr>
+  <tr>
+    <td>Slot Number</td>
+    <td>SlotNumber</td>
+    <td>ProdaqvxiSlotNumber</td>
+    <td>The mounting position of the function card on the motherboard module. <br>
+      <br>
+      The field can be filled in manually, but also automatically populates (if Pinout is selected) based on the Pinout chosen from the drop-down list.</td>
+    <td>Integer</td>
+    <td>Range 1 &ndash; 12</td>
+  </tr>
+  <tr>
+    <td>FC Number</td>
+    <td>FCNumber</td>
+    <td>ProdaqvxiFCNumber</td>
+    <td>The mounting position of the function card.<br>
+      <br>
+      The field can be filled in manually, but also automatically populates (if Pinout is selected) based on the Pinout chosen from the drop-down list.</td>
+    <td>Integer</td>
+    <td>Range from 1 to 8, selected from the list of cards that are in the subsystem editor.</td>
+  </tr>
+  <tr>
+    <td>FC Channel</td>
+    <td>FCChannel</td>
+    <td>ProdaqvxiFCChannel</td>
+    <td>The channel number on the function card.<br>
+      <br>
+      The field can be filled in manually, but also automatically populates (if Pinout is selected) based on the Pinout chosen from the drop-down list.</td>
+    <td>Integer</td>
+    <td>Range is based on the type of function card installed, as defined in the Function Card Channel field in the subsystem editor.</td>
+  </tr>
+  <tr>
+    <td>FC Type</td>
+    <td>--</td>
+    <td>--</td>
+    <td> Automatically populated based on the Pinout. The Function Card Type is defined in the Subsystem Editor.</td>
+    <td>String</td>
+    <td>Read-only</td>
+  </tr>
+  <tr>
+    <td>Measurement Type</td>
+    <td>--</td>
+    <td>--</td>
+    <td>Value is used to enable measurement type specific columns in the Channel Editor.<br>
+      <br>
+      Automatically populates based on the Pinout. Function Card Type is defined in the Subsystem Editor. <br>
+      <p class="TableNote">This is useful for filtering when working in the editor.</p></td>
+    <td>String</td>
+    <td>Read-only</td>
+  </tr>
+  <tr>
+    <td>High Speed Log</td>
+    <td>HighSpeedLog</td>
+    <td>ProdaqvxiHighSpeedLog</td>
+    <td>A flag indicating whether all points in the waveform are saved to a file.<br>
+      <br>
+      The High Speed Log characteristics are defined in the subsystem editor.</td>
+    <td>String</td>
+    <td>true<br>
+      false (default)</td>
+  </tr>
+  <tr>
+    <td>Anti-Ringing Filter</td>
+    <td>AntiRingingFilter</td>
+    <td>ProdaqvxiAntiRingingFilter</td>
+    <td>Input filter. Function of scan rate.</td>
+    <td>String</td>
+    <td>true<br>
+      false (default)</td>
+  </tr>
+  <tr>
+    <td>Gain</td>
+    <td>Gain</td>
+    <td>ProdaqvxiGain</td>
+    <td>The Gain setting on the function card defines the maximum input value.<br>
+      <br>
+      Gain of 1 = 10 V max input<br>
+      Gain of 2000 = 0.005 V max input<br>
+      <br>
+      When Signal Conditioner is Enabled and Signal Conditioner Type is 5821 (defined by subsystem editor), Gain is automatically set to 2 with no other options available.</td>
+    <td>Integer</td>
+    <td>1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000 (applies to 3416 only, not 3424)</td>
+  </tr>
+  <tr>
+    <td>Points to Average</td>
+    <td>--</td>
+    <td>--</td>
+    <td>The number of data points to be averaged to create one value for the CVT.<br>
+      <br>
+      Used as reference only, based on ideal values. Actual number of points averaged is determined by the number of points available on each scan. <br>
+      <br>
+      Calculated by System Scan Rate (determined in Subsystem Editor) divided by Acquisition Rate.</td>
+    <td>Integer</td>
+    <td>Read-only</td>
+  </tr>
+  <tr>
+    <td>TEDS</td>
+    <td>TEDS</td>
+    <td>ProdaxvxiTEDS</td>
+    <td>A flag indicating whether the attached sensor contains TEDS data.</td>
+    <td>String</td>
+    <td>true<br>
+      false (default)</td>
+  </tr>
+  <tr>
+    <td>OTD On</td>
+    <td>OTDon</td>
+    <td>ProdaqvxiOTDon</td>
+    <td>A flag indicating whether the Open Transducer Detection is on.</td>
+    <td>String</td>
+    <td>true<br>
+      false (default)</td>
+  </tr>
+  <tr>
+    <td>Sensor Type</td>
+    <td>SensorType</td>
+    <td>ProdaqvxiSensorType</td>
+    <td>The sensor type. Options are Temperature, Resistive, and Voltage type sensors.</td>
+    <td>String</td>
+    <td>PT-100 (default)<br>
+      PT-500<br>
+      PT-1000<br>
+      Resistance<br>
+      Voltage</td>
+  </tr>
+  <tr>
+    <td>RTD Mode</td>
+    <td>RTDMode</td>
+    <td>ProdaqvxiRTDMode</td>
+    <td>Depending on the version of the 5821, both the temperature and resistive sensors may be operated in three different modes, namely 2-wire, 3-wire, and 4-wire mode.<br>
+      <br>
+      If the Signal Conditioner Version is BA or BB, and the Sensor Type is anything other than Voltage, the RTD Mode can be 4-wire, 3-wire, or 2-wire.<br>
+      <br>
+      If the Signal Conditioner Version is AA, and the Sensor Type is Voltage, the RTD Mode is 4-wire.<br>
+      <br>
+      If the Sensor Type is Voltage (with any Signal Conditioner Version), the RTD Mode is either Differential Voltage or Single Ended Voltage. </td>
+    <td>String</td>
+    <td>For 5821-Bx:<br>
+      4-Wire (default)<br>
+      3-Wire<br>
+      2-Wire<br>
+      <br>
+      For 5821-AA:<br>
+      4-Wire (default)<br>
+      <br>
+      For Voltage:<br>
+      Differential Voltage<br>
+      Single Ended Voltage <br></td>
+  </tr>
+  <tr>
+    <td>Measurement Range</td>
+    <td>MeasurementRange</td>
+    <td>ProdaqvxiMeasurementRange</td>
+    <td>Measurement Range is dependent on Sensor Type.</td>
+    <td>Integer</td>
+    <td>For PT-100:<br>
+      &lt;850&deg;C<br>
+      &lt;500&deg;C (default)<br>
+      &lt;100&deg;C<br>
+      &lt;&ndash;80&deg;C<br>
+      <br>
+      For PT-500 and PT-1000:<br>
+      &lt;850&deg;C<br>
+      &lt;300&deg;C (default)<br>
+      &lt;0&deg;C<br>
+      &lt;&ndash;110&deg;C<br>
+      <br>
+      For Resistance with Signal Conditioner Version AA and BA:<br>
+      &lt;20 k&#937;<br>
+      &lt;9 k&#937; (default)<br>
+      &lt;4.5 k&#937;<br>
+      &lt;2.25 k&#937; <br>
+      &lt;1.125 k&#937; <br>
+      &lt;560      &#937; <br>
+      &lt;280      &#937; <br>
+      &lt;140      &#937; <br>
+      &lt;70      &#937;<br>
+      <br>
+      For Resistance with Signal Conditioner Version BB:<br>
+      &lt;1 m&#937;<br>
+      &lt;450 k&#937;<br>
+      &lt;225 k&#937;<br>
+      &lt;112 k&#937;<br>
+      &lt;56 k&#937;<br>
+      &lt;28 k&#937;<br>
+      &lt;14 k&#937;<br>
+      &lt;7 k&#937;<br>
+      &lt;3.5 k&#937; <br>
+      <br>
+      For Voltage:<br>
+      &plusmn;10V (default)<br>
+      &plusmn;4.5V<br>
+      &plusmn;1.12V<br>
+      &plusmn;0.56V<br>
+      &plusmn;0.28V<br>
+      &plusmn;0.14V<br>
+      &plusmn;0.07<br>
+      &plusmn;0.035V <br></td>
+  </tr>
+  <tr>
+    <td>Excitation Current</td>
+    <td>ExcitationCurrent</td>
+    <td>ProdaqvxiExcitationCurrent</td>
+    <td>Excitation Current options change with Sensor Type.<br>
+      <br>
+      When the Sensor Type is Voltage, Excitation Current is disabled.</td>
+    <td>String</td>
+    <td>For PT-100, PT-500, PT-1000:<br>
+      Off<br>
+      500&micro;A<br>
+      <br>
+      For Resistance:<br>
+      Off<br>
+      500&micro;A<br>
+      10&micro;A</td>
+  </tr>
+  <tr>
+    <td>RTD Gain</td>
+    <td>RTDGain</td>
+    <td>--</td>
+    <td>Determined by the Sensor Type and Measurement Range.</td>
+    <td>String</td>
+    <td>Read only</td>
+  </tr>
+  <tr>
+    <td>Input Mode</td>
+    <td>InputMode</td>
+    <td>ProdaqvxiInputMode</td>
+    <td>Selects the mode for the channel.</td>
+    <td>String</td>
+    <td>Full Bridge<br>
+      Half Bridge<br>
+      Quarter Bridge 120<br>
+      Quarter Bridge 350<br>
+      Quarter Bridge User<br>
+      ICP<br>
+      Differential Voltage<br>
+      Single Ended Voltage</td>
+  </tr>
+  <tr>
+    <td>PGA Gain</td>
+    <td>--</td>
+    <td>ProdaqvxiPGAGain</td>
+    <td>Configures the programmable gain amplifier (PGA) of the function card.</td>
+    <td>Integer</td>
+    <td>1, 10, 100, 1000</td>
+  </tr>
+  <tr>
+    <td>PositiveExcitation</td>
+    <td>PositiveExcitation</td>
+    <td>ProdaqvxiPositiveExcitation</td>
+    <td>The positive excitation voltage for bridge measurements.<br>
+      <br>
+      Field is greyed out if Input Mode is ICP, Differential Voltage, or Single Ended Voltage.</td>
+    <td>Float</td>
+    <td>Range from 0 V to 10 V</td>
+  </tr>
+  <tr>
+    <td>NegativeExcitation</td>
+    <td>NegativeExcitation</td>
+    <td>ProdaqvxiNegativeExcitation</td>
+    <td>The negative excitation voltage for bridge measurements.<br>
+      <br>
+      Field is greyed out if Input Mode is ICP, Differential Voltage, or Single Ended Voltage.</td>
+    <td>Float</td>
+    <td>Range from &ndash;10 V to 0 V</td>
+  </tr>
+  <tr>
+    <td>Total Gain</td>
+    <td>--</td>
+    <td>--</td>
+    <td>The total gain is the PGA Gain multiplied by the Channel Gain.<br>
+      <br>
+      Automatically populated.</td>
+    <td>Integer</td>
+    <td>Read-only</td>
+  </tr>
+  <tr>
+    <td>Coupling</td>
+    <td>Coupling</td>
+    <td>ProdaqvxiCoupling</td>
+    <td> This field is disabled if Input Mode is ICP.</td>
+    <td>String</td>
+    <td>AC, DC</td>
+  </tr>
+  <tr>
+    <td>Threshold</td>
+    <td>Threshold</td>
+    <td>ProdaqvxiThreshold</td>
+    <td>The voltage level which the input signal must exceed in order to be recognised as a valid pulse.<br>
+      <br>
+      Every channel has a dedicated 10-bit digital-to-analogue converter to set a threshold within the full-scale input signal range of &plusmn;5 V.</td>
+    <td>Float</td>
+    <td>Range of &ndash;5.00 to 4.99<br>
+      <br>
+      Default of 1.00</td>
+  </tr>
+  <tr>
+    <td>Termination</td>
+    <td>Termination</td>
+    <td>ProdaqvxiTermination</td>
+    <td>The input impedance of the measurement channel.</td>
+    <td>String</td>
+    <td>No termination (default)<br>
+      50 Ohm</td>
+  </tr>
+  <tr>
+    <td>Current Out Range</td>
+    <td>--</td>
+    <td>--</td>
+    <td>The current output range of the card, which is a software configurable option. <br>
+      <br>
+      Read from the Subsystem Editor.</td>
+    <td>String</td>
+    <td>Read-only</td>
+  </tr>
+  <tr>
+    <td>Voltage Range</td>
+    <td>--</td>
+    <td>--</td>
+    <td>The voltage range of the card, which is a hardware configrable option.<br>
+      <br>
+      Is active if Function Card Type is 3510 and Function Card Version is AB, BB, BC, or Tx.<br>
+      <br>
+      Read-only. Fixed value based on the Function Card Version.</td>
+    <td>Integer</td>
+    <td>Read-only<br>
+      <br>
+      For AB, 0 to 10V<br>
+      For BB, &ndash;10 to 10 V <br>
+      For BC, &ndash;20 to 20V<br>
+      For TB, &ndash;50 to 50mV<br>
+      for TN, 0 to 50 mV<br>
+      for TK, 0 to 100 mV</td>
+  </tr>
+  <tr>
+    <td>DIO Group</td>
+    <td>--</td>
+    <td>--</td>
+    <td>The DIO Card (3610) has 48 channels, grouped into 6 groups of 8. Each group of 8 can be either inputs or outputs. The groups are numbered 1 through 6.</td>
+    <td>Integer</td>
+    <td>Read-only. Value taken from Subsystem Editor, based on Pinout.</td>
+  </tr>
+  <tr>
+    <td>DIO InOut</td>
+    <td>--</td>
+    <td>--</td>
+    <td>Whether the DIO is Input or Output.</td>
+    <td>String</td>
+    <td>Input or Output</td>
+  </tr>
+  <tr>
+    <td>Polarity</td>
+    <td>Polarity</td>
+    <td>ProdaqvxiPolarity</td>
+    <td>Polarity of the output.</td>
+    <td>String</td>
+    <td>Positive or Negative</td>
+  </tr>
+</table>
+<p>The structure of a ProDAQ  Channel complies with the following example:</p>
+<blockquote> <code>&lt;Channels LastModificationDate=&quot;2019-04-05 11:06:30&quot; Version=&quot;1.1&quot;&gt;<br>
+  &lt;Channel Name=&quot;FC1AO_AB1&quot;<br>
+  Description=&quot;Analog Output&quot;<br>
+  Enabled=&quot;true&quot;<br>
+  LastModificationDate=&quot;2019-04-05 11:06:30&quot;<br>
+  SubsystemName=&quot;PRODAQ&quot;<br>
+  SubsystemType=&quot;ProDAQVXI&quot;<br>
+  AlternateName=&quot;&quot;<br>
+  DataType=&quot;Float&quot;<br>
+  InitialValue=&quot;1.111&quot; <br>
+  Format=&quot;4.2f&quot; <br>
+  UpdateRate=&quot;200&quot; <br>
+  QualityCeiling=&quot;GOOD&quot; <br>
+  Critical=&quot;true&quot; <br>
+  EngineeringUnit=&quot;V&quot; <br>
+  DisplayMin=&quot;0&quot; <br>
+  DisplayMax=&quot;100&quot; <br>
+  DeadBand=&quot;0&quot; <br>
+  Output=&quot;true&quot; <br>
+  ReferenceChannel=&quot;OnOff_1Hz&quot; <br>
+  Group=&quot;&quot; <br>
+  SignalId=&quot;&quot; <br>
+  CalSensor=&quot;&quot; <br>
+  CalGroup=&quot;&quot; <br>
+  FixedSensor=&quot;&quot; <br>
+  CustomerSensor=&quot;&quot; <br>
+  FullsetStability=&quot;false&quot; <br>
+  ContinuousLog=&quot;true&quot; <br>
+  RTDRefChannel=&quot;&quot; <br>
+  NddsPublish=&quot;true&quot; <br>
+  Pinout=&quot;LA040FC1CH01&quot; <br>
+  Chassis=&quot;1&quot; <br>
+  SlotNumber=&quot;5&quot; <br>
+  FCNumber=&quot;1&quot; <br>
+  FCChannel=&quot;1&quot; <br>
+  HighSpeedLog=&quot;false&quot; <br>
+  AntiRingingFilter=&quot;false&quot; <br>
+  Gain=&quot;0&quot; <br>
+  OTDon=&quot;false&quot; <br>
+  TEDS=&quot;false&quot; <br>
+  SensorType=&quot;&quot; <br>
+  RTDMode=&quot;&quot;<br>
+  RTDGain=&quot;&quot;<br>
+  MeasurementRange=&quot;&quot; <br>
+  ExcitationCurrent=&quot;&quot; <br>
+  InputMode=&quot;&quot; <br>
+  Coupling=&quot;&quot; <br>
+  PGAGain=&quot;0&quot; <br>
+  PositiveExcitation=&quot;0&quot; <br>
+  NegativeExcitation=&quot;0&quot; <br>
+  Threshold=&quot;0&quot; <br>
+  Termination=&quot;&quot; <br>
+  Polarity=&quot;&quot;/&gt;<br>
+  &lt;/Channels&gt; </code></blockquote>
+<code> </code>
+<h3>Subsystems</h3>
+<p>The subsystem definitions are stored in <em>Subsystems.xml</em> files in the configuration directories.</p>
+<p>A ProDAQ Subsystem contains generic information, described in <a href="../SubsystemEditor/SubsystemEditor.htm#XMLFileStructure">Subsystem Editor - Generic Subsystem Parameters - XML File Structure</a>, and the specific attributes described in the table below.</p>
+<h4>High Speed ProDAQ Log</h4>
+<table class="Table-Grey">
+  <tr>
+    <th>Field</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>System Scan Rate</td>
+    <td>The maximum rate at which data points are retrieved from the function card, as well as the rate for high speed logging.<br>
+      <br>
+      This scan rate is used with the channel acquisition rate to determine the number of points that are averaged for analogue input channels (for example, if System Scan Rate = 1,000 Hz, and acquisition Rate = 200 Hz, 5 points will be averaged to produce each value). The High Speed log uses all the points available from the card, without averaging.<br>
+      <br>
+      The maximum rate which can be used is based on the Function Card Type and Function Card Version.</td>
+    <td>Integer</td>
+    <td>Minimum 1000, maximum based on FC Type and FC Version, in increments of 1000 Hz.<br>
+      <br>
+      For FC Type 2416 and FC Version AA, the maximum is 1,000 Hz.<br>
+      <br>
+      For FC Type 3416 and FC Version BA, the maximum is 10,000 Hz.<br>
+      <br>
+      For FC Type 3416 and FC Version CA, the maximum is 52,000 Hz.<br>
+      <br>
+      For FC Type 3424 and FC Version AA or AB, the maximum is 108,000 Hz.<br>
+      <br>
+      For FC Type 3424 and FC Version BA or BB, the maximum is 216,000. <br>
+      <br></td>
+  </tr>
+  <tr>
+    <td>HSP Type</td>
+    <td>In Circular Mode, a circular buffer of the high speed data is maintained to track historical data, similar to the RTE critical log. The time length of the log buffer is determined from the pre-event and post-event log time.<br>
+      <br>
+      In Continuous mode, no history is maintained. Instead, the user must indicate both when to start and when to stop recording data. In this mode, the buffer length is not limited to 30 minutes. The disk space available when saving the log is the only restriction to the log size.<br></td>
+    <td>Drop-down list</td>
+    <td>None (default)<br>
+      Circular<br>
+      Continuous</td>
+  </tr>
+  <tr>
+    <td>Pre Event Time</td>
+    <td>The length of time for which data is collected before the save command.<br>
+      <br>
+      Only applicable if High Speed Log Type is Circular.</td>
+    <td>Integer</td>
+    <td>Range between 0 and 1800 seconds. Total log time must be between 1 and 1800 seconds inclusive. (Total log time equals Pre Event Time plus Post Event Time)<br>
+      <br>
+      Default value is 300 seconds.</td>
+  </tr>
+  <tr>
+    <td>Post Event Time</td>
+    <td>The length of time for which data is collected after the save command.<br>
+      <br>
+      Only applicable if High Speed Log Type is Circular.</td>
+    <td>Integer</td>
+    <td>Range between 0 and 1800 seconds. Total log time must be between 1 and 1800 seconds inclusive. (Total log time equals Pre Event Time plus Post Event Time)<br>
+      <br>
+      Default value is 300 seconds.</td>
+  </tr>
+  <tr>
+    <td>Lockout Channel</td>
+    <td>The channel that is used to control the lock out feature.</td>
+    <td>String</td>
+    <td>Up to 39 characters (a-z, A-Z, 0-9, _, #, %, @). Must start with a letter or an underscore (case sensitive).</td>
+  </tr>
+  <tr>
+    <td>Save Critical</td>
+    <td>A flag to control if the High Speed Log is saved along with the critical log.</td>
+    <td>String</td>
+    <td>true<br>
+      false</td>
+  </tr>
+</table>
+<h4>VXI Chassis</h4>
+<table class="Table-Grey">
+  <tr>
+    <th>Field</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Chassis</td>
+    <td>The chassis number, starting at 1. <br>
+      <br>
+      User defined.</td>
+    <td>Integer</td>
+    <td>Unique number, range of 1 to 8.</td>
+  </tr>
+  <tr>
+    <td>Slot-0 Card Version</td>
+    <td>The Slot-0 Card interface has different versions available.</td>
+    <td>Drop-down List</td>
+    <td>AA (default)<br>
+      AB</td>
+  </tr>
+</table>
+<h4>Motherboards</h4>
+<table class="Table-Grey">
+  <tr>
+    <th>Field</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Slot Number</td>
+    <td>The number of the Carrier, starting at 1.<br>
+      <br>
+      Automatically populated. Unique within chassis.</td>
+    <td>Integer</td>
+    <td>Range between 1 and 12.</td>
+  </tr>
+  <tr>
+    <td>Motherboard Type</td>
+    <td>The motherboard model number that is being used in a specific slot.</td>
+    <td>Drop-down list</td>
+    <td>None<br>
+      3180 (default)</td>
+  </tr>
+  <tr>
+    <td>Logical Address</td>
+    <td>Recommended that slot 1 be assigned as 1, slot 2 
+      assigned as 2, etc.</td>
+    <td>Integer</td>
+    <td>Range between 1 and 254. Must be unique within the same ProDAQ VXI subsystem.</td>
+  </tr>
+  <tr>
+    <td>Voltage Reference</td>
+    <td> The voltage reference goes into slot 0 of the Motherboard.</td>
+    <td>Drop-down list</td>
+    <td>None (default)<br>
+      3202</td>
+  </tr>
+  <tr>
+    <td>DSP Plug-In</td>
+    <td>Plug-in offering standard and custom real-time data processing and handling.</td>
+    <td>Drop-down list</td>
+    <td>None (default)<br>
+      3280</td>
+  </tr>
+</table>
+<h4>LXI Trigger</h4>
+<table class="Table-Grey">
+  <tr>
+    <th>Field</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>LXI Trigger Name</td>
+    <td>The LXI Trigger is used to synchronise data acquisition between modules. There are 8 LXI triggers for each chassis.</td>
+    <td>List</td>
+    <td>LXI Trigger 0<br>
+      LXI Trigger 1<br>
+      LXI Trigger 2<br>
+      LXI Trigger 3<br>
+      LXI Trigger 4<br>
+      LXI Trigger 5<br>
+      LXI Trigger 6<br>
+      LXI Trigger 7</td>
+  </tr>
+  <tr>
+    <td>LXI Driver Mode</td>
+    <td>A Driver Mode is selected for each LXI Trigger. Driver Mode determines the mode in which the driver for a trigger line operates.<br>
+      <br>
+      The Disabled option is for devices not taking part in trigger operation.<br>
+      <br>
+      The Driven option provides point-to-multipoint operation, with one device initiating a trigger event to one or more receiving devices.<br>
+      <br>
+      The Wired-OR option is a multipoint-to-multipoint operation, where one or more devices intiate a trigger event to one or more receiving devices. Event can be initiated by first or last device to trigger.<br>
+      <br>
+      The Wired-OR Bias option is when one device is configured as the Wired-OR Bias.</td>
+    <td>Drop-down list</td>
+    <td>Disabled (default)<br>
+      Driven<br>
+      Wired-OR<br>
+      Wired-OR Bias</td>
+  </tr>
+  <tr>
+    <td>LXI Setting</td>
+    <td>A Setting is chosen for each LXI Trigger.<br>
+      <br>
+      If the LXI Driver Mode is not Disabled, then the state of the trigger line can set to either asserted or deasserted.</td>
+    <td>Drop-down list</td>
+    <td>Asserted<br>
+      Deasserted</td>
+  </tr>
+</table>
+<h4>Function Cards</h4>
+<table class="Table-Grey">
+  <tr>
+    <th>Field</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Card Number</td>
+    <td>The mounting position of the function card on the motherboard module.<br>
+      <br>
+      The function card can only be defined once per Slot Number.</td>
+    <td>Integer</td>
+    <td>1, 2, 3, 4, 5, 6, 7, 8</td>
+  </tr>
+  <tr>
+    <td>Card Type</td>
+    <td>The name (number) associated with the function card located in the slot specified by Function Card Number. <br>
+      <br>
+      Function Card Type 3416 and 3424 are for analogue inputs. 3808 is for frequency. 3510 is for analogue outputs. 3610 is for DIO.</td>
+    <td>Drop-down list</td>
+    <td>None (default)<br>
+      3416<br>
+      3424<br>
+      3510<br>
+      3610<br>
+      3808</td>
+  </tr>
+  <tr>
+    <td>Card Version</td>
+    <td>The Function Card Version depends on which Function Card Type is picked and represents different versions of a card. </td>
+    <td>Drop-down list</td>
+    <td>For 3416:<br>
+      BA (10 kS/s max sampling rate)<br>
+      AA (1 kS/s max sampling rate) (default)<br>
+      CA (52 kS/s max sampling rate)<br>
+      <br>
+      For 3424:<br>
+      AA (108 kS, no gain) (default)<br>
+      AB (108kS, gain 1&ndash;1000)<br>
+      BA (216 kS, no gain)<br>
+      BB (216 kS, gain 1&ndash;1000)<br>
+      <br>
+      For 3510:<br>
+      AB (0&ndash;10V) (default)<br>
+      BB (&plusmn;10V)<br>
+      BC (&plusmn; 20V)<br>
+      CC (0&ndash;20 mA, 0&ndash;24 mA, or 4&ndash;20 mA)<br>
+      TB (&plusmn;50 mV, TC types B/C)<br>
+      TN (0&ndash;50 mV, TC types N/R/S/T)<br>
+      TK (0&ndash;100 mV, TC types E/J/K)<br>
+      <br>
+      For 3610:<br>
+      AA (2k FIFO) (default)<br>
+      AB (16k FIFO)<br>
+      <br>
+      For 3808:<br>
+      AA (100 MHz) (default)</td>
+  </tr>
+  <tr>
+    <td>Signal Conditioner </td>
+    <td>Determines if the function card has a signal conditioner attached.<br>
+      <br>
+      This field is only available if the Function Card Type is 3416 or 3424, and when when signal conditioner is enabled.</td>
+    <td>Check box</td>
+    <td>true<br>
+      false</td>
+  </tr>
+  <tr>
+    <td>S.C. Type </td>
+    <td> Signal conditioners are used for RTD's (5821) or strain gauges (5716).<br>
+      <br>
+      Only available when signal conditioner is enabled.</td>
+    <td>Drop-down list</td>
+    <td>For 3416:<br>
+      5716 (default)<br>
+      5821<br>
+      <br>
+      For 3424<br>
+      5716 (default)</td>
+  </tr>
+  <tr>
+    <td>S.C. Version</td>
+    <td>The version of the signal conditioner.<br>
+      <br>
+      Only available when signal conditioner is enabled. <br>
+      <br>
+      Each Signal Conditioner Type has different versions, with different characteristics.</td>
+    <td>Drop-down list</td>
+    <td>For 5821:<br>
+      BA (2, 3, and 4 wire) (default)<br>
+      AA (4 wire)<br>
+      BB (2, 3, and 4 wire and cryogenic diode)<br>
+      <br>
+      For 5716:<br>
+      xA (default)</td>
+  </tr>
+  <tr>
+    <td>Base Frequency</td>
+    <td>The frequency of the clock used to measure the period of the input signal.<br>
+      <br>
+      The field is only available if the Function Card Type is 3808.<br>
+      <br>
+      The value is used when the Measurement Mode is Time Interval.</td>
+    <td>Drop-down list</td>
+    <td>100 MHz (default<br>
+      10 MHz<br>
+      1 MHz<br>
+      100 kHz<br>
+      10 kHz<br>
+      1 kHz</td>
+  </tr>
+  <tr>
+    <td>Active Edges</td>
+    <td>The edges (rising or falling) to measure time intervals between. <br>
+      <br>
+      This field is only available if the Function Card Type is 3808.<br>
+      <br>
+      The value is used when the Measurement Mode is Time Interval.</td>
+    <td>Drop-down list</td>
+    <td>Rising (default)<br>
+      Falling</td>
+  </tr>
+</table>
+<h4>Current Groups</h4>
+<table class="Table-Grey">
+  <tr>
+    <th>Field</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Group Number</td>
+    <td>The channels are in groups of 4. All channels in a group must be configured the same. The are four groups of 4 channels.</td>
+    <td>Integer</td>
+    <td>Range from 1 to 4</td>
+  </tr>
+  <tr>
+    <td>Output Range</td>
+    <td>The current output range of the card, which is a software configurable option.</td>
+    <td>Drop-down list</td>
+    <td>0-24 mA<br>
+      0-20 mA<br>
+      4-20 mA (default)</td>
+  </tr>
+</table>
+<h4>DIO Groups </h4>
+<p class="Note">This section is only available when Function Card Type is 3610.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Field</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td> Group Number</td>
+    <td>Channels are in groups of 8. All channels in a group must be configured the same (inputs or outputs).</td>
+    <td>Integer</td>
+    <td>Range from 1 to 6</td>
+  </tr>
+  <tr>
+    <td>Group InOut</td>
+    <td>Defines all of the channels within the DIO Group as either inputs or Outputs.</td>
+    <td>Drop-down list</td>
+    <td>Input (default)<br>
+      Output</td>
+  </tr>
+</table>
+<h4>Pinouts</h4>
+<table class="Table-Grey">
+  <tr>
+    <th>Field</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Function Card Channel</td>
+    <td>The channel number on the Function Card. Each Function Card Channel starts at 1. This field can be automatically populated or manually entered.<br>
+      <br>
+      The Function Card Channel can only be defined once per Function Card Number.</td>
+    <td>String</td>
+    <td>For 3416 or 3510: range from 1 to 16<br>
+      <br>
+      For 3424 or 3808: Range from 1 to 8<br>
+      <br>
+      For 3610: Range from 1 to 48</td>
+  </tr>
+  <tr>
+    <td>Pinout Name</td>
+    <td>Unique identifier for the hardware location.<br>
+      <br>
+      This field can be automatically populated or manually entered.<br>
+      <br>
+      Based on Logical Address, Function Card Number, and Function Card Channel.</td>
+    <td>String</td>
+    <td>Max 40 characters, no spaces. Permissable characters are:<br>
+      A to Z<br>
+      a to z<br>
+      0 to 9<br>
+      underscore<br>
+      octothorpe<br>
+      <br>
+      For example:<br>
+      LA###FC#CH##</td>
+  </tr>
+  <tr>
+    <td>Description</td>
+    <td>Optional field containing description of the channel/pinout.<br>
+      <br>
+      If the Pinout Name defines the hardware location, the description should be used to define the wiring terminal location or vice versa.</td>
+    <td>String</td>
+    <td>Max 100 characters. Permissable characters are:<br>
+      A to Z<br>
+      a to z<br>
+      spaces <br>
+      0 to 9<br>
+      underscore<br>
+      octothorpe<br></td>
+  </tr>
+  <tr>
+    <td>Measurement Type</td>
+    <td>If Function Card is 3416 or 3424 and Signal Conditioner is disabled, Measurement Type is Analogue Input.<br>
+      <br>
+      If Function Card Type is 3416 and Signal Conditioner Type is 5821, Measurement Type is RTD.<br>
+      <br>
+      If Function Card Type is 3416 or 3424 and Signal Conditioner Type is 5716, Measurement Type is DC Strain.<br>
+      <br>
+      If Function Card Type is 3808, Measurement Type is Frequency.<br>
+      <br>
+      If Function Card Type is 3510, Measurement Type is Analogue Output.<br>
+      <br>
+      If Function Card Type is 3610, Measurement Type is Digital IO.</td>
+    <td>Read only</td>
+    <td>Analogue Input<br>
+      RTD<br>
+      DC Strain<br>
+      Frequency<br>
+      Analogue Output<br>
+      Digital IO</td>
+  </tr>
+</table>
+<p>The structure of a ProDAQ Subsystem is shown in the following example:</p>
+<blockquote> <code>&lt;Subsystems LastModificationDate=&quot;2019-04-05 11:04:45&quot; Version=&quot;1.1&quot;&gt;<br>
+  &lt;Subsystem Name=&quot;PRODAQ&quot; <br>
+  Description=&quot;&quot; <br>
+  Enabled=&quot;true&quot; <br>
+  LastModificationDate=&quot;2019-04-05 11:04:45&quot; <br>
+  Id=&quot;0&quot; <br>
+  Type=&quot;ProDAQVXI&quot; <br>
+  CreationDate=&quot;2018-11-23 08:44:35&quot; <br>
+  HSPType=&quot;0&quot; <br>
+  PreEventTime=&quot;0&quot; <br>
+  PostEventTime=&quot;1800&quot; <br>
+  ScanRate=&quot;1000&quot; <br>
+  SaveCritical=&quot;false&quot; <br>
+  LockoutChannel=&quot;Lockout&quot;&gt;<br>
+  &lt;Chassises&gt;<br>
+  &lt;Chassis <br>
+  ChassisNumber=&quot;1&quot; <br>
+  Slot0CardVersion=&quot;1&quot;&gt;<br>
+  &lt;Motherboards&gt;<br>
+  &lt;Motherboard <br>
+  SlotNumber=&quot;5&quot; <br>
+  MotherboardType=&quot;1&quot; <br>
+  LogicalAddress=&quot;40&quot; <br>
+  VoltageReference=&quot;1&quot; <br>
+  DSPPlugIn=&quot;0&quot;&gt;<br>
+  &lt;FunctionCards&gt;<br>
+  &lt;FunctionCard<br>
+  FunctionCardNumber=&quot;7&quot; <br>
+  FunctionCardType=&quot;3&quot; <br>
+  FunctionCardVersion=&quot;1&quot; <br>
+  SignalConditioner=&quot;false&quot; <br>
+  SignalConditionerType=&quot;2&quot; <br>
+  SignalConditionerVersion=&quot;1&quot; <br>
+  TimeBaseFrequency=&quot;1&quot; <br>
+  ActiveEdges=&quot;0&quot;&gt;<br>
+  &lt;Pinouts&gt;<br>
+  &lt;Pinout <br>
+  FunctionCardChannel=&quot;1&quot; <br>
+  PinoutName=&quot;LA040FC7CH01&quot; <br>
+  Description=&quot;&quot;/&gt;<br>
+  &lt;/Pinouts&gt;<br>
+  &lt;DioGroups&gt;<br>
+  &lt;DioGroup <br>
+  DIOGroupNumber=&quot;1&quot; <br>
+  DIOGroupChannel=&quot;1&quot; <br>
+  DIOGroupInOut=&quot;0&quot;/&gt;<br>
+  &lt;/DioGroups&gt;<br>
+  &lt;/FunctionCard&gt;<br>
+  &lt;/FunctionCards&gt;<br>
+  &lt;/Motherboard&gt;<br>
+  &lt;/Motherboards&gt;<br>
+  &lt;Triggers&gt;<br>
+  &lt;Trigger <br>
+  DriverMode=&quot;0&quot; <br>
+  Setting=&quot;1&quot;/&gt;<br>
+  &lt;/Triggers&gt;<br>
+  &lt;/Chassis&gt;<br>
+  &lt;/Chassises&gt;<br>
+  &lt;/Subsystem&gt;<br>
+  &lt;/Subsystems&gt;<br>
+</code></blockquote>
+<p></p>
+<h2 id="TabDelimitFileStructure">Tab-Delimited File Sctructure</h2>
+<p>The ProDAQ Subsystem channel definition includes all generic channel definition columns and the specific ProDAQ input parameters defined in the tab-delimited configuration file.</p>
+<p>The rules, syntax, and guidelines for creating ProDAQ channels are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>ProdaqvxiPinout</td>
+    <td>The unique identifier given to each connection point.</td>
+    <td>Any Pinout that is defined by the Subsystem Editor.</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>ProdaqvxiChassis</td>
+    <td>The VXI chassis that contains the plugin card.</td>
+    <td>Any available chassis.</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>ProdaqvxiSlotNumber</td>
+    <td>The mounting position of the function card on the motherboard module.</td>
+    <td>Range from 1 to 12.</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>ProdaqvxiFCNumber</td>
+    <td>The mounting position of the function card.</td>
+    <td>Range from 1 to 8, selected from the list of cards that are in the Subsystem Editor.</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>ProdaqvxiFCChannel</td>
+    <td>The channel number on the function card.</td>
+    <td>Range is based on the type of function card installed, as defined in the Function Card Channel field in the Sybsystem Editor.</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>ProdaqvxiHighSpeedLog</td>
+    <td>A flag indicating whether all points in the waveform are saved to a file.</td>
+    <td>Y, N</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>ProdaqvxiAntiRingingFilter</td>
+    <td>The input filter. This is a function of scan rate.</td>
+    <td>Y, N</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>ProdaqvxiGain</td>
+    <td>The Gain setting on the function card defines the maximum input value.</td>
+    <td>1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000 (applies to 3416 only, not 3424)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>ProdaqvxiOTDon</td>
+    <td>A flag indicating whether the open transducer detection is on.</td>
+    <td>Y, N</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>ProdaqvxiTEDS</td>
+    <td>The attached sensor contains TEDS data.</td>
+    <td>Y, N</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>ProdaqvxiSensorType</td>
+    <td>The sensor type. Options are Temperature, Resistive, and Voltage type sensors.</td>
+    <td>PT-100 (default)<br>
+      PT-500<br>
+      PT-1000<br>
+      Resistance<br>
+      Voltage</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>ProdaqvxiRTDMode</td>
+    <td>Depending on the version of the 5821, both the temperature and resistive sensors may be operated in three different modes, namely 2-wire, 3-wire, and 4-wire mode.<br>
+      <br>
+      If the Signal Conditioner Version is BA or BB, and the Sensor Type is anything other than Voltage, the RTD Mode can be 4-wire, 3-wire, or 2-wire.<br>
+      <br>
+      If the Signal Conditioner Version is AA, and the Sensor Type is Voltage, the RTD Mode is 4-wire.<br>
+      <br>
+      If the Sensor Type is Voltage (with any Signal Conditioner Version), the RTD Mode is either Differential Voltage or Single Ended Voltage.</td>
+    <td>For 5821-Bx:<br>
+      4-Wire (default)<br>
+      3-Wire<br>
+      2-Wire<br>
+      <br>
+      For 5821-AA<br>
+      4-Wire (default)<br>
+      <br>
+      For Voltage:<br>
+      Differential Voltage<br>
+      Single Ended Voltage&nbsp;</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>ProdaqvxiRTDGain</td>
+    <td>The RTD Gain.</td>
+    <td>Read only</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>ProdaqvxiMeasurementRange</td>
+    <td>The measurement range. It is dependent on the Sensor Type.</td>
+    <td>For PT-100:<br>
+      &lt;850&deg;C<br>
+      &lt;500&deg;C (default)<br>
+      &lt;100&deg;C<br>
+      &lt;&ndash;80&deg;C<br>
+      <br>
+      For PT-500 and PT-1000:<br>
+      &lt;850&deg;C<br>
+      &lt;300&deg;C (default)<br>
+      &lt;0&deg;C<br>
+      &lt;&ndash;110&deg;C<br>
+      <br>
+      For Resistance with Signal Conditioner Version AA and BA:<br>
+      &lt;20 k&Omega;<br>
+      &lt;9 k&Omega; (default)<br>
+      &lt;4.5 k&Omega;<br>
+      &lt;2.25 k&Omega;&nbsp;<br>
+      &lt;1.125 k&Omega;&nbsp;<br>
+      &lt;560 &Omega;&nbsp;<br>
+      &lt;280 &Omega;&nbsp;<br>
+      &lt;140 &Omega;&nbsp;<br>
+      &lt;70 &Omega;<br>
+      <br>
+      For Resistance with Signal Conditioner Version BB:<br>
+      &lt;1 m&Omega;<br>
+      &lt;450 k&Omega;<br>
+      &lt;225 k&Omega;<br>
+      &lt;112 k&Omega;<br>
+      &lt;56 k&Omega;<br>
+      &lt;28 k&Omega;<br>
+      &lt;14 k&Omega;<br>
+      &lt;7 k&Omega;<br>
+      &lt;3.5 k&Omega;&nbsp;<br>
+      <br>
+      For Voltage:<br>
+      &plusmn;10V (default)<br>
+      &plusmn;4.5V<br>
+      &plusmn;1.12V<br>
+      &plusmn;0.56V<br>
+      &plusmn;0.28V<br>
+      &plusmn;0.14V<br>
+      &plusmn;0.07<br>
+      &plusmn;0.035V</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>ProdaqvxiExcitationCurrent</td>
+    <td>Excitation Current options change with Sensor Type.<br>
+      <br>
+      When the Sensor Type is Voltage, Excitation Current is disabled.</td>
+    <td>For PT-100, PT-500, PT-1000:<br>
+      Off<br>
+      500&micro;A<br>
+      <br>
+      For Resistance:<br>
+      Off<br>
+      500&micro;A<br>
+      10&micro;A</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>ProdaqvxiInputMode</td>
+    <td>Determined by the Sensor Type and Measurement Range.</td>
+    <td>Read only</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>ProdaqvxiCoupling</td>
+    <td>This field is disabled if Input Mode is ICP.</td>
+    <td>AC, DC</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>ProdaqvxiPGAGain</td>
+    <td>Configures the programmable gain amplifier (PGA) of the function card.</td>
+    <td>1, 10, 100, 1000</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>ProdaqvxiPositiveExcitation</td>
+    <td>The positive excitation voltage for bridge measurements.</td>
+    <td>Range from 0 V to 10 V</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>ProdaqvxiNegativeExcitation</td>
+    <td>The negative excitation voltage for bridge measurements.</td>
+    <td>Range from &ndash;10 V to 0 V</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>ProdaqvxiThreshold</td>
+    <td>The voltage level that the input signal must exceed in order to be recognised as a valid pulse.<br>
+      <br>
+      Every channel has a dedicated 10-bit digital-to-analogue converter to set a threshold within the full-scale input signal range of &plusmn;5 V.</td>
+    <td>Range of &ndash;5.00 to 4.99<br>
+      <br>
+      Default of 1.00</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>ProdaqvxiTermination</td>
+    <td>Input impedance of the measurement channel.</td>
+    <td>No termination (default)<br>
+      50 Ohm</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>ProdaqvxiPolarity</td>
+    <td>Polarity of the output.</td>
+    <td>Positive or Negative</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td colspan="6"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. 
+      Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single line of the spread sheet.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is always optional.</p></td>
+  </tr>
+</table>
+<h2 id="SubsystemEditorProDAQ">Subsystem Editor for ProDAQ Channels</h2>
+<p>To edit the ProDAQ Subsystem, the Subsystem Editor must be selected from within the Configuration Administrator.</p>
+<p>The tool bar in the Configuration Administrator allows the various configuration editors available for proDAS to be selected.</p>
+<p>The Subsystem Editor allows new subsystems to be added to the current configuration.</p>
+<div class="Container"><img src="images/SSeditor.png" width="850" height="436" alt=""/></div>
+<p>To add a new subsystem:</p>
+<ol>
+  <li>From the Edit menu, select&nbsp;<strong>Append Data Record</strong>&nbsp;or, in the left pane of the splitter window and then click the right mouse button and select&nbsp;<strong>Append Data Record</strong>&nbsp;from the context sensitive menu.</li>
+  <li>Select&nbsp;<strong>PRODAQ</strong>&nbsp;in the dialogue box to select the type of subsystem.<br>
+    A new line in Subsystem Editor is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to&nbsp;<strong>PRODAQ</strong>. The user must then assign a name and description to the subsystem. <br>
+    <br>
+  </li>
+</ol>
+<h2 id="IniFile">RTE Initialisation File</h2>
+<p>The ProDAQ VXI subsystem is configured by the RTE, along with all the other subsystems, as a request from the Management Interface GUI. For legacy purposes, the configuration request can also be specified in the command line of the RTE.</p>
+<p>A typical RTE initialisation file would include the following ProDAQ VXI subsystem information:</p>
+<p>#  ========================================<br>
+  # PRODAQ subsystem<br>
+  # ----------------------------------------<br>
+  SS &nbsp;PRODAQ  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TRUE</p>
+<p>And </p>
+<p>#--------------------------------------------------------------------------<br>
+  # Init and  Configuration Module<br>
+  #--------------------------------------------------------------------------<br>
+  CI&nbsp;&nbsp;&nbsp;  ss_extrap_value&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; PRODAQ&nbsp;&nbsp;  0.1</p>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click here to see the RTE Initialisation file.</a></p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

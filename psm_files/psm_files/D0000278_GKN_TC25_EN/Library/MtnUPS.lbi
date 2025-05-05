@@ -1,0 +1,13 @@
+﻿<table class="Table-Grey">
+  <tr>
+    <th class="row-Topic" rowspan="2">Topic</th>
+    <th>Maintenance</th>
+  </tr>
+  <tr>
+    <th class="row-AsReq">Annual</th>
+  </tr>
+  <tr>
+    <td>Functional verification of the rectifier, inverter, and batteries by a UPS OEM representative</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div>      <div align="center"></div></td>
+  </tr>
+</table>

@@ -1,0 +1,10 @@
+﻿<table class="Table-Grey">
+  <tr>
+    <th class="row-DwgNumber">Drawing Number</th>
+    <th class="row-DwgTitle">Drawing Title</th>
+  </tr>
+  <tr>
+    <td><a href="../References/MDSDrawings/A0000141.pdf">A-0000141</a></td>
+    <td>Assembly-Backplane, VTI, VXI, 128 CH Prog Filt AI, 16 CH AO, 96 Ch DIO, 19 Inch Rack, 8V, 120/240 VAC, 50/60 Hz, 2223 W</td>
+  </tr>
+</table>

@@ -1,0 +1,380 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,600,300);
+/*@charset "UTF-8";*/
+/* Base Styles */
+
+@media print { 
+   .div-to-not-print {display: none};
+    height:100%;
+    width:100%;
+    margin: 0;
+	padding: 0;
+	position: relative;	
+ }
+
+
+/* Box-sizing : future - for mobile displays, etc. */
+* {
+    box-sizing: border-box;
+}
+
+body {
+	font: Verdana, sans-serif;
+	background-color: #040509; /* black */
+	margin: 0px;
+	padding: 0;
+	color: #000;
+	min-height: 680px;
+	min-width: 980px;
+	overflow: hidden;  /*main 'entire' frame; if set to "auto", can scroll menu and header, but doesn't scroll iframe or MDS logo. overflow: auto;*/
+	
+}
+
+/* ~~ The header is not given a width. It will extend the full width of your layout. ~~ */
+header {
+	background-color: #3198d4; /* light blue*/
+	display: inline; /* keeps the divs in place */
+}
+
+/* styles for lists in the menu? */
+ul{
+	margin: 0;
+	padding: 0;
+	list-style: none;	
+} 
+li {
+	list-style: none;	
+}
+
+/* This is where the content files are displayed. */
+iframe {
+    background-colour: #fcfdfd; /* very light grey */
+    font: Verdana, sans-serif;
+    seamless: "seamless"; /* HTML5 but not supported in any browsers? */
+	/*position: fixed;*/
+    height: calc(100% - 55px);
+    width: calc(100% - 200px);
+    float: left;
+	margin-left: 200px;
+	outline: none;
+	display: inline;
+	position: fixed;
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-bottom: 40px; /*enough to show bottom arrow when slider is displayed */
+    padding-left: 0px;
+    whitespace: normal;
+}
+
+/*HTML 5 support - Sets new HTML 5 tags to display:block so browsers know how to render the tags properly. */
+header, footer{
+	display: block;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar:hover {
+    width: 10px; 
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #9B9797;  /* green #54ba5e; black:#2d3136*/
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active  {
+    background: #0E4DA3;  /* green #54ba5e; */
+}
+
+/*-- Navigation Menu --- */
+/*-- The following styles are for the NAV Menu! Be careful what you change! --*/
+
+#cssmenu,
+#cssmenu ul,
+#cssmenu li,
+#cssmenu a {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  text-decoration: none;
+  list-style: none;
+  font-weight: normal;
+  line-height: 1;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  position: relative;
+  align:left;
+  background-colour: #2D3136 ;
+  overflow:auto;
+}
+
+
+#cssmenu a {
+  line-height: 1.3;
+  text-decoration: none;
+  align:left;
+}
+
+#cssmenu {  /* Main DIV box */
+  align: left;
+  width: 200px; /*width of main DIV box*/
+  background-colour: #2D3136 ; /*very dark grey behind boxes inside menu */
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+  padding: 0px; /* spacing between border and inside menu box */
+  -moz-box-shadow: 0 0 0px rgba(0, 0, 0, 0.6);
+  -webkit-box-shadow: 0 0 0px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 0 0px rgba(0, 0, 0, 1.6);  /*surrounding box */ 
+  font-weight: normal;  /* font-weight of text inside menu boxes */
+  font-size: 12px;  /* font size of text inside menu boxes */
+  font-family: Verdana, Arial, Helvetica, sans-serif; /* font style of text inside menu boxes */
+  overflow-y:auto;
+}
+#cssmenu > ul > li {
+  margin: 0 0 0px 0;  /* 0px = no spacing between 1st level menu boxes */
+}
+#cssmenu > ul > li:last-child {
+  margin: 0;
+}
+#cssmenu > ul > li > a {  /* 1st level - menu boxes font/colours/style of border*/  
+  display: block;
+  color: #ffffff; /*text colour inside menu boxes - white */
+  text-shadow: 0 0px 0px #000;
+  background: #888b95;/* Dark Grey - colour of menu boxes, 1st level, NOT selected/active */
+  background: -moz-linear-gradient(#888b95 0%, #505962 10%); /* 2nd colour for fade #505962, now black */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #888b95), color-stop(10%, #505962));
+  background: -webkit-linear-gradient(#DCDDE5 0%, #505962 10%);
+  background: linear-gradient(#888b95 0%, #505962 100%);
+  border: 1px solid #000; /* black border */
+  -webkit-border-radius: 0px; 
+  -moz-border-radius: 0px; 
+  border-radius: 0px;
+}
+#cssmenu > ul > li > a > span { /* 1st level - menu box border when not selected*/
+
+  display: block;
+  border: 0px;
+  padding: 5px 5px; /* Ht/W spacing above and below text inside menu box */
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+}
+#cssmenu > ul > li > a:hover {  /*first level hover */
+  text-decoration: none;
+  color: #000000; /* black */
+}
+#cssmenu > ul > li.active { /* 1st level */
+  border-bottom: none;
+}
+#cssmenu > ul > li.active > a { /* 1st level  - active*/
+  background: #a2d3fc; /* (blue) 1st level menu box colour when selected */
+  background: -moz-linear-gradient(#a2d3fc 0%, #639AC9 100%); /* blue fade blue */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #a2d3fc), color-stop(100%, #639AC9));
+  background: -webkit-linear-gradient(#a2d3fc 0%, #639AC9 100%);
+  background: linear-gradient(#a2d3fc 0%, #639AC9 100%);
+  color: #fff;
+  text-shadow: 0 0px 0px #000; /* orig: 0 1px 1px #000; */
+  border: 1px solid #000000;
+}
+#cssmenu > ul > li.active > a span { /* 1st level */
+  border: 0px; 
+}
+#cssmenu > ul > li.has-sub > a span { /* 1st level - indicates it has a sub-menu */
+  background: url(/Images/icon_plus.png) 98% center no-repeat; /* if 1st level menu item not selected, show + sign */
+}
+#cssmenu > ul > li.has-sub.active > a span {  /* 1st level - indicates sub-menu open*/
+  background: url(/Images/icon_minus.png) 98% center no-repeat; /* if 1st level menu item selected, show - sign */
+}
+
+/* Sub menu */
+/* 2nd level *********************/
+
+#cssmenu ul ul{ /* space between 1st level menu items and 2nd level menu items */
+  padding: 0px 0px;  /* Ht,width */
+  display: none;
+}
+#cssmenu ul ul li { /* space between 2nd level menu items */
+  padding: 0px 0px;
+}
+
+#cssmenu > ul > li > ul > li > a { /* 2nd level menu boxes*/
+  display: block;
+  color: #000000; /*text colour inside menu boxes - black */
+  text-shadow: 0 0px 0px #000;
+  background: #fafbfb; /* white colour of menu boxes - 2nd level - NOT selected/active*/
+  background: -moz-linear-gradient(#fafbfb 0%, #fafbfb 80%); /* 2nd colour for fade Orig #323232, now white */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fafbfb), color-stop(80%, #fafbfb));
+  background: -webkit-linear-gradient(#fafbfb 0%, #fafbfb 100%);
+  background: linear-gradient(#fafbfb 0%, #fafbfb 100%);
+  border: 1px solid #ebe7e8;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+}
+#cssmenu > ul > li > ul > li > a span {  /* 2nd level menu boxes */
+  display: block;
+  border: 0px;
+  padding: 6px 16px;  /* Space above and below text, Spacing from left border; spacing of text inside menu box */
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+}
+
+#cssmenu > ul > li > ul > li a:hover {  /*2nd level hover */
+  color: #639ac9; /*  blue - Text/font colour in 2nd level menu when hovering */
+}
+
+#cssmenu > ul > li > ul > li.active > a { /* 2nd level  - active*/
+  background: #c0f5c5; /* (yellow/green) 1st level menu box colour when selected */
+  background: -moz-linear-gradient(#c0f5c5 0%, #54BA5E 100%); /*green with fade */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #86f991), color-stop(100%, #54BA5E));
+  background: -webkit-linear-gradient(#c0f5c5 0%, #54BA5E 100%);
+  background: linear-gradient(#c0f5c5 0%, #54BA5E 100%);
+  color: #000000; /*text colour inside menu boxes - white */
+  text-shadow: 0 0px 0px #000;
+  border: 0px solid #000000; /* no border */
+}
+
+#cssmenu > ul > li > ul > li.active > a span{ /* 2nd level */
+  border: none;
+}
+
+#cssmenu > ul > li > ul > li.has-sub2 > a span { /* 2nd level - indicates it has a sub-menu */
+  background: url(./Images/icon_plus.png) 98% center no-repeat; /* if 2nd level menu item not selected, show + sign */
+}
+#cssmenu > ul > li > ul > li.has-sub2.active > a span {  /* 2nd level - indicates sub-menu open*/
+  background: url(./Images/icon_minus.png) 98% center no-repeat; /* if 2nd level menu item selected, show - sign */
+  color: #000; /*text colour inside menu boxes - black */ 
+}
+
+
+/* SubSub menu *********************************/
+/* 3nd level */
+#cssmenu ul ul ul { /* space between 2nd level menu items and 3rd level menu items */
+  padding: 0px 0px;  /* Ht , width */
+  display: none; /* displays 3rd level menu items */
+}
+
+#cssmenu > ul > li > ul > li > ul > li > a { /* 3rd level menu boxes*/
+  display: block;
+  color: #000000; /*text colour inside menu boxes - black */
+  text-shadow: 0 0px 0px #000;
+  background: #e6e7e8; /* white colour of menu boxes - 3rd level - NOT selected/active*/
+  background: -moz-linear-gradient(#e6e7e8 0%, #e6e7e8 100%); /* 2nd colour for fade - none */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e6e7e8), color-stop(100%, #e6e7e8));
+  background: -webkit-linear-gradient(#e6e7e8 0%, #e6e7e8 100%);
+  background: linear-gradient(#e6e7e8 0%, #e6e7e8 100%);
+  border: 0px;  /* no border */
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+}
+#cssmenu > ul > li > ul > li > ul > li > a > span {  /* 3rd level menu boxes */
+  display: block;
+  border: 0px;
+  padding: 4px 24px;  /* Ht/W spacing of text inside menu box - grey level */
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+}
+
+#cssmenu > ul > li > ul > li > ul > li a:hover {  /*3nd level hover */
+  color: #1DA6E9; /* blue - Text/font colour in 3rd level menu when hovering,  */
+}
+
+#cssmenu > ul > li > ul > li > ul > li.active { /* 3nd level */
+  border-bottom: none;
+}
+
+#cssmenu > ul > li > ul > li > ul > li.active > a span{ /* 3nd level  - active*/
+  background: #a2d3fc; /* (blue) 1st level menu box colour when selected Orig: #a2d3fc , 2nd colour #79980d*/
+  background: -moz-linear-gradient(#a2d3fc 0%, #639ac9 100%); /*green with fade black */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #a2d3fc), color-stop(100%, #639ac9));
+  background: -webkit-linear-gradient(#a2d3fc 0%, #639ac9 100%);
+  background: linear-gradient(#a2d3fc 0%, #639ac9 100%);
+  color: #fff;
+  text-shadow: 0 0px 0px #000;
+  border: 0px solid #000000;
+}
+
+#cssmenu > ul > li > ul > li > ul > li.active > a span { /* 3nd level */
+  border: 0px solid #a2d3fc; /*border colour  ? */
+}
+#cssmenu > ul > li > ul > li > ul > li.has-sub3 > a span { /* 3nd level - indicates it has a sub-menu */
+  background: url(./Images/icon_plus.png) 98% center no-repeat; /* if 2nd level menu item not selected, show + sign */
+}
+#cssmenu > ul > li > ul > li > ul > li.has-sub3.active > a span {  /* 3nd level - indicates sub-menu open*/
+  background: url(./Images/icon_minus.png) 98% center no-repeat; /* if 3nd level menu item selected, show - sign */
+  color: #000000; /*text colour inside menu boxes - white */
+}
+
+
+/* SubSub menu *********************************/
+/* 4th level */
+#cssmenu ul ul ul ul{ /* space between 3rd level menu items and 4th level menu items */
+  padding: 0px 0px;  /* Ht , width */
+  display: none;
+}
+
+#cssmenu > ul > li > ul > li > ul > li > ul > li a { /* 4th level menu boxes*/
+  display: block;
+  color: #000000; /*text colour inside menu boxes - black */
+  text-shadow: 0 0px 0px #000;
+  background: #fafbfb; /* white - colour of menu boxes - 2nd level - NOT selected/active*/
+  background: -moz-linear-gradient(#fafbfb 0%, #fafbfb 80%); /* 2nd colour for fade, now white */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fafbfb), color-stop(80%, #fafbfb));
+  background: -webkit-linear-gradient(#fafbfb 0%, #fafbfb 100%);
+  background: linear-gradient(#fafbfb 0%, #fafbfb 100%);
+  border: 1px solid #ebe7e8;
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px;
+}
+
+#cssmenu > ul > li > ul > li > ul > li > ul > li a > span {  /* 4th level menu boxes */
+  display: block;
+  border: 0px solid #000000;
+  padding: 4px 32px;  /* Ht/W spacing of text inside menu box */
+  -webkit-border-radius: 0px;
+  -moz-border-radius: 0px;
+  border-radius: 0px; 
+}
+
+#cssmenu > ul > li > ul > li > ul > li > ul > li a:hover {  /*4th level hover */
+  color: #1DA6E9; /*  light blue - Text/font colour in 3rd level menu when hovering */
+}
+
+#cssmenu > ul > li > ul > li > ul > li > ul > li.active { /* 4th level */
+  border-bottom: none;
+}
+
+#cssmenu > ul > li > ul > li > ul > li > ul > li.active > a { /* 4th level  - active*/
+  background: #c0f5c5; /* green - 1st level menu box colour when selected */
+  background: -moz-linear-gradient(#c0f5c5 0%, #54ba5e 100%); /*green with fade black */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c0f5c5), color-stop(100%, #54ba5e));
+  background: -webkit-linear-gradient(#c0f5c5 0%, #54ba5e 100%);
+  background: linear-gradient(#c0f5c5 0%, #54ba5e 100%);
+  color: #000; /*text colour inside menu boxes - black */
+  text-shadow: 0 0px 0px #000;
+  border: 0px solid #000000;
+}
+
+#cssmenu > ul > li > ul > li > ul > li > ul > li.active > a span { /* 4th level */
+  border: 0px solid #f7080c; /*border colour  ? */
+}
+#cssmenu > ul > li > ul > li > ul > li > ul > li.has-sub3 > a span { /* 4th level - indicates it has a sub-menu */
+  background: url(./Images/icon_plus.png) 98% center no-repeat; /* if 2nd level menu item not selected, show + sign */
+}
+#cssmenu > ul > li > ul > li > ul > li > ul > li.has-sub3.active > a span {  /* 4th level - indicates sub-menu open*/
+  background: url(./Images/icon_minus.png) 98% center no-repeat; /* if 3nd level menu item selected, show - sign */
+  color: #000000; /*text colour inside menu boxes - white */
+}

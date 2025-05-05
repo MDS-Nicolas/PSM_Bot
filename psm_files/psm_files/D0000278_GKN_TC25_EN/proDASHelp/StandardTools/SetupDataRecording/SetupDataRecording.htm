@@ -1,0 +1,190 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Setup Data Recording</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="SetupDataRecording">Setup Data Recording<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>proDAS records and processes test data for later analysis. This module provides useful information and setup procedures before data recording is performed on:</p>
+<ul>
+  <li>transient logs</li>
+  <li>critical logs</li>
+  <li>fullsets</li>
+  <li>unified event log</li>
+  <li>continuous logging</li>
+</ul>
+<h2 id="HistoryLogs">Transient Logs</h2>
+<p>A transient log is a record of selected channel values over a predetermined period of time. Many different transient logs can be defined, but only five can be running (recording data) at one time. More than one instance of the same log can be running at one time. When multiple versions of a log are running, they can be stopped and saved individually.</p>
+<p>Transient Logs can be started:</p>
+<ul>
+  <li>from the Logs Panel on the Test Engine Page</li>
+  <li>automatically, as alarm conditions in response to a limit violation</li>
+  <li>from a test procedure</li>
+</ul>
+<p>To record a Transient Log, see <a href="../../TestwithDAS/RunEngineTest/RunEngineTest.htm#RecordHistoryLogs">Recording Transient Logs</a> in Running an Engine Test.</p>
+<h3 id="HistoryLogDefn">Transient Log Definition</h3>
+<p>Transient logs can be defined to record any set of channels in the current master configuration. The transient log definition contains:</p>
+<ul>
+  <li>the name of the log</li>
+  <li>the duration of the recording</li>
+  <li>the sampling frequency</li>
+  <li>the channels sampled by the log</li>
+  <li>a description (the description may contain a keyword definition e.g.: auto_report)</li>
+</ul>
+<p>Transient logs can also be created, edited and deleted through the <a href="../../DASConfigTools/TransLogDefnEditor/TransLogDefnEditor.htm">Transient Log Definition Editor</a>.</p>
+<h3 id="AutostartLogs">Autostart Logs</h3>
+<p>Autostart logs are transient logs that automatically begin recording when proDAS begins scanning, and continue recording for the duration specified in the log definition. To create an autostart log, create a transient log and name it &quot;auto_start&quot;.</p>
+<p>Refer also to the <a href="../../DASConfigTools/TransLogDefnEditor/TransLogDefnEditor.htm">Transient Log Definition Editor</a>.</p>
+<h4>Test Steps</h4>
+<p>A list of available Transient Log Test Steps is stored in the initialisation file. Alternately, the Management GUI is configurable to auto-increment Test Steps. To configure the auto-increment function, a prefix and a channel must be defined. The channel must be settable. When auto-incremented Test Step is selected, a Test Step will be created by appending the prefix and the value of the specified channel. The Management GUI will then set the channel to the previous value plus 1 (i.e.: if your prefix is &quot;Log&quot; and the value of the channel is &quot;1&quot;, the Test Step created will be &quot;Log1&quot; and the Management GUI will set the channel value equal to &quot;2&quot;).</p>
+<p>A sample of the logs test step section of the Management GUI ini file is displayed below.</p>
+<p>[LogTestStep]<br>
+  AutoIncChan=Channel_Log<br>
+  prefix= Log<br>
+  TestStep1= LogTestStep1<br>
+  TestStep2= LogTestStep2<br>
+  TestStep3= LogTestStep3<br>
+  TestStep4= LogTestStep4</p>
+<h2 id="CriticalLogs">Critical Logs </h2>
+<p>The critical log is a rotating log which is started automatically when <strong>Start Scan</strong> is selected on the Management GUI Control Panel. The critical log records data continuously from all of the channels defined as critical in the current configuration.</p>
+<p>For information on starting critical logs, see <a href="../../TestwithDAS/RunEngineTest/RunEngineTest.htm#RecordCriticalLog">Recording a Critical Log</a> in Running an Engine Test.</p>
+<p>The critical log records data in a rotating buffer. The length of the buffer is determined by the <strong>crit_pre_event</strong> and the <strong>crit_post_event</strong> value in the RTE initialisation file. The full length of a recorded critical log file is determined by adding the <strong>crit_pre_event</strong> and the <strong>crit_post_event</strong> values, where:</p>
+<ul>
+  <li><strong>crit_pre_event</strong> s the maximum length of time that data is recorded before the critical event which triggered the log to be saved. The value for <strong>crit_pre_event</strong> (in seconds) is defined in the RTE initialisation file</li>
+  <li><strong>crit_post_event</strong> is the length of time that data is recorded after the critical event which triggered the log to be saved. The value for <strong>crit_post_event</strong> (in seconds) is defined in the RTE initialisation file</li>
+</ul>
+<div class="Container"><img src="images/ConfigFile.png" alt="Config File" width="700" height="360"></div>
+<p class="Note">The RTE initialisation file can be edited manually using a text editor.</p>
+<div class="Container"><img src="images/CriticalLog.png" alt="Critical Log" width="700" height="148"></div>
+<p>A critical log can be saved whenever a record of the activity on all the critical channels is required. When the critical log is saved by the operator, the buffered data is saved to the critical log file. If proDAS has been monitoring an engine test for less than the <strong>crit_pre_event</strong> seconds, then only the number of seconds recorded since the start of scanning plus <strong>crit_post_event</strong> seconds will be saved in the critical log.</p>
+<p>Critical channels are predetermined in the Channel Editor (see <a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm">Channel Editor</a> in proDAS Subsystem Configuration). To make changes to the configuration files, the testing system must be stopped and deconfigured. When the changes have been completed, the testing system must be reconfigured for the changes to take effect.</p>
+<h2 id="SteadyStateTestData">Fullsets (Steady-State Test Data)</h2>
+<p>Fullsets are a collection of time averaged data from each of the channels included in the CVT during the current test. For example, if the time duration of the fullset is one second, and the channel data is sampled at a 10 hertz rate, then the 10 samples taken during the fullset period will be averaged to a single value, and that value will be stored in the proDAS database as the channel value in the fullset. The time period over which the data is averaged is controlled by the operator.</p>
+<p>All of the channels in the current configuration are recorded in a fullset. Each channel must be defined in advance as residing in the CVT for its value to be recorded in a fullset (see <a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm">XML File Structure in Channel Editor</a>).</p>
+<p>For information on starting a fullset, see <a href="../../TestwithDAS/RunEngineTest/RunEngineTest.htm#RecordFullset">Recording a Fullset (Steady-State Data)</a> in Running an Engine Test.</p>
+<h4>Test Steps</h4>
+<p>A list of available Fullset Test Steps is stored in the initialisation file. Alternately, the Management GUI is configurable to auto-increment Test Steps. To configure the auto-increment function a prefix and a channel must be defined. The channel must be settable. When auto-incremented Test Step is selected, a Test Step will be created by appending the prefix and the value of the specified channel. The Management GUI will then set the channel to the previous value plus 1 (i.e.: if your prefix is &quot;Fullset&quot; and the value of the channel is &quot;1&quot;, the Test Step created will be &quot;Fullset1&quot; and the Management GUI will set the channel value equal to &quot;2&quot;).</p>
+<p>A sample of the fullsets test step section of the Management GUI ini file is displayed below.</p>
+<p>[FullsetTestStep]<br>
+  AutoIncChan= Channel_Fullset<br>
+  prefix=Fullset<br>
+  TestStep1= FullsetTestStep1<br>
+  TestStep2= FullsetTestStep2<br>
+  TestStep3= FullsetTestStep3<br>
+  TestStep4= FullsetTestStep4</p>
+<h3>Fullset Stability Criteria</h3>
+<p>When acquiring the fullset data, proDAS analyses all of the scans used to derive the fullset value for a configurable number of channels. For each defined channel, the analysis provides the following results, as part of each fullset saved to the TRSCDB:</p>
+<ul>
+  <li>maximum value acquired</li>
+  <li>minimum value acquired</li>
+  <li>standard deviation</li>
+  <li>standard deviation divided by the mean</li>
+</ul>
+<p>The results are written to the Stability Criteria results channel. The Stability Criteria results channels must be defined as FLOAT Calculated Input channels, with a non-zero Hz scan rate and a calculated expression of &quot;0&quot;. This allows the Fullset subsystem to have the ability to overwrite the channel value with the result data, and the Limits and Action subsystem to report any limit violations on the channels.</p>
+<h4>Stability Assessment Initialisation File</h4>
+<p>The stability assessment initialisation file includes the name of the source channel, as well as channel names used to store the calculated values. Tabs or spaces are used to delimit the channel names. Comment lines are entered by using the &quot;#&quot; character at the start of the line. The initialisation file is located in /disk3/users/RTE/configurations/<em>EngineName</em>/stability and must be named <em>Stability.config</em>.</p>
+<p>The resulting calculations are included in the fullset for which they apply. These values remain unchanged in the CVT until the next fullset is recorded. When a new fullset commences, the result channels in the CVT gets reset to zero. The maximum and minimum channel values in the CVT is updated as the fullset accumulation progresses.</p>
+<p>While the fullset data is accumulating, one or more scans of any monitored channel value flagged as BAD data quality will result in the fullset average value, and all four stability criterion channels being flagged as BAD quality and set to bad value (-99999).</p>
+<p><a href="images/Stability.pdf">Click here for a sample initialisation file</a>.</p>
+<h3 id="TimeSlice">Fullset Time Slice</h3>
+<p>Fullset Time Slice provides the user with several separate smaller duration averages contained within the fullset for pre-defined channels. After acquiring data for a fullset, the RTE calculates the time slice averages of all the scans used to derive the fullset value for a configurable number of channels.</p>
+<p>Time Slice intervals can vary on a per channel basis. Each interval is dependant on the fullset duration and the number of defined time slice channels  as follows:</p>
+<table width="75%" border="0" align="center">
+  <tr>
+    <td align="right">Time slice interval = </td>
+    <td align="center"><span class="CellBodyBoldItalic"><img src="images/Timeslice.png" alt="Timeslice" width="195" height="33"></span></td>
+  </tr>
+</table>
+<p>The RTE supports varying  time slice intervals on a per channel basis.</p>
+<p>The Time Slice result channels can  be defined as zero Hz calculated channels with a constant equation. <a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm#AlarmLimitsActions">Alarm Limits and Actions</a> monitor limits on Time Slice result channels defined  with a non-zero Hz scan rate.</p>
+<p>The Time Slice results channel values in the CVT are reset to 0 at the start of the fullset and are updated at completion of the fullset duration and then written to the database. The Time Slice results channels&rsquo; data remain unchanged in the CVT until the next fullset is recorded, allowing these averaged values to be displayed on a proDAS Real-Time Display page.</p>
+<p>The fullset Time Slice initialisation file (/disk3/users/RTE/configurations/EngineName/stability/Timeslice.config) includes the name of the source channel followed by the ordered names of the time slice results channels.</p>
+<p>A UEL warning message is generated if a channel defined in the time slice configuration file is not declared in the current test configuration. A UEL message warns the user that the time slice results channels will contain invalid data if the fullset duration of the initiated fullset exceeds the configured initialisation file parameter for the maximum fullset duration.</p>
+<p class="Caution">Time sliced results channels may provide duplicate data in the results channels if the scan rate of the defined channel is slow and the number of results channels is high (i.e. If a channel has 1 Hz scan rate, and a 1 second fullset is requested, then the same 1 second average value will be stored in each time slice results channel.).</p>
+<p>While the fullset data is accumulating, if the channel value is set to BAD data quality, then the resulting fullset average value, and all results channels are flagged as BAD quality and set to bad value (-99999).</p>
+<h2 id="UEL">Unified Event Log</h2>
+<p>The  Unified Event Log (UEL) is responsible for tracking all events that occur while proDAS is running. All messages from the Real-Time Engine are displayed in the UEL Display window, along with filter masks, are stored in a single event log file. Text messages are written to the UEL whenever an event occurs (e.g.: starting test monitoring, taking a fullset, or registering an alarm).</p>
+<h3 id="OpenEventDisplayWindows">Opening Additional Event Display Windows</h3>
+<p>Additional Unified Event Log (UEL) windows can be displayed by editing the StartRTE script file called by the Management Interface at configuration time. The name of the file is contained in the Management GUI initialisation file under the StartRTEScript tag. The VB script file is located in:</p>
+<blockquote>
+  <p><em>\\proDAS\data\mgt gui</em></p>
+</blockquote>
+<p>Two parameters in this script file must be changed. The PCNames parameter, which lists the names of all computers that will host a UEL window, and the DisplayTypes parameter, which lists a number representing the window type, for each of the desired UEL windows. The available types are 1 for online or 2 for the main UEL window.</p>
+<h2 id="ContinuousLogging">Continuous Logging</h2>
+<p>Continuous Logging is an optional feature and is the implementation of a continuous recording and playback-with-calculations utility that records channel data whenever the continuous log and proDAS are running.</p>
+<p><a href="../../TestwithDAS/RunEngineTest/RunEngineTest.htm">Click 
+  here for additional information on Continuous Logging</a>.</p>
+<h3 id="Playback">Playback Continuous Logs</h3>
+<p>The Replay Control GUI includes a pull-down list of the recorded fullsets and transient logs that allows the user to move quickly to a particular event.</p>
+<p>The Replay Control GUI uses the event file to switch between continuous log files, only if the list of channels is identical in the different continuous log files.</p>
+<p>When selecting a configuration from the Management Interface, the user may choose to:</p>
+<ul>
+  <li>configure the Real-Time system for Acquisition</li>
+  <li>configure for Playback</li>
+  <li>reset configuration</li>
+</ul>
+<p>The current Management Interface functionality is supported in playback mode, including Management Interface server interaction and the ability to record data, set channels, and run test procedures.</p>
+<p>While scanning in playback mode, proDAS populates the CVT with the configured channels contained in the continuous log. This includes all hardware channels and all zero hertz output calculated channels, but if a subsystem is not configured in playback mode, its channels are ignored.</p>
+<p>In each scan cycle, the calculations are performed. The Calculated Subsystem behaves as in a normal scan mode, performing calculations for all calculated channels defined in the current configuration. As in normal scan mode, zero hertz calculated channels are ignored by the Calculated Subsystem. This allows the output zero hertz channels to be updated from the log and the input zero hertz channels to respond to any set channel command.</p>
+<h3 id="Inputs">Inputs</h3>
+<p>The proDAS CVT provides the values to be stored in the logs and the data storage is handled by the logs and playback subsystem.</p>
+<h4>proDAS RTE Initialisation File</h4>
+<p>The continuous log obtains configuration information from the LOG_PLAYBACK section of the proDAS RTE Initialisation File. The following data includes:</p>
+<ul>
+  <li>CL_Enabled TRUE/FALSE </li>
+  <li>CL_Scan_rate 1, 5 or 10 hertz</li>
+  <li>CL_Max_file_size 2000 kilobytes </li>
+  <li>CL_Max_number_test 20 </li>
+  <li>CL_Trigger channel_name</li>
+  <li>CL_Exclude_SS</li>
+  <li>CL_max_off_delay 10</li>
+  <li>CL_always_create_new_log</li>
+</ul>
+<p>CL_Enabled is used to turn on or off the recording of the continuous log file. The default for this parameter is FALSE.</p>
+<p>The CL_Scan_rate parameter allows the continuous log rate to be dropped to 1 hertz from a default of 10 hertz.</p>
+<p>The CL_Max_file_size defines the maximum size, in kilobytes, available to a single continuous log. When this size is exceeded, a new log is started. The max size is also dependent on disk size but cannot exceed 2GB.</p>
+<p>The CL_Max_number_test defines how many logs are recorded before the system  overwrites the files from the oldest test. The maximum number of tests also is dependent on disk size.</p>
+<p>CL_Trigger stores the name of the trigger channel used to control the stop and start of the continuous log. If the specified channel is not configured, the continuous log will record whenever proDAS is scanning and an event message will inform the user that the trigger was not found. The log will start scanning when the defined channel =1 and stop scanning when the channel = 0.</p>
+<p>CL_Exclude_SS allows the user to exclude any subsystem from the recorded log.</p>
+<p>CL_max_off_delay indicates the delay time in seconds that proDAS waits after the trigger channel resets to 0 before the continuous log file recording is stopped. This is meant to handle cases where the trigger channel transitions quickly between 0 and 1 values.</p>
+<p>CL_always_create_new_log controls the behavior of when a new continuous log file is created (TRUE/FALSE). The default for this parameter is FALSE. If the parameter is set to TRUE, a new continuous log file will always be created. If it is set to FALSE, a new instance of the continuous log file is created when proDAS starts scanning. Setting the parameter to TRUE ensures that there are no time gaps in the generated continuous log files. The log files will always have consecutive time stamps based on the scan rate of the log file.</p>
+<p>The playback mode requires configuration information that is obtained from the proDAS configuration files at the request of the Management GUI. During playback, there is no input of data from the proDAS hardware. The data sources include the log file and the Calculated Subsystem.</p>
+<p>Playback only plays back the continuous log data, and is not required to play back the event file for the current test.</p>
+<h3 id="Outputs">Outputs</h3>
+<p>The output from the continuous log is the continuous_log file. This file has the same format as the existing proDAS transient and critical logs.</p>
+<p>The log file is stored in the /users/RTE/logs/continuous_log directory.</p>
+<p>The log file is named after the test, with an incremental counter used to identify two logs in the same test. The name is preceded by a CL to signify continuous log (i.e.: CL_testname.1, CL_testname.2, etc).</p>
+<p>A soft link will link the log to the /user/RTE/logs/&lt;engine_name&gt;/&lt;test_name&gt;-/hist_logs directory, so that it can be found by the current archiving utility.</p>
+<p>The event file is a tab-delimited text file which lists an event definition, event date and time, the name of the associated continuous log and a number to indicate the offset of the event within the continuous log. The following are sample entries in the event file:</p>
+<ul>
+  <li>Start_Log 20/10/2001 11:52:01.100 CL_testone.1 0</li>
+  <li>Fullset_TO 20/10/2001 11:53:25.100 CL_testone.1 1234</li>
+  <li>Stop_Log 20/10/2001 11:55:07.122 CL_testone.1 10050</li>
+  <li>Start_Log 22/10/2001 08:26:53:026 CL_testone.2 0</li>
+</ul>
+<p>The event file is stored in the same location, with a soft link to the /user/RTE/logs/&lt;engine_name&gt;/&lt;test_name&gt;/hist_logs directory.</p>
+<p>The event file is named after the test. The name is preceded by a CE to signify continuous events (e.g.: CE_testname).</p>
+<p>The event file includes a record of all starts and stops of the continuous log recording process, a recording of fullsets and transient logs.</p>
+<p>If the continuous recording log is disabled for any reason, a message is written to the event handler. Whenever possible, the reason for the log not running is included.</p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

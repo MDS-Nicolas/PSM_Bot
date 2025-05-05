@@ -1,0 +1,132 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Automated CITS Import into proDAS (Option*)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="ACI">Automated CITS Import into proDAS (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" >
+</a><div float:right></div></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The Automated CITS Import into proDAS (ACI) utility converts CITS configuration files into the format compatible for CIE input. The ACI utility directly updates the proDAS subsystem configuration via the Configuration Server interface. The ACI utility has an option to launch the CIE allowing configuration files to be imported into proDAS.</p>
+<p class="Note">ACI is typically used as a stand-alone application prior to configuring proDAS.</p>
+<p>The ACI utility operations are separated into the following four windows:</p>
+<ul>
+  <li>Select Source</li>
+  <li>Search and Replace</li>
+  <li>Update proDAS Configuration</li>
+  <li>Run CIE</li>
+</ul>
+<h2 id="StartACI">Starting the ACI</h2>
+<p>The ACI can be started either as a stand-alone application or from the Management GUI Control Panel.</p>
+<p> To start the ACI utility as a stand-alone application:</p>
+<ol>
+  <li>Double-click the ACI executable file from the Management Interface Computer directory structure.<br>
+    The Import CITS into proDAS Utility window is displayed.
+    <div class="Container"><img src="images/ACI.gif" alt="ACI" width="574" height="489"></div>
+  </li>
+</ol>
+<p class="Note">After a successful login, the ACI tries to lock the Config Server for the writing operation. If the lock operation is not possible, ACI displays a &quot;Retry/Abort&quot; message. The user must exit from any applications that has acquired the write lock (i.e. Channel Editor or Subsystem Editor).</p>
+<p>To start the ACI utility from the Management GUI Control Panel:</p>
+<ol>
+  <li> From the Management GUI Control Panel (below), select <strong>Tools / Configuration Editors / Automated Configuration Import</strong>.
+    <div class="Container"><img src="images/MGTGUIstart.gif" alt="MGT GUI Start" width="700" height="497"></div>
+  </li>
+</ol>
+
+<h2 id="PreAuditPage">Importing CITS Configuration Files</h2>
+<p>To import CITS configuration files:</p>
+<ol>
+  <li>Start the ACI utility. The Import CITS into proDAS Utility window is displayed.
+    <div class="Container"><img src="images/ACI.gif" alt="ACI" width="574" height="489"></div>
+  </li>
+  <li>Select between unzipping a source zip file or browsing to an existing configuration folder that needs to be converted.</li>
+  <li>To select a Source Zip file, select <strong>Browse...</strong>. and then <strong>Unzip</strong>. The ACI unzips the contents of the file into a newly created folder named <strong>&quot;\ENG_[engine_number]\[DateTime stamp]&quot;</strong>.</li>
+  <li>To select an existing CITS folder, select <strong>Browse...</strong>.</li>
+  <li>Once a configuration has been selected, select<strong> Next &gt;</strong>. The Search and Replace window is displayed.
+    <div class="Container"><img src="images/TabEU.gif" alt="Tab EU" width="574" height="489"></div>
+    <p class="Note">The sub-steps performed on the Search and Replace window are marked OK (complete) or ERR (indicates problems). The results are reported on the final page of the ACI.</p>
+    <strong>EU tab:</strong><br>
+    The EU tab displays new unit conversions (ACI has not previously remembered). If the default selection is incorrect, select a different unit conversion. After selecting the unit conversion, select <strong>Remember</strong>. The next time ACI encounters the same CITS unit, it automatically makes the replacement.<br>
+    Select <strong>Process Data</strong>.<br>
+    <br>
+    <strong>CEC / AVM tab:</strong><br>
+    The CEC / AVM tab provides the operator the option to <strong>Use Merged AVM / CEC subsystem data</strong> or <strong>Use Default CEC File</strong>.<br>
+    <br>
+    <p class="Note">If the AVM and CEC subsystems are already merged (for the selected source) then the option &quot;No Processing&quot; is available instead of &quot;Use Merged AVM / CED subsystem data&quot;.</p>
+    If for the selected source the AVM and CEC Subsystems are already merged then <strong>No Processing</strong> option is available.
+    <div class="Container"><img src="images/TabCECAVM.gif" alt="Tab CECAM" width="574" height="489"></div>
+    If the user has had to perform selections on the panels (i.e.  EU processing) the ACI utility will not automatically continue until the user selects <strong>Process Data</strong>.<br>
+    <p class="Note">The Search and Replace Steps are processed and an OK is placed beside each successful operation.</p>
+    The processing results table displays the outcome of each processed step.<br>
+    The <strong>Data integrity</strong> specifies whether the subsystems in the selected source match the schema.<br>
+    The <strong>EU processing</strong> specifies whether the units are proDAS known units or need to be specified.<br>
+    The <strong>CTLog.def processing</strong> specifies whether the CTLog channels defined in the ini file have been successfully added to the CTLog.def file under the LOGDEF folder. <br>
+    The <strong>AVM / CEC Processing</strong> indicates the status of the AVM and CEC subsystems merge (provided it happened).<br>
+    The <strong>Overall processing</strong> displays a summary of all the above processing steps.<br>
+    <br>
+  </li>
+  <li>When all of the steps have been processed,<span class="WritersNote"></span> select<strong> Next &gt;</strong>. The Update proDAS Configuration window is displayed.
+    <div class="Container"><img src="images/TabSCUTR.gif" alt="TabSCUTR" width="575" height="490"></div>
+    <p class="Note">The sub-steps performed on the Update proDAS Configuration page are marked complete with an OK or  ERR (indicates problems). The results are reported on the final page of the ACI.</p>
+    <strong>SCUTR tab:</strong><br>
+    The SCUTR tab displays new SCUTR serial numbers that ACI has not remembered. The serial numbers are automatically updated. Once updated, the Result column displays <strong>Created</strong>.<br>
+    <br>
+    <strong>ARINC tab:</strong><br>
+    The ARINC tab displays new ARINC pinouts that ACI has not remembered. The pinouts are automatically updated. Once updated, the Result column displays <strong>Created</strong>.<br>
+    <br>
+    <div class="Container"><img src="images/TabARINC.gif" alt="Tab ARINC" width="576" height="491"></div>
+    <strong>PBS tab:</strong><br>
+    The PBS tab displays the new Sensor Name that does not exist in the configuration. The Result column displays <strong>Input Required</strong>. To update the configuration, select <strong>Run</strong>. The Result column changes to Created and the PBS Sensors/Scanners status is changed to OK.<br>
+    <div class="Container"><img src="images/TabPBS.gif" alt="Tab PBS" width="574" height="489"></div>
+    <strong>TBS tab:</strong><br>
+    The TBS tab displays the new Serial Number that does not exist in the configuration. The Result column displays <strong>Input Required</strong>. To update the configuration, select <strong>Run</strong>. The Result column changes to Created and the TBS Serial Numbers status is changed to OK.<br>
+    <div class="Container"><img src="images/TabTBS.gif" alt="Tabs TBS" width="574" height="489"></div>
+  </li>
+  <li>When all the rules are applied,<span class="WritersNote"></span> select<strong> Next &gt;</strong>. The Run CIE window is displayed.<br>
+    <br>
+    <p class="tableNote">Prior to running CIE, the ACI provides a status log which records successfully processed subsystem files as well as failed files.</p>
+    <div class="Container"><img src="images/RunCIE.gif" alt="Run CIE" width="574" height="489"></div>
+    <strong>Log tab:</strong><br>
+    The Log tab displays a list of items that have been modified.<br>
+    <br>
+    <strong>Filter tab:</strong><br>
+    The Filter tab provides the operator the ability to filter the logs by Subsystem, Area, Operation, Success, and Level.<br>
+    <div class="Container"><img src="images/TabFilter.gif" alt="Tab Filter" width="576" height="489"></div>
+    <strong>Reports tab:</strong><br>
+    The Reports tab generates reports of the processed subsystem files.  The report types include All Log Entries, Modified and Deleted data, and Invalid Units.<br>
+    <br>
+    <div class="Container"><img src="images/TabReports.gif" alt="Teb Reports" width="577" height="493"></div>
+    <br>
+  </li>
+  <li>To run the Configuration Import/Export utility, select <strong>Finish</strong>. A &lsquo;Starting ConfImpEx&rsquo; dos prompt is displayed.<br>
+    <p class="Note">The Finish button is enabled only if all the previous steps have been completed successfully.</p>
+    <p class="Note">To navigate back to the previous step to make any additional changes, select &quot;&lt; Back&quot;. CIE will not be launched.</p>
+    <p class="Note">To start over, select &quot;&lt;&lt; Start&quot;. CIE will not be launched.</p>
+    <div class="Container"><img src="images/StartConfImpEx.gif" alt="Start ConfImpEx" width="458" height="218"></div>
+    The CIE Import window is displayed indicating <strong>Import successful</strong>.<br>
+    <div class="Container"><img src="images/CIEimport.gif" alt="CIE Import Success" width="206" height="161"></div>
+  </li>
+  <li>Select <strong>OK</strong> to exit the ACI.</li>
+</ol>
+<br>
+<br>
+
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

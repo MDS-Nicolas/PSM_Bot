@@ -1,0 +1,643 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Continuous Printing</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1>Continuous Printing<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The Print Server is a server program for printing text and graphics. It receives input from other proDAS programs and VBS macros as clients, formats it and prints it out. The Print Server provides the following functionality:</p>
+<ul>
+  <li><a href="?2#Printing">formatting and printing text and graphics</a></li>
+  <li><a href="?3#Configuring">configuring the Print Server</a></li>
+  <li><a href="?4#Logging">logging the printed text</a></li>
+  <li><a href="?5#Reprinting">reprinting</a></li>
+</ul>
+<p>The Print Server is designed as reusable software (i.e. it can be used in an environment other than proDAS) and runs under Microsoft Windows.</p>
+<p>For detailed information on the COM interface(s), refer to <a href="../../References/ICDs/ICD2659ContinuousPrinting.PDF">ICD78024.2659 Continuous Printing</a>.</p>
+<h2 id="Access">Accessing the Print Server</h2>
+<p>In most cases, the Print Server is not directly accessed by the user, although other proDAS components may be using it. Only in the case of  VBS macros does the user access the Print Server directly and only this kind of access is described here.</p>
+<p>The full functionality of the Print Server is available via the Print Server automation interface (i.e. is accessible from <a href="ContinuousPrinting.htm">VBS macros</a>).</p>
+<h2 id="Printing">Formatting and Printing Text and Graphics</h2>
+<h3 id="Layout">Layout</h3>
+<p>The program prints in landscape and portrait format. A page consists of a frame, a header, a body, a footer and separation lines between header and body on one side and body and footer on the other side.</p>
+<table width="200" border="1" align="center">
+  <tr>
+    <td align="center">Header</td>
+  </tr>
+  <tr>
+    <td align="center" >Body
+      <p>&nbsp;</p></td>
+  </tr>
+  <tr>
+    <td align="center">Footer</td>
+  </tr>
+</table>
+<h3 id="ControlCharacters">Control Characters</h3>
+<p>Carriage Return (ASCII 0xd), Line Feed (0xa) or Carriage Return + Line Feed in a character string of the body are interpreted as line separators. A Form Feed character (ASCII 0xc) in the body results in a new page to be started. If other control characters appear in the text to be printed the behavior is undefined. </p>
+<h3 id="HeaderFooter">Header and Footer</h3>
+<p>The <a href="ContinuousPrinting.htm?6#Header">header</a> and <a href="ContinuousPrinting.htm?7#Footer">footer</a> are defined as strings. Once defined, the header and footer are repeated on each page and apply to all subsequently printed pages.</p>
+<p>It is possible to define headers and footers, each consisting of multiple lines. The lines must be separated by <a href="ContinuousPrinting.htm?8#ControlCharacters">line separators</a>. If the header or footer is not defined, then it and the corresponding separation line is omitted.</p>
+<p>The maximum extension of header and footer is one line above and one line below the centerline of the page, respectively. Otherwise they 
+  are cut at the bottom.</p>
+<p id="StandardEscape">The Print Server inserts information when it finds a '%' character followed by a character as defined in the following 
+  table.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Escape Sequence</th>
+    <th>Information Inserted</th>
+  </tr>
+  <tr>
+    <td>%p</td>
+    <td>Page number</td>
+  </tr>
+  <tr>
+    <td>%Y</td>
+    <td>Year</td>
+  </tr>
+  <tr>
+    <td>%y</td>
+    <td>Year modulo 100</td>
+  </tr>
+  <tr>
+    <td>%m</td>
+    <td>Month</td>
+  </tr>
+  <tr>
+    <td>%d</td>
+    <td>Day of the month</td>
+  </tr>
+  <tr>
+    <td>%H</td>
+    <td>Hour</td>
+  </tr>
+  <tr>
+    <td>%M</td>
+    <td>Minute</td>
+  </tr>
+  <tr>
+    <td>%S</td>
+    <td>Second</td>
+  </tr>
+  <tr>
+    <td>%%</td>
+    <td>Percent sign</td>
+  </tr>
+  <tr>
+    <td>%t</td>
+    <td>Horizontal tab</td>
+  </tr>
+  <tr>
+    <td>%n</td>
+    <td>New line</td>
+  </tr>
+</table>
+<p>The escape sequences (i.e.: %y, %m, %d, %H, %M and %S) are displayed as two digit integers.</p>
+<p>The escape sequence, %t, is expanded to eight times the average character width of the selected <a href="?9#Font">font</a>.</p>
+<p>The time information always refers to the current time as given by the clock of the computer on which the Print Server is running.</p>
+<p>The Print Server allows user to define the following escape characters:</p>
+<ul>
+  <li><a href="?10#EnableEscape">escape character</a></li>
+  <li><a href="?11#EnableEscape">description</a> of the escape character</li>
+  <li><a href="?12#EscapeValue">string replacing</a> the percent sign followed by the escape character in the header and footer</li>
+</ul>
+<p>It is possible to define the replacing string of a user defined escape sequence independently from the escape character and the description.</p>
+<h3 id="PageNumber">Page Number</h3>
+<p>The pages are numbered by consecutive integers. It is possible to <a href="ContinuousPrinting.htm?13#NextPageNumber"> set</a> the first page number to a positive 
+  integer. The current page number is stored in the initialisation file such that numbering continues when the Print Server is restarted.</p>
+<h3 id="Buffering">Buffering</h3>
+<p>The body text is buffered. The text of all clients calling the same instance of the Print Server is stored in the same buffer. Only one instance of Print Server runs at the same time.</p>
+<p>A page consist of 32 lines. Line wrapping is not taken into account when the Print Server decides to print a page. If the buffer contains 30 lines, but five of the lines must be wrapped because they are too long, the page is not printed. As soon as the buffer contains at least 32 lines, the page is printed (any extra text remains in the buffer). A <a href="ContinuousPrinting.htm?14#Flush">flush</a> function enables clients to print the current buffer content, ensuring that no data is lost.</p>
+<h3 id="Printer">Printer</h3>
+<p>Any one of the installed printers can be <a href="ContinuousPrinting.htm?15#Printer2">selected</a>. The selected printer then applies to all subsequently printed pages.</p>
+<h3 id="Graphics">Graphics</h3>
+<p><a href="ContinuousPrinting.htm?16#PrintGraphicFile">Graphics</a> in Enhanced Meta Files and bitmap files are printable. Graphics are printed immediately on a separate page together with header and footer, if given. Printing a graphic does not result in flushing the text buffer.</p>
+<h3 id="Logo">Logo</h3>
+<p>A logo can be <a href="ContinuousPrinting.htm?17#DefineLogo">defined</a> by a bitmap file. The logo is then printed in one corner of each page according to the current setting. It is always printed with a height of about 1.5 cm, thus decreasing the height of the rest of the page.</p>
+<h3 id="Logging">Protocol</h3>
+<p>The Print Server is able to write all of its printed pages into a protocol file in order to be able to re-print a page when it has been lost. A <a href="ContinuousPrinting.htm?18#Protocol"> protocol file</a> can be defined, where the content of each text page printed is then written. The protocol filename is interpreted on the computer where the Print Server is running i.e. drive names have to be defined on this computer. Graphic files do not appear in the protocol file. </p>
+<h3 id="Font">Font</h3>
+<p>The default font is <strong>Courier New</strong>. A different font can be <a href="ContinuousPrinting.htm?19#ChangeFont">defined</a> giving face name and height (in points) of the font as well as indications whether it is bold or italic. The font then applies to header, body and footer. Fonts cannot be 
+  mixed on one page.</p>
+<h3 id="Clipping">Clipping</h3>
+<p>Lines in the header or footer, which are too long to be printed in one line, are clipped. In the body, those lines are either clipped or wrapped. Clients can <a href="ContinuousPrinting.htm?20#Clipping2">select</a> between these options. The selected option then applies to all text printed thereafter. </p>
+<h3 id="TimeOut">Time Out</h3>
+<p>If the Print Server has no connected client for a certain time, it terminates. When the Print Server terminates, it prints the buffer content.  Clients can <a href="ContinuousPrinting.htm?21#TimeOut2">control</a> the duration of the time out.</p>
+<h2 id="Configuring">Configuring the Print Server</h2>
+<p>The Print Server has a dialogue for configuration, which can be <a href="ContinuousPrinting.htm?22#EditConfig">displayed</a> on the computer where the Print Server is running.</p>
+<div class="Container"><span class="container"><img src="images/ConfigDialog.png" alt="Config Dialog"></span></div>
+<p>The following options are displayed in the dialogue:</p>
+<ul>
+  <li>printer</li>
+  <li>next page number</li>
+  <li>time out</li>
+  <li>orientation (landscape or portrait)</li>
+  <li>clipping or wrapping </li>
+  <li>font face name</li>
+  <li>font size</li>
+  <li>font bold property</li>
+  <li>font italic property</li>
+  <li>protocol file</li>
+  <li>bitmap file for logo</li>
+  <li>logo position</li>
+  <li>header</li>
+  <li>footer</li>
+</ul>
+<p>The user can change all displayed options directly (i.e. by typing in the desired value instead of selecting it by an additional dialogue). It is possible to select the font using a font selection dialogue. It is possible to select the protocol file using a file selection dialogue. It is possible to select an existing bitmap file for the logo using a file selection dialogue. All escape sequences for header and footer, including the user defined ones, can be selected from a list which also contains their descriptions.</p>
+<h2 id="Reprinting">Re-printing from Protocol File</h2>
+<p>The Print Server has a dialogue to print pages from protocol files, which can be <a href="ContinuousPrinting.htm?23#PrintProtocol">displayed</a> on the computer where the Print Server is installed. The protocol file can be selected using a file selection dialogue. When the protocol file is selected the available page numbers are displayed. The user can make an arbitrary selection from the available pages and to print them exactly as they have been printed the first time, provided the same printer is available.</p>
+	<div class="Container"><span class="container"><img src="images/ReprintDialog.png" alt="Reprint Dialog"></span></div>
+<h2 id="Installation">Installation of the Print Server</h2>
+<p>The Print Server is installed on the Management Interface computer. All other Windows PCs of the installation execute Print Server functions on the Management Interface PC. The dialogues can only be displayed on the Management Interface Computer.</p>
+<p>Additionally to the <a href="?24#StandardEscape">standard escape characters</a> for header and footer, the following escape characters must be defined when proDAS is installed. The proDAS applications use it to set the correct values for the usage in headers and footers. Similarly, VBS macros have to set the values if they want to use it.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Escape Sequence</th>
+    <th>Information Inserted</th>
+  </tr>
+  <tr>
+    <td>%T</td>
+    <td>Engine type</td>
+  </tr>
+  <tr>
+    <td>%E</td>
+    <td>Engine standard</td>
+  </tr>
+  <tr>
+    <td>%c</td>
+    <td>Test cell</td>
+  </tr>
+  <tr>
+    <td>%C</td>
+    <td>Customer</td>
+  </tr>
+  <tr>
+    <td>%I</td>
+    <td>Configuration Id</td>
+  </tr>
+</table>
+<h2 id="Interfaces">Interfaces</h2>
+<p>This section describes the available interfaces in detail. Two interfaces are available, <a href="?25#InterfaceOutput">IOutput</a> and <a href="?26#InterfaceInteractive">IInteractive</a>.</p>
+<h3 id="InterfaceOutput">IOutput Interface</h3>
+<p>The IOutput interface is directly accessible via the CreateObject method with the program ID <em>PrintServer.Output</em>.</p>
+<h4 id="PrintText">Method Print Text</h4>
+<p>The method Print prints the text contained in Text. The string may consist of an arbitrary number of lines separated by <a href="?27#ControlCharacters">control characters</a>.</p>
+<h4 id="Flush">Method Flush</h4>
+<p>The method Flush prints the content of the buffer, if it is not empty.</p>
+<h4 id="PrintGraphicFile">Method PrintGraphicFile (FileName, Remove)</h4>
+<p>The method PrintGraphicFile prints the graphic contained in the enhanced meta file or bitmap file named by Filename, placing it on a separate page. If Filename is not valid, an error status is returned. The Remove flag decides whether the file is removed after printing.</p>
+<h4 id="PrintProtocolPage">Method PrintProtocolPage (Filename, PageNumber)</h4>
+<p>The method PrintProtocolPage prints the page with number PageNumber contained in the protocol file Filename. The file must have been generated by the Print Server. If Filename is not valid, an error status is returned. If a page with the required number is not contained in the file, nothing is printed. If several pages with the desired number are contained, only the first one is 
+  printed.</p>
+<h4 id="Protocol">Property Protocol</h4>
+<p>The property Protocol denotes the name of the protocol file. An empty string means that no protocol is written. Possible values are valid file names and the empty string with the latter as default.</p>
+<h4 id="ChangeFont">Method ChangeFont (FaceName, Height, Weight, Italic)</h4>
+<p>The method ChangeFont changes the font using the given FaceName, Height in points, Weight as usual in Windows (400 = normal, 700 = bold) and Italic indicating whether an italic font is to be used. This method enables the client to set several properties simultaneously.</p>
+<h4 id="FontFaceName">Property FontFaceName (read only)</h4>
+<p>The property FontFaceName returns the face name of the font set in <a href="?28#ChangeFont"> ChangeFont</a>. Possible values are the face names of the installed fonts with &quot;Courier New&quot; as default.</p>
+<h4 id="FontHeight">Property FontHeight (read only)</h4>
+<p>The property FontHeight returns the height of the font set in <a href="?29#ChangeFont"> ChangeFont</a>. Possible values are positive integers 
+  with 12 as default.</p>
+<h4 id="FontWeight">Property FontWeight (read only)</h4>
+<p>The property FontWeight returns the weight of the font set in <a href="?30#ChangeFont"> ChangeFont</a>. Possible values are positive integers 
+  with 400 as default.</p>
+<h4 id="FontItalic">Property FontItalic (read only)</h4>
+<p>The get property FontItalic returns the italic flag of the font set in <a href="?31#ChangeFont">ChangeFont</a>. Possible values are TRUE and 
+  FALSE where FALSE is the default.</p>
+<h4 id="DefineLogo">Method DefineLogo (Filename, Position)</h4>
+<p>The method DefineLogo defines the bitmap file named Filename, which contains the logo, and the logo position Position with the following valid values:</p>
+<ul>
+  <li>0 = top right</li>
+  <li>1 = top left</li>
+  <li>2 = bottom left</li>
+  <li>3 = bottom right</li>
+</ul>
+<p>The logo is printed with a height of 1.5 cm on each page. This method enables the client to set several properties simultaneously.</p>
+<h4 id="LogoFile">Property LogoFile (read only)</h4>
+<p>The property LogoFile denotes the name of the logo set in <a href="?32#DefineLogo"> DefineLogo</a>. An empty string means that no logo file is defined.</p>
+<h4 id="LogoPosition">Property LogoPosition (read only)</h4>
+<p>The property LogoPosition denotes the position set in <a href="?33#DefineLogo"> DefineLogo</a>.</p>
+<h4 id="Header">Property Header</h4>
+<p>The property Header represents the header as string containing control characters and escape sequences for inserting additional information. 
+  Lines that are too long are clipped. The height of the header must not exceed the height of half a page minus 1 line; otherwise it is clipped. Arbitrary strings are possible with an empty string as default.</p>
+<h4 id="Footer">Property Footer</h4>
+<p>The property Footer represents the footer as string containing control characters and escape sequences for inserting additional information. 
+  Lines that are too long are clipped. The height of the footer must not exceed the height of half a page minus 1 line; otherwise it is clipped. Arbitrary strings are possible with an empty string as default.</p>
+<h4 id="Printer2">Property Printer</h4>
+<p>The property Printer denotes the name of the printer to be used. For a network printer abc on server xyz, this would be \\xyz\ABC For a local 
+  printer it is the name as given in the installation. Possible values are the names of the installed printers and the empty string representing the default printer. The default is the empty string.</p>
+<h4 id="Orientation">Property Orientation</h4>
+<p>The property Orientation denotes the page orientation with the following valid values:</p>
+<ul>
+  <li>1 = Portrait</li>
+  <li>2 = Landscape (default)</li>
+</ul>
+<h4 id="NextPageNumber">Property NextPageNumber</h4>
+<p>The property NextPageNumber denotes the number of the next page printed. Initially, it has the value 1.</p>
+<h4 id="TimeOut2">Property TimeOut</h4>
+<p>The property TimeOut is the time in milliseconds after which the Print Server terminates by flushing its buffer. Possible values are non-negative integers with 5000 as default.</p>
+<h4 id="Clipping2">Property Clipping</h4>
+<p>The property Clipping controls how lines which are too long are treated. If clipping is set, these lines are clipped such that the end of the  line is lost. If it is not set, which is the default, the line is wrapped always writing as many letters in a line as possible. Possible values are TRUE and FALSE with TRUE as default.</p>
+<h4 id="HorzSize">Property HorzSize (read only)</h4>
+<p>The property HorzSize returns the width of the rectangle, where the text, excluding header and footer, is printed on the page, in millimetres 
+  (mm).</p>
+<h4 id="VertSize">Property VertSize (read only)</h4>
+<p>The property VertSize returns the height of the rectangle, where the text, excluding header and footer, is printed on the page, in millimetres  (mm).</p>
+<h4 id="HorzRes">Property HorzRes (read only)</h4>
+<p>The property HorzRes returns the width of the rectangle, where the text, excluding header and footer is printed on the page, in printer pixels.</p>
+<h4 id="VertRes">Property VertRes (read only)</h4>
+<p>The property VertRes returns the height of the rectangle, where the text, excluding header and footer is printed on the page, in printer pixels.</p>
+<h4 id="EnableEscape">Method EnableEscape (Escape, Description)</h4>
+<p>The method EnableEscape defines Escape as escape character (i.e.: if Escape = &quot;c&quot;, then the sequence %c is replaced in the header and footer by the property <a href="?34#EscapeValue">EscapeValue</a> (&quot;c&quot;)). Description is used for display in the <a href="?35#Configuring">configuration dialogue</a>.</p>
+<h4 id="DisableEscape">Method DisableEscape (Escape)</h4>
+<p>The method DisableEscape disables the escape character Escape.</p>
+<h4 id="EscapeValue">Property EscapeValue (Escape)</h4>
+<p>The property EscapeValue returns the string which replaces the escape sequence %c in the header and footer, where Escape = &quot;c&quot;. The default is an empty string.</p>
+<h4 id="Interactive">Property Interactive (read only)</h4>
+<p>The get property Interactive returns an <a href="?36#InterfaceInteractive">Interactive</a> interface.</p>
+<h4 id="Usage">Usage Conditions and Restrictions for the Interface</h4>
+<p>All properties must be set before they apply to the calls of <a href="?37#PrintText">PrintText</a>, <a href="?38#Flush">Flush</a>, <a href="?39#PrintGraphicFile">PrintGraphicFile</a> or <a href="?40#PrintProtocolPage">PrintProtocolPage</a>. This also applies to the properties set by the methods <a href="?41#DefineLogo">DefineLogo</a> and <a href="?42#ChangeFont">ChangeFont</a>. The properties also apply to the buffer content (i.e.: the properties always apply to the whole content of a page).</p>
+<p>File names in the <a href="?43#PrintGraphicFile">PrintGraphicFile</a>, <a href="?44#PrintProtocolPage"> PrintProtocolPage</a> and <a href="?45#DefineLogo">DefineLogo</a> method and in the <a href="?46#Protocol">Protocol</a> and <a href="?47#LogoFile">LogoFile</a> properties are interpreted as file names on the computer where the Print Server is running (i.e.: drive names must be defined on this computer).</p>
+<p>The properties <a href="?48#HorzRes">HorzRes</a>, <a href="?49#VertRes">VertRes</a>, <a href="?50#HorzSize">HorzSize</a> and <a href="?51#VertSize">VertSize</a> are only defined if the <a href="?52#Printer">Printer</a> property is set to a valid printer, including an empty string for the default printer.</p>
+<h3 id="InterfaceInteractive">Interactive Interface</h3>
+<h4 id="EditConfig">Method EditConfig</h4>
+<p>The method EditConfig displays the <a href="?53#Configuring">configuration dialogue</a>.</p>
+<h4 id="PrintProtocol">Method PrintProtocol (Filename)</h4>
+<p>The method PrintProtocol displays the <a href="?54#Reprinting">reprint dialogue</a> with Filename as default name for the file containing the pages to be re-printed. If Filename is not valid, an error status is returned.</p>
+<h4 id="Usage2">Usage Conditions and Restrictions</h4>
+<p>The interface can only be used on the computer where the Print Server is running.</p>
+<h2 id="Examples">VBS Examples</h2>
+<p>This section contains a number of examples which demonstrate the complete interface supplied by the Print Server. They may be copied to a  file with extension .VBS and may be executed on a computer where the Print Server is installed.</p>
+<p>To fully understand these examples, some familiarity with VBS is necessary. These examples can also be used as starting points for your own 
+  macros.</p>
+<h3 id="MinimumExample">Minimum Example</h3>
+<p><tt>' Establish the connection to the Print Server.</tt><br>
+  <tt>Set app = CreateObject (&quot;PrintServer.Output&quot;)</tt></p>
+<p><tt>' Print some text</tt><br>
+  <tt>app.Print &quot;This is some example text.&quot;</tt></p>
+<h3 id="ChangeLayout">Changing the Layout and Printing Text</h3>
+<p><tt>' Layout properties to be set</tt></p>
+<p><tt>Protocol = &quot;Protocol.txt&quot;</tt></p>
+<p><tt>FontFaceName = &quot;Arial&quot;</tt><br>
+  <tt>FontHeight = 12</tt><br>
+  <tt>FontWeight = 300</tt><br>
+  <tt>FontItalic = true</tt></p>
+<p><tt>logoTopRight&nbsp;&nbsp;&nbsp; = 0</tt><br>
+  <tt>logoTopLeft&nbsp;&nbsp;&nbsp;&nbsp; = 1</tt><br>
+  <tt>logoBottomLeft&nbsp; = 2</tt><br>
+  <tt>logoBottomRight = 3</tt><br>
+  <tt>LogoFile = &quot;Logo.bmp&quot;</tt><br>
+  <tt>LogoPosition = logoTopLeft</tt></p>
+<p><tt>Header = &quot;Header of page %p%nsecond header line:&quot;</tt><br>
+  <tt>for i = 1 to 20</tt><br>
+  <tt>&nbsp;&nbsp; Header = Header &amp; &quot;0123456789&quot;</tt><br>
+  <tt>next</tt><br>
+  <tt>Footer = &quot;footer of page %p%tday:%Y-%m-%d%ttime:%H:%M:%S%tpercent sign:%%&quot;</tt></p>
+<p><tt>Printer = &quot;&quot;</tt></p>
+<p><tt>const oPortrait = 1</tt><br>
+  <tt>const oLandscape = 2</tt><br>
+  <tt>Orientation = oPortrait</tt></p>
+<p><tt>Clipping = false</tt></p>
+<p><tt>NextPageNumber = 77</tt><br>
+  <tt>'--------------------------------------------------------</tt><br>
+  <tt>' Determine the working directory</tt></p>
+<p><tt>Set WshShell = WScript.CreateObject(&quot;WScript.Shell&quot;)</tt> <br>
+  <tt>length = Len (WSCript.ScriptFullName) - Len (WSCript.ScriptName)</tt><br>
+  <tt>WorkDir = Left (WSCript.ScriptFullName, length)</tt> <br>
+  <tt>Set fs = CreateObject (&quot;Scripting.FileSystemObject&quot;)</tt><br>
+  <tt>DriveName = fs.GetDriveName (WorkDir)</tt><br>
+  <tt>Set drv = fs.GetDrive (DriveName)</tt><br>
+  <tt>if drv.ShareName &lt;&gt; &quot;&quot; then</tt><br>
+  <tt>&nbsp;&nbsp; WorkDir = drv.ShareName &amp; Mid (WorkDir, LEN (DriveName) + 1)</tt><br>
+  <tt>end if</tt><br>
+  <tt>'--------------------------------------------------------</tt><br>
+  <tt>' Establish the connection to the Print Server.</tt><br>
+  <tt>Set app = CreateObject (&quot;PrintServer.Output&quot;)</tt></p>
+<p><tt>' Print some text with the previous settings.</tt><br>
+  <tt>PrintText</tt></p>
+<p><tt>' Set the properties.</tt><br>
+  <tt>SetProperties</tt></p>
+<p><tt>' Print some text with the new settings.</tt><br>
+  <tt>PrintText</tt></p>
+<p><tt>' Display the properties used for printing to the user.</tt><br>
+  <tt>MsgBox &quot;A page has been printed with the following properties:&quot; &amp; vbLf &amp; _</tt><br>
+  <tt>&nbsp;&nbsp; &quot;Protocol= &quot; &amp; Protocol &amp; vbLf &amp; _</tt><br>
+  <tt>&nbsp;&nbsp; &quot;FontFaceName= &quot; &amp; FontFaceName &amp; vbLf &amp; _</tt><br>
+  <tt>&nbsp;&nbsp; &quot;FontHeight= &quot; &amp; FontHeight &amp; vbLf &amp; _</tt><br>
+  <tt>&nbsp;&nbsp; &quot;FontWeight= &quot; &amp; FontWeight &amp; vbLf &amp; _</tt><br>
+  <tt>&nbsp;&nbsp; &quot;FontItalic= &quot; &amp; FontItalic &amp; vbLf &amp; _</tt><br>
+  <tt>&nbsp;&nbsp; &quot;LogoFile= &quot; &amp; LogoFile &amp; vbLf &amp; _</tt><br>
+  <tt>&nbsp;&nbsp; &quot;LogoPosition= &quot; &amp; LogoPosition &amp; vbLf &amp; _</tt><br>
+  <tt>&nbsp;&nbsp; &quot;Header= &quot; &amp; Header &amp; vbLf &amp; _</tt><br>
+  <tt>&nbsp;&nbsp; &quot;Footer= &quot; &amp; Footer &amp; vbLf &amp; _</tt><br>
+  <tt>&nbsp;&nbsp; &quot;Printer= &quot; &amp; Printer &amp; vbLf &amp; _</tt><br>
+  <tt>&nbsp;&nbsp; &quot;Orientation= &quot; &amp; Orientation &amp; vbLf &amp; _</tt><br>
+  <tt>&nbsp;&nbsp; &quot;Clipping= &quot; &amp; Clipping &amp; vbLf &amp; _</tt><br>
+  <tt>&nbsp;&nbsp; &quot;NextPageNumber= &quot; &amp; NextPageNumber</tt><br>
+  <tt>'--------------------------------------------------------</tt><br>
+  <tt>sub SetProperties</tt><br>
+  <tt>&nbsp;&nbsp; app.Protocol = WorkDir &amp; Protocol</tt><br>
+  <tt>&nbsp;&nbsp; if app.Protocol &lt;&gt; WorkDir &amp; Protocol then</tt><br>
+  <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MsgBox &quot;Protocol file could not be set.&quot;</tt><br>
+  <tt>&nbsp;&nbsp; end if</tt></p>
+<p><tt>&nbsp;&nbsp; app.DefineLogo WorkDir &amp; LogoFile, LogoPosition</tt><br>
+  <tt>&nbsp;&nbsp; if app.LogoFile &lt;&gt; WorkDir &amp; LogoFile or app.LogoPosition &lt;&gt; LogoPosition then</tt><br>
+  <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MsgBox &quot;Logo could not be set.&quot;</tt><br>
+  <tt>&nbsp;&nbsp; End if</tt></p>
+<p><tt>&nbsp;&nbsp; app.Header = Header</tt><br>
+  <tt>&nbsp;&nbsp; if app.Header &lt;&gt; Header then</tt><br>
+  <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MsgBox &quot;Header could not be set.&quot;</tt><br>
+  <tt>&nbsp;&nbsp; End if</tt></p>
+<p><tt>&nbsp;&nbsp; app.Footer = Footer</tt><br>
+  <tt>&nbsp;&nbsp; if app.Footer &lt;&gt; Footer then</tt><br>
+  <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MsgBox &quot;Footer could not be set.&quot;</tt> <br>
+  <tt>&nbsp;&nbsp; End if</tt></p>
+<p><tt>&nbsp;&nbsp; app.Printer = Printer</tt><br>
+  <tt>&nbsp;&nbsp; if app.Printer &lt;&gt; Printer then</tt><br>
+  <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MsgBox &quot;Printer could not be set.&quot;</tt><br>
+  <tt>&nbsp;&nbsp; End if</tt></p>
+<p><tt>&nbsp;&nbsp; app.Orientation = Orientation</tt><br>
+  <tt>&nbsp;&nbsp; if app.Orientation &lt;&gt; Orientation then</tt><br>
+  <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MsgBox &quot;Orientation could not be set.&quot;</tt><br>
+  <tt>&nbsp;&nbsp; End if</tt></p>
+<p><tt>&nbsp;&nbsp; app.Clipping = Clipping</tt><br>
+  <tt>&nbsp;&nbsp; if BoolUnequal (app.Clipping, Clipping) then</tt><br>
+  <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MsgBox &quot;Clipping could not be set.&quot;</tt><br>
+  <tt>&nbsp;&nbsp; End if</tt></p>
+<p><tt>&nbsp;&nbsp; app.NextPageNumber = NextPageNumber<br>
+  </tt><tt>if app.NextPageNumber &lt;&gt; NextPageNumber then</tt><br>
+  <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MsgBox &quot;NextPageNumber could not be set.&quot;</tt><br>
+  <tt>&nbsp;&nbsp; End if</tt></p>
+<p><tt>&nbsp;&nbsp; app.ChangeFont FontFaceName, FontHeight, FontWeight, FontItalic</tt><br>
+  <tt>&nbsp;&nbsp; if app.FontFaceName &lt;&gt; FontFaceName or app.FontHeight &lt;&gt; FontHeight or _</tt><br>
+  <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; app.FontHeight &lt;&gt; FontHeight or BoolUnequal (app.FontItalic, FontItalic) then</tt><br>
+  <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MsgBox &quot;Font could not be set.&quot;</tt><br>
+  <tt>&nbsp;&nbsp; End if</tt><br>
+  <tt>end sub</tt><br>
+  <tt>'--------------------------------------------------------</tt><br>
+  <tt>sub PrintText</tt> <br>
+  <tt>&nbsp;&nbsp; fill = String (120, &quot;*&quot;)</tt><br>
+  <tt>&nbsp;&nbsp; dim text</tt><br>
+  <tt>&nbsp;&nbsp; for i = 1 to 10</tt><br>
+  <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; text = text &amp; fill &amp; &quot; Zeile &quot; &amp; i &amp; vbLf</tt><br>
+  <tt>&nbsp;&nbsp; next</tt><br>
+  <tt>&nbsp;&nbsp; app.Print text</tt><br>
+  <tt>&nbsp;&nbsp; app.Flush</tt><br>
+  <tt>end sub</tt><br>
+  <tt>'--------------------------------------------------------</tt><br>
+  <tt>Function BoolUnequal (a, b)</tt><br>
+  <tt>&nbsp;&nbsp; BoolUnequal = (a = false and b &lt;&gt; false) or (a &lt;&gt; false and b = false)</tt><br>
+  <tt>end function</tt></p>
+<h3 id="PrintGraphic">Printing Graphics</h3>
+<p><tt>' Graphics files to be printed</tt> <br>
+  <tt>GraphicBitmap = &quot;Logo.bmp&quot;</tt><br>
+  <tt>GraphicEmf = &quot;Diagram.emf&quot;</tt><br>
+  <tt>'--------------------------------------------------------</tt><br>
+  <tt>' Determine the working directory</tt></p>
+<p><tt>Set WshShell = WScript.CreateObject(&quot;WScript.Shell&quot;)</tt><br>
+  <tt>length = Len (WScript.ScriptFullName) - Len (WSCript.ScriptName)</tt><br>
+  <tt>WorkDir = Left (WScript.ScriptFullName, length)</tt><br>
+  <tt>Set Fs = CreateObject (&quot;Scripting.FileSystemObject&quot;)</tt><br>
+  <tt>DriveName = fs.GetDriveName (WorkDir)</tt><br>
+  <tt>Set drv = fs.GetDrive (DriveName)</tt><br>
+  <tt>if drv.ShareName &lt;&gt; &quot;&quot; then</tt><br>
+  <tt>&nbsp;&nbsp; WorkDir = drv.ShareName &amp; Mid (WorkDir, LEN (DriveName) + 1)</tt><br>
+  <tt>end if</tt><br>
+  <tt>'--------------------------------------------------------</tt><br>
+  <tt>' Establish the connection to the Print Server.</tt><br>
+  <tt>Set app = CreateObject (&quot;PrintServer.Output&quot;)</tt></p>
+<p><tt>' Set header and footer.</tt><br>
+  <tt>app.Header = &quot;Header&quot;</tt><br>
+  <tt>app.Footer = &quot;Footer&quot;</tt></p>
+<p><tt>' Put some text into the buffer.</tt><br>
+  <tt>app.Print &quot;Line 1&quot; &amp; vbLf &amp; &quot;Line 2&quot;</tt></p>
+<p><tt>' Print the bitmap file without deleting it.</tt><br>
+  <tt>app.PrintGraphicFile WorkDir &amp; GraphicBitmap, false</tt><br>
+  <tt>MsgBox &quot;The bitmap file &quot; &amp; GraphicBitmap &amp; &quot; has been printed.&quot;</tt></p>
+<p><tt>' Make a copy of the emf file.</tt><br>
+  <tt>GraphicEmfCopy = &quot;Copy of &quot; &amp; GraphicEmf</tt><br>
+  <tt>if fs.FileExists (WorkDir &amp; GraphicEmfCopy) then</tt><br>
+  <tt>&nbsp;&nbsp; fs.DeleteFile WorkDir &amp; GraphicEmfCopy, true</tt><br>
+  <tt>end if</tt><br>
+  <tt>fs.CopyFile WorkDir &amp; GraphicEmf, WorkDir &amp; GraphicEmfCopy</tt></p>
+<p><tt>' Remove a possible read-only attribute.</tt><br>
+  <tt>Set file = fs.GetFile (WorkDir &amp; GraphicEmfCopy)</tt><br>
+  <tt>if file.Attributes and 1 then</tt><br>
+  <tt>&nbsp;&nbsp; file.Attributes = file.Attributes - 1</tt><br>
+  <tt>end if</tt></p>
+<p><tt>' Print the copy of the emf file while deleting it.</tt><br>
+  <tt>app.PrintGraphicFile WorkDir &amp; GraphicEmfCopy, true</tt><br>
+  <tt>MsgBox &quot;A copy of the emf file &quot; &amp; GraphicEmf &amp; &quot; has been printed.&quot;</tt></p>
+<p><tt>' The text will be printed now.</tt></p>
+<h3 id="SwitchHeaderFooter">Switching Header and Footer On and Off</h3>
+<p><tt>' Establish the connection to the Print Server.</tt><br>
+  <tt>Set app = CreateObject (&quot;PrintServer.Output&quot;)</tt></p>
+<p><tt>app.header = &quot;&quot;</tt><br>
+  <tt>app.footer = &quot;&quot;</tt></p>
+<p><tt>app.Print &quot;Page without header and footer.&quot;</tt><br>
+  <tt>app.Flush</tt></p>
+<p><tt>MsgBox &quot;Page without header and footer has been printed.&quot;</tt></p>
+<p><tt>app.header = &quot;header&quot;</tt><br>
+  <tt>app.footer = &quot;footer&quot;</tt></p>
+<p><tt>app.Print &quot;Page with header and footer.&quot;</tt><br>
+  <tt>app.Flush</tt> <br>
+  <tt>app.Print &quot;Page with header and footer.&quot;</tt><br>
+  <tt>app.Flush</tt></p>
+<p><tt>MsgBox &quot;2 Pages with header and footer have been printed.&quot;</tt></p>
+<h3 id="ShowPrinterSizeResolution">Showing Printer Size and Resolution</h3>
+<p><tt>' Establish the connection to the Print Server.</tt><br>
+  <tt>Set app = CreateObject (&quot;PrintServer.Output&quot;)</tt></p>
+<p><tt>MsgBox &quot;Size of the text body:&quot; &amp; vbLf &amp; vbLf &amp;&nbsp;  _</tt><br>
+  <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;Horizontal = &quot; &amp; app.HorzSize 
+    &amp; &quot; mm = &quot; &amp; app.HorzRes &amp; &quot; Pixel&quot; &amp; vbLf &amp; _</tt><br>
+  <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;Vertical = &quot; &amp; app.VertSize &amp; &quot; mm = &quot; &amp; app.VertRes &amp; &quot; Pixel&quot;</tt></p>
+<h3 id="UseControlChar">Using Control Characters</h3>
+<p><tt>' Establish the connection to the Print Server.</tt><br>
+  <tt>Set app = CreateObject (&quot;PrintServer.Output&quot;)</tt></p>
+<p><tt>app.Print &quot;Line 1&quot; &amp; vbLf &amp; &quot;Line 2&quot; &amp; vbCr &amp; &quot;Line 3&quot; &amp; vbCrLf &amp; &quot;Line 4&quot; &amp; vbFormFeed &amp; &quot;Line 5&quot;</tt><br>
+  <tt>app.Flush</tt></p>
+<h3 id="UseEscapeSeq">Using Escape Sequences</h3>
+<p><tt>EngineType&nbsp;&nbsp;&nbsp;&nbsp; = &quot;RB199&quot;</tt><br>
+  <tt>EngineStandard = &quot;MK103&quot;</tt><br>
+  <tt>SerialNumber&nbsp;&nbsp; = &quot;12345&quot;</tt><br>
+  <tt>Build&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = &quot;xyz&quot;</tt> <br>
+  <tt>TestCell&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = &quot;MTU-M-15&quot;</tt></p>
+<p><tt>' Establish the connection to the Print Server.</tt><br>
+  <tt>Set app = CreateObject (&quot;PrintServer.Output&quot;)</tt></p>
+<p><tt>app.EnableEscape &quot;T&quot;, &quot;Engine Type&quot;</tt><br>
+  <tt>app.EnableEscape &quot;E&quot;, &quot;Engine Standard&quot;</tt><br>
+  <tt>app.EnableEscape &quot;s&quot;, &quot;Serial Number&quot;</tt><br>
+  <tt>app.EnableEscape &quot;b&quot;, &quot;Build&quot;</tt><br>
+  <tt>app.EnableEscape &quot;c&quot;, &quot;Test Cell&quot;</tt></p>
+<p><tt>app.EscapeValue (&quot;T&quot;) = EngineType</tt><br>
+</p>
+<tt>app.EscapeValue (&quot;E&quot;) = EngineStandard</tt><br>
+<tt>app.EscapeValue (&quot;s&quot;) = SerialNumber</tt><br>
+<tt>app.EscapeValue (&quot;b&quot;) = Build</tt><br>
+<tt>app.EscapeValue (&quot;c&quot;) = TestCell</tt>
+<p><tt>app.header = &quot;Engine Type %T%tEngine Standard %E%tSerial Number 
+  %s%tBuild %b%tTest Cell %c&quot;</tt><br>
+  <tt>app.footer = app.header</tt><br>
+  &nbsp;</p>
+<p><tt>app.Print (&quot;Test of user defined escape.&quot;)</tt><br>
+  <tt>app.Flush</tt></p>
+<p><tt>MsgBox &quot;User defined escape sequences:&quot; &amp; vbLf &amp; _</tt> <br>
+  <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;EngineType= &quot; &amp; EngineType &amp; vbLf &amp; _</tt><br>
+  <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;Engine Standard= &quot; &amp; EngineStandard &amp; vbLf &amp; _</tt><br>
+  <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;Serial Number= &quot; &amp; SerialNumber &amp; vbLf &amp; _</tt><br>
+  <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;Build= &quot; &amp; Build &amp; vbLf &amp; _</tt><br>
+  <tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &quot;Test Cell= &quot; &amp; TestCell</tt></p>
+<h3 id="Buffer">Buffering</h3>
+<p><tt>' Establish the connection to the Print Server.</tt><br>
+  <tt>Set app = CreateObject (&quot;PrintServer.Output&quot;)</tt><tt></tt></p>
+<p><tt>' Set a short time out.</tt><br>
+</p>
+<tt>app.TimeOut = 100</tt><tt></tt>
+<p><tt>' Set header and footer.</tt><br>
+</p>
+<tt>app.Header = &quot;header page %p&quot;</tt><br>
+<tt>app.Footer = &quot;footer page %p&quot;</tt><tt></tt>
+<p><tt>' Print a short text.</tt><br>
+</p>
+<tt>app.Print &quot;Line 1&quot; &amp; vbLf &amp; &quot;Line 2&quot;</tt><tt></tt>
+<p><tt>MsgBox &quot;Text in buffer. No printing.&quot;</tt><tt></tt></p>
+<p><tt>app.Flush</tt><tt></tt></p>
+<p><tt>MsgBox &quot;Text printed.&quot;</tt><tt></tt></p>
+<p><tt>' Print a short text.</tt><br>
+  <tt>app.Print &quot;Line 1&quot; &amp; vbLf &amp; &quot;Line 2&quot;</tt><tt></tt></p>
+<p><tt>MsgBox &quot;Text in buffer. No printing.&quot;</tt><tt></tt></p>
+<p><tt>app = NULL</tt><tt></tt></p>
+<p><tt>MsgBox &quot;Connection released. Text automatically printed.&quot;</tt><tt></tt></p>
+<p><tt>' Establish the connection to the Print Server.</tt><br>
+  <tt>Set app = CreateObject (&quot;PrintServer.Output&quot;)</tt><tt></tt></p>
+<p><tt>' Print a short text.</tt><br>
+  <tt>app.Print &quot;Line 1&quot; &amp; vbLf &amp; &quot;Line 2&quot;</tt><br>
+  <tt>app.Flush</tt><br>
+  <tt>MsgBox &quot;Page printed.&quot;</tt></p>
+<h3 id="ControlTimeout">Controlling the Time Out</h3>
+<p><tt>TimeOut = 10000</tt></p>
+<p><tt>' Establish the connection to the Print Server.</tt><br>
+  <tt>Set app = CreateObject (&quot;PrintServer.Output&quot;)</tt></p>
+<p><tt>' Set the time out.</tt><br>
+  <tt>app.TimeOut = TimeOut</tt></p>
+<p><tt>MsgBox &quot;Print server is started.&quot;</tt></p>
+<p><tt>App = NULL</tt></p>
+<p><tt>MsgBox TimeOut / 1000.0 &amp; &quot; seconds to terminate.&quot;</tt></p>
+<h3 id="Reprint">Reprinting Protocol Pages</h3>
+<p><tt>' Protocol file</tt><br>
+  <tt>Prot = &quot;Protocol.txt&quot;</tt><br>
+  <tt>'--------------------------------------------------------</tt><br>
+  <tt>' Determine the working directory</tt></p>
+<p><tt>Set WshShell = WScript.CreateObject(&quot;WScript.Shell&quot;)</tt> <br>
+  <tt>length = Len (WSCript.ScriptFullName) - Len (WSCript.ScriptName)</tt><br>
+  <tt>WorkDir = Left (WSCript.ScriptFullName, length)</tt><br>
+  <tt>Set Fs = CreateObject (&quot;Scripting.FileSystemObject&quot;)</tt><br>
+  <tt>DriveName = fs.GetDriveName (WorkDir)</tt><br>
+  <tt>Set drv = fs.GetDrive (DriveName)</tt><br>
+  <tt>if drv.ShareName &lt;&gt; &quot;&quot; then</tt><br>
+  <tt>&nbsp;&nbsp; WorkDir = drv.ShareName &amp; Mid (WorkDir, LEN (DriveName) + 1)</tt><br>
+  <tt>end if</tt><br>
+  <tt>'--------------------------------------------------------</tt><br>
+  <tt>' Tell the user to check the protocol file.</tt> <br>
+  <tt>MsgBox &quot;Check protocol &quot; &amp; WorkDir &amp; Prot</tt><br>
+  <tt>'--------------------------------------------------------</tt><br>
+  <tt>' Make a copy of the protocol file.</tt><br>
+  <tt>ProtCopy = &quot;Copy of &quot; &amp; Prot</tt><br>
+  <tt>Set file = fs.GetFile (Prot)</tt><br>
+  <tt>file.Copy (WorkDir &amp; ProtCopy)</tt><br>
+  <tt>'--------------------------------------------------------</tt><br>
+  <tt>' Establish the connection to the server.</tt><br>
+  <tt>Set app = CreateObject (&quot;PrintServer.Output&quot;)</tt></p>
+<p><tt>' Reprint a page.</tt><br>
+  <tt>PageNumber = InputBox (&quot;Page to be printed&quot;, &quot;Reprint&quot;, 77)</tt><br>
+  <tt>if PageNumber &lt;&gt; &quot;&quot; then</tt><br>
+  <tt>&nbsp;&nbsp; app.PrintProtocolPage WorkDir &amp; ProtCopy, PageNumber</tt> <br>
+  <tt>end if</tt><br>
+  <tt>'--------------------------------------------------------</tt><br>
+  <tt>' Delete the file copy.</tt><br>
+  <tt>Set file = fs.GetFile (ProtCopy)</tt><br>
+  <tt>file.Delete</tt></p>
+<h3 id="CallConfigDialogue">Calling the Configuration Dialogue</h3>
+<p><tt>' Establish the connection to the server.</tt><br>
+  <tt>Set app = CreateObject (&quot;PrintServer.Output&quot;)</tt></p>
+<p><tt>' Define an escape sequence.</tt><br>
+  <tt>app.EnableEscape &quot;x&quot;, &quot;MyEscapeSequence&quot;</tt><br>
+  <tt>app.EscapeValue (&quot;x&quot;) = &quot;MyEscapeValue&quot;<br>
+  </tt><tt>' Create an Interactive interface.</tt><br>
+  <tt>Set interact = app.Interactive</tt></p>
+<p><tt>'Edit the properties of interface output.</tt><br>
+  <tt>interact.EditConfig</tt></p>
+<p><tt>' Print a test page.</tt><br>
+  <tt>app.Print &quot;Test page&quot;</tt></p>
+<h3 id="CallReprintDialogue">Calling the Reprint Dialogue</h3>
+<p><tt>' Protocol file</tt><br>
+  <tt>Prot = &quot;Protocol.txt&quot;</tt><br>
+  <tt>'--------------------------------------------------------</tt><br>
+  <tt>' Determine the working directory</tt></p>
+<p><tt>Set WshShell = WScript.CreateObject(&quot;WScript.Shell&quot;)</tt><br>
+  <tt>length = Len (WSCript.ScriptFullName) - Len (WSCript.ScriptName)</tt><br>
+  <tt>WorkDir = Left (WSCript.ScriptFullName, length)</tt><br>
+  <tt>Set Fs = CreateObject (&quot;Scripting.FileSystemObject&quot;)</tt><br>
+  <tt>DriveName = fs.GetDriveName (WorkDir)</tt><br>
+  <tt>Set drv = fs.GetDrive (DriveName)</tt><br>
+  <tt>if drv.ShareName &lt;&gt; &quot;&quot; then</tt><br>
+  <tt>&nbsp;&nbsp; WorkDir = drv.ShareName &amp; Mid (WorkDir, LEN (DriveName) + 1)</tt><br>
+  <tt>end if</tt><br>
+  <tt>'--------------------------------------------------------</tt><br>
+  <tt>' Establish the connection to the server.</tt><br>
+  <tt>Set app = CreateObject (&quot;PrintServer.Output&quot;)</tt></p>
+<p><tt>' Disable protocolling because the above file could be set.</tt><br>
+  <tt>app.Protocol = &quot;&quot;</tt></p>
+<p><tt>' Create an Interactive interface</tt><br>
+  <tt>Set interact = app.Interactive</tt></p>
+<p><tt>' Let the user reprint pages.</tt><br>
+  <tt>interact.PrintProtocol WorkDir &amp; Prot</tt><br>
+  <tt>'--------------------------------------------------------</tt><br>
+  <tt>' Call the dialogue without a file selected.</tt><br>
+  <tt>interact.PrintProtocol &quot;&quot;</tt></p>
+<h2 id="Trouble">Troubleshooting</h2>
+<h3 id="TroublePrintServer">Print Server Object Cannot be Created</h3>
+<ol>
+  <li>Check if the program ID PrintServer.Outputis spelled correctly.</li>
+  <li>Install the Print Server again:
+    <ul>
+      <li>on the Management Interface Computer run the Print Server with argument /Register.</li>
+      <li>on any other computer run the Print Server with argument /Register= &lt;name of the management interface computer.</li>
+    </ul>
+  </li>
+  <li>Copy the <a href="ContinuousPrinting.htm?55#MinimumExample">minimum example</a> into a VBS file and execute it to verify correct installation.</li>
+</ol>
+<h3 id="TroubleNoPages">No Pages Are Printed</h3>
+<ol>
+  <li>Check if the correct <a href="ContinuousPrinting.htm?56#Printer">printer</a> is defined.</li>
+  ?56#Printer
+  <li>Execute the <a href="ContinuousPrinting.htm?57#Flush">flush</a> method to force the buffer to be printed.</li>
+  <li>Make sure valid <a href="ContinuousPrinting.htm?58#Protocol">protocol</a> and <a href="ContinuousPrinting.htm?59#LogoFile">logo</a> files are defined (incorrect file names could cause an unsuccessful file access).</li>
+  <li>Check if a large graphic is about to be printed as this can take some time with simple printers.</li>
+</ol>
+<h3 id="TroubleBusyDialogue">A Dialogue Indicating a Busy Print Server is Displayed</h3>
+<p>This may be the case if several graphics are printed quickly after each other.</p>
+<ol>
+  <li>Push the continue button of the dialogue.</li>
+</ol>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

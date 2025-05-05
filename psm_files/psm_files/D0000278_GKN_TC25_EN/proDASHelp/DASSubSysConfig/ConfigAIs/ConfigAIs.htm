@@ -1,0 +1,1387 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Configuring Analog and Frequency Input Signals</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="ConfigAnalogFreqInputSignals">Configuring Analogue and Frequency Input Signals (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The proDAS General Analogue Subsystem VME Extended for Instrumentation (GASSVXI), GASS Analogue Input (GASSAI) and GASS Totalizer Counter (GASSTC) Subsystem communicates with the VXI chassis which provides Analogue and Frequency Input signals. In addition the GASS VXI Subsystem includes provisions for Digital I/O. Each of these subsystems is described below.</p>
+<p>Configuring the subsystem hardware using the Subsystem Editor is identical for all ;GASS subsystems, only the selection of Cards and SCPs available for each subsystem differ.</p>
+<p>The channel configuration for each subsystem is also identical, only the channel attributes differ between an analogue input channel and a frequency input channel.</p>
+<p>The following subsystems are described below:</p>
+<ul>
+  <li>GASSVXI</li>
+  <li>GASSAI</li>
+  <li>GASSTC</li>
+</ul>
+<h2 id="GASSVXI">GASS VXI Subsystem</h2>
+<p>The General Analogue Subsystem VME Extended for Instrumentation (GASSVXI) hardware comprises one or more VXI cards. Each GASS VXI card can have up to eight Signal Conditioning Plug-on (SCP) modules attached. Each SCP contains eight channels. The channels are numbered from 0 to 63 with channels 0 to 7 on one SCP, channels 8 to 15 on another SCP, and so on. The SCPs currently being used are:</p>
+<ul>
+  <li>VXI Technologies VT1501A Eight-Channel Direct Input SCP</li>
+  <li>VXI Technologies VT1502A Fixed-Gain Low-Pass Filter SCP</li>
+  <li>VXI Technologies VT1503A Eight-Channel Programmable Filter Input SCP</li>
+  <li>VXI Technologies VT1505A Eight-Channel Current Source SCP</li>
+  <li>VXI Technologies VT1508A Eight-Channel Fixed Filter and Amplifier SCP</li>
+  <li>VXI Technologies VT1509A Eight-Channel Fixed Filter and Amplifier SCP</li>
+  <li>VXI Technologies VT1512A Eight-Channel Low Pass Filter SCP</li>
+  <li>VXI Technologies VT1536A Isolated 8-bit Digital I/O SCP</li>
+  <li>VXI Technologies VT1538A Enhanced Frequency/Totalize/PWM SCP</li>
+</ul>
+<h3 id="Operation">Operation</h3>
+<p>The GASSVXI Subsystem communicates with the VXI chassis which provides Analogue and Frequency Input signals. The GASSVXI Subsystem can be replaced by the GASSAI and/or the GASSTC, but the driver allows control of both analogue and frequency modules on the same cards.</p>
+<h3 id="ConfigAnalogFreqInputChannel">Configuring a VXI Channel</h3>
+<p>To configure a VXI Channel:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described 
+    in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</li>
+  <li>Select the name of the Analogue Input Subsystem from the list of available subsystems.
+    <div class="Container"><img src="images/SelectSubsystemName.PNG" alt="SelectSubsystemName" width="387" height="317"></div>
+  </li>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a><a href="../ConfigEditors/ConfigEditors.htm#GenCol"></a>.</li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.</li>
+  <li>Set the <strong>Pinout</strong> column or, the <strong>Chassis</strong>, <strong>Slot</strong> and <strong>Channel Number</strong> columns, for both <a href="?2#ConfigAnalogInputChannel">Analogue Input</a>, <a href="?3#ConfigFrequencyInputChannel"> Frequency Input</a> and <a href="?35#ConfigDIOChannel">Discrete Input/Output</a> channels.
+    <p class="Note">Each pinout uniquely describes a chassis, slot and card number.</p>
+    <div class="Container"><img src="images/ChannelEditor.png" alt="ChannelEditor" width="700" height="424"></div>
+  </li>
+  <li>If available, set the <strong>Gain</strong> column.</li>
+  <li>If available, set the <strong>Range</strong> column.</li>
+  <p class="Note">The range is based on the input of the sensor, not the output.</p>
+  <li>Enter Calibration Sensor information in the Generic Columns.</li>
+  <li>If desired, define a fixed sensor.</li>
+  <li>Define a Calibration Group.</li>
+  <li>If desired, set <strong>OTD On</strong>.</li>
+  <li>If available, set the <strong>Input</strong> column to reflect the desired input frequency of the SCP.</li>
+  <li>If a thermocouple channel is required, set the <strong> Reference RTD</strong> column to the name of the reference RTD channel.</li>
+</ol>
+<h4 id="ConfigDIOChannel">Configuring a Digital Input/Output Channel</h4>
+<p>To configure a Digital Input/Output Channel:</p>
+<ol>
+  <li>Set the <strong>Polarity</strong> to either Positive or Negative.</li>
+  <li>Set the <strong>Debounce</strong> time of the switch.</li>
+</ol>
+<h3 id="ConfigFileStructure">VXI Configuration File Structure</h3>
+<p>Channel configuration information (e.g. hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text 
+  file.</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu"> Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import a <strong>GASSVXI</strong> channel, see <a href="?10#XMLFileStructureVXI"> XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import TAB-delimited in the Channel Editor module</a><a href="../ChannelEditor/ChannelEditor.htm"></a>. For detailed tab-delimited file structure information required to import a <strong>GASSVXI</strong> channel, see<a href="?11#TabDelimitFileStructure">Tab-Delimited File Structure</a>.</p>
+<h4 id="XMLFileStructureVXI">XML File Structure</h4>
+<p id="ChannelsXML"><strong>Channels</strong></p>
+<p>The channels are stored in files Channels.xml in the configuration directories.</p>
+<p>A VXI Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor 
+- Generic Channel Parameters - XML File Structure</a><a href="../ChannelEditor/ChannelEditor.htm"></a>, and the specific attributes <strong>Chassis</strong>, <strong>Slot</strong>, <strong>ChannelNumber</strong>, <strong>Type</strong>, <strong>Gain</strong>, <strong>Range</strong>, <strong>IsOTDOn</strong>, <strong>InputFreq</strong>, <strong>Polarity</strong>, <strong>Threshold</strong>, <strong>MinFrequency</strong>, <strong>Duration</strong>, <strong>Reference RTD </strong>and <strong>Debounce</strong>. These attributes are explained in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Chassis</td>
+    <td>Chassis</td>
+    <td>CHASSIS</td>
+    <td>The VXI Chassis number</td>
+    <td>Integer</td>
+    <td>1, 2 or 3 </td>
+  </tr>
+  <tr>
+    <td>Slot</td>
+    <td>Slot</td>
+    <td>SLOT</td>
+    <td>The slot in the chassis</td>
+    <td>Integer</td>
+    <td>An Integer between 1 and 12</td>
+  </tr>
+  <tr>
+    <td>Channel Number</td>
+    <td>ChannelNumber</td>
+    <td>CARD_CHAN_NO</td>
+    <td>The Channel number on the card</td>
+    <td>Integer</td>
+    <td>An Integer between 0 and 63</td>
+  </tr>
+  <tr>
+    <td>Measurement Type</td>
+    <td>Type</td>
+    <td>MEAS_TYPE</td>
+    <td>The measurement Type</td>
+    <td>String</td>
+    <td>Analogue, Frequency, Period, Totalizer or Discrete</td>
+  </tr>
+  <tr>
+    <td>Gain</td>
+    <td>Gain</td>
+    <td>GAIN</td>
+    <td>The amplifier gain. A smaller input range requires a higher gain to optimise the resolution of the A/D converter</td>
+    <td>Integer</td>
+    <td>1, 8 or 64</td>
+  </tr>
+  <tr>
+    <td>Range</td>
+    <td>Range</td>
+    <td>RANGE</td>
+    <td>The voltage range of the A/D Converter in Volts
+      <p class="TableNote">The range is based on the input of the sensor, not the output. </p></td>
+    <td>Float</td>
+    <td>0.0625, 0.25, 1, 4 or 16</td>
+  </tr>
+  <tr>
+    <td>OTD On</td>
+    <td>IsOTDOn</td>
+    <td>OTD_ON</td>
+    <td>Flag indicating whether Open Transducer  Detection is turned on or off. The value must be the same for all channels on  the same SCP.</td>
+    <td>String</td>
+    <td>true or false</td>
+  </tr>
+  <tr>
+    <td>Input Frequency</td>
+    <td>InputFreq</td>
+    <td>INPUT_FREQ</td>
+    <td>The Input Frequency in Hz</td>
+    <td>Integer</td>
+    <td>0, 2, 10 or 100</td>
+  </tr>
+  <tr>
+    <td>Polarity</td>
+    <td>Polarity</td>
+    <td>TRIG_POLARITY</td>
+    <td>Start edge polarity. Positive: rising edge trigger, Negative: falling edge trigger</td>
+    <td>String</td>
+    <td>Positive or Negative</td>
+  </tr>
+  <tr>
+    <td>Threshold</td>
+    <td>Threshold</td>
+    <td>TRIG_THRESH</td>
+    <td>The Threshold Voltage at which an event is triggered. (-46 V to +46 V, with step value of 0.375 V)</td>
+    <td>Float</td>
+    <td>-46 V to +46 V, with step value of 0.375 V</td>
+  </tr>
+  <tr>
+    <td>Minimum Frequency</td>
+    <td>MinFrequency</td>
+    <td>MIN_FREQ</td>
+    <td>Minimum expected frequency of the input in Hz</td>
+    <td>Float</td>
+    <td>A Float between 1 and 1000</td>
+  </tr>
+  <tr>
+    <td>Duration</td>
+    <td>Duration</td>
+    <td>DURATION</td>
+    <td>Number of cycles to average</td>
+    <td>Integer</td>
+    <td>An Integer between 1 and 255</td>
+  </tr>
+  <tr>
+    <td>Reference RTD</td>
+    <td>Reference RTD</td>
+    <td>TC_REF</td>
+    <td>The name of the UTR channel used for thermocouple compensation. If populated, this channel is EU corrected as a thermocouple channel. If null, regular analogue EU converson is performed.</td>
+    <td>String</td>
+    <td>The name of a channel defined in the Channel  Collection that also belongs to the &quot;Temperature&quot; EU group.</td>
+  </tr>
+  <tr>
+    <td>Debounce</td>
+    <td>DebounceTime</td>
+    <td>DEBOUNCE_TIME</td>
+    <td>Debounce time of the switch for discrete input channels in milliseconds</td>
+    <td>Float</td>
+    <td>0, 0.15, 0.3, 0.6, 1.2, 2.4, 4.8, 9.6, 19.2, 38.4, 76.6, 153.6, 307.2, 614.4, 1028.8 and 2457.6</td>
+  </tr>
+</table>
+<p>The structure of a VXI Channel complies with the following example:</p>
+<blockquote><code>&lt;Channels LastModificationDate=&quot;<strong>2015-06-10 14:19:25</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;<br>
+  &lt;Channel Name=&quot;ZZGASSVXI&quot; <br>
+  Description=&quot;&quot; <br>
+  Enabled=&quot;true&quot; <br>
+  LastModificationDate=&quot;2015-06-10 14:19:25&quot; <br>
+  SubsystemName=&quot;GASSVXI&quot; <br>
+  SubsystemType=&quot;GASSVXI&quot; <br>
+  AlternateName=&quot;&quot; <br>
+  DataType=&quot;Float&quot; <br>
+  InitialValue=&quot;-999999&quot; <br>
+  Format=&quot;4.2f&quot; <br>
+  UpdateRate=&quot;1&quot; <br>
+  QualityCeiling=&quot;GOOD&quot; <br>
+  Critical=&quot;false&quot; <br>
+  EngineeringUnit=&quot;-&quot; <br>
+  DisplayMin=&quot;0&quot; <br>
+  DisplayMax=&quot;100&quot; <br>
+  DeadBand=&quot;0&quot; <br>
+  Output=&quot;false&quot; <br>
+  ReferenceChannel=&quot;&quot; <br>
+  Group=&quot;&quot; <br>
+  SignalId=&quot;&quot; <br>
+  CalSensor=&quot;&quot; <br>
+  CalGroup=&quot;&quot; <br>
+  FixedSensor=&quot;&quot; <br>
+  CustomerSensor=&quot;&quot; <br>
+  FullsetStability=&quot;false&quot; <br>
+  ContinuousLog=&quot;true&quot; <br>
+  Chassis=&quot;1&quot; <br>
+  Slot=&quot;10&quot; <br>
+  ChannelNumber=&quot;0&quot; <br>
+  Type=&quot;Analogue&quot; <br>
+  Gain=&quot;1&quot; <br>
+  Range=&quot;16&quot; <br>
+  IsOTDOn=&quot;false&quot; <br>
+  InputFreq=&quot;0&quot; <br>
+  Polarity=&quot;Positive&quot; <br>
+  Threshold=&quot;-99&quot; <br>
+  MinFrequency=&quot;1000&quot; <br>
+  Duration=&quot;1&quot; <br>
+  ReferenceRTD=&quot;&quot; <br>
+  DebounceTime=&quot;0&quot;/&gt;<br>
+  &lt;/Channels&gt;<br>
+</code></blockquote>
+<p id="SubsystemsXML"><strong>Subsystems</strong></p>
+<p>The subsystem definitions are stored in files Subsystems.xml in the configuration directories.</p>
+<p>A GASS VXI Subsystem contains generic information, described in <a href="../SubsystemEditor/SubsystemEditor.htm#XMLFileStructure"> Subsystem Editor - Generic Subsystem Parameters - XML File Structure</a>, and the specific attributes:</p>
+<ul>
+  <li><strong>Cards</strong></li>
+  <li><strong>SCPs </strong></li>
+  <li><strong>Pinouts</strong></li>
+</ul>
+<p>The specific attribute <strong>Cards</strong> defines a collection of the GASS cards implemented in the subsystem. <br>
+  Each Card has the following properties:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Chassis</td>
+    <td>Chassis</td>
+    <td>CHASSIS</td>
+    <td>The VXI chassis number</td>
+    <td>Integer</td>
+    <td>1, 2 or 3 </td>
+  </tr>
+  <tr>
+    <td>Slot</td>
+    <td>Slot</td>
+    <td>SLOT</td>
+    <td>the VXI slot number in the chassis</td>
+    <td>Integer</td>
+    <td>1 to 12 </td>
+  </tr>
+  <tr>
+    <td>Card type</td>
+    <td>Type</td>
+    <td>CARD_TYPE</td>
+    <td>The GASS card type&nbsp;implemented</td>
+    <td>String</td>
+    <td>1413, 1415 or 1419</td>
+  </tr>
+</table>
+<p>The specific attribute <strong>SCPs</strong> defines a collection of SCPs, implemented on the card currently selected in the subsystem. 
+  Each SCP has the following properties:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Location</td>
+    <td>Location</td>
+    <td>SCP LOCATION</td>
+    <td>The location of the SCP on the card which implicitly defines the channels configured by the SCP</td>
+    <td>Integer</td>
+    <td>0 to 7</td>
+  </tr>
+  <tr>
+    <td>SCP type</td>
+    <td>Type</td>
+    <td>SCP TYPE</td>
+    <td>The SCP type implemented</td>
+    <td>String</td>
+    <td>1501, 1502, 1503, 1505, 1508, 1509, 1512, 1536 or 1538</td>
+  </tr>
+</table>
+<p>Since the SCPs configured are the SCPs configured for the currently selected Card in the Subsystem, it follows that each Card has its 
+  own collection of SCPs.</p>
+<p>The specific attribute <strong>Pinouts</strong> defines a collection of the physical channels i.e. pinouts, for the card currently selected in the Subsystem. Each Pinout has the following properties:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Name</td>
+    <td>Name</td>
+    <td>PINOUT</td>
+    <td>The pinout name associated with the hardware channel being defined</td>
+    <td>String</td>
+    <td>Unique, non-empty</td>
+  </tr>
+  <tr>
+    <td>Channel Number</td>
+    <td>ChannelNumber</td>
+    <td>CARD_CHANNEL_NO</td>
+    <td>The physical channel number on the card</td>
+    <td>Integer</td>
+    <td>0 to 63</td>
+  </tr>
+  <tr>
+    <td>Description</td>
+    <td>Description</td>
+    <td>n/a</td>
+    <td>Specifies the description of the pinout</td>
+    <td>String</td>
+    <td>Any String</td>
+  </tr>
+</table>
+<p>The Config Server INI file contains a section that defines group names and corresponding group ID's. This section is shown in the following example:</p>
+<blockquote>
+  <pre>[GroupIdMapping]
+STRAIN=1<br>RESOLVER=30</pre>
+</blockquote>
+<p>The structure of a GASS VXI Subsystem is shown in the following example:</p>
+<blockquote>
+  <pre>&lt;Subsystems   LastModificationDate=&quot;<strong>2008-09-04   14:13:03</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Subsystem Name=&quot;ZZGASSVXI&quot;
+Description=&quot;&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2008-09-04 13:48:59&quot;
+Id=&quot;0&quot; Type=&quot;GASSVXI&quot;
+CreationDate=&quot;2008-04-25 16:19:07&quot;&gt;
+&lt;Cards&gt;
+&lt;Card Chassis=&quot;1&quot;
+Slot=&quot;8&quot;
+Type=&quot;1415&quot;
+ScanRateFactor=&quot;1&quot;&gt;
+&lt;Pinouts&gt;
+&lt;Pinout
+ChannelNumber=&quot;0&quot;
+Name=&quot;pin_1_08_00&quot;
+Description=&quot;&quot; /&gt;
+&lt;Pinout ChannelNumber=&quot;1&quot;
+Name=&quot;pin_1_08_01&quot;
+Description=&quot;&quot; /&gt;
+&lt;Pinout
+ChannelNumber=&quot;2&quot;
+Name=&quot;pin_1_08_02&quot;
+Description=&quot;&quot; /&gt;
+&lt;Pinout
+ChannelNumber=&quot;3&quot;
+Name=&quot;pin_1_08_03&quot;
+Description=&quot;&quot; /&gt;
+&lt;Pinout
+ChannelNumber=&quot;4&quot;
+Name=&quot;pin_1_08_04&quot;
+Description=&quot;&quot; /&gt;
+&lt;/Pinouts&gt;
+&lt;SCPs&gt;
+&lt;SCP Location=&quot;0&quot;
+Type=&quot;1501&quot; /&gt;
+&lt;SCP Location=&quot;1&quot;
+Type=&quot;1502&quot; /&gt;
+&lt;SCP Location=&quot;2&quot;
+Type=&quot;1538&quot; /&gt;
+&lt;SCP Location=&quot;3&quot;
+Type=&quot;1534&quot; /&gt;
+&lt;SCP Location=&quot;6&quot;
+Type=&quot;1505&quot; /&gt;
+&lt;SCP Location=&quot;7&quot;
+Type=&quot;1536&quot; /&gt;
+&lt;/SCPs&gt;
+&lt;/Card&gt;
+&lt;/Cards&gt;
+&lt;/Subsystem&gt; 
+    </pre>
+</blockquote>
+<h4 id="TabDelimitFileStructureVXI">Tab-Delimited File Structure</h4>
+<p>The GASS VXI Subsystem channel definition includes all <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic  channel definition columns</a> and the specific GASSVXI Subsystem input parameters defined in the tab-delimited configuration file.</p>
+<p>The rules, syntax and guidelines for creating GASS VXI Subsystem channel definitions are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th> Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>PINOUT</td>
+    <td>PINOUT is a unique identifier given to each connection point. <br>
+      <br>
+      Either this field or all of the following fields must be specified:
+      <ul>
+        <li>CHASSIS</li>
+        <li>SLOT</li>
+        <li>CARD_CHAN_NO</li>
+      </ul>
+      Either set can uniquely identify the channel location. If all fields 
+      are entered, they must match (i.e.: specify the same physical location).<br>
+      <br>
+      Each PINOUT uniquely identifies an SCP type.</td>
+    <td>40 character alphanumeric, (case sensitive)</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>CHASSIS</td>
+    <td>CHASSIS identifies the VXI chassis to which the channel belongs.</td>
+    <td>Number 1, 2 or 3</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>SLOT</td>
+    <td>SLOT identifies the slot in the chassis to which the channel belongs.</td>
+    <td>Number 1 - 12</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>CARD_CHAN_NO</td>
+    <td>CARD_CHAN_NO identifies the channel on the card to which the channel belongs.</td>
+    <td>Number 0 - 63</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>SENSOR_NAME</td>
+    <td>The primary sensor identifier.</td>
+    <td>40 character alphanumeric, (case sensitive)</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>SENSOR_AUX</td>
+    <td>The secondary sensor identifier.<br>
+      <br>
+      Must specify &quot;NA&quot; if this field is not defined 
+      but the SENSOR_NAME is defined.</td>
+    <td>40 character alphanumeric, (case sensitive)</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>MEAS_TYPE</td>
+    <td><p>Specifies what type of reading will be taken for the channel:</p>
+      <ul>
+        <li>Frequency (F)</li>
+        <li> Period (P)</li>
+        <li> Totaliser (T)</li>
+        <li> Analogue (A)</li>
+        <li>Discrete (D)</li>
+      </ul></td>
+    <td>F or P or T or A or D</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>GAIN</td>
+    <td>Specifies the amplifier gain for the channel. A smaller input range requires a higher gain to optimize the resolution for the A/D converter.<br>
+      <br>
+      Valid gain settings for the 1503 SCP are 1, 8 and 64. Any of the permissible values can be entered for other SCP types (e.g.: 1501, 1502, 1505, 1508, 1509, 1512) as this is ignored for those types.<br>
+      <br>
+      Required in Analogue mode only (MEAS_TYPE = A).</td>
+    <td>Number 1, 8, or 64</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>RANGE</td>
+    <td>Sets the voltage range of the A/D converter for the channel. Ranges is in Volts.<br>
+      <br>
+      A combination of a Gain of 64 and a Range of 0.0625 is not permitted.<br>
+      <br>
+      Required in Analogue mode only (MEAS_TYPE = A) but ignored for the 1505 SCP type.</td>
+    <td>Number 0.0625, 0.25, 1, 4 or 16</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>OTD_ON</td>
+    <td>Determines whether the &quot;open transducer detection&quot; feature is turned on (Y) or off (N). This value must be the same for 
+      all channels on the same SCP.<br>
+      <br>
+      Required in Analogue mode only (MEAS_TYPE = A) but is ignored for the 1505 SCP type.</td>
+    <td>Y, N</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>INPUT_FREQ</td>
+    <td>Input frequency in hertz. Applicable to 1503 SCP only.<br>
+      <br>
+      0 bypasses the filter. Value is ignored for 1502 SCPs.<br>
+      <br>
+      Required in Analogue mode only (MEAS_TYPE = A).</td>
+    <td>Number 0, 2, 10, or 100</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>TRIG_POLARITY</td>
+    <td>Start edge polarity. Positive (P), rising edge trigger. Negative (N), falling edge trigger.<br>
+      <br>
+      Required in Frequency, Period, and Totaliser modes (MEAS_TYPE = F, P, or T).</td>
+    <td>P or N</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>TRIG_THRESH</td>
+    <td>Threshold voltage at which an event is triggered.<br>
+      <br>
+      Required in Frequency, Period, Totaliser, and Digital Input modes (MEAS_TYPE = F, P, T, or D). If D, then IN_OUT must = 1. For F, P, and T channels, valid values for the trigger range are -46V TO +46V in 375 mV increments. For digital input channels, valid values are 5, 12, 24, and 48 V.</td>
+    <td>Number -46 to +46 in steps of 375 mV OR 5, 12, 24, 48</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>MIN_FREQ</td>
+    <td>Minimum expected frequency of the input in hertz. Used to configure a time-out equal to 1/MIN_FREQ seconds.<br>
+      <br>
+      Required in Frequency mode only (MEAS_TYPE = F).</td>
+    <td>Number 1 - 1000</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>DURATION</td>
+    <td>Number of cycles to average.<br>
+      <br>
+      Required in Period mode only (MEAS_TYPE = P).</td>
+    <td>Number 1 - 255</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>TC_REF</td>
+    <td>The name of the UTR channel used for thermocouple compensation. If populated, this channel will be EU corrected as a thermocouple channel. If null, regular analogue EU conversion will be performed. Required in Analogue Mode only (MEAS_TYPE=A)</td>
+    <td>40 character alphanumeric (case sensitive)</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>POLARITY</td>
+    <td>Sets the polarity of the channel. Valid values are P (Positive = Normal) or N (Negative = Inverted). Required for Discrete (MEAS_TYPE=D) channels only.</td>
+    <td>P or N</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>DEBOUNCE_TIME</td>
+    <td>Sets the debounce time of the switch for discrete input channels. Required for Discrete Input channels only (MEAS_TYPE=D and IN_OUT=I). Valid values are 0, 0.15, 0.3, 0.6, 1.2, 2.4, 4.8, 9.6, 19.2, 38.4, 76.6, 153.6, 307.2, 614.4, 1228.8 and 2457.6ms.</td>
+    <td>Number 0, 0.15, 0.3, 0.6, 1.2, 2.4, 4.8, 9.6, 19.2, 38.4, 76.6, 153.6, 307.2, 614.4, 1228.8 and 2457.6</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<h2 id="GASSAI">GASSAI Subsystem</h2>
+<p>For legacy purposes, proDAS supports configuring analogue channels independently of the frequency channels. The GASSAI Subsystem supports:</p>
+<ul>
+  <li>VXI Technologies VT1502A Fixed-Gain Low-Pass Filter SCP</li>
+  <li>VXI Technologies VT1503A Eight-Channel Programmable Filter Input SCP</li>
+</ul>
+<h3 id="ConfigAnalogInputChannel">Configuring an Analogue Input Channel</h3>
+<p>To configure an Analogue Input Channel:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a><a href="../ConfigEditors/ConfigEditors.htm#MenuEdit"></a>.</li>
+  <li>Select the name of the Analogue Input Subsystem from the list of available subsystems.
+    <div class="Container"><img src="images/SelectSubsystemNameAI.png" alt="SelectSubsystemNameAI" width="387" height="317"></div>
+  </li>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a><a href="../ConfigEditors/ConfigEditors.htm#GenCol"></a>.</li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.</li>
+  <li> Set the <strong>Pinout</strong> column or, the <strong>Chassis</strong>, <strong>Slot</strong> and <strong>Channel Number</strong> columns, for Analogue Input channels.
+    <p class="Note">Each pinout uniquely describes a chassis, slot and card number.</p>
+    <div class="Container"><img src="images/ChannelEditorAI.png" alt="ChannelEditorAI" width="700" height="424"></div>
+  </li>
+  <li>If available, set the <strong>Gain</strong> column.</li>
+  <li>If available, set the <strong>Range</strong> column.</li>
+  <li>If desired, set <strong>OTD On</strong>.</li>
+  <li>If available, set the <strong>Input Frequency </strong>column to reflect the desired input frequency of the SCP.</li>
+  <li>Enter Calibration Sensor information in the Generic Columns.</li>
+  <li>If desired, define a fixed sensor.</li>
+  <li>Define a Calibration Group.</li>
+</ol>
+<h3 id="GASSAIConfigFileStructure">GASSAI Configuration File Structure</h3>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu"> Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import a <strong>GASSAI</strong> channel, see <a href="?12#XMLFileStructureAI"> XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import TAB-delimited in the Channel Editor module</a><a href="../ChannelEditor/ChannelEditor.htm"></a>. For detailed tab-delimited file structure information required to import a <strong>GASSAI</strong> channel, see <a href="?13#TabDelimitFileStructureAI"> Tab-Delimited File Structure</a>.</p>
+<h4 id="XMLFileStructureAI">XML File Structure</h4>
+<p id="ChannelsXML2"><strong>Channels</strong></p>
+<p>The channels are stored in files Channels.xml in the configuration directories.</p>
+<p>A GASSAI Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure"> Channel Editor 
+- Generic Channel Parameters - XML File Structure</a>, and the specific attributes <strong>Chassis</strong>, <strong>Slot</strong>, <strong>ChannelNumber</strong>, <strong>Gain</strong>, <strong>Range</strong>, <strong>IsOTDOn</strong>, and <strong>InputFreq</strong>. These attributes are explained in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Chassis</td>
+    <td>Chassis</td>
+    <td>CHASSIS</td>
+    <td>The VXI Chassis number</td>
+    <td>Integer</td>
+    <td>1, 2 or 3 </td>
+  </tr>
+  <tr>
+    <td>Slot</td>
+    <td>Slot</td>
+    <td>SLOT</td>
+    <td>The slot in the chassis</td>
+    <td>Integer</td>
+    <td>An Integer between 1 and 12</td>
+  </tr>
+  <tr>
+    <td>Channel Number</td>
+    <td>ChannelNumber</td>
+    <td>CARD_CHAN_NO</td>
+    <td>The Channel number on the card</td>
+    <td>Integer</td>
+    <td>An Integer between 0 and 63</td>
+  </tr>
+  <tr>
+    <td>Gain</td>
+    <td>Gain</td>
+    <td>GAIN</td>
+    <td>The amplifier gain. A smaller input range requires a higher 
+      gain to optimise the resolution of the A/D converter</td>
+    <td>Integer</td>
+    <td>1, 8 or 64</td>
+  </tr>
+  <tr>
+    <td>Range</td>
+    <td>Range</td>
+    <td>RANGE</td>
+    <td>The voltage range of the A/D Converter in Volt</td>
+    <td>Float</td>
+    <td>0.0625, 0.25, 1, 4 or 16</td>
+  </tr>
+  <tr>
+    <td>OTD On</td>
+    <td>IsOTDOn</td>
+    <td>OTD_ON</td>
+    <td>Flag indicating whether Open Transducer  Detection is turned on or off. The value must be the same for all channels on  the same SCP.</td>
+    <td>String</td>
+    <td>true or false</td>
+  </tr>
+  <tr>
+    <td>Input Frequency</td>
+    <td>InputFreq</td>
+    <td>INPUT_FREQ</td>
+    <td>The Input Frequency in Hz</td>
+    <td>Integer</td>
+    <td>0, 2, 10 or 100</td>
+  </tr>
+</table>
+<p>The structure of a GASSAI Channel complies with the following example:</p>
+<blockquote><code>&lt;Channels LastModificationDate=&quot;<strong>2015-06-10 14:19:25</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;<br>
+  &lt;Channel Name=&quot;ZZGASSAI1&quot; <br>
+  Description=&quot;&quot; <br>
+  Enabled=&quot;true&quot; <br>
+  LastModificationDate=&quot;2015-06-10 14:19:25&quot; <br>
+  SubsystemName=&quot;GASSAI&quot; <br>
+  SubsystemType=&quot;GASSAI&quot; <br>
+  AlternateName=&quot;&quot; <br>
+  DataType=&quot;Float&quot; <br>
+  InitialValue=&quot;-999999&quot; <br>
+  Format=&quot;4.2f&quot; <br>
+  UpdateRate=&quot;1&quot; <br>
+  QualityCeiling=&quot;GOOD&quot; <br>
+  Critical=&quot;false&quot; <br>
+  EngineeringUnit=&quot;-&quot; <br>
+  DisplayMin=&quot;0&quot; <br>
+  DisplayMax=&quot;100&quot; <br>
+  DeadBand=&quot;0&quot; <br>
+  Output=&quot;false&quot; <br>
+  ReferenceChannel=&quot;&quot; <br>
+  Group=&quot;&quot; <br>
+  SignalId=&quot;&quot; <br>
+  CalSensor=&quot;&quot; <br>
+  CalGroup=&quot;&quot; <br>
+  FixedSensor=&quot;&quot; <br>
+  CustomerSensor=&quot;&quot; <br>
+  FullsetStability=&quot;false&quot; <br>
+  ContinuousLog=&quot;true&quot; <br>
+  Chassis=&quot;1&quot; <br>
+  Slot=&quot;10&quot; <br>
+  ChannelNumber=&quot;0&quot; <br>
+  Gain=&quot;1&quot; <br>
+  Range=&quot;0.25&quot; <br>
+  IsOTDOn=&quot;false&quot; <br>
+  InputFreq=&quot;100&quot;/&gt;<br>
+  &lt;/Channels&gt;<br>
+</code></blockquote>
+<p id="SubsystemsXML2"><strong>Subsystems</strong></p>
+<p>The subsystem definitions for the GASS AI Subsystem are the same as the GASS VXI. For details see, <a href="?32#SubsystemsXML">Subsystems for GASS VXI</a>.</p>
+<h4 id="TabDelimitFileStructureAI">Tab-Delimited File Structure</h4>
+<p>The GASS Analogue Input (GASSAI) channel definitions includes all <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic channel definition columns</a> and the specific GASSAI parameters defined in the tab-delimited configuration file.</p>
+<p>The rules, syntax and guidelines for creating GASSAI channel definitions are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th> Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>PINOUT</td>
+    <td>PINOUT is a unique identifier given to each connection point.<br>
+      <br>
+      Either this field or all of the following fields must be specified:
+      <ul>
+        <li>CHASSIS</li>
+        <li>SLOT</li>
+        <li>CARD_CHAN_NO</li>
+      </ul>
+      Either can uniquely identify the channel location. If all fields are entered, they must match (i.e.: specify the same physical location).<br>
+      <br>
+      Each PINOUT uniquely identifies an SCP type.</td>
+    <td>40 character alphanumeric, (case sensitive)</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>CHASSIS</td>
+    <td>CHASSIS identifies the VXI chassis to which the channel belongs.</td>
+    <td>Number 1, 2 or 3</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>SLOT</td>
+    <td>SLOT identifies the slot in the VXI chassis to which the channel belongs.</td>
+    <td>Number 1 - 12</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>CARD_CHAN_NO</td>
+    <td>CARD_CHAN_NO identifies the channel on the card to which the channel belongs.</td>
+    <td>Number 0 - 63</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>GAIN</td>
+    <td>Specifies the amplifier gain for the channel. A smaller input range requires a higher gain to optimize the resolution for the A/D converter.<br>
+      <br>
+      V
+      Valid gain settings for the 1503 SCP are 1, 8 and 64. The 1502 supports a gain setting of 1 only, other values are ignored for this SCP.</td>
+    <td>Number 1, 8, or 64</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>RANGE</td>
+    <td>Sets the voltage range of the A/D converter for the channel. Ranges is in volts.</td>
+    <td>Number 0.0625, 0.25, 1, 4 or 16</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>SENSOR_NAME</td>
+    <td>The primary sensor identifier.</td>
+    <td>40 character alphanumeric (case sensitive)</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>SENSOR_AUX</td>
+    <td>The secondary sensor identifier. <br>
+      <br>
+      Must specify NAif this field is not defined but the SENSOR_NAME is defined.</td>
+    <td>40 character alphanumeric (case sensitive)</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>OTD_ON</td>
+    <td>Determines whether the &quot;open transducer detection&quot; feature is turned on (Y) or off (N). This value must be the same for all channels on the same SCP.</td>
+    <td>Y, N</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>INPUT_FREQ</td>
+    <td>Input frequency in hertz. Applicable to 1503 SCP only.<br>
+      0 bypasses the filter. Value is ignored for 1502 SCPs.</td>
+    <td>Number 0, 2, 10, or 100</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<h2 id="GASSTC">GASSTC Subsystem</h2>
+<p>For legacy purposes, proDAS supports configuring frequency channels independently of the analogue channels. The GASSTC Subsystem supports:</p>
+<ul>
+  <li>VXI Technologies VT1538A Enhanced Frequency/Totalize/PWM SCP</li>
+</ul>
+<h3 id="ConfigFrequencyInputChannel">Configuring a Frequency Input Channel</h3>
+<p>To configure an Frequency Input Channel:</p>
+<p>If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see&nbsp;<a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<ol>
+  <li>Append a channel by selecting&nbsp;<strong>Append</strong>&nbsp;from the Edit menu as described in&nbsp;<a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</li>
+  <li>Select the name of the Frequency Input Subsystem from the list of available subsystems.
+    <div><img src="images/SelectSubsystemNameTC.png" alt="SelectSubsystemNameTC" width="387" height="317"></div>
+  </li>
+  <li>Fill the category independent columns as described in&nbsp;<a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a>.</li>
+  <li>Fill the Channel Specific Columns as described in the&nbsp;<a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.</li>
+  <li>Set the&nbsp;<strong>Pinout</strong>&nbsp;column or, the&nbsp;<strong>Chassis</strong>,&nbsp;<strong>Slot</strong>&nbsp;and&nbsp;<strong>Channel Number</strong>&nbsp;columns, for Frequency Input channels.
+    <p>Each pinout uniquely describes a chassis, slot and card number.</p>
+    <div><img src="images/ChannelEditorTC.png" alt="ChannelEditorTC" width="700" height="424"></div>
+  </li>
+  <li>Set the&nbsp;<strong>Measurement Type</strong>&nbsp;column to either Frequency, Period or Totalizer.</li>
+  <li>Set the&nbsp;<strong>Polarity</strong>&nbsp;to either Positive for a rising edge trigger or Negative for a trailing edge trigger.</li>
+  <li>Set the&nbsp;<strong>Threshold</strong>&nbsp;column.</li>
+  <li>If the Measurement Type is Frequency, set the&nbsp;<strong>Minimum Frequency</strong>&nbsp;column to reflect the minimum expected input frequency.</li>
+  <li>If the Measurement Type is Period, set the&nbsp;<strong>Duration</strong>&nbsp;column to reflect the number of cycles to average.</li>
+  <li>Enter Calibration Sensor information in the Generic Columns.</li>
+  <li>If desired, define a fixed sensor.</li>
+  <li>Define a Calibration Group.</li>
+</ol>
+<h3>GASSTC Configuration File Structure</h3>
+<p>Channel configuration information (e.g. hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text 
+  file.</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu"> Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import a <strong>GASSTC</strong> channel, see <a href="?14#XMLFileStructureTC"> XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import TAB-delimited in the Channel Editor module</a><a href="../ChannelEditor/ChannelEditor.htm"></a>. For detailed tab-delimited file structure information required to import a <strong>GASSTC</strong> channel, see <a href="?15#TabDelimitFileStructureTC"> Tab-Delimited File Structure</a>.</p>
+<h4 id="XMLFileStructureTC">XML File Structure</h4>
+<p id="ChannelsXML3"><strong>Channels</strong></p>
+<p>The channels are stored in files Channels.xml in the configuration directories.</p>
+<p>A GASSTC Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor 
+- Generic Channel Parameters - XML File Structure</a>, and the specific attributes <strong>Chassis</strong>, <strong>Slot</strong>, <strong>ChannelNumber</strong>, <strong>Type</strong>, <strong>Polarity</strong>, <strong>Threshold</strong>, <strong>MinFrequency</strong>, and <strong>Duration</strong>. These attributes are explained in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Chassis</td>
+    <td>Chassis</td>
+    <td>CHASSIS</td>
+    <td>The VXI Chassis number</td>
+    <td>Integer</td>
+    <td>1, 2 or 3 </td>
+  </tr>
+  <tr>
+    <td>Slot</td>
+    <td>Slot</td>
+    <td>SLOT</td>
+    <td>The slot in the chassis</td>
+    <td>Integer</td>
+    <td>An Integer between 1 and 12</td>
+  </tr>
+  <tr>
+    <td>Channel Number</td>
+    <td>ChannelNumber</td>
+    <td>CARD_CHAN_NO</td>
+    <td>The Channel number on the card</td>
+    <td>Integer</td>
+    <td>An Integer between 0 and 63</td>
+  </tr>
+  <tr>
+    <td>Measurement Type</td>
+    <td>Type</td>
+    <td>MEAS_TYPE</td>
+    <td>The measurement Type</td>
+    <td>String</td>
+    <td>Frequency, Period, Totalizer</td>
+  </tr>
+  <tr>
+    <td>Polarity</td>
+    <td>Polarity</td>
+    <td>TRIG_POLARITY</td>
+    <td>Start edge polarity. Positive: rising edge trigger, Negative: falling edge trigger</td>
+    <td>String</td>
+    <td>Positive or Negative</td>
+  </tr>
+  <tr>
+    <td>Threshold</td>
+    <td>Threshold</td>
+    <td>TRIG_THRESH</td>
+    <td>The Threshold Voltage at which an event is triggered. (-46 V to +46 V, with step value of 0.375 V)</td>
+    <td>Float</td>
+    <td>-46 V to +46 V, with step value of 0.375 V</td>
+  </tr>
+  <tr>
+    <td>Minimum Frequency</td>
+    <td>MinFrequency</td>
+    <td>MIN_FREQ</td>
+    <td>Minimum expected frequency of the input in Hz</td>
+    <td>Float</td>
+    <td>A Float between 1 and 1000</td>
+  </tr>
+  <tr>
+    <td>Duration</td>
+    <td>Duration</td>
+    <td>DURATION</td>
+    <td>Number of cycles to average</td>
+    <td>Integer</td>
+    <td>An Integer between 1 and 255</td>
+  </tr>
+</table>
+<p>The structure of a GASSTC Channel complies with the following example:</p>
+<blockquote><code>&lt;Channels LastModificationDate=&quot;<strong>2015-06-10 14:19:25</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;<br>
+  &lt;Channel Name=&quot;ZZGASSTC1&quot; <br>
+  Description=&quot;&quot; <br>
+  Enabled=&quot;true&quot; <br>
+  LastModificationDate=&quot;2015-06-10 14:19:25&quot; <br>
+  SubsystemName=&quot;GASSTC&quot; <br>
+  SubsystemType=&quot;GASSTC&quot; <br>
+  AlternateName=&quot;&quot; <br>
+  DataType=&quot;Float&quot; <br>
+  InitialValue=&quot;-999999&quot; <br>
+  Format=&quot;4.2f&quot; <br>
+  UpdateRate=&quot;1&quot; <br>
+  QualityCeiling=&quot;GOOD&quot; <br>
+  Critical=&quot;false&quot; <br>
+  EngineeringUnit=&quot;-&quot; <br>
+  DisplayMin=&quot;0&quot; <br>
+  DisplayMax=&quot;100&quot; <br>
+  DeadBand=&quot;0&quot; <br>
+  Output=&quot;false&quot; <br>
+  ReferenceChannel=&quot;&quot; <br>
+  Group=&quot;&quot; <br>
+  SignalId=&quot;&quot; <br>
+  CalSensor=&quot;&quot; <br>
+  CalGroup=&quot;&quot; <br>
+  FixedSensor=&quot;&quot; <br>
+  CustomerSensor=&quot;&quot; <br>
+  FullsetStability=&quot;false&quot; <br>
+  ContinuousLog=&quot;true&quot; <br>
+  Chassis=&quot;1&quot; <br>
+  Slot=&quot;8&quot; <br>
+  ChannelNumber=&quot;19&quot; <br>
+  Type=&quot;Period&quot; <br>
+  Polarity=&quot;Positive&quot; <br>
+  Threshold=&quot;2&quot; <br>
+  MinFrequency=&quot;1000&quot; <br>
+  Duration=&quot;1&quot;/&gt;<br>
+  &lt;/Channels&gt;<br>
+</code></blockquote>
+<p id="SubsystemsXML3"><strong>Subsystems</strong></p>
+<p>The subsystem definitions for the GASS TC Subsystem are the same as the GASS VXI. For details see, <a href="?33#SubsystemsXML">Subsystems for GASS VXI</a>.</p>
+<h4 id="TabDelimitFileStructureTC">Tab-Delimited File Structure</h4>
+<p>The GASS Totalizer Counter (GASSTC) channel definitions includes all <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic channel definition columns</a> and the specific GASSTC parameters defined in the tab-delimited configuration file.</p>
+<p>The rules, syntax and guidelines for creating GASSTC channel definitions are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th> Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>PINOUT</td>
+    <td>PINOUT is a unique identifier given to each connection point.<br>
+      <br>
+      Either this field or all of the following fields must be specified:
+      <ul>
+        <li>CHASSIS</li>
+        <li>SLOT</li>
+        <li>CARD_CHAN_NO</li>
+      </ul>
+      Either set can uniquely identify the channel location. If all fields are entered, they must match (i.e.: specify the same physical location).<br>
+      <br>
+      Each PINOUT uniquely identifies an SCP type.</td>
+    <td>40 character alphanumeric, (case sensitive)</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>CHASSIS</td>
+    <td>CHASSIS identifies the VXI chassis to which the channel belongs.</td>
+    <td>Number 1, 2 or 3</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>SLOT</td>
+    <td>SLOT identifies the slot in the chassis to which the channel belongs.</td>
+    <td>Number 1 - 12</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>CARD_CHAN_NO</td>
+    <td>CARD_CHAN_NO identifies the channel on the card to which the channel belongs.</td>
+    <td>Number 0 - 63</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>MEAS_TYPE</td>
+    <td>Specifies what type of reading will be taken for the channel:
+      <ul>
+        <li>Frequency (F)</li>
+        <li>Period (P)</li>
+      </ul>
+      <p class="Note">Either way, the channel value is reported in hertz.</p></td>
+    <td>F or P</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>TRIG_POLARITY</td>
+    <td>Start edge polarity. Positive (P), rising edge trigger. Negative (N), falling edge trigger.</td>
+    <td>P or N</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>TRIG_THRESH</td>
+    <td>Threshold voltage at which an event is triggered. Valid values for the trigger range are -46 V to +46 V in 375 mV increments.</td>
+    <td>Number -46 to +46 in steps of 375 mV</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>SENSOR_NAME</td>
+    <td>The primary sensor identifier.</td>
+    <td>40 character alphanumeric (case sensitive)</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>SENSOR_AUX</td>
+    <td>The secondary sensor identifier.<br>
+      <br>
+      Must specify &quot;NA&quot; if this field is not defined but the SENSOR_NAME is defined.</td>
+    <td>40 character alphanumeric (case sensitive)</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>MIN_FREQ</td>
+    <td>Minimum expected frequency of the input in hertz. Used to configure a time-out equal to 1/MIN_FREQ seconds.<br>
+      <br>
+      Required in Frequency mode only (MEAS_TYPE = F).</td>
+    <td>Number 1 - 1000</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>DURATION</td>
+    <td>Number of cycles to average.<br>
+      <br>
+      Required in Period mode only (MEAS_TYPE = P).</td>
+    <td>Number 1 - 255</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<h2 id="SubsysEditorVXIchannels">Subsystem Editor for VXI Channels</h2>
+<p>To edit the GASS VXI Subsystem, the Subsystem Editor must be selected from within the Configuration Administrator.</p>
+<p>The tool bar in the Configuration Administrator allows the various configuration editors available for proDAS to be selected.</p>
+<p>The Subsystem Editor allows new subsystems to be added to the current configuration.</p>
+<div class="Container"><img src="images/SubsystemEditor.png" alt="SubsystemEditor" width="700" height="423"></div>
+<p>To add a new subsystem:</p>
+<ol>
+  <li>From the Edit menu, select <strong>Append Data Record</strong> or, in the left pane of the splitter window, click the right mouse button and select <strong>Append Data Record</strong> from the context sensitive menu.</li>
+  <li>Select <strong>GASSVXI</strong> in the dialogue box to select the type of subsystem.<br>
+    A new line in Subsystem Editor is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to <strong>GASSVXI</strong>. The user must then assign a name and description to the subsystem.</li>
+</ol>
+<h3 id="AddAdditionalSCP">Adding an Additional SCP</h3>
+<p>To add an additional SCP to the <a href="?4#SubsystemsXML">Subsystem</a>:</p>
+<ol>
+  <li>Select the <strong>Cards</strong> tab in the right hand pane of the splitter window where Cards, SCPs and Pinouts are defined.</li>
+  <li>From the <a href="../SubsystemEditor/SubsystemEditor.htm#MenuEdit">Subsystem Editor</a>, select <strong>Subsystem GASS/SCP/Append</strong>. A new line for a new SCP is added to the list of SCPs in the subsystem.</li>
+  <li>Define the SCP attributes Location (0 to 7) and SCP type (1501, 1502, 1503, 1505, 1508, 1509, 1512, 1536 or 1538).</li>
+</ol>
+<h3 id="AddInterfaceCard">Adding an Additional Interface Card</h3>
+<p>To add an additional Interface Card to the <a href="?6#SubsystemsXML">Subsystem</a>:</p>
+<ol>
+  <li>Select the <strong>Cards</strong> tab in the right hand pane of the splitter window where Cards, SCPs and Pinouts are defined.</li>
+  <li>From the <a href="../SubsystemEditor/SubsystemEditor.htm#MenuEdit">Subsystem Editor</a>, select <strong>Subsystem GASS/Card/Append</strong>. A new line for a new Card is added to the list of Cards in the subsystem.</li>
+  <li>Define the Card attributes Chassis (1, 2 or 3), Slot (1 to 12) and Card type (1413, 1415 or 1419).</li>
+</ol>
+<h2 id="RTEInitialiseFile">RTE Initialisation File</h2>
+<p>The GASS VXI, GASSAI and GASSTC Subsystems are configured by the RTE, along with all the other subsystems, as a request from the Management Interface GUI. For legacy purposes, the configuration request can also be specified in the command line of the RTE.</p>
+<p>The RTE Initialisation file must, as a minimum, include the card information.</p>
+<p>A typical RTE Initialisation file would include the following GASS Subsystem information:</p>
+<table width="95%" border="0" cellspacing="1" cellpadding="2">
+  <tr>
+    <td colspan="2">#--------------------------------------------------------------------------<br>
+      # GASSVXI Subsystem<br>
+      #--------------------------------------------------------------------------</td>
+  </tr>
+  <tr>
+    <td width="19%">SS GASS</td>
+    <td width="73%">TRUE</td>
+  </tr>
+  <tr>
+    <td width="19%">CI card</td>
+    <td width="73%">1 1 0xC400 0xA00000 4 37 5.0</td>
+  </tr>
+  <tr>
+    <td width="19%">CI card</td>
+    <td width="73%"> 1 2 0xC600 0xA40000 4 37 5.0</td>
+  </tr>
+  <tr>
+    <td width="19%">CI card</td>
+    <td width="73%">1 3 0xC800 0xA80000 4 37 5.0</td>
+  </tr>
+  <tr>
+    <td width="19%">CI card</td>
+    <td width="73%">1 4 0xCA00 0xAC0000 4 37 5.0</td>
+  </tr>
+  <tr>
+    <td width="19%">CI card</td>
+    <td width="73%"> 1 5 0xCC00 0xB00000 4 37 5.0</td>
+  </tr>
+  <tr>
+    <td width="19%">CI card</td>
+    <td width="73%">1 6 0xCE00 0xB40000 4 37 5.0</td>
+  </tr>
+  <tr>
+    <td width="19%">CI card</td>
+    <td width="73%"> 1 8 0xD200 0xBC0000 4 37 5.0</td>
+  </tr>
+  <tr>
+    <td width="19%">CI period</td>
+    <td width="73%">Short 1.01</td>
+  </tr>
+  <tr>
+    <td width="19%">CI temf_n1</td>
+    <td width="73%">17.5</td>
+  </tr>
+  <tr>
+    <td width="19%">CI temf_n2</td>
+    <td width="73%">17.5</td>
+  </tr>
+  <tr>
+    <td width="19%">CI temf_n</td>
+    <td width="73%">2</td>
+  </tr>
+  <tr>
+    <td width="19%">CI temf</td>
+    <td width="73%">OFF</td>
+  </tr>
+  <tr>
+    <td width="19%">CI temf_excitation_channel</td>
+    <td width="73%">DCStrainControlZero01</td>
+  </tr>
+  <tr>
+    <td width="19%">CI temf_control_channel</td>
+    <td width="73%">DCControl</td>
+  </tr>
+  <tr>
+    <td width="19%">CI rtd_control_channel</td>
+    <td width="73%">RTD</td>
+  </tr>
+  <tr>
+    <td width="19%">CI rtd_notify_channel</td>
+    <td width="73%">RTDNOTIFY</td>
+  </tr>
+  <tr>
+    <td width="19%">CI extrap_value</td>
+    <td width="73%">10</td>
+  </tr>
+  <tr>
+    <td width="19%">CI extrap_quality</td>
+    <td width="73%">S</td>
+  </tr>
+  <tr>
+    <td width="19%">CI bb_lo_limit</td>
+    <td width="73%">-0.0001</td>
+  </tr>
+  <tr>
+    <td width="19%">CI bb_hi_limit</td>
+    <td width="73%">0.0001</td>
+  </tr>
+  <tr>
+    <td width="19%">CI temf_lo_limit</td>
+    <td width="73%"> -0.0006</td>
+  </tr>
+  <tr>
+    <td width="19%" height="7">CI temf_hi_limit</td>
+    <td width="73%" height="7">-0.0006</td>
+  </tr>
+  <tr>
+    <td width="19%" height="7">CI bb_count_in_average</td>
+    <td width="73%" height="7">400</td>
+  </tr>
+  <tr>
+    <td width="19%" height="7">CI temf_display</td>
+    <td width="73%" height="7">last_value</td>
+  </tr>
+  <tr>
+    <td width="19%" height="7">CI temf_excitation_polarity</td>
+    <td width="73%" height="7">POSITIVE</td>
+  </tr>
+</table>
+<br>
+<table width="95%" border="0" cellspacing="1" cellpadding="2">
+  <tr>
+    <td colspan="2">#--------------------------------------------------------------------------<br>
+      # GASS Analogue Input<br>
+      #--------------------------------------------------------------------------</td>
+  </tr>
+  <tr>
+    <td width="19%">SS GASSAI</td>
+    <td width="73%">TRUE</td>
+  </tr>
+  <tr>
+    <td width="19%">CI card</td>
+    <td width="73%">1 1 0xc400 0x900000 4 37</td>
+  </tr>
+  <tr>
+    <td width="19%">CI extrap_value</td>
+    <td width="73%">10</td>
+  </tr>
+  <tr>
+    <td width="19%">CI Extrap_quality</td>
+    <td width="73%">S</td>
+  </tr>
+  <tr>
+    <td width="19%">CI temf_n1</td>
+    <td width="73%">12.5</td>
+  </tr>
+  <tr>
+    <td width="19%">CI temf_n2</td>
+    <td width="73%">12.5</td>
+  </tr>
+  <tr>
+    <td width="19%">CI temf_n</td>
+    <td width="73%">4</td>
+  </tr>
+  <tr>
+    <td width="19%">CI bb_lo_limit</td>
+    <td width="73%">-0.0001</td>
+  </tr>
+  <tr>
+    <td width="19%">CI bb_hi_limit</td>
+    <td width="73%">0.0001</td>
+  </tr>
+  <tr>
+    <td width="19%">CI temf_lo_limit</td>
+    <td width="73%">-0.0006</td>
+  </tr>
+  <tr>
+    <td width="19%">CI temf_hi_limit</td>
+    <td width="73%">-0.0006</td>
+  </tr>
+  <tr>
+    <td width="19%">CI bb_count_in_average</td>
+    <td width="73%">400</td>
+  </tr>
+  <tr>
+    <td width="19%">CI temf_display</td>
+    <td width="73%">last_value</td>
+  </tr>
+  <tr>
+    <td width="19%">CI temf_excitation_channel</td>
+    <td width="73%">DCExcite</td>
+  </tr>
+  <tr>
+    <td width="19%">CI temf_control_channel</td>
+    <td width="73%">DCControl</td>
+  </tr>
+  <tr>
+    <td width="19%">CI temf </td>
+    <td width="73%"> on</td>
+  </tr>
+  <tr>
+    <td width="19%">CI emf_excitation_polarity</td>
+    <td width="73%">POSITIVE</td>
+  </tr>
+</table>
+<br>
+<table width="95%" border="0" cellspacing="1" cellpadding="2">
+  <tr>
+    <td colspan="2">#--------------------------------------------------------------------------<br>
+      # GASS Totalizer Counter<br>
+      #--------------------------------------------------------------------------</td>
+  </tr>
+  <tr>
+    <td width="19%">SS GASSTC</td>
+    <td width="73%">TRUE</td>
+  </tr>
+  <tr>
+    <td width="19%">CI period</td>
+    <td width="73%">Short 11.01</td>
+  </tr>
+  <tr>
+    <td width="19%">CI card</td>
+    <td width="73%">3 4 0xf400 0x980000 5.0</td>
+  </tr>
+</table>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click 
+  here to see the RTE Initialisation file.</a></p>
+<h2 id="MgmtInitialisationFile">Management GUI Initialisation File</h2>
+<p><a href="../../References/DASIniFiles/SoftwareiniFiles.pdf">Click here to see the Management GUI Initialisation file.</a></p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>DDS - Components - PAK Embedded Analyzer</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left>
+  <h1>Dynamic Data System (DDS) - Muller-BBM PAK MKII<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<h2>PAK Embedded Analyzer</h2>
+<p>The PAK Embedded Analyzer is the main communication interface between the proDAS software and the PAK MkII Mainframe. The communication is sent using the protocol Modbus over Ethernet.</p>
+<p>The PAK Embedded Analyzer allows the PAK MkII Mainframe to operate in a standalone state. Using the PAK workstation, the system can configure the hardware channels as well as the virtual channels. The hardware channel configuration controls grounding, gains, filters, and other measurement parameters. The virtual channel configuration controls what information is sent to proDAS over the Modbus connection. The virtual channel configuration also controls what analysis are used on the channels being sent to proDAS.</p>
+<p>proDAS sends the following commands to the PAK Embedded analyzer:</p>
+<table width="200" class="Table-Grey">
+  <tbody>
+    <tr>
+      <th scope="col">Command</th>
+      <th scope="col">Description</th>
+    </tr>
+    <tr>
+      <td>Start Scanning</td>
+      <td>The embedded analyzer begins scanning. This requires the PAK Mainframe to be powered on and not scanning.</td>
+    </tr>
+    <tr>
+      <td>Stop Scanning</td>
+      <td>The embedded analyzer stops scanning. This requires the PAK Mainframe to be scanning.      
+        <p class="Note">It is recommended to have the system not recording and/or scanning. Pre-trigger Buffer is acceptable.</p></td>
+    </tr>
+    <tr>
+      <td>Restart Mainframe</td>
+      <td>Restarts the PAK Mainframe. This command can be sent at any time.      
+        <p class="Note">It is recommended to have the system not recording and/or scanning.</p></td>
+    </tr>
+    <tr>
+      <td>Start Recording</td>
+      <td>The embedded analyzer starts recording. This requires the system to be scanning and not recording.</td>
+    </tr>
+    <tr>
+      <td>Stop Recording</td>
+      <td>The embedded analyzer stops recording. This requires the system to be scanning and recording.</td>
+    </tr>
+    <tr>
+      <td>Enable Pre-trigger</td>
+      <td>Creates a buffer to record scanned data prior to starting a scan. This requires the system to be scanning, not recording, and with pre-trigger off. 
+        <p class="Note">Bridge Balancing and auto zero functions must not be in operation.</p></td>
+    </tr>
+    <tr>
+      <td>Disable Pre-trigger</td>
+      <td>Disables the pre-trigger buffer. This requires the system to be scanning, not recording, and with pre-trigger on.</td>
+    </tr>
+    <tr>
+      <td>Bridge Balance</td>
+      <td>Creates a true zero for scanning bridge channels. This requires the system to be scanning, not recording, and with pre-trigger off.</td>
+    </tr>
+    <tr>
+      <td>Auto  Zero</td>
+      <td>Creates a true zero for all other channels. This requires the system to be scanning, not recording, and with pre-trigger off.</td>
+    </tr>
+  </tbody>
+</table>
+<h3>Buffer Function of System</h3>
+<p>The system includes a 150 GB solid state drive contained within the PAK Mainframe. Measurement recordings taken within the PAK Mainframe must be transferred to a separate computer using a file transfer protocol. Details to set up the file transfer protocol are found within the <a href="../../References/VendorDocs/MBBM/PAKMKIIUM.pdf">PAK User Manual</a>.</p>
+<p>Due to the limitation of the PAK 5.8 software pre-trigger function, it is best to use the pre-trigger function within the PAK Embedded Analyzer to act as a circular buffer. In the event of a critical event, the PAK Embedded analyzer can be triggered to start a recording, which will automatically include the configured pre-trigger time. The system has been commissioned with a 2 hour (7200 second) pre-trigger. Longer pre-trigger times can be configured with consultation with the supplier. Details on setting up the pre-trigger time can be found in the <a href="../../References/VendorDocs/MBBM/PAKMKIIUM.pdf">PAK User Manual</a>.</p>
+<p class="Note">Care should be given to the start and stop order of the embedded analyzer system and the PAK software system. The PAK software cannot receive data from the embedded analyzer unless it is scanning.
+</p>
+<p>Return to <a href="DDSComp.html">Dynamic Data System (DDS) - Components</a>.</p>
+<br>
+<br>
+<!-- #EndEditable -->
+<br>
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

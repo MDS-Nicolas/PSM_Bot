@@ -1,0 +1,251 @@
+<!DOCTYPE HTML PUBliC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>How To &ndash; Calibrate a Channel</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left><h1>How To &ndash; Calibrate a Channel<a href="#" onClick="window.print(); return false;"><img src="../../../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<p>This <strong>How To</strong> provides the steps required to calibrate a channel.</p>
+<p>All analogue input channels must be calibrated to convert raw voltage signals into appropriate engineering units.</p>
+<p class="Note">Analogue input channels should be re-calibrated once a  year or after any system maintenance. </p>
+<p class="Note">Remote Command and the Feedback 1 to Feedback 5 channels are only be available if configured in the Channel Calibration Data Configuration file (calibrationData.xml).</p>
+<p>This <strong>How to</strong> covers the following topics:</p>
+<ul>
+  <li><a href="#Interlocks">Interlocks</a></li>
+  <li><a href="#Channels">Channels</a></li>
+  <li>To Calibrate a Channel
+    <ul>
+      <li><a href="#LeverCal">Lever Channel Calibration</a></li>
+      <li><a href="#ActCl">Actuator Channel Calibration</a></li>
+      <li><a href="#AnaCal">Analogue Channel Calibration</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2><a id="Interlocks"></a>Interlocks</h2>
+<p>To calibrate a channel, the user must press the <strong>Calibration</strong> button to enter the Calibration screen.</p>
+<p>The <strong>Calibration</strong> button is disabled (greyed out) if any of the following interlock conditions are <strong>TRUE</strong>:</p>
+<ul>
+  <li>The Throttle system is in Auto Throttle Mode</li>
+  <li>The fuel is on</li>
+  <li>The calibration is disabled via a hardwired discrete input</li>
+  <li>Rigging is in progress</li>  
+  <li>An engine is not selected</li>   
+  <li>An engine selection is in progress</li>
+</ul>
+<h2><a id="Channels"></a>Channels</h2>
+<p>The table below describes the different channels that can be calibrated.</p>
+<table cellspacing="1" class="Table-Grey">
+  <tr>
+    <th width="11%">Channel Number</th>
+    <th width="20%">Channel Name</th>
+    <th width="15%">Input Range</th>
+    <th width="14%">Engineering Unit Range</th>
+    <th width="40%">Channel Description</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Right Lever</td>
+    <td>-10 to 10 VDC</td>
+    <td>0 to 100 %</td>
+    <td>This is a conditioned voltage from the right lever position.</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td> Left Lever</td>
+    <td>-10 to 10 VDC</td>
+    <td>0 to 100 %</td>
+    <td>This is a conditioned voltage from the left lever position.</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Right Actuator</td>
+    <td>-10 to 10 VDC</td>
+    <td>0 to 180&deg;</td>
+    <td>This is a conditioned voltage from the Actuator position controlled by the right lever.</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>Left Actuator</td>
+    <td>-10 to 10 VDC</td>
+    <td>0 to 180&deg;</td>
+    <td>This is a conditioned voltage from the Actuator position controlled by the left lever.</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>Remote Command *</td>
+    <td>-10 to 10 VDC</td>
+    <td>0 to 100 %</td>
+    <td>This is the command to drive the lever when under analogue control. The faster this signal changes, the faster the lever moves.</td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td>Feedback 1 *</td>
+    <td>-10 to 10 VDC</td>
+    <td>0 to 100 %</td>
+    <td>This is a conditioned signal representing a feedback to control the Throttle. It must be linearly proportional to lever position. Examples are thrust or speed.</td>
+  </tr>
+  <tr>
+    <td>7</td>
+    <td>Feedback 2 *</td>
+    <td>-10 to 10 VDC</td>
+    <td>0 to 100 %</td>
+    <td>This is a conditioned signal representing a feedback to control the Throttle. It must be linearly proportional to lever position. Examples are thrust or speed.</td>
+  </tr>
+  <tr>
+    <td>8</td>
+    <td>Feedback 3 *</td>
+    <td>-10 to 10 VDC</td>
+    <td>0 to 100 %</td>
+    <td>This is a conditioned signal representing a feedback to control the Throttle. It must be linearly proportional to lever position. Examples are thrust or speed.</td>
+  </tr>
+  <tr>
+    <td>9</td>
+    <td>Feedback 4 *</td>
+    <td>-10 to 10 VDC</td>
+    <td>0 to 100 %</td>
+    <td>This is a conditioned signal representing a feedback to control the Throttle. It must be linearly proportional to lever position. Examples are thrust or speed.</td>
+  </tr>
+  <tr>
+    <td>10</td>
+    <td>Feedback 5 *</td>
+    <td>-10 to 10 VDC</td>
+    <td>0 to 100 %</td>
+    <td>This is a conditioned signal representing a feedback to control the Throttle. It must be linearly proportional to lever position. Examples are thrust or speed.</td>
+  </tr>
+</table>
+<p class="Note">The Remote Command and the Feedback 1 to Feedback 5 channels are only available if configured in the Channel Calibration Data Configuration file (calibrationData.xml).</p>
+
+<h2><a name="CalChannel"></a>To Calibrate a Channel</h2>
+<p>There are three different channel types. Each channel type has a different calibration procedure based on the methods used to change the raw signal type.</p>
+<ul>
+  <li><a href="#LeverCal">Lever Channel Calibration</a></li>
+  <li><a href="#ActCl">Actuator Channel Calibration</a></li>
+  <li><a href="#AnaCal">Analogue Channel Calibration</a></li>
+</ul>
+<h3><a name="LeverCal"></a>Lever Channel Calibration</h3>
+<p>To calibrate a lever channel:</p>
+<ol>
+  <li>At the bottom of the display computer screen, press the <strong>Calibration </strong>button.<br>
+  The Calibration screen is displayed.</li>
+  
+  <p class="Note">If the calibration button is disabled, one or more interlocks are in place. For details, see <a href="#Interlocks">Interlocks</a>.</p>
+  <div class="Container"><img src="images/CalibrationMode.png" alt="Calibration Mode" width="450" height="620" border="1"></div><br>
+  <li>In the <strong>Select Channel</strong> list box, select the <strong>Right Lever.</strong> (If is is a dual lever system, select the lever channel to calibrate, either Right Lever or Left Lever).</li>  
+  <li>Press the <strong>Start </strong>button.</li>   
+  <li>Manually move the applicable lever (right or left) to its minimum position (nearest the operator).</li>
+    <br><div class="Container"><img src="images/LeverCalibration.png" alt="Lever Calibration" width="450" height="600" border="1"></div><br>
+    
+  <li>Press the <strong>Accept</strong> button.<br>
+    The display computer displays the current point from the Throttle Controller.</li>   
+  <li>Manually move the applicable lever (right or left) to its maximum position (away from the operator).</li>
+  <li>Press the <strong>Accept</strong> button.<br>
+    The display computer displays the current point from the Throttle Controller.</li>
+  <li>Press the <strong>Save </strong>button to save the calibration.</li>
+   <p class="Note">If the Cancel button is pressed, the data is cleared and not applied.</p> 
+</ol>
+
+<h3><a name="ActCl"></a>Actuator Channel Calibration</h3>
+<p>To calibrate an Actuator channel:</p>
+<ol>
+  <li>At the bottom of the display computer screen, press the <strong>Calibration </strong>button.<br>
+  The Calibration screen is displayed.</li>
+    <p class="Note">If the calibration button is disabled, one or more interlocks are in place. For details, see <a href="#Interlocks">Interlocks</a>.</p>
+
+  <li>In the <strong>Select Channel</strong> list box, select the <strong>Right Actuator</strong>. (If it is a dual lever system, select the actuator channel to calibrate, either Right or Left Actuator.)</li>
+  <li>Press the <strong>Start</strong> button.
+    <ul>
+      <li>The Throttle Controller automatically moves the Actuator to the low point at a slow controlled rate and holds until the signal stabilizes </li>
+      <li>The Throttle Controller automatically moves the Actuator to the high point at a slow controlled rate and holds until the signal stabilizes </li>
+      <li>The Throttle Controller calculates the new breakpoint table </li>
+      <li>The new low and high point values are displayed.</li>
+    </ul>
+  </li>
+     <br><div class="Container"><img src="images/ActuatorCalibration.png" alt="Actuator Calibration" width="450" height="619" border="1"></div><br>
+   <li>Press the <strong>Save </strong>button to save the calibration.</li>
+    <p class="Note">If the Cancel button is pressed, the data is cleared and not applied.</p>
+</ol>
+<h3><a name="AnaCal"></a>Analogue Channel Calibration</h3>
+<p>In an Analogue Channel Calibration, DC voltages represent an engineering unit. Engineering units can be values such as lever angle, speed or thrust. Before starting the procedure below, determine what voltages will represent each engineering unit. The table below outlines an example.</p>
+<table cellspacing="1" class="Table-Grey">
+  <tr>
+    <th width="15%">DC Voltage</th>
+    <th width="7%">Engineering Unit (Speed)</th>
+  </tr>
+  <tr>
+      <td width="15%">0 VDC</td>
+      <td width="30%">0 RPM's</td>
+    </tr>
+    <tr>
+      <td>2.5 VDC</td>
+      <td>2000 RPM's</td>
+    </tr>
+    <tr>
+      <td>5 VDC</td>
+      <td>4000 RPM's</td>
+    </tr>
+    <tr>
+      <td>7.5 VDC</td>
+      <td>6000 RPM's</td>
+    </tr>
+    <tr>
+      <td>8 VDC</td>
+      <td>8000 RPM's</td>
+    </tr>
+</table>
+<p>DC voltages should be injected into the J6 connector on the back of the Throttle Controller using a voltage simulator or by simulating the actual EU value. For pin details for each channel, see <a href="UECUConnectDAS.html">Customer Interface connections.</a></p>
+<p class="Caution">To calibrate an analogue channel you modify the Channel Calibration Data configuration file. Before modifying this configuration file you must make a copy of the file as a backup in case you have to revert to this known configuration.</p>
+<p class="Note">Only channels between the &lt;autoChannels&gt;&lt;/autoChannels&gt; elements can be configured using the procedure below.</p>
+<h4>To calibrate an analogue channel:</h4>
+<ol>
+  <li>On the display computer, navigate to the Channel Calibration Configuration file. (For details, see <a href="Configuration.html">How To – Modify the Configuration Files</a>.)</li>   
+  <li>Scroll down to the bottom of the file.</li>
+  <li>Enter the desired engineering units between the EU channel elements for the channel that is being calibrated. In this example, <strong>&lt;fb1EU&gt;&lt;Values&gt;0 2000 4000 6000 8000&lt;/Values&gt;&lt;/fb1EU&gt;</strong>.</li>
+    
+    <p class="Note">The engineering units could be values such as engine speed or thrust.</p>
+    <p class="Note">The engineering units must go from the smallest value to the largest value (example: <strong>0 2000 4000 6000 8000</strong>). The Throttle System will reject the following: <strong>0 4000 2000 8000 6000.</strong></p>
+    <div class="Container"><img src="images/AnalogueCalFB1.png" alt="Analogue Calibration FB 1" width="360" height="360"></div><br>
+  
+  <li>Save and close the file.</li>
+  <li>Restart the display computer GUI software. For details, see <a href="StartUECU500.html">Starting the UECU-500 Mark III Throttle</a>.</li>   
+  <li>Select the desired engine. For details, see <a href="SelectEngine.html">Selecting an Engine Using the Throttle Quadrant</a>.</li>   
+  <li>At the bottom of the display computer screen, press the <strong>Calibration</strong> button.<br>
+    The Calibration screen is displayed.</li>
+    <p class="Note">If the calibration button is disabled, one or more interlocks are in place. For details, see <a href="#Interlocks">Interlocks</a>.</p>
+
+  <li>In the <strong>Select Channel</strong> list box, select an analogue channel to calibrate (<strong>Remote Command</strong> or <strong>Feedback#</strong>). In this example, <strong>Feedback 1</strong>.</li> 
+  <li>Press the <strong>Start </strong>button.</li>
+  <li>Using a voltage source (or by simulating the EU value at the source), inject a DC voltage that represents the first Engineering Unit in the <strong>Target</strong> column on the Calibration Mode screen.<br>
+    The Throttle Quadrant displays the <strong>Raw</strong> voltage injected into the Throttle Controller.</li>
+    <br><div class="Container"><img src="images/AnalogueFeedbackCalibration.png" alt="Analogue Feedback Calibration" width="450" height="600" border="1"></div><br>
+    
+  <li>Press the <strong>Accept</strong> button.<br>
+    The Throttle Quadrant displays the next Target.</li>
+   <br><div class="Container"><img src="images/NextTarget.png" alt="Next Target" width="350" height="228" border="1"></div><br>
+  <li>Using a voltage source (or by simulating the EU value at the source), inject a DC voltage that represents the next Engineering Unit in the <strong>Target</strong> column on the Calibration Mode screen.<br>
+    The Throttle Quadrant displays the <strong>Raw</strong> voltage injected into the Throttle Controller.</li>  
+  <li>Press the<strong> Accept</strong> button.<br>
+    The Throttle Quadrant displays the next Target.</li>
+  <li>Repeat steps 12 and 13 until complete.</li>
+   <p class="Note">A maximum of 8 points can be injected. The number of points has to match number of engineering units you entered in step 2. In this example, 5 engineering units were entered in step 2, so it is a five point calibration.</p>
+  <li>Press the <strong>Save </strong>button to save the calibration.</li>
+   <p class="Note">If the Cancel button is pressed, the data is cleared and not applied.</p>
+</ol>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

@@ -1,0 +1,575 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Viewing Engine Test Data</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="ViewEngTestData">Viewing Engine Test Data<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a><div float:right></div></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>proDAS enables engine test data to be displayed, printed, and played back through the use of the Reporting and Viewing Environment (RAVE) 
+  application, the Time On Condition and Engine Usage Monitoring (TOCEUM) Subsystem interface, and the Replay Mode. The RAVE and 
+  TOCEUM applications can be accessed from the proDAS Management GUI Control Panel. 
+  The Replay Control GUI is launched automatically from the Management GUI Control Panel when proDAS is configured in  Replay Mode.</p>
+<h2 id="RAVE">Reporting and Viewing Environment Application (RAVE)</h2>
+<p>The Reporting and Viewing Environment (RAVE) is an application used to view data recorded during a test and to create reports.</p>
+<p>The engine test data, collected by proDAS, consists of:</p>
+<ul>
+  <li>fullsets and event comments (saved in the proDAS database)</li>
+  <li>Critical, Transient, and Continuous Logs (stored in the log directories on the Host Computer)</li>
+</ul>
+<p>The Critical, Transient, and Continuous logs require conversion from binary to ASCII text for report viewing, analysis or printing purposes.</p>
+<p>The RAVE application consists of three main screens:</p>
+<ul>
+  <li>the Test Selection screen</li>
+  <li>the Reports screen</li>
+  <li>the Data screen</li>
+</ul>
+<h3 id="TestSelectScrn">Test Selection Screen</h3>
+<p>The Test Selection screen (displayed below) is launched after login. The user can retrieve any combination of engine tests using the query builder tool. The range of retrieved data is refined by execution of a single query defined as a set of selected search parameters. Typically, data is retrieved by selecting <em>predefined</em> (already saved) queries from a drop-down list. A query cannot locate a historical test or group of tests that have been archived.</p>
+<div class="Container"><img src="images/RaveLiteTestSelScreen.png" alt="Rave Lite Test Select Screen" width="700" height="538"></div>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="2" rowspan="1">Test Selection Screen</th>
+  </tr>
+  <tr>
+    <th>Buttons, Panels and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td>Predefined Queries</td>
+    <td>The Predefined Queries panel retrieves engine test data based on queries that have already been defined and saved. Queries retrieve specific test data by using a combination of search criteria such as test cell, engine type, engine serial number, test name and date.</td>
+  </tr>
+  <tr>
+    <td>Query controls</td>
+    <td>The buttons in the Query controls panel execute, save and display query data.
+      <ul>
+        <li><strong>Execute</strong> - retrieves engine tests based upon parameters in the QUERY BUILDER panels</li>
+        <li><strong>Save series</strong> - saves QUERY BUILDER data in an existing Category 
+          folder. A new Category folder may be created if desired</li>
+        <li><strong>Clear all</strong> - clears data within the QUERY BUILDER panels</li>
+        <li><strong>Reports</strong> - displays the Reports screen for the engine test 
+          highlighted in the Query Results panel</li>
+        <li><strong>SHOW/HIDE QUERY BUILDER</strong> - displays or closes the <a href="?57#QueryBuilderDescrip">QUERY BUILDER</a> area<br>
+          (for detailed information on the QUERY BUILDER, see <a href="../../StandardTools/RAVE/RAVE.htm#CreateNewQueries">Creating New Queries with the Query Builder Panel</a> in Building Reports with RAVE)</li>
+        <li><strong>Replace</strong> - overwrites engine tests in the Query Results panel with data that is retrieved from executing a new query</li>
+        <li><strong>Add</strong> - accumulates engine test in the field</li>
+        <li> scroll buttons (<strong>&lt;&lt; &lt; &gt; &gt;&gt;</strong>) are used to display a number of queries that are currently in use (i.e.: a query series)</li>
+        <li><strong>Data</strong> - displays the associate Fullsets for the engine test that is highlighted in the Query Results panel</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td id="QueryBuilderDescrip">QUERY BUILDER </td>
+    <td>The QUERY BUILDER panel is subdivided into Standard Test Criteria and Custom Test Criteria sections. There are five fields 
+      and five buttons within the Standard Test Criteria section for selecting data for test cell, engine type, engine serial number, test name and test date. The Custom Test Criteria section has twelve data fields and six buttons for retrieving customer specific data.</td>
+  </tr>
+  <tr>
+    <td>Query Results </td>
+    <td>The Query Results panel displays the retrieved data under the header bars:
+      <ul>
+        <li>Test Cell</li>
+        <li>Test Date</li>
+        <li>Test Name</li>
+        <li>Test Description</li>
+        <li>Engine</li>
+        <li>Serial Number</li>
+        <li>Engine Standard</li>
+        <li>Customer</li>
+      </ul>
+      The header bars within this field have similar functions to standard spreadsheet headers. Columns may be dragged laterally and 
+      placed in any order from left to right, and selecting a header bar will sort the corresponding data in ascending or descending order.</td>
+  </tr>
+  <tr>
+    <td>Session history</td>
+    <td>The Session History panel displays user related messages during the query session. All messages are stored in (and may be retrieved 
+      from) an RTE trace file. The Session history panel may be configured at the administrator level to display only operator messages or to include error and debugging messages to suit user requirements.<br>
+      <br>
+      The <strong>Clear</strong> button removes the entry displayed in the Session History panel.</td>
+  </tr>
+  <tr>
+    <td>Exit</td>
+    <td>The <strong>Exit</strong> button closes the Test Selection screen and exits RAVE.</td>
+  </tr>
+</table>
+<h3 id="ReportsScrn">Reports Screen</h3>
+<p>The <strong>REPORTS </strong> button in the QUERY CONTROLS panel of the the Test Selection screen displays the Reports screen (see below). The specific engine test that was highlighted in the QUERY RESULTS panel of the Test Selection screen is included in the Reports Screen. Report templates are selected by the user and populated by RAVE. The reports are produced in Microsoft Excel. Typical reports are:</p>
+<ul>
+  <li>Logsheets (containing fullsets (steady state data) and comments)</li>
+  <li>Transient Data Reports (depicting transient logs)</li>
+  <li>Fullset Reports (depicting steady state data)</li>
+  <li>Combination Reports (depicting both steady state and transient data)</li>
+</ul>
+<div class="Container"><img src="images/ReportsScreenFull.png" alt="Reports Screen Full" width="700" height="538"></div>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="2" rowspan="1">Reports Screen</th>
+  </tr>
+  <tr>
+    <th>Buttons, Panels and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td>Currently selected tests </td>
+    <td>The Currently selected tests panel displays the engine test that was highlighted in the Query Results panel of the Test Selection screen.</td>
+  </tr>
+  <tr>
+    <td>Single engine reports templates.</td>
+    <td>The Single engine reports templates. panel contains names of previously created reports (in <strong>.xls</strong> spreadsheet form).</td>
+  </tr>
+  <tr>
+    <td>REPORT TEMPLATE CONTENTS:</td>
+    <td>The REPORT TEMPLATE CONTENTS: panel displays the <strong>.ini</strong> configuration file of the selected Single engine reports template. The file defines the report contents, such as channels and test step names, limit lines and comments.</td>
+  </tr>
+  <tr>
+    <td>Report controls</td>
+    <td>The Report controls buttons and functions are:
+      <ul>
+        <li><strong>Select All</strong> - highlight the report templates within the Single Engine Report Templates panel</li>
+        <li><strong>Unselect All</strong> - deselect the report templates within the Single Engine Report Templates panel</li>
+        <li><strong>Report Builder</strong> - launches the Report Builder wizard used to create new report templates</li>
+        <li><strong>Peek</strong> - displays the <strong>.xls</strong> (Excel workbook) file based on the selected report template populated with the last test data that was deposited into the template
+          <p class="Note">Peek is only available when logged in as an Administrator level user.</p>
+        </li>
+        <li><strong> View</strong> - generates and displays an <strong>.xls</strong> report based on the selected report template and  data extracted from the <a href="../../StandardTools/TRSCDB/TRSCDB.htm#TRSC">TRSCDB</a> for the given engine test</li>
+        <li><strong>Print</strong> - prints the selected report in the form of an Excel workbook</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Session history</td>
+    <td>The Session history panel displays user related messages during the query session. All messages are stored in (and may be retrieved from) the RAVE trace file. The Session history panel may be configured by the administrator to display only operator messages or to include error and troubleshooting messages to suit the user's requirements.<br>
+      <br>
+      The <strong>Clear</strong> button removes the entry displayed in the Session history panel.</td>
+  </tr>
+  <tr>
+    <td>Back</td>
+    <td>The <strong>Back</strong> button closes the Reports screen and displays the Test Selection screen.</td>
+  </tr>
+</table>
+<h3 id="DataScrn">Data Screen</h3>
+<p>The <strong>Data</strong> button on the Test Selection screen displays the Data screen. The Data screen allows the user to view data from the selected test.</p>
+<div class="Container"><img src="images/DataScreen.png" alt="Data Screen" width="700" height="546"></div>
+<table class="Table-Grey">
+  <tr >
+    <th colspan="2" rowspan="1" >Reports Screen</th>
+  </tr>
+  <tr>
+    <th>Buttons, Panels and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td>Last FULLSET</td>
+    <td>The <strong>Last FULLSET</strong> button selects the last fullset in the FULLSETS panel list.</td>
+  </tr>
+  <tr>
+    <td>Select All</td>
+    <td>The <strong>Select All</strong> button selects all the fullsets in the FULLSETS panel list.</td>
+  </tr>
+  <tr>
+    <td>Unselect all</td>
+    <td>The <strong>Unselect all </strong> button unselects all the fullsets in the FULLSETS panel list.</td>
+  </tr>
+  <tr>
+    <td>Peek</td>
+    <td>The <strong>Peek</strong> button displays channel names, values and qualities, fullset stability standard deviation, units, limit (min/max value) and sample count fields for the selected fullsets.</td>
+  </tr>
+  <tr>
+    <td>Export</td>
+    <td>The <strong>Export</strong> button exports the list of events from the EVENTS panel.</td>
+  </tr>
+  <tr>
+    <td>Show logs</td>
+    <td>The <strong>Show logs</strong> button toggles between the EVENTS panel and the LOGS panel.</td>
+  </tr>
+  <tr>
+    <td>Clear</td>
+    <td>The <strong>Clear</strong> button clears the Session History.</td>
+  </tr>
+  <tr>
+    <td>Back</td>
+    <td>The <strong>Back</strong> button returns to the Test Selection Screen.</td>
+  </tr>
+</table>
+<h2 id="StartRAVE">Starting the Reporting and Viewing Environment (RAVE)</h2>
+<p>To start RAVE:</p>
+<ol>
+  <li>From the Management GUI Control Panel (below) Tools menu, select <strong>Post Test Functions / Real-Time Report</strong> or <strong>RAVE</strong>.
+    <p class="Note">If RAVE is selected the RTReports screen is not displayed.</p>
+    <div class="Container"><img src="images/MGTControlPanel.gif" alt="MGT Control Panel" width="734" height="385"></div>
+    The RTReports screen is displayed.
+    <div class="Container"><img src="images/RTReports.png" alt="RT Reports" width="253" height="145"></div>
+  </li>
+  <li>Select <img src="images/RTRbtnRave.gif" alt="RTR Button Rave" width="43" height="39"> from the RTReports screen.<br>
+    The Test Selection screen is displayed.
+    <div class="Container"><img src="images/RAVEPage.png" alt="RAVE Page" width="700" height="538"></div>
+  </li>
+</ol>
+<h2 id="RetrievSavedQueries">Retrieving Engine Tests using Saved or Predefined Queries</h2>
+<p>The user can retrieve any combination of engine tests with the screen query tools. The tools may execute a single query with a set of selected search parameters to refine the range of retrieved data. Most of the time, data is retrieved by selecting predefined (already saved) queries from a drop-down list. A query cannot locate a historical test or group of tests that have been archived to tape.</p>
+<ol>
+  <li>Select a previously saved category from the <strong>Query and Report Categories</strong> drop-down list in the Predefined Queries field.</li>
+  <li>Select the desired query from the <strong>Current queries</strong> drop-down list in the <strong>Predefined Queries</strong> field.
+    <div class="Container"><img src="images/RavePredefinedQueriesSaved.png" alt="Rave Predefined Queries Saved" width="347" height="97"></div>
+  </li>
+  <li>Select <strong>Execute</strong> in the Query controls field to execute the query and retrieve the engine tests based on the search criteria defined in the query.
+    <div class="Container"><img src="images/RaveLiteQueryControls.png" alt="Rave Lite Query Controls" width="273" height="63"></div>
+    <p class="Note">The Clear all button in the Query controls field deletes both unsaved queries and query data.</p>
+    Engine test data from executed queries is displayed in the Query Results field under the header bars:
+    <ul>
+      <li>Test Cell</li>
+      <li>Test Date</li>
+      <li>Test Name</li>
+      <li>Test Description</li>
+      <li>Engine</li>
+      <li>S/N(serial number)</li>
+      <li>Engine Standard</li>
+      <li>Customer</li>
+    </ul>
+    <div class="Container"><img src="images/RaveLiteQueryResultsPopulated.png" alt="Rave Lite Query Results Populated" width="698" height="463"></div>
+    The header bars in the Query Results field have functions similar to standard spreadsheet headers (i.e.: columns may be dragged laterally and placed in any order from left to right and clicking on a header bar sorts the corresponding data in ascending or descending order).</li>
+  <li>To add additional engine tests from another query or to replace the current engine tests already queried:
+    <ol type="a">
+      <li type="a">Select another previously saved query from the Query and Report Categories drop-down list in the Predefined Queries field.</li>
+      <li>Select <strong>Replace</strong> to overwrite the present engine test in the Query Results field or select <strong>Add</strong> to retain the present data and to include the additional engine tests reprieved by the new query.</li>
+      <li>Select <strong>Execute</strong>.<br>
+        <br>
+      </li>
+    </ol>
+    The scroll buttons <img src="images/QueryControlsSelectButtons.png" alt="Query Controls Select Buttons" width="131" height="19"> display queries that are temporarily stored in local memory (i.e.: a query series) but have not yet been saved to disk.</li>
+  <li>Select the desired engine test from the <strong>Query Results</strong> field.<br>
+    For viewing the Fullsets and Events associated with the highlighted engine test, see <a href="#ViewFullsetsEvents">Viewing Fullsets and Events using RAVE</a>.<br>
+    For generating reports from the highlighted engine test, see <a href="#ReportsScrn">Generating Reports using RAVE</a>.</li>
+</ol>
+<h2 id="RetrieveusingQueryCtrls">Retrieving Engine Tests using Query Controls</h2>
+<p>From the Predefined Queries panel on the Test Selection screen:</p>
+<ol>
+  <li>Select a previously saved query (e.g.: ATP_RAVE) from the drop-down list in the <strong>Query and Report Categories</strong> field.
+    <div class="Container"><img src="images/RavePredefinedQueriesSaved.png" alt="Rave Predefined Queries Saved" width="347" height="97"></div>
+  </li>
+  <li>Select the desired query (e.g.: atp_rave1) from the drop-down list within the <strong>Current queries</strong> field.</li>
+  <li>Select <strong>Execute</strong> from the Query controls panel to retrieve engine tests that are associated with the desired query.</li>
+  <li>Select the desired engine test (highlighted) listed in the <strong>Query Results</strong> panel.</li>
+  <li>Select <strong>Reports</strong> from the Query controls panel to open the Reports screen.<br>
+    The Reports screen is displayed.
+    <div class="Container"><img src="images/ReportsScreenFull.png" alt="Reports Screen Full" width="700" height="538"></div>
+  </li>
+</ol>
+<h2 id="ViewFullsetsEvents">Viewing Fullsets and Events Using RAVE</h2>
+<ol>
+  <li>Select a previously saved query from the Query and Report Categories drop-down list in the Predefined Queries field.</li>
+  <li>Select the desired query from the Current queries drop-down list in the Predefined Queries field.</li>
+  <li>Select the <strong>Execute</strong> button in the Query controls field to retrieve the engine tests associated with the desired query. </li>
+  <li>Highlight the engine test of interest within the Query Results field and select the <strong>Data</strong> button in the Query controls field.<br>
+    The Data screen, populated with all the fullsets and events for the selected engine test, is displayed.
+    <div class="Container"><img src="images/DataScreen.png" alt="Data Screen" width="700" height="546"></div>
+    <br>
+    The fullsets from the highlighted engine test are displayed in the FULLSETS field under the header bars:<br>
+    <ul>
+      <li>Test Cell</li>
+      <li>Test Date</li>
+      <li>Test Name</li>
+      <li>Test Step</li>
+      <li>Fullset Date</li>
+      <li>Fullset Comment</li>
+      <li>Fullset Number</li>
+    </ul>
+    <br>
+    The events from the highlighted engine test are displayed in the EVENTS field under the header bars:<br>
+    <ul>
+      <li>Test Cell</li>
+      <li>Test Date</li>
+      <li>Test Name</li>
+      <li>Test Step</li>
+      <li>Event Date</li>
+      <li>Event Comment</li>
+    </ul>
+    The header bars in the FULLSETS and EVENTS fields have functions similar to standard spreadsheet headers (i.e.: columns may be dragged laterally and placed in any order from left to right and clicking on a header bar sorts the corresponding data in ascending or descending order).
+    <p class="Note">There is no PEEK feature for the data in the EVENTS field.</p>
+  </li>
+  <li>To highlight the last Fullset within the test, select <strong>LAST FULLSET</strong>.<br>
+    To highlight all the Fullsets within the test, select <strong> SELECT ALL</strong>.<br>
+    To highlight specific Fullsets within the test, push the Shift-key or the Ctrl-key and use the mouse to click-on selected Fullsets.</li>
+  <li>Select the <strong>PEEK</strong> button to display the selected Fullset data on the Peek Exporting screen.<br>
+    The Peek Exporting screen allows the user to preview all of the highlighted Fullsets.
+    <p class="Note">The Fullset table stores the minimum and maximum channel values, the standard deviation and the number of samples for any channels flagged for fullset stability processing.</p>
+    <div class="Container"><img src="images/PeakExport.gif" alt="Peak Export" width="700" height="534"></div>
+  </li>
+  <li>Select <strong>Export</strong> to transfer the previewed Fullsets to a text file that can be saved to the hard disk of the Management Interface Computer. The Save As window is displayed.
+    <div class="Container"><img src="images/PeekExportingSaveFile.png" alt="Peek Exporting Save File" width="427" height="265"></div>
+  </li>
+  <li>From the Save in: drop-down list, select the location to which the text file is to be saved.</li>
+  <li> Enter the filename for the text file in the File name field.</li>
+  <li>Select <strong>Save</strong> to save the file.<br>
+    The Save As window is closed and the Peek Exporting screen is displayed.
+    <div class="Container"><img src="images/PeakExport.gif" alt="Peak Export" width="700" height="534"></div>
+  </li>
+  <li>Select <strong>BACK</strong> on the Peek Exporting screen to return to the Data screen.
+    <p class="Note">When SHOW LOGS is selected, the button toggles to SHOW EVENTS.</p>
+    <p class="Note">The SHOW EVENTS screen allows the user to enter comments to the database using non-English characters.</p>
+    <div class="Container"><img src="images/LogsDataScreen.png" alt="Logs Data Screen" width="701" height="549"></div>
+    <br>
+    The logs are displayed in the LOGS field under the header bars:
+    <ul>
+      <li>Test Step</li>
+      <li>Engine Name</li>
+      <li>Test Name</li>
+      <li>Log Name</li>
+      <li>File Path</li>
+      <li>Log Size</li>
+      <li>Log Date</li>
+    </ul>
+  </li>
+  <li>Select <strong>BACK</strong> on the Data screen to return to the Test Selection screen.</li>
+  <li>Select <strong>Exit</strong> on the Test Selection screen to close the RAVE application and return to the Management GUI Control Panel.</li>
+</ol>
+<h2 id="EditTestDiaryCommments">Editing and Inserting Test Diary Events</h2>
+<p>Test Diary events can be added (inserted) or edited within the Events Panel of the Data screen.</p>
+<p>To edit or add events in the Test Diary:</p>
+<ol>
+  <li>From the QUERY RESULTS panel, highlight the required test data (i.e.: ATP_ENGINE).
+    <div class="Container"><img height="463" src="images/RaveLiteQueryResultsPopulated.png" alt="Rave Lite Query Results Populated" width="698"></div>
+  </li>
+  <br>
+  <li>From the Query Controls panel select <strong>Data</strong>. The Data screen is displayed with a FULLSETS and EVENTS panel. <br>
+    <div class="Container"><img src="images/InsertCommentEventsScrn.png" alt="Insert Comment Events Scrn" width="702" height="558"></div>
+  </li>
+</ol>
+<h3 id="EditUserComments">Editing Events</h3>
+<p>The Event Comment text, test step identifier and event date (timestamp) of an operator generated event message can be edited. These event messages are displayed in a blue font. Events that have been edited via RAVE are identified by a blue font and an ***EDITED*** prefix in the <strong>Event Comment</strong> column. Events that have been added via RAVE are identified by a blue font and an ***ADDED*** prefix in the <strong>Event Comment</strong> column.</p>
+<p>To edit an event:</p>
+<ol>
+  <li>Right-click on an event in the EVENTS panel. An edit context menu is displayed.
+    <div class="Container"><img height="555" src="images/EditEvents.png" alt="Edit Events" width="702"></div>
+  </li>
+  <li>Select the required action from the edit menu:<br>
+    <ol type="a">
+      <li>Select <strong>Edit Test Step</strong> from the edit menu to update the Test Step text of the event. The EDIT TEST STEP window is displayed.
+        <div class="Container"><img height="152" src="images/EditTestStep.png" alt="Edit Test Step" width="363"></div>
+        Enter the test step text in the field and select <strong>OK</strong>. The Test Step of the event is updated.<br>
+      </li>
+      <li>Select <strong>Edit Timestamp</strong> from the edit menu to update the Test Date text of the event. The EDIT TIMESTAMP window is displayed.
+        <div class="Container"><img height="152" src="images/EditTimeStamp.png" alt="Edit Time Stamp" width="363"></div>
+        Enter the timestamp in the field and select <strong>OK</strong>. The Event Date of the event is updated.</li>
+      <li>Select <strong>Edit User Comment</strong> from the edit menu to update the Event Comment text of the event.
+        <div class="Container"><img height="152" src="images/EditUserComment.png" alt="Edit User Comment" width="363"></div>
+        Enter the user comment in the field and select <strong>OK</strong>. The Event Comment of the event is updated.</li>
+    </ol>
+  </li>
+</ol>
+<h3 id="InsertNewEvent">Inserting a New Event</h3>
+<p>The insertion point of a new event relative to existing events is determined by the Event Date information. An inserted event is identified by a blue font and an ***ADDED*** prefix in the <strong>Event Comment</strong> column.</p>
+<p>To insert a a new event:</p>
+<ol>
+  <li>Right-click on an event in the in the EVENTS panel. An <strong>Insert New Event</strong> context menu item is displayed (<img height="23" src="images/InsertNewEventMenu.png" alt="Insert New Event Menu" width="110">).
+    <div class="Container"><img height="558" src="images/InsertCommentsEventsScrn.png" alt="Insert Comments Events Scrn" width="702"></div>
+    <p class="Note">The EVENTS section can display comments containing non-English characters.</p>
+  </li>
+  <li>Select <strong>Insert New Event</strong>. An INSERT NEW EVENT window for the event timestamp is displayed.<br>
+    Enter the timestamp in the field.
+    <div class="Container"><img  height="152" src="images/InsertTimestamp.png" alt="Insert Timestamp" width="363"></div>
+    <p class="Note">This field supports non-English characters.</p>
+    Select <strong>OK</strong> to create a timestamp for the new event. An INSERT NEW EVENT window for the event user comment is displayed. </li>
+  <li>Enter the user comment in the field.
+    <div class="Container"><img height="152" src="images/InsertComment.png" alt="Insert Comment" width="363"></div>
+    <p class="Note">This field supports non-English characters.</p>
+    Select <strong>OK</strong> to create a user comment for the new event. An INSERT NEW EVENT window for the event test step is displayed. </li>
+  <li>Enter the test step in the field.
+    <p class="Note">Do not exceed 20 characters in the field. Comments that are longer than 80 characters can be added or edited, however multiple event messages are generated due to the 80 character limit per Event comment.</p>
+    <div class="Container"><img height="152" src="images/InsertTestStep.png" alt="Insert Test Step" width="363"></div>
+    <p class="Note">This field supports non-English characters.</p>
+    Select <strong>OK</strong> to create a test step for the new event.</li>
+</ol>
+<h2 id="ViewQuerieswithSQL">Viewing Log Data</h2>
+<p>To view log data:</p>
+<ol>
+  <li>From the QUERY RESULTS panel, highlight the required test data (i.e.: ATP_ENGINE).
+    <div class="Container"><img src="images/RaveLiteQueryResultsPopulated.png" alt="Rave Lite Query Results Populated" width="698" height="463"></div>
+  </li>
+  <li>From the Query Controls panel select <strong>Data</strong>. The Data screen is displayed.
+    <div class="Container"><img src="images/LogsDataScreen.png" alt="Logs Data Screen" width="701" height="549"></div>
+    <br>
+  </li>
+  <li>Highlight one log from the panel and select <strong>PREVIEW</strong>.<br>
+    The Log Preview screen is displayed.
+    <div class="Container"><img src="images/LogPreviewRelativeScale.png" alt="Log Preview Relative Scale" width="700" height="544"></div>
+  </li>
+  <li>From the <strong>Tools</strong> tab, select up to ten channels from the <strong>Available Channels</strong> panel and move them 
+    to the <strong>Selected Channels</strong> panel by selecting <img src="images/ArrowButton4.png" alt="Arrow Button 4" width="33" height="25">. </li>
+  <li>Move the <strong>Log Data</strong> slider to retrieve up to 32,000 scans of log data.
+    <p class="Note">The Log Data slider is enabled only when there are more than 32,000 scans of data within the log.</p>
+  </li>
+  <li>Select <img src="images/FetchButton.gif" alt="Fetch Button" width="26" height="30"> (Fetch) 
+    to retrieve the selected channel data from the log. The data is loaded into Rave.</li>
+  <li>Select the required check boxes in the Selected Channels field.</li>
+  <li>Select the Relative or Absolute scale radio button to modify the amplitude (y-axis) and time scale (x-axis) of the graph.</li>
+  <li>Move the Start Time and End Time sliders to select a specific time frame within the log.</li>
+  <li>Select <img src="images/GraphsButton.gif" alt="Graphs Button" width="32" height="31"> (Graph) to display data from the selected channels in graphical form.</li>
+  <li>Select the test from the <strong>Events</strong> drop-down list to center the time range of the data around the selected event.
+    <p class="Note">This feature is only enabled when previewing a Continuous Log.</p>
+  </li>
+  <li>Select <img src="images/LogQualityButton.gif" alt="Log Quality Button" width="33" height="33"> (Quality) to generate a Log Quality Summary Report.<br>
+    The Log Quality Summary Report is displayed.
+    <p class="Note">The Log Quality Summary Report may also be displayed with the LOG QUALITY button on the Data screen.</p>
+    <div class="Container"><img src="images/LogQualitySummary.png" alt="Log Quality Summary" width="651" height="530"></div>
+  </li>
+  <li>Select <img src="images/FullsetButton.gif" alt="Fullset Button" width="33" height="33" > (Fullset).<br>
+    The Generate Fullset window is displayed.
+    <div class="Container"><img src="images/GenerateFullset.png" alt="Generate Fullset" width="417" height="118"></div>
+  </li>
+  <li>Select a test step from the TEST STEP drop-down list or enter a new test step title within the TEST STEP field.</li>
+  <li>If desired, enter a comment within the COMMENT field to overwrite the default comment.</li>
+  <li>Select <img src="images/FullsetButton.gif" alt="Fullset Button" width="33" height="33" > (Fullset) to generate the fullset of data, and transmit the fullset to the database.<br>
+    A confirmation window is displayed. Select <strong>Yes</strong>, and a second confirmation box is displayed. Select <strong>OK</strong>.</li>
+  <li>Select the <span class="bold">Data</span> tab on the Log Preview screen to view all the data that has been retrieved and graphed by RAVE.<br>
+    The Chart Data and Log Data fields are displayed.<br>
+    <div class="Container"><img src="images/DataTab.png" alt="Data Tab" width="701" height="550"></div>
+  </li>
+  <li>To export the graphical data into a tab-delimited file (which can be viewed in Excel), select the <strong>Export</strong> tab. The Available Channels, Selected Channels and Export fields are displayed.
+    <div class="Container"><img src="images/ExportTab.png" alt="Export Tab" width="701" height="551"></div>
+  </li>
+  <li>Select the desired channels from the Available Channels field with the arrow buttons <img src="images/ArrowButton4.png" alt="Arrow Button 4" width="33" height="25" > <img src="images/ArrowButton3.png" alt="Arrow Button 3" width="33" height="25" > <img src="images/ArrowButton2.png" alt="Arrow Button 2" width="33" height="25" > <img src="images/ArrowButton1.png" alt="Arrow Button 1" width="33" height="25" >.</li>
+  <li>Select <img src="images/FetchButton.gif" alt="Fetch Button" width="26" height="30"> (Fetch) to retrieve data for the Selected Channels. The data that is displayed within the Export field is defined by the chart time frame.
+    <p class="Note">There is a limit on the amount of data that can be fetched. This limit is based on the number of channels selected and scans per channel that were recorded.</p>
+    <p class="Note">There is a RAVE ini parameter that controls how much memory/disk space is allocated to fetch channel data. The following parameter value would need to be increased in order to allow the fetching of more channel data:<br>
+      <br>
+      [GRAPH]<br>
+      FetchExportLimit=100000000</p>
+  </li>
+  <li>To save the Export field data to disk, select <img src="images/SaveButton.gif" alt="Save Button" width="31" height="29" > (Save).</li>
+  <li>To print the Export field data, select <img src="images/PrintButton.gif" alt="Print Button" width="31" height="30" > (Print).<br>
+  </li>
+</ol>
+<h2 id="ASCIIReport">Generating ASCII Reports</h2>
+<p>To generate an ASCII report:</p>
+<ol>
+  <li>From the Data Screen Logs Panel, highlight a log and select <strong>ASCII Report</strong>.<br>
+    The Select Channels screen is displayed.
+    <div class="Container"><img src="images/ASCIIreport.png" alt="ASCII Report" width="508" height="264"></div>
+  </li>
+  <li>Select the required channel(s) from the All Channels list and use the right arrow button to move the desired channel(s) to  the Selected Channels list. Use the left arrow button to remove a channel from the Selected Channels list.</li>
+  <li>Select <strong>Browse</strong> to specify the location of the saved report.</li>
+  <li>Select <strong>OK</strong> to save the ASCII report.</li>
+  <li>To return to the Data Screen without saving, select <strong>Cancel</strong>.</li>
+</ol>
+<h2 id="GeneratingReportsRAVE">Generating Reports using RAVE</h2>
+<p>A new report may be generated using the REPORT CONTROLS buttons on the Reports screen or an existing report can be populated with the selected engine test data and viewed from the Reports screen.</p>
+<div class="Container"><img src="images/RAVEPage.png" alt="RAVE Page" width="700" height="538"></div>
+<p>From the Test Selection screen:</p>
+<ol>
+  <li>Select a previously saved query from the Query and Report Categories drop-down list in the Predefined Queries field.</li>
+  <li>Select the desired query from the Current queries drop-down list in the Predefined Queries field.</li>
+  <li>Select <strong>Execute</strong> in the Query controls field to retrieve data.</li>
+  <li>Select the desired engine test from the Query Results field.</li>
+  <li> Select <strong>REPORTS</strong> in the Query controls field.<br>
+    The Reports screen is displayed.
+    <div class="Container"><img src="images/ReportsScreenFull.png" alt="Reports Screen Full" width="700" height="538"></div>
+  </li>
+  <li>Highlight the desired template from the Single Engine Report Templates field.</li>
+  <li>Select <strong>View</strong> to generate and display the <strong>.xls</strong> (Excel workbook) file.<br>
+    The .xls (Excel workbook) file is based on the Report Templates and is populated with engine test data that has been extracted from the proDAS database.<br>
+  </li>
+  <li>When <strong>View</strong> is selected, the Duplicate Comments dialogue box is displayed if the engine test data contains more than one comment with the same TEST_STEP name.
+    <div class="Container"><img src="images/DuplicateComments.png" alt="Duplicate Comments" width="635" height="391"></div>
+  </li>
+  <li>Highlight (select) the comment or comments to be included in the report.
+    <p class="Note">The button Select All  highlights all comments to be included in the report and displays a Select Comments prompt. <img src="images/SelectComments.png" alt="Select Comments" width="383" height="107"> <br>
+      Select OK to generate the report in Excel without further prompting for duplicate comments. </p>
+  </li>
+  <li>When all the applicable comments have been highlighted, select <strong>Continue</strong>.<br>
+    The Single Engine Report - Duplicate Test Steps Found! dialogue box is displayed for each occurrence of a duplicate TEST_STEP name.
+    <p class="Note">This can be repeated for all TEST_STEP's that have been defined for the report.</p>
+    This occurs for each engine test data.
+    <div class="Container"><img src="images/SingleEngineDuplicateTestSteps.png" alt="Single Engine Duplicate Test Steps" width="636" height="388"></div>
+  </li>
+  <li>If duplicate test steps are found, select the test step that is to be included for the currently selected report to be generated.</li>
+  <li>When the test step has been selected, select <strong>Continue</strong>.<br>
+    The Single Engine Report - Duplicate Test Steps Found! dialogue box is closed and the Report is generated in Excel.
+    <p class="Note">This is repeated for all instances of Duplicate test steps being found.</p>
+  </li>
+  <li>To print the generated report in Excel, select <strong>File&gt;Print</strong> from the Excel toolbar.
+    <p class="Note">The Logsheets and reports are saved in a default Populated Reports folder within the corresponding Reports directory.</p>
+  </li>
+  <li>To close the report, select <strong>File&gt;Exit</strong> from the Excel toolbar. The Reports screen in RAVE is visible.</li>
+  <li>Select <strong>BACK</strong> on the Reports screen to return to the Test Selection screen.</li>
+  <li>Select <strong>EXIT</strong> on the Test Selection screen to close the RAVE application.</li>
+</ol>
+<h2 id="GenerateLogQualityReport">Generating a Log Quality Summary Report</h2>
+<p>To generate a log quality summary report:</p>
+<ol>
+  <li>From the <strong>Query Results</strong> panel, highlight the required test data (e.g. ATP_ENGINE).
+    <div class="Container"><img src="images/RaveLiteQueryResultsPopulated.png" alt="Rave Lite Query Results Populated" width="698" height="463"></div>
+  </li>
+  <li>From the Query controls panel, select <strong>Data</strong>.<br>
+    The Data (Fullsets) screen is displayed.
+    <div class="Container"><img src="images/LogsDataScreen.png" alt="Logs Data Screen" width="701" height="549"></div>
+  </li>
+  <li> Highlight one log (e.g.: Pulse 5) from the panel and select <strong>LOG QUALITY</strong>.<br>
+    The Log Quality Summary Report is displayed.
+    <p class="Note">The Log Quality Summary Report may also be displayed with the LOG QUALITY button when graphically previewing the transient log data.</p>
+    <div class="Container"><img src="images/LogQualitySummary.png" alt="Log Quality Summary" width="651" height="530"></div>
+  </li>
+</ol>
+<h2 id="ConfigproDASinReplayMode">Configuring proDAS in Replay Mode</h2>
+<p>The engine test data, collected and saved by proDAS, consists of:</p>
+<ul>
+  <li>fullsets and comments (saved into the proDAS database on the Host Computer)</li>
+  <li>Critical, Transient, and Event Logs (that are stored in the log directories on the Host Computer)</li>
+</ul>
+<p>The Replay Control GUI allows the operator to replay the saved Critical and Transient logs.</p>
+<p>While in the Replay mode, the operator can  perform the following functions:</p>
+<ul>
+  <li>change operator pages</li>
+  <li>use the Spotlight feature</li>
+  <li>create a report from the loaded log</li>
+  <li>print an operator screen</li>
+  <li>review messages in the Event Handler window</li>
+</ul>
+<p>The Replay Control GUI is launched automatically from the Management GUI Control Panel when proDAS is configured in  Replay mode. </p>
+<p>To launch the Replay Control GUI:</p>
+<ol>
+  <li>From the Management GUI Control Panel configure proDAS in Replay mode, see <a href="../StartConfigStopDAS/StartConfigStopDAS.htm#ConfigforEngineTest">Configuring proDAS for an Engine Test</a>.<br>
+    The Replay Control GUI is launched automatically when proDAS is configured.</li>
+</ol>
+<h3 id="PlayBackSavedCritHistLogs">Playing Back Saved Critical or Transient Logs</h3>
+<p>To select a log for playback:</p>
+<ol>
+  <li>Select <img src="images/FolderBtn.png" alt="Folder button" width="28" height="25"> from the Replay Control GUI (below).
+    <div class="Container"><img src="images/ReplayGUIAbsoluteMode.png" alt="Replay GUI Absolute Mode" width="510" height="305"></div>
+    The Open dialogue box (below) is displayed.
+    <div class="Container"><img src="images/ReplayDialogBoxA.png" alt="Replay Dialog Bo xA" width="428" height="266"></div>
+  </li>
+  <li>From the Look in: drop-down list, select the folder (e.g.: hist_logs) where the log file is located.</li>
+  <li>Select the log file (e.g.: ATP_LOG.1) from the list and select <strong>Open</strong>.<br>
+    The Open dialogue box is closed.<br>
+    The selected log file is sent to the RTE and the location of the selected log file is displayed in the Log File: field of the Replay Control GUI.
+    <div class="Container"><img src="images/ReplayGUIfileSelectedA.png" alt="Replay GUI file Selected A" width="510" height="305"></div>
+    <p class="Note">Since the selected log file is not a continuous log, the Skip buttons and Events drop-box are disabled.</p>
+  </li>
+  <li>For information on using the Replay Control GUI to play back the selected log file, see the <a href="../../StandardTools/Replay/Replay.html#ReplayControlGUItable">Replay Control GUI table</a>.</li>
+</ol>
+<h3 id="CreatingReportPlayBack">Creating a Report from the Log Being Played Back</h3>
+<p>While proDAS is in the Playback mode, the operator can convert the Transient or Critical log, that is being played back into a text file (report), allowing the engine parameters to be analysed using a standard test editor.</p>
+<p>To create a report from the log being played back, see <a href="../../StandardTools/RAVE/RAVE.htm#CreateNewReport">Creating a New Report</a>.</p>
+<p>To view the the report, see <a href="../RunEngineTest/RunEngineTest.htm#RTReports">Real Time Reports</a>.</p>
+<h3 id="RecalcChanDataInReplayMode">Recalculating Channel Data while in Replay Mode</h3>
+<p>While in replay mode, the calculated subsystem functions the same as in normal scan mode.</p>
+<p>For information and procedures on recalculating channel data, see <a href="../../CustomApps/ExtHookFramework/ExtHookFramework.htm#ExtHookRecalc">External Hook Framework Recalculation</a>.</p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

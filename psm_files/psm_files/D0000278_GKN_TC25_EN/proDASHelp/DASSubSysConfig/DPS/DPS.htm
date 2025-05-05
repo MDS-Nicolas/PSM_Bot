@@ -1,0 +1,333 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>DSA Pressure Scanner (DPS) Subsystem</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="PressureScanner">DSA Pressure Scanner (DPS) Subsystem (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The DSA Pressure Scanner (DPS) Subsystem is used for pneumatic pressure measurements from the Digital Sensor Array (DSA) 3017 and DSA 3217 Pressure Scanners. Engineering unit pressure measurement data, calculated using the calibration coefficients stored within each DSA Pressure Scanner, is transmitted from the DSA Pressure Scanner to the DPS Subsystem. Data from all configured pressure channels is transmitted to the RTE Current Value Table (CVT). Communication between proDAS and the DSA Pressure Scanners is 10 Base-T Ethernet.</p>
+<p>The DPS Subsystem operates within proDAS and, subject to the limitations of the network, any number of DSA Pressure Scanners or channels can be configured and connected. Each configured pressure channel (up to 16 channels per scanner) scans at a rate of up to 33 hertz for DSA 3000-series Pressure Scanners and up to 200 hertz for DSA 3200-series Pressure Scanners. There is no buffering of data on the DSA Pressure Scanners.</p>
+<p>Initialize, Operate and Quick Zero functions are supported. The Quick Zero function is initiated automatically when the RTE starts scanning. The DSA driver does not support a remote Purge function, however, a manual purge function is available.</p>
+<h2 id="ConfigDPSChannel">Configuring a DPS Channel</h2>
+<p>To configure a DSA Pressure Scanner Channel:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit Menu as described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</li>
+  <li>Select the name of the DPS Subsystem from the list of available subsystems.
+    <div class="Container"><img src="images/SelectSubsystemName.PNG" alt="SelectSubsystemName" width="387" height="317"></div>
+  </li>
+  <br>
+  <li> Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a><a href="../ConfigEditors/ConfigEditors.htm#GenCol" ></a>.</li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel 
+    Editor</a>.
+    <div class="Container"><img src="images/ChannelEditor.png" alt="ChannelEditor" width="700" height="424" ></div>
+  </li>
+  <br>
+  <li>Select the <strong>Scanner Name</strong> from the drop-down list of available scanners.</li>
+  <li>Set the <strong>Pressure Port</strong> to a number between 1 and 16.</li>
+  <li>If conversion to an absolute pressure is required, set the optional parameter <strong>Ambient Pressure Channel</strong>.</li>
+</ol>
+<h2 id="ConfigFileStructure">Configuration File Structure</h2>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm" >Channel Editor</a> or imported directly from an XML file or a tab-delimited text file  (currently not available).</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu" >Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import a <strong>DPS</strong> channel, see <a href="#XMLFileStructure" >XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras 
+  -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import a <strong>DPS</strong> channel, see <a href="?11#TabDelimitFileStructure"> Tab-Delimited File Structure</a> (currently not available).</p>
+<h3 id="XMLFileStructure">XML File Structure</h3>
+<h4 id="ChannelsXML">Channels</h4>
+<p>The channels are stored in the<strong> </strong>Channels.xml files in the configuration directories.</p>
+<p>A DPS Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure" >Channel Editor - Generic Channel Parameters - XML File Structure</a>, and the specific attributes <strong>ScannerName</strong>, <strong>Port</strong>, and <strong>AmbientPressChannel</strong>. These attributes are explained in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Scanner Name</td>
+    <td>ScannerName</td>
+    <td>SCANNER_NAME</td>
+    <td>A unique identifier of a DSA Pressure Scanner.</td>
+    <td>String</td>
+    <td>The name of a scanner from the DPS Subsystem  Collection</td>
+  </tr>
+  <tr>
+    <td>Pressure Port</td>
+    <td>Port</td>
+    <td>PRESS_PORT</td>
+    <td>The pressure port on the scanner.</td>
+    <td>Integer</td>
+    <td>An Integer between 1 and 16</td>
+  </tr>
+  <tr>
+    <td>Ambient Pressure Channel</td>
+    <td>AmbientPressChannel</td>
+    <td>AMB_PRESS_CHAN</td>
+    <td>The name of the channel which provides the ambient pressure.</td>
+    <td>String</td>
+    <td>The name of a channel defined in the Channel  Collection</td>
+  </tr>
+</table>
+<p>The structure of a DSA Pressure Scanner Channel complies with the following example:</p>
+<blockquote><code>&lt;Channels LastModificationDate=&quot;<strong>2015-06-10 16:03:00</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;<br>
+  &lt;Channel Name=&quot;DPS1&quot; <br>
+  Description=&quot;&quot; <br>
+  Enabled=&quot;true&quot; <br>
+  LastModificationDate=&quot;2015-06-10 16:03:00&quot; <br>
+  SubsystemName=&quot;DPS&quot; <br>
+  SubsystemType=&quot;DPS&quot; <br>
+  AlternateName=&quot;&quot; <br>
+  DataType=&quot;Float&quot; <br>
+  InitialValue=&quot;-999999&quot; <br>
+  Format=&quot;4.2f&quot; <br>
+  UpdateRate=&quot;1&quot; <br>
+  QualityCeiling=&quot;GOOD&quot; <br>
+  Critical=&quot;false&quot; <br>
+  EngineeringUnit=&quot;-&quot; <br>
+  DisplayMin=&quot;0&quot; <br>
+  DisplayMax=&quot;100&quot; <br>
+  DeadBand=&quot;0&quot; <br>
+  Output=&quot;false&quot; <br>
+  ReferenceChannel=&quot;&quot; <br>
+  Group=&quot;&quot; <br>
+  SignalId=&quot;&quot; <br>
+  CalSensor=&quot;&quot; <br>
+  CalGroup=&quot;&quot; <br>
+  FixedSensor=&quot;&quot; <br>
+  CustomerSensor=&quot;&quot; <br>
+  FullsetStability=&quot;false&quot; <br>
+  ContinuousLog=&quot;true&quot; <br>
+  ScannerName=&quot;DPS&quot; <br>
+  Port=&quot;1&quot; <br>
+  AmbientPressChannel=&quot;AP0Sel&quot;/&gt;<br>
+  &lt;/Channels&gt;<br>
+</code></blockquote>
+<h4 id="SubsystemsXML">Subsystems</h4>
+<p>The subsystem definitions are stored in the<strong> </strong>Subsystems.xml files in the configuration directories.</p>
+<p>A DPS Subsystem contains generic information, described in <a href="../SubsystemEditor/SubsystemEditor.htm#XMLFileStructure" >Subsystem Editor - Generic Subsystem Parameters - XML File Structure</a> and the specific attributes:</p>
+<ul>
+  <li><strong>Scanners</strong></li>
+  <li><strong>Pressure Ports</strong></li>
+</ul>
+<p>The specific attribute <strong>Scanners</strong> defines a collection of pressure scanners implemented for the DPS Subsystem.<br>
+  Each Scanner has the following properties:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Scanner Name</td>
+    <td>ScannerName</td>
+    <td>SCANNER_NAME</td>
+    <td> Specifies the DSA Pressure Scanner identification.</td>
+    <td>String</td>
+    <td>An arbitrary string of max. 40 characters.</td>
+  </tr>
+  <tr>
+    <td>Scanner Model</td>
+    <td>ScannerModel</td>
+    <td>SCANNER_MODEL</td>
+    <td>Specifies the DSA Pressure Scanner Series.</td>
+    <td>String</td>
+    <td>3000 or 3200.</td>
+  </tr>
+  <tr>
+    <td>Max. Scan Rate</td>
+    <td>MaxScanRate</td>
+    <td>MAX_SCAN_RATE</td>
+    <td>The maximum scan rate allowed for this scanner.</td>
+    <td>Integer</td>
+    <td>Defined by the Configuration Server option &quot;ScanRates&quot;. Maximum value 33 Hz for scanner model 3000 and 200 Hz for scanner model 3200.</td>
+  </tr>
+  <tr>
+    <td>Avg. Samples</td>
+    <td>AvgSamples</td>
+    <td>AVG_SAMPLES</td>
+    <td>Specifies the number of samples averaged for one scan value.</td>
+    <td>Integer</td>
+    <td>An integer between 1 and 32767.</td>
+  </tr>
+  <tr>
+    <td>Unit</td>
+    <td>Unit</td>
+    <td>UNITS</td>
+    <td>Specifies the EU of the pressure values returned by the scanner.</td>
+    <td>String</td>
+    <td>ATM, BAR, CMH2O, CMHG, DECIBAR, FTH2O, GCM2, INH2O, INHG, KGCM2, KGM2, KIPIN2, KNM2, KPA, MBAR, MH2O, MMHG, MPA, NCM2, NM2, OZFT2, OZIN2, PA, PSF, PSI, TORR</td>
+  </tr>
+  <tr>
+    <td>Zone Number</td>
+    <td>Zone</td>
+    <td>ZONE_NO</td>
+    <td>Zone number to which the specified DSA Pressure Scanner is assigned.</td>
+    <td>Integer</td>
+    <td>Default value 1.</td>
+  </tr>
+</table>
+<p>The specific attribute <strong>Pressure Ports</strong> defines a collection of Pressure Ports used for the Scanner currently selected in 
+  the Subsystem. Up to 16 ports can be configured. Each Pressure Port has the following properties:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Pressure Port</td>
+    <td>Port</td>
+    <td>PRESS_PORT</td>
+    <td>The pressure port on the scanner.</td>
+    <td>Integer</td>
+    <td>An integer between 1 and 16</td>
+  </tr>
+  <tr>
+    <td>Max. Pressure</td>
+    <td>MaxPressure</td>
+    <td>PRESS_RANGE_MAX</td>
+    <td>The maximum pressure allowed for the port</td>
+    <td>Float</td>
+    <td>A float greater than 0.0 limited by the scanner.</td>
+  </tr>
+</table>
+<p>The structure of a DPS Subsystem is shown in the following example:</p>
+<blockquote>
+  <pre>&lt;Subsystems   LastModificationDate=&quot;<strong>2008-09-04   14:13:03</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Subsystem Name=&quot;ZZDPS&quot;
+Description=&quot;ATP DPS&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2008-04-25 16:28:32&quot;
+Id=&quot;0&quot;
+Type=&quot;DPS&quot;
+CreationDate=&quot;2008-04-25 16:03:39&quot;&gt;
+&lt;Scanners&gt;
+&lt;Scanner
+ScannerName=&quot;ZZScanner1&quot;
+ScannerModel=&quot;3000&quot;
+MaxScanRate=&quot;33&quot;
+AvgSamples=&quot;4&quot;
+Unit=&quot;PSI&quot;
+Zone=&quot;1&quot;&gt;
+&lt;Ports&gt;
+&lt;Port
+Port=&quot;1&quot;
+MaxPressure=&quot;3000&quot;
+Description=&quot;&quot; /&gt;
+&lt;/Ports&gt;
+&lt;/Scanner&gt;
+&lt;/Scanners&gt;
+&lt;/Subsystem&gt;</pre>
+</blockquote>
+<h3 id="TabDelimitFileStructure">Tab-Delimited File Structure (Future Implementation)</h3>
+<p>The DPS channel definition will include all <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic channel definition columns</a> and the specific DPS input parameters defined in the tab-delimited configuration file.</p>
+<p>The rules, syntax and guidelines for creating DPS channels are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>SCANNER_NAME</td>
+    <td>Specifies the DSA Pressure Scanner identification as is found in the DPS Subsystem.</td>
+    <td>40-character, alphanumeric, (case sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>PRESS_PORT</td>
+    <td>Specifies the pressure port number on the scanner.</td>
+    <td>An integer from 1-16</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>AMB_PRESS_CHAN</td>
+    <td>Optional parameter specifying the name of the ambient pressure channel, used to convert the pressure reading to an absolute 
+      pressure. If the parameter is left blank, the returned value will be a gauge pressure.</td>
+    <td>A channel name</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single line of the spread sheet.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is always optional.</p></td>
+  </tr>
+</table>
+<h2 id="SSDPS">Subsystem Editor for DPS Channels</h2>
+<p>To edit the DPS Subsystem, the Subsystem Editor must be selected from within the Configuration Administrator.</p>
+<p>The tool bar in the Configuration Administrator allows the various configuration editors available for proDAS to be selected. </p>
+<p>The Subsystem Editor allows new subsystems to be added to the current configuration.</p>
+<div class="Container"><img src="images/SubsystemEditor.PNG" alt="SubsystemEditor" width="700" height="423" ></div>
+<p>To add a new subsystem:</p>
+<ol>
+  <li>From the Edit menu, select <strong>Append Data Record</strong> or, in the left pane of the splitter window and then click the right mouse button and select <strong>Append Data Record </strong>from the context sensitive menu.</li>
+  <li>Select <strong>DPS</strong> in the dialogue box to select the type of subsystem.<br>
+    A new line in Subsystem Editor is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to DPS. The user must then assign a name and description to the subsystem.</li>
+</ol>
+<h3 id="AddScanner">Adding New Scanners to proDAS</h3>
+<p>To add a new scanner to the <a href="?4#SubsystemsXML">Subsystem</a>:</p>
+<ol>
+  <li>Select the <strong>Scanners</strong> spreadsheet in the right hand pane of the splitter window where Scanners and Pressure Ports are defined.</li>
+  <li>From the <a href="../SubsystemEditor/SubsystemEditor.htm#MenuEdit">Subsystem Editor</a>, select <strong>Subsystem DPS/Scanners/Append</strong>. A new line for a new line for a new Scanner is added to the list of Scanners in the subsystem.</li>
+  <li>Define the scanner attributes Scanner Name (a unique identifier for a DSA Pressure Scanner), and Max. Scan Rate (the maximum scan rate 0, 1, 10, 33, 50, 100, or 200 Hz allowed for this scanner; maximum value 33 Hz for scanner model 3000 and 200 Hz for scanner model 3200). The possible definitions for the Max. Scan Rate are available in a drop-down list when editing the specific cell.</li>
+</ol>
+<h2 id="RTEInitialiseFile">RTE Initialisation File</h2>
+<p>The DPS Subsystem is configured by the RTE, along with all the other subsystems, as a request from the Management Interface GUI. For legacy purposes, the configuration request can also be specified in the command line of the RTE.</p>
+<p>A typical RTE initialisation file would include the following DPS Subsystem information:</p>
+<p># -----------------------------------------------------<br>
+  DPS (DSA Pressure Scanner) Subsystem<br>
+  # -----------------------------------------------------<br>
+  SS DPS TRUE<br>
+  # service name<br>
+  CI port telnet<br>
+  # software or hardware trigger; OFF or ON<br>
+  # revised by DP, was 'ON 33'<br>
+  CI trigger OFF<br>
+  # revised by DP, was '33'<br>
+  CI accel_xfer 50<br>
+  # reply time-out in seconds<br>
+  CI reply_timeout 60<br>
+  # protocol, TCP or UDP<br>
+  CI protocol UDP<br>
+</p>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click here to see the RTE Initialisation file.</a></p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

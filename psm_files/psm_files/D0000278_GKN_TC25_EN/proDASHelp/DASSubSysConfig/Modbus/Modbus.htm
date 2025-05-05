@@ -1,0 +1,830 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Generic Modbus Subsystem Drivers</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="MODBUS">Generic Modbus Subsystem Drivers (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>Modbus is an industry standard for communications. In a Modbus network, all communications are initiated by a Modbus master device. One or more devices can be connected to this master device. The Modbus protocol defines a message structure that the controller recognizes and uses, regardless of the type of communication network. The Modbus protocol also establishes a common format for the layout and contents of message fields.</p>
+<p>Controllers communicate using a master-slave technique, in which only one device (i.e.: the master) can initiate queries. The other devices (i.e.: the slaves) respond by supplying the requested data to the master, or by taking the action requested in the query. The master can address individual slaves, or can initiate a broadcast message to all slaves. Slaves return a response to queries that are addressed to them individually, but responses are not returned to broadcast queries from the master.</p>
+<h2 id="HardwareSSConnections">Hardware Subsystem Connections</h2>
+<p>The <a href="Modbus.htm#EthernetDriver">Generic Modbus Ethernet Driver</a> can be used to communicate with:</p>
+<ul>
+  <li>any hardware subsystem that requires the Modbus protocol and an Ethernet interface</li>
+</ul>
+<p>The <a href="Modbus.htm#SerialDriver">Generic Modbus Serial Driver</a> can be used to communicate with:</p>
+<ul>
+  <li>the Torquetronics Torquemeter System</li>
+  <li>the Woodward Engine Management System (EMS)</li>
+  <li>the Richard-Oliver Continuous Emission Monitoring System (CEMS)</li>
+</ul>
+<h2 id="EthernetDriver">Generic Modbus Ethernet Driver</h2>
+<p>The Generic Modbus Ethernet (ME) Driver consists of a set of functions used by the RTE to obtain engine data through Ethernet. The driver uses the Modbus communication protocol, and TCP(UDP)/IP protocols.</p>
+<p>The ME interface:</p>
+<ul>
+  <li>collects analogue and discrete data from the instrumentation device</li>
+  <li>performs engineering unit conversion on the 16-bit digital data words received</li>
+  <li>provides the converted data to the RTE</li>
+</ul>
+<p>The Modbus protocol uses Remote Terminal Unit (RTU) mode for framing, with character idle times of 3.5 characters indicating the end of a frame. The frame is validated by a cyclical redundancy check (CRC).</p>
+<p>The Modbus functions in the table below collect analogue and discrete data and preset value to Coil Status or Holding Register from the ME Subsystem.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Function Code</th>
+    <th>Function Name</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>0 x 01</td>
+    <td>Read Coil Status</td>
+    <td>Read Discrete (0 x reference) Output</td>
+  </tr>
+  <tr>
+    <td>0 x 02</td>
+    <td>Read Input Status</td>
+    <td>Read Discrete (1 x reference) Input</td>
+  </tr>
+  <tr>
+    <td>0 x 03</td>
+    <td>Read Holding Registers</td>
+    <td>Read Holding Registers (4 x reference)</td>
+  </tr>
+  <tr>
+    <td>0 x 04</td>
+    <td>Read Input Registers</td>
+    <td>Read Input Registers (3 x reference)</td>
+  </tr>
+  <tr>
+    <td>0 x 05 </td>
+    <td>Write Single Coil Status </td>
+    <td>Write Discrete (0 x reference) Output </td>
+  </tr>
+  <tr>
+    <td>0 x 06</td>
+    <td>Write Single Holding Register</td>
+    <td>Write Holding Register (4 x reference)</td>
+  </tr>
+  <tr>
+    <td>0 x 16</td>
+    <td>Write Multiple Holding Registers</td>
+    <td>Write Holding Registers (4 x reference)</td>
+  </tr>
+</table>
+<p>The ME interface has one master and one slave (ME Subsystem). Analogue data received from the ME Subsystem is configured to engineering units using scale and offset parameters. The result is a standard IEEE 32-bit floating point value. Both little endian and big endian are supported.</p>
+<p>Acceptable data types are either 32-bit float, signed, or unsigned 16-bit integer for analogue data.</p>
+<p>The ME interface has corrective actions associated with errors received from the ME Subsystem and ME interface. The corrective actions ensure that proDAS operates properly under all conditions and keep the user informed (if the ME communication link goes down, the operator is informed that data from the ME Subsystem is no longer available).</p>
+<p>The ME interface is a general purpose component, which uses a Modbus library, libMB.a, to drive a subsystem using Ethernet. The component may be used for any hardware subsystem that requires the Modbus protocol and an Ethernet interface.</p>
+<p>The general process is:</p>
+<ol>
+  <li>proDAS configures the ME interface with a file generated and transferred from the Configuration database. This file contains the subsystem specific information, including scale, offset and a channel number.</li>
+  <li>The ME interface begins scanning data and writing data from the ME subsystem immediately following reception of a synchronization command from the RTE. The following Modbus protocol functions are used to scan data and write data from ME:
+    <ul>
+      <li>Read Input Status reads a contiguous set of indexed discrete values ranging from 1 to 2000 (the largest frame contains 250 bytes of data)</li>
+      <li>Read Input Registers reads a contiguous set of 16-bit indexed float values ranging from 1 to 125 (the largest frame contains 250 bytes of data)</li>
+      <li>Write Coil Status when discrete values have changed</li>
+      <li>Write Holding Registers when float values have changed</li>
+    </ul>
+  </li>
+  <li>proDAS scans data from the ME Subsystem at a configurable rate. All data received is validated using CRC.</li>
+  <li>The ME interface performs the necessary engineering unit conversion.</li>
+  <li>proDAS reads the following configuration data from the RTE Initialisation file:</li>
+</ol>
+<table width="75%" border="0" cellspacing="1" cellpadding="4" align="center">
+  <tr>
+    <td width="20%">host;</td>
+    <td width="60%">/* the host name */ </td>
+  </tr>
+  <tr>
+    <td width="20%">service;</td>
+    <td width="60%">/* service name */ </td>
+  </tr>
+  <tr>
+    <td width="20%">sign;</td>
+    <td width="60%">/* signed or unsigned */</td>
+  </tr>
+  <tr>
+    <td width="20%">endian;</td>
+    <td width="60%">/* big endian or little endian */ </td>
+  </tr>
+  <tr>
+    <td width="20%">datatype;</td>
+    <td width="60%">/* short or float */</td>
+  </tr>
+  <tr>
+    <td width="20%">slaveaddress;</td>
+    <td width="60%"> /* slave address */ </td>
+  </tr>
+  <tr>
+    <td width="20%">dchannelgroup;</td>
+    <td width="60%">/* discrete channel group id */</td>
+  </tr>
+  <tr>
+    <td width="20%">fchannelgroup;</td>
+    <td width="60%">/* float channel group id */ </td>
+  </tr>
+  <tr>
+    <td width="20%">timeout;</td>
+    <td width="60%">/* time out in ms */ </td>
+  </tr>
+  <tr>
+    <td width="20%">protocol;</td>
+    <td width="60%">/* vdp or tcp */</td>
+  </tr>
+  <tr>
+    <td width="20%">maxregchannel;</td>
+    <td width="60%">/* max number of Modbus register channels */</td>
+  </tr>
+  <tr>
+    <td width="20%">modbus.tcp;</td>
+    <td width="60%">/* Woodward or OpenMODBUS */</td>
+  </tr>
+</table>
+<ol type="1">
+  <li value="6">The ME interface continues to scan until a stop-scanning signal 
+    is received from proDAS.</li>
+</ol>
+<h2 id="Overview2">Configuring a Modbus Ethernet Channel</h2>
+<p>To configure a ModBus Ethernet Channel:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</li>
+  <li>Select the name of the ModBus Ethernet Subsystem from the list of available subsystems.
+    <div class="Container"><img src="images/SelectSubsystemNameEthernet.PNG" alt="SelectSubsystemNameEthernet" width="387" height="317"></div>
+  </li>
+  <br>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a>.</li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.</li>
+  <li>Set the <strong>Location</strong> to an integer value between 1 and the maximum address stored for the subsystem.</li>
+  <li>And if the channel data type is Float, set the <strong>Slope</strong> and <strong>Offset</strong> columns.
+    <div class="Container"><img src="images/ChannelEditorEthernet.png" alt="ChannelEditorEthernet" width="700" height="424"></div>
+  </li>
+</ol>
+<h2 id="ConfigFileStructure">Configuration File Structure - Ethernet</h2>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text  file.</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu">Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import a <strong>ModBusEthernet channel</strong>, see <a href="?10#XMLFileStructureModbus">XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import a <strong>ModBusEthernet channel</strong>, see <a href="?11#TabDelimitedFileModbus">Tab-Delimited File Structure</a>.</p>
+<h3 id="XMLFileStructureModbus">XML File Structure</h3>
+<h4 id="ChannelsXML">Channels</h4>
+<p>The channels are stored in files Channels.xml in the configuration directories.</p>
+<p>A ModbusEthernet Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor - Generic Channel Parameters - XML File Structure</a>, and the specific attributes <strong>Location</strong>, <strong>Slope</strong>, and <strong>Offset</strong>. These attributes are explained in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Location</td>
+    <td>Location</td>
+    <td>LOCATION</td>
+    <td>The physical memory address of the data item in the slave device</td>
+    <td>Integer</td>
+    <td>An Integer between 1 and the maximum address defined in the ModBus subsystem</td>
+  </tr>
+  <tr>
+    <td>Slope (Float only)</td>
+    <td>Slope</td>
+    <td>SCALE</td>
+    <td>The slope of the linear equation used to convert  the input float channel data being read from the Modbus device</td>
+    <td>Float</td>
+    <td>A Float</td>
+  </tr>
+  <tr>
+    <td>Offset (Float only)</td>
+    <td>Offset</td>
+    <td>OFFSET</td>
+    <td>The offset of the linear equation used to  convert the input float channel data being read from the Modbus device</td>
+    <td>Float</td>
+    <td>A Float</td>
+  </tr>
+</table>
+<p>The structure of a ModBus Ethernet Channel complies with the following example:</p>
+<blockquote><code>&lt;Channels LastModificationDate=&quot;<strong>2015-06-11 08:41:13</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;<br>
+  &lt;Channel Name=&quot;ZZModbus&quot; <br>
+  Description=&quot;&quot; <br>
+  Enabled=&quot;true&quot; <br>
+  LastModificationDate=&quot;2015-06-11 08:41:13&quot; <br>
+  SubsystemName=&quot;ModBus&quot; <br>
+  SubsystemType=&quot;ModBusEthernet&quot; <br>
+  AlternateName=&quot;&quot; <br>
+  DataType=&quot;Float&quot; <br>
+  InitialValue=&quot;-999999&quot; <br>
+  Format=&quot;4.2f&quot; <br>
+  UpdateRate=&quot;1&quot; <br>
+  QualityCeiling=&quot;GOOD&quot; <br>
+  Critical=&quot;false&quot; <br>
+  EngineeringUnit=&quot;-&quot; <br>
+  DisplayMin=&quot;0&quot; <br>
+  DisplayMax=&quot;100&quot; <br>
+  DeadBand=&quot;0&quot; <br>
+  Output=&quot;false&quot; <br>
+  ReferenceChannel=&quot;&quot; <br>
+  Group=&quot;&quot; <br>
+  SignalId=&quot;&quot; <br>
+  CalSensor=&quot;&quot; <br>
+  CalGroup=&quot;&quot; <br>
+  FixedSensor=&quot;&quot; <br>
+  CustomerSensor=&quot;&quot; <br>
+  FullsetStability=&quot;false&quot; <br>
+  ContinuousLog=&quot;true&quot; <br>
+  Slope=&quot;2&quot; <br>
+  Offset=&quot;1&quot; <br>
+  Location=&quot;1&quot;/&gt;<br>
+  &lt;/Channels&gt;<br>
+</code></blockquote>
+<h4 id="SubsystemsXML">Subsystems</h4>
+<p>An Ethernet ModBus Subsystem contains generic information, described in <a href="../SubsystemEditor/SubsystemEditor.htm#XMLFileStructure">Subsystem Editor - Generic Subsystem Parameters - XML File Structure</a>, and the specific attributes:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Max Float Input Address</td>
+    <td>MaxFloatInAddress</td>
+    <td>FLOAT_IN_ADD </td>
+    <td>Displays the maximum address available for the float data travelling from the subsystem to the RTE</td>
+    <td>Integer</td>
+    <td>An integer</td>
+  </tr>
+  <tr>
+    <td>Max Boolean Input Address</td>
+    <td>MaxBooleanInAddress</td>
+    <td>DISC_IN_ADD</td>
+    <td>Displays the maximum address available for the Boolean data travelling from the subsystem to the RTE</td>
+    <td>Integer</td>
+    <td>An integer</td>
+  </tr>
+  <tr>
+    <td>Max Float Output Address</td>
+    <td>MaxFloatOutputAddress</td>
+    <td>FLOAT_OUT_ADD</td>
+    <td>Displays the maximum address available for the float data travelling from the subsystem to the RTE</td>
+    <td>Integer</td>
+    <td>An integer</td>
+  </tr>
+  <tr>
+    <td>Max Boolean Output Address</td>
+    <td>MaxBooleanOutputAddress</td>
+    <td>DISC_OUT_ADD</td>
+    <td>Displays the maximum address available for the Boolean data travelling from the subsystem to the RTE</td>
+    <td>Integer</td>
+    <td>An integer</td>
+  </tr>
+</table>
+<p>The structure of an Ethernet ModBus Subsystem is shown in the following example:</p>
+<blockquote>
+  <pre>&lt;Subsystems   LastModificationDate=&quot;<strong>2008-09-04   14:13:03</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Subsystem Name=&quot;ZZModBusE&quot;
+Description=&quot;&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2008-04-28 11:23:34&quot;
+Id=&quot;0&quot;
+Type=&quot;ModBusEthernet&quot;
+CreationDate=&quot;2008-04-28 11:11:37&quot;
+MaxFloatInAddress=&quot;5000&quot;
+MaxBooleanInAddress=&quot;60000&quot;
+MaxFloatOutAddress=&quot;0&quot;
+MaxBooleanOutAddress=&quot;0&quot; /&gt;
+&lt;/Subsystems&gt;</pre>
+</blockquote>
+<h3 id="TabDelimitedFileModbus">Tab-Delimited File Structure</h3>
+<p>The Generic Modbus (Ethernet) Subsystem channel definition includes all <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic channel definition columns</a> and the specific Generic Modbus (Ethernet) Subsystem input parameters defined in the tab-delimited configuration file.</p>
+<p>The rules, syntax and guidelines for creating Generic Modbus (Ethernet) Subsystem channels are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>OFFSET</td>
+    <td>Specifies the offset of the linear equation to use to convert the data received from the Slave device.<br>
+      <br>
+      Ignored for DISCRETE type channels.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>See Description.</td>
+  </tr>
+  <tr>
+    <td>LOCATION</td>
+    <td>Specifies the physical memory address of the data item in the Slave device.
+      <p class="Note">The limit for analogue channels should be an address range of 2000 (e.g. 1-2000) and the limit for discrete channels should be an address range of 2000 (e.g. 1-2000, or 3001-5000).</p></td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single line of the spread sheet.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is always optional.</p></td>
+  </tr>
+</table>
+<h2 id="SubsystemEditorModbus">Subsystem Editor for Modbus Ethernet</h2>
+<p>To edit the Ethernet ModBus Subsystem, the Subsystem Editor must be selected from within the Configuration Administrator.</p>
+<p>The tool bar in the Configuration Administrator allows the various configuration editors available for proDAS to be selected.</p>
+<p>The Subsystem Editor allows new subsystems to be added to the current configuration.</p>
+<div class="Container"><img src="images/SubsystemEditor.png" alt="SubsystemEditor" width="700" height="423"></div>
+<br>
+<p><strong>To add a new subsystem:</strong></p>
+<ol>
+  <li>From the Edit menu, select <strong>Append Data Record</strong> or, in the left pane of the splitter window, click the right mouse button and select <strong>Append Data Record</strong> from the context sensitive menu.</li>
+  <li>Select <strong>ModBusEthernet</strong> in the dialogue box to select the type of subsystem.<br>
+    A new line in Subsystem Editor is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to <strong>ModBusEthernet</strong>. The user must then assign a name and description to the subsystem.</li>
+</ol>
+<h2 id="Overview3">RTE Initialisation File</h2>
+<p>The Generic Modbus (Ethernet) Subsystem is configured by the RTE, along with all the other subsystems, as a request from the Management Interface GUI. For legacy purposes, the configuration request can also be specified in the command line of the RTE.</p>
+<p>A typical RTE initialisation file would include the following Generic Modbus (Ethernet) Subsystem information:</p>
+<table width="95%" border="0" cellspacing="1" cellpadding="2">
+  <tr>
+    <td colspan="2">#--------------------------------------------------------------------------<br>
+      # EMS1_ME (Generic Modbus Ethernet Driver) subsystem<br>
+      #--------------------------------------------------------------------------</td>
+  </tr>
+  <tr>
+    <td width="19%">SS EMS1_ME</td>
+    <td width="81%">FALSE</td>
+  </tr>
+  <tr>
+    <td width="19%">CI host</td>
+    <td width="81%">picard</td>
+  </tr>
+  <tr>
+    <td width="19%">CI service</td>
+    <td width="81%">debug_srv2</td>
+  </tr>
+  <tr>
+    <td width="19%">CI sign</td>
+    <td width="81%">unsigned</td>
+  </tr>
+  <tr>
+    <td width="19%">CI endian</td>
+    <td width="81%">big</td>
+  </tr>
+  <tr>
+    <td width="19%">CI datatype</td>
+    <td width="81%">short</td>
+  </tr>
+  <tr>
+    <td width="19%">CI slaveaddress</td>
+    <td width="81%">1</td>
+  </tr>
+  <tr>
+    <td width="19%" height="19">CI dchannelgroup</td>
+    <td width="81%" height="19">inputstatus</td>
+  </tr>
+  <tr>
+    <td width="19%" height="19">CI fchannelgroup</td>
+    <td width="81%" height="19">inputregisters</td>
+  </tr>
+  <tr>
+    <td width="19%" height="19">CI fchannelgroup</td>
+    <td width="81%" height="19">inputregisters</td>
+  </tr>
+  <tr>
+    <td width="19%" height="19">CI timeout</td>
+    <td width="81%" height="19">100</td>
+  </tr>
+  <tr>
+    <td width="19%" height="19">CI protocol</td>
+    <td width="81%" height="19">tcp</td>
+  </tr>
+  <tr>
+    <td width="19%" height="19">CI maxregchannel</td>
+    <td width="81%" height="19">100</td>
+  </tr>
+  <tr>
+    <td width="19%" height="19">CI modbus_tcp</td>
+    <td width="81%" height="19">Woodward</td>
+  </tr>
+</table>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click 
+  here to see the RTE Initialisation file</a>.</p>
+<h3 id="SetMaxAddressModbus">Setting the Max Addresses</h3>
+<p>This maximum addresses for the <a href="?2#SubsystemsXML">Subsystem</a> can be edited in the right pane of the splitter window of the Subsystem Editor screen.</p>
+<p>Since these addresses are defined using textbox dialogues, the Subsystem menu item is greyed out and the textboxes are edited directly.</p>
+<h2 id="SerialDriver">Generic Modbus Serial Driver</h2>
+<p>The Generic Modbus Serial Driver consists of a set of functions used by proDAS to obtain engine data through a TTY serial port. The driver uses the Modbus communication protocol.</p>
+<p>The Modbus Serial (MS) interface:</p>
+<ul>
+  <li>collects analogue and discrete data from the instrumentation device</li>
+  <li>performs engineering unit conversion on the 16-bit digital data words received</li>
+  <li>provides the converted data to proDAS</li>
+</ul>
+<p>The MS interface uses the Modbus protocol to communicate over a TTY serial port. The baud rate is programmable. The Modbus protocol uses Remote Terminal Unit (RTU) mode for framing. A character idle times of 3.5 characters indicates the end of a frame, which is validated by a cyclical redundancy check (CRC) check.</p>
+<p>The Modbus functions in the table below collect analogue and discrete data from the MS Subsystem.</p>
+<table class="Table-Grey">
+  <tr>
+    <th> Function Code</th>
+    <th> Function Name</th>
+    <th> Description</th>
+  </tr>
+  <tr>
+    <td>0 x 01</td>
+    <td>Read Coil Status</td>
+    <td>Read Discrete (0 x reference) Output</td>
+  </tr>
+  <tr>
+    <td>0 x 02</td>
+    <td>Read Input Status</td>
+    <td>Read Discrete (1 x reference) Input</td>
+  </tr>
+  <tr>
+    <td>0 x 03</td>
+    <td>Read Holding Registers</td>
+    <td>Read Holding Registers (4 x reference)</td>
+  </tr>
+  <tr>
+    <td>0 x 04</td>
+    <td>Read Input Registers</td>
+    <td>Read Input Registers (3 x reference)</td>
+  </tr>
+</table>
+<p>The MS interface is a point-to-point interface with one Master (MS Interface) and one Slave (MS Subsystem). Analogue data received from the MS Subsystem is configured to engineering units (EU) using scale and offset parameters. The result is a standard IEEE 32-bit floating point value.</p>
+<p>Both little endian and big endian are supported. The data type can be either 32-bit float or 16-bit signed and unsigned integer for analogue data.</p>
+<p>The MS interface is a general purpose component, which uses Modbus library, MB_lib.a, to drive a subsystem via a TTY serial port. The component may be used for any hardware subsystem that requires the Modbus protocol and a serial interface.</p>
+<p>The general process is:</p>
+<ol>
+  <li>proDAS configures the ME interface with a file created and transferred from the Configuration database. This file contains the subsystem specific information, including scale, offset and a channel number.</li>
+  <li>The ME interface begins scanning data from the ME Subsystem immediately following reception of a synchronization command from proDAS. The following Modbus protocol functions are used to scan data from ME:
+    <ul>
+      <li>Read Input Status reads a contiguous set of indexed discrete value ranging from 1 to 2000 (the largest frame contains 250 bytes of data)</li>
+      <li>Read Input Registers reads a contiguous set of 16-bit indexed float values ranging from 1 to 125 (the largest frame contains 250 bytes of data)</li>
+    </ul>
+  </li>
+  <li>proDAS scans data from the ME Subsystem at a configurable rate. All data received is validated using CRC.</li>
+  <li>The ME interface performs the necessary engineering unit conversion.</li>
+  <li>proDAS reads the following configuration data from the RTE Initialisation file:</li>
+  <br>
+  <table width="75%" border="0" cellspacing="1" cellpadding="4" >
+    <tr>
+      <td width="20%" class="CellBody">device;</td>
+      <td width="60%" class="CellBody">/* LINUX device name for RS232 port */</td>
+    </tr>
+    <tr>
+      <td width="20%" class="CellBody">baudrate;</td>
+      <td width="60%" class="CellBody">/* baud-rate used by the subsystem */</td>
+    </tr>
+    <tr>
+      <td width="20%" class="CellBody">databits;</td>
+      <td width="60%" class="CellBody">/* the number of data bits */</td>
+    </tr>
+    <tr>
+      <td width="20%" class="CellBody">stopbits;</td>
+      <td width="60%" class="CellBody"> /* the number of stop bits */</td>
+    </tr>
+    <tr>
+      <td width="20%" class="CellBody">parity;</td>
+      <td width="60%" class="CellBody">/* the parity */</td>
+    </tr>
+    <tr>
+      <td width="20%" class="CellBody">sign;</td>
+      <td width="60%" class="CellBody"> /* signed or unsigned */</td>
+    </tr>
+    <tr>
+      <td width="20%" class="CellBody">endian;</td>
+      <td width="60%" class="CellBody"> /* big endian or little endian */</td>
+    </tr>
+    <tr>
+      <td width="20%" class="CellBody">datatype;</td>
+      <td width="60%" class="CellBody">/* short or float */ </td>
+    </tr>
+    <tr>
+      <td width="20%" class="CellBody">slaveaddress;</td>
+      <td width="60%" class="CellBody">/* slave address */</td>
+    </tr>
+    <tr>
+      <td width="20%" class="CellBody">dchannelgroup;</td>
+      <td width="60%" class="CellBody">/* discrete channel group id */</td>
+    </tr>
+    <tr>
+      <td width="20%" class="CellBody">fchannelgroup;</td>
+      <td width="60%" class="CellBody">/* float channel group id */</td>
+    </tr>
+    <tr>
+      <td width="20%" class="CellBody">timeout;</td>
+      <td width="60%" class="CellBody">/* time out in ms */</td>
+    </tr>
+    <tr>
+      <td width="20%" class="CellBody">maxregchannel;</td>
+      <td width="60%" class="CellBody">/* max number of Modbus register channels 
+        */</td>
+    </tr>
+  </table>
+  <li>The ME interface continues scanning until a stop-scanning signal is received from proDAS.</li>
+</ol>
+<h2 id="ConfigModbusSerialChannel">Configuring a Modbus Serial Channel</h2>
+<p>To configure a ModBus Serial Channel:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</li>
+  <li>Select the name of the ModBus Serial Subsystem from the list of available subsystems.
+    <div class="Container"><img src="images/SelectSubsystemNameSerial.PNG" alt="SelectSubsystemNameSerial" width="387" height="317"></div>
+  </li>
+  <br>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a>. </li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.</li>
+  <li>Set the <strong>Location</strong> column to an integer value between 1 and the maximum address defined for the subsystem.</li>
+  <li>And if the channel data type is Float, set the <strong>Slope</strong> and <strong>Offset</strong> columns.
+    <div class="Container"><img src="images/ChannelEditorSerial.png" alt="ChannelEditorSerial"  width="700" height="424"></div>
+  </li>
+</ol>
+<h2 id="ConfigFileStructureSerial">Configuration File Structure - Serial</h2>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu">Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import a <strong>ModBusSerial channel</strong>, see <a href="?10#XMLFileStructureSerial">XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import a <strong>ModBusSerial channel</strong>, see <a href="?11#TabDelimitedFileSerial">Tab-Delimited File Structure</a>.</p>
+<h3 id="XMLFileStructureSerial">XML File Structure</h3>
+<h4 id="ChannelsXMLSerial">Channels</h4>
+<p>The channels are stored in files Channels.xml in the configuration directories.</p>
+<p>A ModbusSerial Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor - Generic Channel Parameters - XML File Structure</a>, and the specific attributes <strong>Location</strong>, <strong>Slope</strong>, and <strong>Offset</strong>. These attributes are explained in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Location</td>
+    <td>Location</td>
+    <td>LOCATION</td>
+    <td>The physical memory address of the data item in the slave device</td>
+    <td>Integer</td>
+    <td>An Integer between 1 and the maximum address defined in the ModBus subsystem</td>
+  </tr>
+  <tr>
+    <td>Slope (Float only)</td>
+    <td>Slope</td>
+    <td>SCALE</td>
+    <td>The slope of the linear equation used to convert  the input float channel data being read from the Modbus device</td>
+    <td>Float</td>
+    <td>A Float</td>
+  </tr>
+  <tr>
+    <td>Offset (Float only)</td>
+    <td>Offset</td>
+    <td>OFFSET</td>
+    <td>The offset of the linear equation used to  convert the input float channel data being read from the Modbus device</td>
+    <td>Float</td>
+    <td>A Float</td>
+  </tr>
+</table>
+<p>The structure of a ModBus Serial Channel complies with the following example:</p>
+<blockquote><code>&lt;Channels   LastModificationDate=&quot;<strong>2008-09-04 14:15:19</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;<br>
+  &lt;Channel Name=&quot;ZZModBusS1&quot;<br>
+  Description=&quot;&quot;<br>
+  Enabled=&quot;true&quot;<br>
+  LastModificationDate=&quot;2008-04-29 10:41:48&quot;<br>
+  SubsystemName=&quot;ZZModBusS&quot;<br>
+  SubsystemType=&quot;ModBusSerial&quot;<br>
+  AlternateName=&quot;&quot;<br>
+  DataType=&quot;Float&quot;<br>
+  InitialValue=&quot;-999999&quot;<br>
+  Format=&quot;4.2f&quot;<br>
+  UpdateRate=&quot;1&quot;<br>
+  QualityCeiling=&quot;GOOD&quot;<br>
+  Critical=&quot;false&quot;<br>
+  EngineeringUnit=&quot;-&quot;<br>
+  DisplayMin=&quot;0&quot;<br>
+  DisplayMax=&quot;100&quot;<br>
+  DeadBand=&quot;0&quot;<br>
+  Output=&quot;false&quot;<br>
+  ReferenceChannel=&quot;&quot;<br>
+  Group=&quot;&quot;<br>
+  SignalId=&quot;&quot;<br>
+  CalSensor=&quot;&quot;<br>
+  CalGroup=&quot;&quot;<br>
+  FixedSensor=&quot;&quot;<br>
+  CustomerSensor=&quot;&quot; <br>
+  FullsetStability=&quot;false&quot; <br>
+  ContinuousLog=&quot;true&quot; <br>
+  Slope=&quot;-5.4&quot;<br>
+  Offset=&quot;-3.5&quot;<br>
+  Location=&quot;2&quot; /&gt;<br>
+  &lt;/Channels&gt;<br>
+</code></blockquote>
+<h4 id="SubsystemsXMLSerial">Subsystems</h4>
+<p>The subsystems are stored in files Subsystems.xml in the configuration directories.</p>
+<p>A serial ModBus&nbsp;Subsystem contains generic information, described in <a href="../SubsystemEditor/SubsystemEditor.htm#XMLFileStructure">Subsystem Editor - Generic Subsystem Parameters - XML File Structure</a>, and the specific attributes:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Max Float Input Address</td>
+    <td>MaxFloatInAddress</td>
+    <td>FLOAT_IN_ADD</td>
+    <td>Displays the maximum address available for the float data travelling from the subsystem to the RTE</td>
+    <td>Integer</td>
+    <td>An integer</td>
+  </tr>
+  <tr>
+    <td>Max Boolean Input Address</td>
+    <td>MaxBooleanInAddress</td>
+    <td>DISC_IN_ADD</td>
+    <td>Displays the maximum address available for the Boolean data travelling from the subsystem to the RTE</td>
+    <td>Integer</td>
+    <td>An integer</td>
+  </tr>
+</table>
+<p>The structure of a seial ModBus Subsystem is shown in the following example:</p>
+<blockquote>
+  <pre>&lt;Subsystems   LastModificationDate=&quot;<strong>2008-09-04   14:13:03</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Subsystem Name=&quot;ZZModBusS&quot;
+Description=&quot;&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2008-04-28 11:23:34&quot;
+Id=&quot;0&quot;
+Type=&quot;ModBusSerial&quot;
+CreationDate=&quot;2008-04-28 11:12:33&quot;
+MaxFloatInAddress=&quot;60000&quot;
+MaxBooleanInAddress=&quot;5000&quot;
+MaxFloatOutAddress=&quot;0&quot;
+MaxBooleanOutAddress=&quot;0&quot; /&gt;
+&lt;/Subsystems&gt;</pre>
+</blockquote>
+<h3 id="TabDelimitedFileSerial">Tab-Delimited File Structure</h3>
+<p>The Generic Modbus (Serial) Subsystem channel definition includes all <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic channel definition columns</a> and the specific Generic Modbus  (Serial) Subsystem input parameters defined in the tab-delimited configuration file.</p>
+<p>The rules, syntax and guidelines for creating Generic Modbus (Serial) Subsystem channels are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>SCALE</td>
+    <td>Specifies the slope of the linear equation to use to convert the input data received from the Slave device.<br>
+      <br>
+      Ignored for DISCRETE type channels.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>See Description.</td>
+  </tr>
+  <tr>
+    <td>OFFSET</td>
+    <td>Specifies the offset of the linear equation to use to convert the input data received from the Slave device.<br>
+      <br>
+      Ignored for DISCRETE type channels.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>See Description.</td>
+  </tr>
+  <tr>
+    <td>LOCATION</td>
+    <td>Specifies the physical memory address of the data item in the Slave device.</td>
+    <td>Number 1 - 9999</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single line of the spread sheet.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is always optional.</p></td>
+  </tr>
+</table>
+<h2 id="SubsystemEditorSerial">Subsystem Editor for Modbus Serial</h2>
+<p>To edit the serial ModBusSubsystem, the Subsystem Editor must be selected from within the Configuration Administrator.</p>
+<p>The tool bar in the Configuration Administrator allows the various configuration editors available for proDAS to be selected.</p>
+<p>The Subsystem Editor allows new subsystems to be added to the current configuration.</p>
+<div class="Container"><img src="images/SubsystemEditorSerialModBus.png" alt="SubsystemEditorSerialModBus" width="700" height="423"></div>
+<br>
+<p><strong>To add a new subsystem:</strong></p>
+<ol>
+  <li>From the Edit menu, select <strong>Append Data Record</strong> or, in the left pane of the splitter window, click the right mouse button and select <strong>Append Data Record</strong> from the context sensitive menu.</li>
+  <li>Select <strong>ModBusSerial</strong> in the dialogue box to select the type of subsystem.<br>
+    A new line in Subsystem Editor is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to <strong>ModBusSerial</strong>. The user must then assign a name and description to the subsystem.</li>
+</ol>
+<h3 id="SetMaxAddressSerial">Setting the Max Addresses</h3>
+<p>The maximum addresses for the <a href="Modbus.htm?#SubsystemsXMLSerial">Subsystem</a>, can be edited in the right pane of the splitter window of the Subsystem Editor screen.</p>
+<p>Since these addresses are defined using textbox dialogues, the Subsystem menu item is greyed out and the textboxes are edited directly.</p>
+<h2 id="Overview4">RTE Initialisation File</h2>
+<p>The Generic Modbus (Serial) Subsystem is configured by the RTE, along with all the other subsystems, as a request from the Management Interface GUI. For legacy purposes, the configuration request can also be specified in the command line of the RTE.</p>
+<p>The RTE Initialisation file must, as a minimum, include the following information:</p>
+<p>device (serial port #)<br>
+  baudrate (default: 9600)<br>
+  databit (default: 8)<br>
+  stop bit (default: 1)<br>
+  parity (default: even)<br>
+  timeout (default: 1000 ms)</p>
+<p>A typical RTE initialisation file would include the following Generic Modbus (Serial) Subsystem Driver information:</p>
+<table width="95%" border="0" cellspacing="1" cellpadding="2">
+  <tr>
+    <td colspan="2">#--------------------------------------------------------------------------<br>
+      # EMS1_MS (Generic Modbus Serial Driver) subsystem<br>
+      #--------------------------------------------------------------------------</td>
+  </tr>
+  <tr>
+    <td width="19%">SS EMS1_MS</td>
+    <td width="81%"> FALSE</td>
+  </tr>
+  <tr>
+    <td width="19%">CI device</td>
+    <td width="81%">/dev/ttyd2</td>
+  </tr>
+  <tr>
+    <td width="19%">CI baudrate</td>
+    <td width="81%">19200</td>
+  </tr>
+  <tr>
+    <td width="19%">CI databits</td>
+    <td width="81%">8</td>
+  </tr>
+  <tr>
+    <td width="19%">CI stopbits</td>
+    <td width="81%">1</td>
+  </tr>
+  <tr>
+    <td width="19%">CI parity</td>
+    <td width="81%">n</td>
+  </tr>
+  <tr>
+    <td width="19%" height="19">CI sign</td>
+    <td width="81%" height="19">signed</td>
+  </tr>
+  <tr>
+    <td width="19%" height="19">CI endian</td>
+    <td width="81%" height="19">little</td>
+  </tr>
+  <tr>
+    <td width="19%" height="19">CI datatype</td>
+    <td width="81%" height="19">short</td>
+  </tr>
+  <tr>
+    <td width="19%" height="19">CI slaveaddress</td>
+    <td width="81%" height="19">1</td>
+  </tr>
+  <tr>
+    <td width="19%" height="19">CI dchannelgroup</td>
+    <td width="81%" height="19">inputstatus</td>
+  </tr>
+  <tr>
+    <td width="19%" height="19">CI fchannelgroup</td>
+    <td width="81%" height="19">inputregisters</td>
+  </tr>
+  <tr>
+    <td width="19%" height="19">CI timeout</td>
+    <td width="81%" height="19">100</td>
+  </tr>
+  <tr>
+    <td width="19%" height="19">CI maxregchannel</td>
+    <td width="81%" height="19">5</td>
+  </tr>
+</table>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click here to see the RTE Initialisation file</a>.</p>
+<h2 id="Library">Library</h2>
+<p>The Modbus library is a set of functions used by the device drivers to encode and decode the data according to Modbus communication protocols.</p>
+<p>When remote terminal unit (RTU) framing is used, Modbus uses a cyclical redundancy check (CRC) to check the errors in transmitted message. Modbus reports the errors by modifying function code and by raising exceptions.</p>
+<p class="Note">The memory space within the functions in this library cannot be dynamically allocated and freed.</p>
+<p>The library encodes and decodes the data frames used for query and response operations. The calling function in a device driver passes the request to the interface, and the relevant data, including the CRC, are encoded into a frame which is returned to the calling function to be dispatched to the slave. When a response from the slave is obtained, the received data frame is sent to an interface in the library for error checking and decoding. If there are no errors, the data is passed back to the master.</p>
+<p>In RTU mode, messages start with a silent interval at least 3.5 characters long. A similar interval at least 3.5 characters long marks the end of the message. Only hexadecimal (0...9, A...F) characters are permitted. The entire message frame is transmitted as a continuous stream. A response frame starts with the slave address of one byte, followed by the function code of one byte, a data section of n bytes, and a CRC field of two bytes.</p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>proDAS Trace Utility</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="References">proDAS Trace Utility<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" >
+</a><div float:right></div></h1></div>
+<h2 id="300415">Overview</h2>
+<p>The trace utility logs informational messages to a trace file that can be used to troubleshoot problems encountered. All clients of the Trace 
+  Utility on the same computer may use the same trace file for logging purposes, ensuring that all messages can be viewed in the same file. The trace files are stored to the proDAS\data\Trace directory and may be reviewed using any text editor (e.g.: Notepad).</p>
+<p>The trace information written to the trace file consists of:</p>
+<ul>
+  <li>date and time</li>
+  <li>module identification</li>
+  <li>source</li>
+  <li>description</li>
+</ul>
+<table class="Table-Grey">
+  <tr> 
+    <th>Trace Information</th>
+    <th>Description</th>
+  </tr>
+  <tr> 
+    <td>Date and Time</td>
+    <td>Automatically added by the Trace Utility. The date and time are in the format:<br>
+    <br><strong>DD-MM-YYYY HH:MM:SS</strong></td>
+  </tr>
+  <tr> 
+    <td>Module Identification</td>
+    <td>A global module identifier, indicating the module that is generating the trace message. An applications identifier can be found in its initialisation file.</td>
+  </tr>
+  <tr> 
+    <td>Source</td>
+    <td>An identifier of the method (function) within the module that is generating the trace message.</td>
+  </tr>
+  <tr> 
+    <td>Description</td>
+    <td>The detailed trace message.</td>
+  </tr>
+</table>
+<p>The Trace Utility provides automatic backup of the trace file. When the trace file exceeds the default value (i.e.: 0x80000) set by the Trace 
+  Utility, the Trace Utility searches the %temp%, %tmp%, and then Temp directory in the root directory on each logical hard drive. The first existing directory found is used as the default value of the BackupPath key. If none of the directories exist: the key is left empty, the Backup feature is disabled, and the operator is notified.</p>
+<p>The backup destination file name is SYSTEM&lt;yyyymmddhhiiss&gt;.txt, where:</p>
+<ul>
+  <li>SYSTEM - the word system in all upper-case</li>
+  <li>yyyy - is a four digit year (e.g.: 2011)</li>
+  <li>mm - is a two digit month (e.g.: March would be 03)</li>
+  <li>hh - is a two digit hour (e.g.: 2 pm would be 14 and 3 am would be 03)</li>
+  <li>ii - is two digit minutes (e.g.: 1 minute would be 01)</li>
+  <li>ss - is a two digit second (e.g.: 3 seconds would be 03)</li>
+  <li>txt - is the file extension</li>
+</ul>
+<p>The backup feature is disabled if either the initialisation file is missing or the necessary information in the initialisation file is incorrect.</p>
+<p>Further information on the Trace Utility can be found in <a href="../ICDs/ICD2698TraceUtility.pdf">ICD78031.2698, COM Interface Control Document for Trace Utility</a>.</p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

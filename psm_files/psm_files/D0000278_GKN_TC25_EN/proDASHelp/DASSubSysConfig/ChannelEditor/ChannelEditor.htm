@@ -1,0 +1,1540 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Channel Editor</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="ChannelEditors">Channel Editor<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+
+<h2 id="Overview">Overview</h2>
+<p>proDAS collects and stores engine test data by channels. Each channel has a unique channel name and definition that describes how the channel data (engine signal) is scanned and processed by proDAS.</p>
+<p>All channel definitions are stored in the <a href="../../TestwithDAS/IntrotoproDAS/IntrotoproDAS.htm#ConfigDatabase">Configuration 
+  Database</a> and must be referenced to a subsystem and a configuration.</p>
+<p>The Channel Editor is the graphical user interface used to edit the channel data of the <a href="../../TestwithDAS/IntrotoproDAS/IntrotoproDAS.htm#ConfigDatabase"> Configuration Database</a>. The Channel Editor allows creating and editing of channel configuration data.</p>
+<ul>
+  <li><a href="#ChannelTypes"> Channel Types</a></li> 
+  <li><a href="#LimitsAndActions">Alarm Limits and Actions</a></li> 
+  <li><a href="#ChannelEditor">Channel Editor</a></li> 
+  <li><a href="#XMLFileStructure">XML File Structure</a></li> 
+  <li><a href="#CreateEditXML">Creating or Editing XML Files</a></li> 
+  <li><a href="#SiteAttributes">Site Specific Channel Attributes</a></li>
+  <li><a href="#TabDelimitFileStructure">Tab-Delimited File Structure</a></li> 
+  <li><a href="#CreateEditTabDelimited2">Creating or Editing Tab-Delimited Files</a></li>
+</ul>
+<h3 id="ChannelTypes">Channel Types</h3>
+<p>There are five types of proDAS channels:</p>
+<ul>
+  <li><a href="?11#FloatChannels">float channels</a> (variable value)</li>
+  <li><a href="?12#DiscreteChannels">discrete channels</a> (one / zero condition)</li>
+  <li><a href="?13#IntegerChannels">integer channels</a> (truncated float channels)</li>
+  <li><a href="?14#DateChannels">date channels</a></li>
+  <li><a href="?15#TimeChannels">time channels</a></li>
+</ul>
+<p>Based on the selected channel type for a given channel name, the corresponding fields within the tab-delimited configuration files may require additional data.</p>
+<h4 id="FloatChannels">Float Channels</h4>
+<p>A float channel monitors a measured or calculated floating point variable value. For a float channel, the units and the minimum and maximum values are included in the channel definition. The minimum and maximum values, used for displays, are applied to the ActiveX controls used to display the channel value on an operator page.</p>
+<p> The deadband parameter is used to dampen spurious alarm signals. When no deadband is applied, a channel value which crosses an alarm threshold, and then fluctuates near that value, would cause the alarm to be triggered repeatedly for the same condition. To eliminate repeated alarms, a deadband is defined that allows the signal amplitude to fluctuate in or near the alarm zone without a new alarm being registered. The alarm is activated only when the value passes beyond the deadband threshold. The same deadband value is defined for all limits defined for a given channel.</p>
+<div class="Container"><img src="images/deadband2.gif" alt="Deadband 2" width="643" height="254"></div>
+<p>Deadband values are used only if the channel is defined with limits.</p>
+<h4 id="DiscreteChannels">Discrete Channels</h4>
+<p>A discrete channel monitors only On (non-zero) and Off (0) conditions. Additional parameters will need to be defined when:</p>
+<ul>
+  <li>the channel has related limits and actions</li>
+  <li>the channel is a calculated channel, where the equation must be defined</li>
+  <li>subsystem dependent information is required (e.g. digital subsystem requires a card and a channel number.)</li>
+</ul>
+<p>Discrete channels can also have text attached to each state (e.g.: 0= DOOR OPEN, 1= DOOR CLOSED). This text can be displayed on the operator page using a dataview, see <a href="../../DASConfigTools/DisplayPages/DisplayPages.htm">&quot;Creating and Modifying Display Pages&quot;</a>.</p>
+<h4 id="IntegerChannels">Integer Channels</h4>
+<p>An integer channel has all the characteristics of a Float Channel with the following exceptions:</p>
+<ol>
+  <li>The channel value that is passed from the RTE to the RTDD is a float value, however, for the purpose of display the value will be truncated (i.e.: a value of 2.7 will be displayed as 2).</li>
+  <li>When formatting an integer channel it is possible to display text strings that represent integer values (i.e.: values of 0, 1 and 2 could be displayed as zero, one, and two or as Normal, Ignition, and Crank).</li>
+</ol>
+<p class="Note">The RTE is limited to 16-bit integer channel support (stored as a float value).</p>
+<h4>Enumerated Channels</h4>
+<p>To define an enumerated channel type (calculated channel):</p>
+<ol>
+  <li>Define the calculated channel to be of Type=integer.    
+  <p class="Note">Format dialogue uses the forward slash &quot;/&quot; as a list delimiter.<br>
+        
+        Example 1 - as entered into the format field:<br>
+        A\B\\C\D<br>
+        Example 1 - as displayed in the Format window:<br>
+        A<br>
+        B/C<br>
+        D<br>
+        <br>
+        Example 2 - as entered into the format field:<br>
+        A|B\C/D;E|F<br>
+Example 2 - as displayed in the Format window: <br>
+A|B<br>
+C/D;E|F<br></p>
+    
+<p class="Note">Format dialogue supports the &quot;Enter&quot; key to go to the next line to enter the next enumerated parameter in the list.</p>
+  </li>
+  <li>Highlight the Format field.</li>
+  <li>From the Edit menu, select <strong>Format...</strong>. The Format window is displayed (see <a href="../../StandardTools/FormatControl/FormatControl.htm">Format Controls</a>).</li>
+  <li>Select the radio buttion <strong>Enumeration</strong> and define the list of enumerated items for the channel.</li>
+  <li>Select <strong>OK</strong> to apply the enumeration.</li>
+</ol>
+<h4 id="DateChannels">Date Channels</h4>
+<p>This allows the user to display a channel in different date formats. It is only valid for legitimate date channels.</p>
+<h4 id="TimeChannels">Time Channels</h4>
+<p>This allows the user to display a channel in different time formats. It is only valid for legitimate time channels.</p>
+<h3 id="LimitsAndActions">Alarm Limits and Actions</h3>
+<p>The Channel Editor allows to associate Alarm Limits and Actions to the selected channel. The right view of the Channel Editor contains two spreadsheets:</p>
+<ul>
+  <li>Alarm Limits</li>
+  <li>Actions</li>
+</ul>
+<p>For more detailed information on the alarm limits associated with selected channel, see <a href="#AlarmLimits">Alarm Limits</a>.</p>
+<p>For more detailed information on the actions associated an alarm limit, see <a href="#Actions">Actions</a>.</p>
+<p>For information on the XML File structure, see <a href="../ConfigCalcChannels/ConfigCalcChannels.htm#XMLFileStructure">XML File Structure</a>.</p>
+<p>For information on Tab-Delimited File structure, see <a href="#TabDelimitFileStructure">Tab-Delimited File Structure</a>.</p>
+<h4 id="Limits">Alarm Limits</h4>
+<p>Limits can be applied to all channel types. A float or integer channel limit is the threshold value at which an alarm or warning is triggered.</p>
+<p>A discrete channel has only two operating states (0 or 1). In this case a limit is applied to the state which is defined as a <strong>not</strong> normal operation. When the discrete channel enters this state the limit will trigger an alarm or warning.</p>
+<h4 id="Actions">Actions</h4>
+<p> Up to five actions (responses) can be defined for each limit. For example, the action for a warning could be to write a message to the Event Handler window and to start a transient log. When corrective action is taken by the operator, and the value of the channel is again within its normal range, a different message (action) could be written to the Event Handler window and the transient log could be stopped as a result.</p>
+<p>Actions can be applied to float, integer and discrete channels.</p>
+<h2 id="ChannelEditor">Channel Editor</h2>
+<p>The Channel Editor uses the <a href="../../TestwithDAS/IntrotoproDAS/IntrotoproDAS.htm#ConfigDatabase">Configuration Database</a> to retrieve and save the configuration information required to perform an Engine Test. The Channel Editor allows the user to define and to manipulate channel configuration information (e.g. hardware connections, calculations, limits or actions).</p>
+<div class="Container"><img src="images/ChannelEditor.png" alt="Channel Editor" width="700" height="448"></div>
+<h3 class="Note" id="Menus">When selecting multiple line items of a filtered list in the spreadsheet portion of the Channel Editor (the left hand panel), clearing the filter increases the selection to include any items between the selected items that were not part of the filter.</h3>
+<h3>Menus</h3>
+<p>The Channel Editor menu bar (below) assists the user in performing complex operations.</p>
+<div class="Container"><img src="images/MenuBar.PNG" alt="Menu Bar" width="405" height="49"></div>
+<p>The Channel Editor provides the following menus:</p>
+<ul>
+  <li><a href="?20#MenuFile">File</a></li>
+  <li><a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Edit</a></li>
+  <li><a href="../ConfigEditors/ConfigEditors.htm#MenuView">View ...</a></li>
+  <li> <a href="../ConfigEditors/ConfigEditors.htm#MenuConfiguration">Configuration ...</a></li>
+  <li> <a href="?22#MenuAlarmLimits">AlarmLimits</a></li>
+  <li> <a href="?23#MenuActions">Action</a></li>
+  <li><a href="?24#MenuExtras">Extras</a></li>
+  <li> <a href="../ConfigEditors/ConfigEditors.htm#MenuHelp">Help ...</a></li>
+</ul>
+<h4 id="MenuFile">File</h4>
+<p>The <strong>File</strong> menu of the Channel Editor (below) assists the user in performing external operations.</p>
+<div class="Container"><img src="images/MenuFile.PNG" alt="Menu File" width="262" height="329"></div>
+<p>The File menu items are:</p>
+<ul>
+  <li><a href="../../DASConfigTools/EUEditor/EUEditor.htm">Engineering Unit Editor ...</a></li>
+  <li><a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor ...</a></li>
+  <li><a href="../../DASConfigTools/BPTableEditor/BPTableEditor.htm">Break Point Table Editor ...</a></li>
+  <li><a href="../../DASConfigTools/PolyEditor/PolyEditor.htm">Polynomial Editor ...</a></li>
+  <li><a href="../ConfigEditors/ConfigEditors.htm#MenuFile">Save</a></li>
+  <li><a href="#MenuFile">Reload Config</a> - reloads the subsystem configuration to include recent modifications</li>
+  <li><a href="../ConfigEditors/ConfigEditors.htm#MenuFile">Import ...</a></li>
+  <li><a href="../ConfigEditors/ConfigEditors.htm#MenuFile">Export ...</a></li>
+  <li><a href="../ConfigEditors/ConfigEditors.htm#MenuFile">Print ...</a></li>
+  <li><a href="../ConfigEditors/ConfigEditors.htm#MenuFile">Print Preview</a></li>
+  <li><a href="../ConfigEditors/ConfigEditors.htm#MenuFile">Print Setup ...</a></li>
+  <li><a href="../ConfigEditors/ConfigEditors.htm#MenuFile">Exit</a></li>
+</ul>
+<p>The Channel Editor enables the user to define one or more personalised print outputs. For this purpose the user first adds an entry of the following structure in the initialisation file of the Channel Editor:</p>
+<blockquote>
+  <p>[Report]<br>
+    Count=number of reports<br>
+    Report1= .......\Report1.xml<br>
+    Report2= .......\Report2.xml<br>
+    Report3= .......\Report3.xml<br>
+    ...</p>
+</blockquote>
+<p>For example the entry reads:</p>
+<blockquote>
+  <p>[Report]<br>
+    Count=2<br>
+    Report1=C:\Program Files\proDAS_E100\Reports\Report1.xml<br>
+    Report2=C:\Program Files\proDAS_E100\Reports\Report2.xml</p>
+</blockquote>
+<p>The XML-files named in the INI-file i.e. Report1.xml, Report2.xml, ... must exist at the specified location.</p>
+<p>The structure of a report file complies with the following example:</p>
+<blockquote>
+  <p>&lt;Report Name=&quot;VXI_TSM&quot;&gt; <br>
+    &nbsp;&lt;Rows&gt; <br>
+    &nbsp;&nbsp;&lt;SubSystem Name=&quot;GASSVXI&quot;/&gt; <br>
+    &nbsp;&nbsp;&lt;SubSystem Name=&quot;TSM&quot;/&gt;<br>
+    &nbsp;&lt;/Rows&gt;<br>
+    &nbsp;&lt;Columns&gt;<br>
+    &nbsp;&nbsp;&lt;Column Name=&quot;Subsystem Type&quot;/&gt;<br>
+    &nbsp;&nbsp;&lt;Column Name=&quot;Subsystem Name&quot;/&gt;<br>
+    &nbsp;&nbsp;&lt;Column Name=&quot;Level&quot;/&gt;<br>
+    &nbsp;&nbsp;&lt;Column Name=&quot;Enabled&quot;/&gt;<br>
+    &nbsp;&nbsp;&lt;Column Name=&quot;Active&quot;/&gt;<br>
+    &nbsp;&nbsp;&lt;Column Name=&quot;Pinout&quot; SubSystem=&quot;GASSVXI&quot;/&gt;<br>
+    &nbsp;&nbsp;&lt;Column Name=&quot;Pinout&quot; Position=&quot;3&quot;/&gt;<br>
+    &nbsp;&nbsp;&lt;Column Name=&quot;SerialNo&quot; SubSystem=&quot;TSM&quot;/&gt;<br>
+    &nbsp;&nbsp;&lt;Column Name=&quot;ChannelNo&quot; SubSystem=&quot;TSM&quot;/&gt;<br>
+    &nbsp;&lt;/Columns&gt;<br>
+    &nbsp;&lt;Print Orientation=&quot;LandScape&quot; MarginLeft=&quot;2&quot; MarginRight=&quot;2&quot; MarginTop=&quot;2&quot; MarginBottom=&quot;2&quot; JobName=&quot;Spread&quot; AbortMessage=&quot;&quot; Border=&quot;true&quot; Grid=&quot;true&quot; Shadow=&quot;true&quot; ColHeader=&quot;true&quot; RowHeader=&quot;true&quot; /&gt;<br>
+    &lt;/Report&gt;</p>
+</blockquote>
+<p>In the example above, two subsystems have been named with the appropriate columns the user would like to have printed. </p>
+<p>Any number of subsystems and columns can be specified.</p>
+<p>If the print reports are defined in the manner described above, an additional item <strong>Report</strong> is displayed in the <strong>File</strong> menu.</p>
+<div class="Container"><img src="images/MenuFileReport.PNG" alt="Menu File Report" width="262" height="351" ></div>
+<p>After selecting the&nbsp;report VXI_TSM (as shown below), a print preview is opened. This preview contains all specified rows and columns of the subsystems GASSVXI and TSM .</p>
+<div class="Container"><img src="images/SelectReport.PNG" alt="Select Report" width="507" height="55" ></div>
+<h4 id="MenuEdit">Edit</h4>
+<p>The <strong>Edit</strong> menu of the Channel Editor (below) assists the user in performing editing operations.</p>
+<div class="Container"><img src="images/MenuEdit.png" alt="Menu Edit" width="264" height="573"></div>
+<p>The specific Edit menu items for the Channel Editor are:</p>
+<ul>
+  <li><a href="#Format">Format ...</a></li>
+  <li> <a href="#Category">Category ...</a></li>
+  <li><a href="#EditChannel">Edit Channel</a></li>
+  <li><a href="#FindChan">Find Channel in proDAS</a></li>
+  <li><a href="#ExtendCheck">Extended Check</a></li>
+  <li><a href="#ExtendCheck2">Check</a></li>
+</ul>
+<p>For generic Edit menu functionalities, see <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</p>
+<p class="Note">The Delete Data Records option is a generic menu option. When deleting channels, a reference check is performed to determine if the channels are referenced to a subsystem. When deleting more than 10 channels at a time, a message informs the user that the operation may take a long time, and an option is provided to avoid the reference check. If the reference check is not completed, it is the responsibility of the user to ensure the channels being deleted are not referenced.</p>
+<p class="Note">When deleting/disabling records from the Channel Editor, proDAS checks to determine if the channels are referenced elsewhere. If they are referenced elsewhere, a warning message appears with information on where they are referenced. Selecting 'Cancel' aborts the deletion/disabling process. Selecting 'OK' deletes/disables only the channels that are not referenced elsewhere. Referenced channels must be deleted/disabled from each reference before doing so in the Channel Editor.</p>
+<h4 id="Format">Format</h4>
+<p>The Format ... item of the Edit menu allows the user to determine the display format of a channel. The Display Format depends on the Channel Data Type.</p>
+<p>To change the format of a channel using the Edit menu:</p>
+<ol>
+  <li>Select the format cell in the left hand pane for the desired channel.
+    <p class="Note">If this is not done the Format Option in the Edit menu will be greyed out.</p>
+  </li>
+  <li>Select <strong>Edit/Format</strong>. A format window is displayed. The specific window that opens will depend on the channel type.</li>
+  <li>Fill in the appropriate information depending on the channel type selected. For more information refer to the Format Control for <a href="../../StandardTools/FormatControl/FormatControl.htm#ScientificPointFormat">Float</a>, <a href="../../StandardTools/FormatControl/FormatControl.htm#IntNumberFormat">Integer</a>, <a href="../../StandardTools/FormatControl/FormatControl.htm#BooleanFormat">Boolean</a>, <a href="../../StandardTools/FormatControl/FormatControl.htm#DateFormat">Date</a> or <a href="../../StandardTools/FormatControl/FormatControl.htm#TimeFormat">Time</a>.</li>
+</ol>
+<h4 id="Category">Category</h4>
+<p>The Category ... item of the Edit menu allows the user to select an <a href="../../DASConfigTools/EUEditor/EUEditor.htm">Engineering Unit Category</a>. Once an Engineering Unit is selected for a channel, the drop-down list will only include channels in the same Engineering Unit Category. The Category item must be used to change this.</p>
+<p class="Note">The active cell must be the Engineering Unit or the category will be greyed out.</p>
+<div class="Container"><img src="images/EUCategory.PNG" alt="EU Category" width="335" height="182"></div>
+<h4 id="EditChannel">Edit Channel</h4>
+<p>The Edit Channel item of the Edit menu opens the Edit Channel window, which displays all the properties of a channel as well as the  callibration data and alarm limits.</p>
+<p class="Note">The Edit Channel window can also be opened either by pressing the &quot;F2&quot; key or using the context menu item Edit Channel.</p>
+<div class="Container"><img src="images/EditChanTabGen.png" alt="Edit Chan Tab Gen" width="700" height="462"></div>
+<p class="Note">The Generic tab in the Edit Channel window allows the following types of channels to be referenced to an RTD for  if the channel is assigned to a temperature engineering unit (e.g. C, degC):<br>
+  <br>
+  &nbsp; &nbsp; &nbsp; &bull; &nbsp; &nbsp; &nbsp;Calculated<br>
+  &nbsp; &nbsp; &nbsp; &bull; &nbsp; &nbsp; &nbsp;External<br>
+  &nbsp; &nbsp; &nbsp; &bull; &nbsp; &nbsp; &nbsp;ModBusSerial<br>
+  &nbsp; &nbsp; &nbsp; &bull; &nbsp; &nbsp; &nbsp;ModBusEthernet<br>
+  &nbsp; &nbsp; &nbsp; &bull; &nbsp; &nbsp; &nbsp;PMCAB<br>
+  &nbsp; &nbsp; &nbsp; &bull; &nbsp; &nbsp; &nbsp;PLCGE<br>
+  &nbsp; &nbsp; &nbsp; &bull; &nbsp; &nbsp; &nbsp;RTP<br>
+  &nbsp; &nbsp; &nbsp; &bull; &nbsp; &nbsp; &nbsp;OPC<br>
+  &nbsp; &nbsp; &nbsp; &bull; &nbsp; &nbsp; &nbsp;VEXA<br>
+  &nbsp; &nbsp; &nbsp; &bull; &nbsp; &nbsp; &nbsp;DTS3250<br>
+  <br>
+  The Reference RTD drop-down list is populated with any defined channel with a temperature engineering unit. If an RTD is selected from the Reference RTD drop-down list, the channel can only be saved if a fixed sensor is defined. </p>
+<p class="Note"> The Engineering Unit drop-down menu allows the user to select an 'undefined' option. Selecting this resets the Engineering Unit for the channel.</p>
+<p>The Calculated tab (only present for Calculated subsystems) offers a list of all channels in an equation. Within the Calculated Tab there are two view options: Equation View and Tree View. The Equation view displays the equation in an edit box. </p>
+<div class="Container"><img src="images/EditEquationView2.png" alt="Edit Equation View 2" width="723" height="478"></div>
+<p>The Tree View displays the equation in a read-only tree view for a detailed, line-by-line description of the equation.</p>
+<div class="Container"><img src="images/EditTreeView2.png" alt="Edit Tree View 2" width="725" height="479"></div>
+<p class="Note">The tab &quot;Site specific attributes&quot; is optional; content is customer driven.</p>
+<p class="Note">By default, all channels are selected as being included in the Continuous Log.</p>
+<p class="Note">The calibration data displayed in tabs &quot;Calibration Sensor&quot;, &quot;Fixed Sensor&quot;, &quot;Customer Sensor&quot;, and &quot;Applied Curve&quot; cannot be modified.</p>
+<p class="Note">The Subsystem Specific tab appears only for subsystems having Subsystem specific attributes. The title of the tab depends on the subsystem name.</p>
+<h4 id="FindChan">Find Channel in proDAS</h4>
+<p>The Find Channel in proDAS item of the Edit menu allows the user to launch the Channel Name Search (CNS).</p>
+<p class="Note">The Find Channel in proDAS item is configurable (via the ini file).</p>
+<h4 id="ExtendCheck">Extended Check</h4>
+<p>The Extended Check item of the Edit menu enables a more time consuming check of the configuration. It verifies if the sensor exists in the Test Results and Sensor Calibration Database (TRSCDB).</p>
+<p>Selecting Extended Check in the Edit menu activates an Extended Check. To perform an Extended Check, the user must navigate to the Edit menu and select Check (ensuring there is a check mark beside the Extended Check option).</p>
+<h4>Reference Check</h4>
+<p>The reference check option (not in edit menu) performs a check on references to other configuration editors (e.g. Subsystem Editor). The reference check operation is enabled/disabled through the <em>ChannelEditor.ini</em> file through the <em>EnableReferenceCheck</em> parameter. The default entry is<em> true</em>.</p>
+<h4 id="ExtendCheck2">Check</h4>
+<p>Consistency checks are performed by the Configuration Server. A consistency check is performed on explicit requests of the user or on a save request.</p>
+<p class="Note">Saving the Subsystem data is not permitted if the configuration is considered as inconsistent. The Channel Editor will display the error messages received from the Configuration Server after a consistency check in the list of messages.</p>
+<h4 id="MenuAlarmLimits">AlarmLimit</h4>
+<p>The <strong>AlarmLimit</strong> menu of the Channel Editor (below) assists the user in performing editing operations on Alarm Limits.</p>
+<div class="Container"><img src="images/MenuAlarmLimit.PNG" alt="Menu Alarm Limit" width="167" height="135"></div>
+<p>The specific AlarmLimit menu items for the Channel Editor are:</p>
+<ul>
+  <li>Cut</li>
+  <li> Copy</li>
+  <li> Paste</li>
+  <li> Append</li>
+  <li> Delete</li>
+</ul>
+<h4 id="MenuActions">Action</h4>
+<p>The <strong>Action</strong> menu of the Channel Editor (below) assists the user in performing editing operations on an Action.</p>
+<div class="Container"><img src="images/MenuAction.PNG" alt="Menu Action" width="189" height="139"></div>
+<p>The specific Action menu items for the Channel Editor are:</p>
+<ul>
+  <li>Cut</li>
+  <li> Copy</li>
+  <li> Paste</li>
+  <li> Append</li>
+  <li> Delete</li>
+</ul>
+<p class="Note">The Select File menu option is enabled when &quot;InvokeScript&quot; is selected in the actions pane.</p>
+<h4 id="MenuExtras">Extras</h4>
+<p>The <strong>Extras</strong> menu of the Channel Editor assists the user in performing Automatic Channel Generation and managing other file formats.</p>
+<div class="Container"><img src="images/MenuExtras.png" alt="Menu Extras" width="299" height="299"></div>
+<p>The Channel Editor Extras menu provides the following:</p>
+<ul>
+  <li><a href="?27#ConvertEU">Convert Engineering Unit ...</a></li>
+  <li><a href="?28#AbsolutePressure">Absolute Pressure</a></li>
+  <li><a href="?29#DifferentialPressure">Differential Pressure</a></li>
+  <li><a href="?30#ValidatedAverage">Validated Average ...</a></li>
+  <li><a href="?31#FullsetFiltering">Fullset Filtering</a></li>
+  <li><a href="?102#Complete">Complete TAB-delimited Export/Import</a></li>
+  <li><a href="?32#FileImportTAB">Import TAB-delimited file ...</a></li>
+  <li><a href="?33#FileExportTAB">Export TAB-delimited file ...</a></li>
+  <li>Import all TAB-delimited files</li>
+  <li>Export all TAB-delimited files</li>
+  <li><a href="?34#Options">Options ...</a></li>
+</ul>
+<p>The Channel Editor allows the user to generate some common types of calculated channels.</p>
+<p>The general information, required to generate the Calculated Channels automatically, is configured using the <a href="?35#Options">Options property sheets</a>.</p>
+<p>The description of each automatically generated channel contains the text Automatically generated followed by the type (e.g.: the description of an automatically generated Absolute Pressure channel reads Automatically generated Absolute Pressure).</p>
+<h4 id="ConvertEU">Convert Engineering Unit (Automatic Channel Generation)</h4>
+<p>The Automatically Generated Calculated Channels for the Engineering Unit Conversion is named using the name of the selected channel followed by a configurable Channel Name Suffix as defined in the <a href="?36#ConvertEUProperty">Convert Engineering Unit Property Page</a>.</p>
+<p>The equation of the Automatically Generated Calculated Channel for the Engineering Unit Conversion is defined as <strong>Slope</strong> * <strong>Selected Channel Name</strong> + <strong>Offset</strong>. Where, the <strong>Slope</strong> and <strong>Offset</strong> are defined in the <a href="../../DASConfigTools/EUEditor/EUEditor.htm">Engineering Unit Editor</a>.</p>
+<div class="Container"><img src="images/ConvertEU.PNG" alt="Convert EU" width="518" height="187"></div>
+<p>The Minimum,  Maximum and Dead Band values of the generated Channel are going to be updated accordingly. See <a href="#XMLFileStructure">XML File Structure</a> for more information.</p>
+<h4 id="AbsolutePressure">Absolute Pressure (Automatic Channel Generation)</h4>
+<p>The Automatically Generated Calculated Channels for the Absolute Pressure Conversion is named using the name of the selected channel followed by a configurable Channel Name Suffix defined in the <a href="?41#AbsoluteProperty">Absolute Property Page</a>.</p>
+<p>The equation of the Automatically Generated Calculated Channel for the Absolute Pressure is defined as <strong>Selected Channel Name</strong> + <strong><a href="?42#AbsoluteProperty"> Reference Channel Name</a></strong>.</p>
+<h4 id="DifferentialPressure">Differential Pressure (Automatic Channel Generation)</h4>
+<p>The Automatically Generated Calculated Channels for the Differential Pressure Conversion is named using the name of the selected channel followed by a configurable Channel Name Suffix defined in the <a href="?43#DifferentialProperty"> Differential Property Page</a>.</p>
+<p>The equation of the Automatically Generated Calculated Channel 
+  for the Differential Pressure is defined as <strong>Selected Channel Name</strong> - <strong><a href="?44#DifferentialProperty"> Reference Channel Name</a></strong>.</p>
+<h4 id="ValidatedAverage">Validated Average (Automatic Channel Generation)</h4>
+<p>The Automatically Generated Calculated Channels for the Validated Average is defined as a group of calculated channels derived from a list of selected channels to be averaged. The name of the automatically calculated channels are defined as follow:</p>
+<ul>
+  <li>a channel containing the Sum of all Valid Values to be averaged</li>
+  <li>a channel containing the Tolerance Value</a></li>
+  <li>a channel containing the Number of Valid Values</a></li>
+  <li>a channel containing the Average of all Valid Values ...</a></li>
+  <li>as many Valid Flags as selected channels</a></li>
+</ul>
+<p id="ValidatedAverageBaseName">The Validated Average channel is named using the name entered in the Validated Average Dialogue.</p>
+<div class="Container"><img src="images/ValidatedAverage.png" alt="Validated Average" width="482" height="168"></div>
+<p>To create the average channel the user enters a value between 0 and 1 for the minimum tolerance as part of display range and a value for the relative tolerance of the same range.</p>
+<p>The equation of the validated average is defined as <strong><a href="../ConfigCalcChannels/ConfigCalcChannels.htm#EquationDefns">avg_t</a> ( <a href="../ConfigCalcChannels/ConfigCalcChannels.htm#EquationDefns">max</a> (Name of Average Channel * Relative Tolerance, Minimum Tolerance), comma-separated list of selected channels)</strong>.</p>
+<h4 id="FullsetFiltering">Fullset Filtering (Automatic Channel Generation)</h4>
+<p>Fullset Filtering enables the definition of an automatically generated calculated channel to smooth an existing channel by applying  filtering (allows a user to have a continuous fullset like channel defined). A suffix is defined for the automatically generated channel  which is appended to the existing channel name.</p>
+<p>The Automatically Generated Calculated Channels for the Fullset Filtering is named using the name of the selected channel followed by a configurable Channel Name Suffix defined in the <a href="?62#FullsetFilteringProperty"> Fullset Filtering Property Page</a>.</p>
+<p>The existing channel is smoothed by applying the  following equation (<strong><a href="?63#FullsetFilteringProperty">Factor</a></strong> * <strong>Fullset Filtering Name</strong> + (1.0 - <strong><a href="?64#FullsetFilteringProperty">Factor</a></strong>) 
+  * <strong>Selected Channel Name</strong>, where the <strong><a href="?65#FullsetFilteringProperty">Factor</a></strong> is a configurable constant between 0.0 and 1.0 typically set to 0.9. The <strong><a href="?66#FullsetFilteringProperty"> Factor</a></strong> default value is set in the <a href="?67#FullsetFilteringProperty"> Fullset Filtering Property Page</a>.</p>
+<p>Where a fullset averages the  measured value at 100% over a pre-defined duration, in this instance, the  average occurs in real time and allows the user to scale the averaged value and  the acquired value in a rolling average resulting in a &ldquo;smoothed&rdquo; channel.</p>
+<h4 id="Options">Options</h4>
+<p>All configurable strings can be edited in the Options Property Pages.</p>
+<p id="ConvertEUProperty">The Convert Engineering Unit Property Page allows the user to assign a Suffix and a Calculated Subsystem name to be used for the creation of a <a href="?68#ConvertEU">Convert Engineering Unit</a> Calculated Channel.</p>
+<div class="Container"><img src="images/OptionsConvertEU.PNG" alt="Options Convert EU" width="466" height="399"></div>
+<p id="AbsoluteProperty">The Absolute Pressure Property Page allows the user to assign a Suffix, a Calculated Subsystem name and a reference channel name to be used for the creation of an <a href="?69#AbsolutePressure">Absolute Pressure</a> Calculated Channel.</p>
+<div class="Container"><img src="images/OptionsAbsolutePressure.PNG" alt="Options Absolute Pressure" width="466" height="399"></div>
+<p id="DifferentialProperty">The Differential Pressure Property Page allows the user to assign a Suffix, a Calculated Subsystem name and a reference channel name to be used for the creation of a <a href="?70#DifferentialPressure">Differential Pressure</a> Calculated Channel.</p>
+<div class="Container"><img src="images/OptionsDifferentialPressure.PNG" alt="Options Differential Pressure" width="466" height="399"></div>
+<p id="FullsetFilteringProperty">Fullset Filtering Property Page allows the user to assign a Calculated Subsystem name, Factors, and Suffixes used for the creation of a <a href="?72#FullsetFiltering">Fullset Filtering</a> Calculated Channel.</p>
+<div class="Container"><img src="images/OptionsFullsetFiltering.png" alt="Options Fullset Filtering" width="466" height="399"></div>
+<p>&nbsp;</p>
+<h2 id="XMLFileStructure">XML File Structure</h2>
+<p>The channels are stored in the <a href="../../TestwithDAS/IntrotoproDAS/IntrotoproDAS.htm#ConfigDatabase"> Configuration Database</a>.</p>
+<p>A Channel consists of the generic channel attributes immediately followed, if any, by specific attribute and a list of Alarm Limits. An Alarm Limit consists of the alarm limit attributes and a list of Actions.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Name</td>
+    <td>Name</td>
+    <td>NAME</td>
+    <td>Channel Name</td>
+    <td>String</td>
+    <td>Up to 39 characters (a-z, A-Z, 0-9, _, #, %, @).  Must start with a letter or an underscore (case sensitive).</td>
+  </tr>
+  <tr>
+    <td>Description</td>
+    <td>Description </td>
+    <td>n/a</td>
+    <td>The description of the channel.</td>
+    <td>String</td>
+    <td>Any string</td>
+  </tr>
+  <tr>
+    <td>Enabled</td>
+    <td>Enabled</td>
+    <td>ENABLED</td>
+    <td>Flag indicating whether or not the channel is enabled</td>
+    <td>String</td>
+    <td>true or false</td>
+  </tr>
+  <tr>
+    <td>Last Modification Date</td>
+    <td>LastModificationDate</td>
+    <td>n/a</td>
+    <td>Date and time the channel was last modified</td>
+    <td>String</td>
+    <td>Valid date/time string</td>
+  </tr>
+  <tr>
+    <td>Subsystem Name</td>
+    <td>SubsystemName</td>
+    <td>SS_NAME</td>
+    <td>The name of the subsystem associated to the channel</td>
+    <td>String</td>
+    <td>A Name defined in the Subsystems Collection</td>
+  </tr>
+  <tr>
+    <td>Subsystem Type</td>
+    <td>SubsystemType</td>
+    <td>n/a</td>
+    <td>The type of the subsystem</td>
+    <td>String</td>
+    <td>The Subsystem Type  associated to the Subsystem Name</td>
+  </tr>
+  <tr>
+    <td>Alternative Name</td>
+    <td>AlternateName</td>
+    <td>ALTERNATE_NAME</td>
+    <td>An arbitrary string used as an alternative display name for the channel</td>
+    <td>String</td>
+    <td>This entry is arbitrary string without space and control characters
+      <p class="TableNote">This field supports non-English characters.</p></td>
+  </tr>
+  <tr>
+    <td>Type</td>
+    <td>DataType</td>
+    <td>n/a</td>
+    <td>The channel's processing data type</td>
+    <td>String</td>
+    <td>Float, Integer, Boolean, Date or Time. The acceptable values for each subsystem are defined in the subsystem specific definition </td>
+  </tr>
+  <tr>
+    <td>Initial Value</td>
+    <td>InitialValue</td>
+    <td>INITIAL_VAL</td>
+    <td>The initial value of the channel. Only applicable for output channels</td>
+    <td>Float or Integer</td>
+    <td>A Float or integer number</td>
+  </tr>
+  <tr>
+    <td>Format</td>
+    <td>Format</td>
+    <td>n/a</td>
+    <td>The display format</td>
+    <td>String</td>
+    <td>The display format depends on the <a href="?73#ChannelTypes">Channel DataType</a></td>
+  </tr>
+  <tr>
+    <td>Acq. Rate</td>
+    <td>UpdateRate</td>
+    <td>SCAN_RATE</td>
+    <td>The rate at which the channel is going to be updated by the RTE in Hertz</td>
+    <td>Integer</td>
+    <td>Must match the list of  predefined Acquisition Rates (0, 1, 2, 5, 10, 20, 33, 50, 66, 100, 200)</td>
+  </tr>
+  <tr>
+    <td>Quality Ceiling</td>
+    <td>QualityCeiling</td>
+    <td>QUALITY</td>
+    <td>The highest quality flag that can be set</td>
+    <td>String</td>
+    <td>GOOD, SUSPECT or BAD</td>
+  </tr>
+  <tr>
+    <td>Critical</td>
+    <td>Critical</td>
+    <td>CRITICAL</td>
+    <td>A flag specifying whether or  not the channel will be recorded in the critical log</td>
+    <td>String</td>
+    <td>true or false</td>
+  </tr>
+  <tr>
+    <td>Engineering Unit</td>
+    <td>EngineeringUnit</td>
+    <td>UNITS</td>
+    <td>The Engineering Unit associated to the channel</td>
+    <td>String</td>
+    <td>A Name defined in the Engineering Units Collection</td>
+  </tr>
+  <tr>
+    <td>Minimum</td>
+    <td>DisplayMin</td>
+    <td>MIN</td>
+    <td>The minimum displayed value</td>
+    <td>Float or Integer</td>
+    <td>A float or integer value</td>
+  </tr>
+  <tr>
+    <td>Maximum</td>
+    <td>DisplayMax</td>
+    <td>MAX</td>
+    <td>The maximum displayed value</td>
+    <td>Float or Integer</td>
+    <td>A float or integer value</td>
+  </tr>
+  <tr>
+    <td>Deadband</td>
+    <td>DeadBand</td>
+    <td>DEADBAND</td>
+    <td>A Deadband to be applied on all configured alarm limits</td>
+    <td>Float or Integer</td>
+    <td>A float or integer value. Can be set only for Float and Integer channel Types</td>
+  </tr>
+  <tr>
+    <td>Output</td>
+    <td>Output</td>
+    <td>IN_OUT</td>
+    <td>A flag indicating whether  the channel is an input or an output channel. An Output channel is used to send  information to a subsystem.</td>
+    <td>String</td>
+    <td>true or false<br>
+      <br>
+      A channel of type <strong>Time</strong> or <strong>Date</strong> is always set to <em>False</em>.</td>
+  </tr>
+  <tr>
+    <td>Reference</td>
+    <td>ReferenceChannel</td>
+    <td>REF_CHAN</td>
+    <td>A reference channel name. Only applicable for output channels.</td>
+    <td>String</td>
+    <td>A Name defined in the Channel Collection</td>
+  </tr>
+  <tr>
+    <td>Group</td>
+    <td>Group</td>
+    <td>GROUP</td>
+    <td>An arbitrary string used to group the channels together</td>
+    <td>String</td>
+    <td>No restriction. This entry is arbitrary and will not be checked</td>
+  </tr>
+  <tr>
+    <td>Signal Id</td>
+    <td>SignalId</td>
+    <td>SIGNAL_ID</td>
+    <td>The identification of the signal path</td>
+    <td>String</td>
+    <td>No restriction. This entry is arbitrary and will not be checked</td>
+  </tr>
+  <tr>
+    <td>Calibration Sensor</td>
+    <td>CalSensor</td>
+    <td>CAL_SENSOR</td>
+    <td>Sensor whose associated curve is used for adjusting the measured range and correcting system bias</td>
+    <td>String</td>
+    <td>A string representing a  sensor in the Sensor Calibration database, with the combined Sensor Name and  Auxiliary Address</td>
+  </tr>
+  <tr>
+    <td>Calibration Group</td>
+    <td>CalGroup</td>
+    <td>CAL_GROUP</td>
+    <td>Group of sensors that have identical measurement range and breakpoints</td>
+    <td>String</td>
+    <td>A string</td>
+  </tr>
+  <tr>
+    <td>Fixed Sensor</td>
+    <td>FixedSensor</td>
+    <td>FIXED_SENSOR</td>
+    <td>A second conversion that could be combined with the calibration sensor. This could be an EU conversion or a correction for the Calibration Sensor. Fixed sensors cannot not be calibrated</td>
+    <td>String</td>
+    <td>A string representing a  sensor in the Sensor Calibration database (with the combined Sensor Name and  Auxiliary Address), in the 2D Break Point Table collection, or in the  Polynomial collection</td>
+  </tr>
+  <tr>
+    <td>Customer Sensor</td>
+    <td>CustomerSensor</td>
+    <td>CUSTOMER_SENSOR</td>
+    <td>Customer defined sensor.
+      <p class="TableNote">This sensor cannot be changed using Sensor Calibration.</p></td>
+    <td>String</td>
+    <td>A string representing a  sensor in the Sensor Calibration database (with the combined Sensor Name and  Auxiliary Address), in the 2D Break Point Table collection, or in the  Polynomial collection</td>
+  </tr>
+  <tr>
+    <td>Fullset Stability</td>
+    <td>FullsetStability</td>
+    <td>FULLSET_STABILITY</td>
+    <td>A flag indicating whether or not fullset stability monitoring should be applied to the channel. If set, proDAS stores the minimum and maximum  value acquired during the fullset period, the number of acquired samples and the standard deviation.
+      <p class="TableNote">Only applies to non-0 Hz float channels.</p>
+      These values are stored in  the FULLSETS table in the database.</td>
+    <td>String</td>
+    <td>true or false</td>
+  </tr>
+  <tr>
+    <td>Continuous Log</td>
+    <td>ContinuousLog</td>
+    <td>CONTINUOUS</td>
+    <td>A flag indicating whether  or not the channel will be recorded in the continuous log file</td>
+    <td>String</td>
+    <td>true or false</td>
+  </tr>
+  <tr>
+    <td>RTD Reference Channel</td>
+    <td>RTDRefChannel</td>
+    <td>RTD_REF_CHANNEL</td>
+    <td>The RTD reference channel.</td>
+    <td>String</td>
+    <td>Up to 39 characters (a-z, A-Z, 0-9, _, #, %, @).  Must start with a letter or an underscore (case sensitive).</td>
+  </tr>
+  <tr>
+    <td>NDDS Publish</td>
+    <td>NddsPublish</td>
+    <td>NDDS_PUBLISH</td>
+    <td>A flag indicating whether or not the subsystem is published to NDDS.</td>
+    <td>String</td>
+    <td>true or false</td>
+  </tr>
+</table>
+<p> The structure of a Channel complies with the following example:</p>
+<blockquote><code>&lt;Channels LastModificationDate=&quot;<strong>2015-06-10 11:19:13</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;<br>
+  &lt;Channel Name=&quot;ZZCalc1&quot; <br>
+  Description=&quot;&quot; <br>
+  Enabled=&quot;true&quot; <br>
+  LastModificationDate=&quot;2015-06-10 11:19:13&quot; <br>
+  SubsystemName=&quot;Calculated&quot; <br>
+  SubsystemType=&quot;Calculated&quot; <br>
+  AlternateName=&quot;&quot; <br>
+  DataType=&quot;Float&quot; <br>
+  InitialValue=&quot;-999999&quot; <br>
+  Format=&quot;4.2f&quot; <br>
+  UpdateRate=&quot;1&quot; <br>
+  QualityCeiling=&quot;GOOD&quot; <br>
+  Critical=&quot;false&quot; <br>
+  EngineeringUnit=&quot;K&quot; <br>
+  DisplayMin=&quot;0&quot; <br>
+  DisplayMax=&quot;100&quot; <br>
+  DeadBand=&quot;0&quot; <br>
+  Output=&quot;false&quot; <br>
+  ReferenceChannel=&quot;&quot; <br>
+  Group=&quot;&quot; <br>
+  SignalId=&quot;&quot; <br>
+  CalSensor=&quot;&quot; <br>
+  CalGroup=&quot;&quot; <br>
+  FixedSensor=&quot;&quot; <br>
+  CustomerSensor=&quot;&quot; <br>
+  FullsetStability=&quot;false&quot; <br>
+  ContinuousLog=&quot;true&quot;<br>
+  RTDRefChannel=&quot;&quot;<br>
+  NddsPublish=&quot;&quot; <br>
+  &lt;Alarms&gt;<br>
+  &lt;Alarm Type=&quot;HIHI&quot; <br>
+  Severity=&quot;ALARM&quot; <br>
+  LimitConstant=&quot;true&quot; <br>
+  LimitValue=&quot;25&quot; <br>
+  LimitChannel=&quot;&quot; <br>
+  DelayTime=&quot;0&quot;&gt;<br>
+  &lt;Actions&gt;<br>
+  &lt;Action Type=&quot;EventComment&quot; <br>
+  Priority=&quot;High&quot; <br>
+  TriggerPositive=&quot;true&quot; <br>
+  LogFile=&quot;&quot; <br>
+  ChannelName=&quot;&quot; <br>
+  ScriptFile=&quot;&quot; <br>
+  Text=&quot;HIHI Limit Exceeded&quot; <br>
+  AveragingTime=&quot;0&quot;/&gt;<br>
+  &lt;/Actions&gt;<br>
+  &lt;/Alarm&gt;<br>
+  &lt;Alarm Type=&quot;HI&quot; <br>
+  Severity=&quot;INFO&quot; <br>
+  LimitConstant=&quot;true&quot; <br>
+  LimitValue=&quot;0&quot; <br>
+  LimitChannel=&quot;&quot; <br>
+  DelayTime=&quot;0&quot;/&gt;<br>
+  &lt;Alarm Type=&quot;LO&quot; <br>
+  Severity=&quot;QUIET&quot; <br>
+  LimitConstant=&quot;true&quot; <br>
+  LimitValue=&quot;0&quot; <br>
+  LimitChannel=&quot;&quot; <br>
+  DelayTime=&quot;0&quot;/&gt;<br>
+  &lt;Alarm Type=&quot;LOLO&quot; <br>
+  Severity=&quot;ALARM&quot; <br>
+  LimitConstant=&quot;true&quot; <br>
+  LimitValue=&quot;0&quot; <br>
+  LimitChannel=&quot;&quot; <br>
+  DelayTime=&quot;0&quot;  /&gt;<br>
+  &lt;/Alarms&gt;<br>
+  &lt;/Channel&gt;<br>
+  &lt;/Channels&gt;<br>
+</code></blockquote>
+<h3 id="AlarmLimitsActions">Alarm Limits and Actions</h3>
+<p>The Channel Editor allows the user to associate Alarm Limits and Actions to the selected channel. The right view of the Channel Editor contains 2 spreadsheets:</p>
+<ul>
+  <li><a href="?74#AlarmLimits">Alarm Limits</a></li>
+  <li><a href="?75#Actions">Actions</a></li>
+</ul>
+<p></p>
+<h4 id="AlarmLimits">Alarm Limits</h4>
+<p>The Alarm Limits information is associated to one and only one data record, which is the currently selected data record in the left pane of the splitter window of the Channel Generic Information spreadsheet. The following alarm limit dependent attributes are  present and are grouped using the Alarms and Alarm keywords:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Type</td>
+    <td>Type</td>
+    <td>LIMIT_TYPE</td>
+    <td>Defines the types of limits required by a channel.<br>
+      <br>
+      The limit types for float channels are:<br>
+      HIHI (high red alarm)<br>
+      HI (high yellow warning)<br>
+      LO (low yellow warning)<br>
+      LOLO (low red alarm)<br>
+      ROC (Rate of Change, yellow warning)<br>
+      <br>
+      The limit type for discrete channels is: DISC<br>
+      <br>
+      Transitions to HIHI and LOLO states automatically produce an audible alarm.</td>
+    <td>String</td>
+    <td><em>HIHI</em>, <em>HI</em>, <em>LO</em>, <em>LOLO</em>, <em>ROC</em> for Float or Integer channels, <em>DISC</em> for Boolean channels</td>
+  </tr>
+  <tr>
+    <td>Severity</td>
+    <td>Severity</td>
+    <td>SEVERITY</td>
+    <td>The severity level of the alarm.<br>
+      <br>
+      ALARM limits are written to the UEL, logged in the Alarm Summary Display, and  require acknowledgement by the user.<br>
+      <br>
+      INFO limits are written to the UEL, logged in the Info Summary Display, and do  not require acknowledgement.<br>
+      <br>
+      QUIET limits are not written to the UEL and do not require acknowledgement  (i.e. float value exceeds a certain limit, Start/Stop fullset/take a recording)</td>
+    <td>String</td>
+    <td>ALARM, INFO and QUIET</td>
+  </tr>
+  <tr>
+    <td>Constant Limit</td>
+    <td>LimitConstant</td>
+    <td>n/a</td>
+    <td>Flag to indicate whether the limit value is a  constant value or references another channel&rsquo;s value (sliding limit). Set to  true to indicate a constant limit</td>
+    <td>String</td>
+    <td>true or false</td>
+  </tr>
+  <tr>
+    <td>Limit Value</td>
+    <td>LimitValue</td>
+    <td>VALUE</td>
+    <td>A limit value</td>
+    <td>Float or Integer</td>
+    <td>A Float or Integer value </td>
+  </tr>
+  <tr>
+    <td>Limit Channel</td>
+    <td>LimitChannel</td>
+    <td>n/a</td>
+    <td>A channel whose value will be used as the limit  value (sliding limit)</td>
+    <td>String</td>
+    <td>The name of a channel defined in the Channel  Collection</td>
+  </tr>
+  <tr>
+    <td>Delay Time</td>
+    <td>DelayTime</td>
+    <td>DELAY</td>
+    <td>The time in second to wait before triggering an Alarm
+      <p class="Note">Only applicable for float channels.</p></td>
+    <td>Float</td>
+    <td>A float value between 0 and 1200 seconds</td>
+  </tr>
+</table>
+<h4 id="Actions2">Actions</h4>
+<p>The Actions information is associated to one and only one Alarm, which is the currently selected Alarm Limit. The following Actions dependant attributes are  present and are grouped using the Actions and Action keywords:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Type</td>
+    <td>Type</td>
+    <td>ACTION</td>
+    <td>ACTION specifies the action taken if a Limit Type is defined, and  a channel reaches a limit.<br>
+      <br>
+      One or more of the following actions can be specified for each limit:<br>
+      <br>
+      SetChannel - sets a discrete channel to 1.<br>
+      <br>
+      ResetChannel - resets a discrete channel to 0.<br>
+      <br>
+      Fullset - records a fullset<br>
+      <br>
+      SaveCriticalLog - saves the current<br>
+      Critical Log<br>
+      <br>
+      StartUserLog - starts a Transient Log<br>
+      <br>
+      StopUserLog - stops and saves a running Transient Log<br>
+      <br>
+      EventComment - writes a comment to the Event Log and Test Results and Sensor  Calibration Database (TRSCDB)<br>
+      <br>
+      InvokeScript - executes a VB script file or any executable file on a specified  Windows PC or a Linux script or executable file on the Linux PC.<br>
+      <br>
+      SetQualityGood - sets the specified channel quality to GOOD<br>
+      <br>
+      SetQualityBad - sets  the specified channel quality to BAD<br>
+      <br>
+      SetQualitySuspect - sets the specified channel quality to SUSPECT. </td>
+    <td>String</td>
+    <td>SetChannel, ClearChannel, Fullset, SaveCriticalLog, 
+      StartUserLog, StopUserLog, EventComment,  InvokeScript, SetQualityGood, SetQualitySuspect 
+      and SetQualityBad</td>
+  </tr>
+  <tr>
+    <td>Priority</td>
+    <td>Priority</td>
+    <td>PRIORITY</td>
+    <td>The priority of the action. The execution of the actions will be based on  their priority.</td>
+    <td>String</td>
+    <td>High, Medium or Low</td>
+  </tr>
+  <tr>
+    <td>Positive Trigger</td>
+    <td>TriggerPositive</td>
+    <td>TRIGGER</td>
+    <td>Trigger the action when the channel goes into the alarm state. For HI this means increasing into the alarm state (POS), for LO this means decreasing into the alarm state (NEG).  Required if a Limit Type and ACTION are defined.</td>
+    <td>String</td>
+    <td>true will trigger the action when the channel value goes into alarm state.<br>
+      <br>
+      false will trigger the action when the channel value goes out of alarm state</td>
+  </tr>
+  <tr>
+    <td>Log File</td>
+    <td>LogFile</td>
+    <td>DESTINATION</td>
+    <td>Applicable to the Start and Stop User Log  Actions: Specifies the name of the Transient Log Definition</td>
+    <td>String</td>
+    <td>A Name defined in the Transient Log Definitions  Collection </td>
+  </tr>
+  <tr>
+    <td>Channel Name</td>
+    <td>ChannelName</td>
+    <td>DESTINATION</td>
+    <td>Applicable to the Set or Reset Discrete Actions: specifies the  name of the Discrete channel to be Set or Reset<br>
+      <br>
+      Applicable to the Set  quality to Good, Suspect or Bad Actions: Specifies the name of the channel to  set the quality flag</td>
+    <td>String</td>
+    <td>The name of a channel defined in the Channel  Collection. Must be a Boolean channel for the Set or Clear Discrete actions.</td>
+  </tr>
+  <tr>
+    <td>Averaging Time</td>
+    <td>AveragingTime</td>
+    <td>DESTINATION</td>
+    <td>Applicable to the Fullset Action: Specifies the  time of the Fullset in seconds (0 to 300)</td>
+    <td>Integer</td>
+    <td>The time of the Fullset in seconds (0 to 300)</td>
+  </tr>
+  <tr>
+    <td>Script File</td>
+    <td>ScriptFile</td>
+    <td>DESTINATION</td>
+    <td>Applicable to the Invoke Script Action: Specifies the script file  to be executed.<br>
+      <br>
+      The format of the command is: <br>
+      engineer@&lt;computer  name&gt;:wscript &lt;target location of the .vbs script&gt; <br>
+      <br>
+      or<br>
+      <br>
+      engineer@&lt;computer  name&gt;:cscript &lt;target location of the .vbs script&gt; <br>
+      <br>
+      Brackets and backslashes cannot be used in the command.<br>
+      <br>
+      Examples:<br>
+      engineer@pv4_mgt:wscript  c:/proDAS/sound.vbs c:/proDAS/Mamma.m4a <br>
+      <br>
+      or<br>
+      <br>
+      engineer@pv4_mgt:cscript  c:/proDAS/data/MgtGUI/new_views.vbs <br>
+      <p class="TableNote"> The ssh prefix that is already defined in the .config file cannot be used (e.g. /usr/bin/ssh engineer@pv4_mgt cscript  &quot;c:/proDAS/data/MgtGUI/new_views.vbs). <br>
+        <br>
+        In the SS LIMIT ACTION section of the RTE .config file, the remote shell attribute must be set as follows:<br>
+        <br>
+        CI&nbsp;&nbsp;&nbsp;&nbsp;  la_remote_shell&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /usr/bin/ssh </p></td>
+    <td>String</td>
+    <td>A string of the form:<br>
+      engineer@&lt;computer  name&gt;:wscript &lt;target location of the .vbs script&gt; </td>
+  </tr>
+  <tr>
+    <td>Text</td>
+    <td>Text</td>
+    <td>DESTINATION</td>
+    <td>Applicable to the Event Comment Actions:  Specifies a comment to be written to the UEL and optionally to the Events table  in the database. The text can include  any number of special strings embedded in the comment in the format  $chan_name(x,y), where chan_name can be any channel name. If found, this string  will be replaced by the corresponding channel value</td>
+    <td>String</td>
+    <td>A string with a maximum of 80 characters.<br>
+      <br>
+      In the  $chan_name(x,y) string, the (x.y) value format string is optional. If  specified, it will be used to format the value, where x represents the width of  the string, and y the number of decimal places. If not specified, the x will be  sized to match the value being formatted, and y will default to 2 decimal  places. The format can also be specified as (x) or as (y).</td>
+  </tr>
+</table>
+<h2 id="CreateEditXML">Creating or Editing XML Files</h2>
+<p>For creating or editing XML files, see the<a href="../ConfigEditors/ConfigEditors.htm#MenuFile"> File menu Export Function in Configuration Editors</a>.</p>
+<h2 id="SiteAttributes">Site Specific Channel Attributes</h2>
+<p>The channels are stored in the <a href="../../TestwithDAS/IntrotoproDAS/IntrotoproDAS.htm#ConfigDatabase"> Configuration Database</a>. Each site specific channel attribute is generic (i.e.  valid for all channels) regardless of their subsystem type.</p>
+<p>Each site specific channel attribute has the following properties:</p>
+<ul>
+  <li><strong>Name</strong> - mandatory, to be used in the COM interface of the Configuration Server and in the channels.xml file</li>
+  <li><strong>Display name -</strong> optional, default: the name of the site specific channel attribute; to be used in the channel editor</li>
+  <li><strong>Data type -</strong> optional  (default is String; or can also be Enumeration, Boolean, Float or Engineering Unit)</li>
+  <li><strong>Default value</strong>; mandatory for enumeration type only, otherwise &ldquo;&rdquo;, FALSE, 0.0</li>
+  <li><strong>Display format</strong>; mandatory for enumeration type only, otherwise %s or %f (as used in printf)</li>
+  <li><strong>Description</strong>; optional</li>
+</ul>
+<p class="Note">When an ampersand is to be included in the column name of a site specific channel attribute then the naming convention must be as follows:<br>
+  <br>
+  DisplayName Incorrect Syntax: &quot;Transfer to P&amp;W&quot;<br>
+  <br>
+  DisplayName Correct Syntax: the text &quot;amp;&quot; must be added after the ampersand as follows: &quot;Transfer to P&amp;amp;W&quot;.</p>
+<p>In addition, each site specific  channel attribute has a value for every individual channel. A sample screen and table are displayed below.</p>
+<div class="Container"><img src="images/SiteAttributes.png" alt="Site Attributes" width="700" height="424"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Name</th>
+    <th>Display Name</th>
+    <th>Data Type</th>
+    <th>Default Value</th>
+    <th>Display Format</th>
+    <th>Description</th>
+    <th>Possible Values</th>
+    <th>Channel Editor</th>
+    <th>Variant Returned by AttrValue</th>
+  </tr>
+  <tr>
+    <td>Name</td>
+    <td>Channel Name</td>
+    <td>String</td>
+    <td>&quot;&quot;</td>
+    <td>%12s</td>
+    <td>Channel name  to be used for data transfer.</td>
+    <td>XNH, XNL</td>
+    <td>Edit field, string</td>
+    <td>String</td>
+  </tr>
+  <tr>
+    <td>Unit</td>
+    <td>Eng. Unit</td>
+    <td>String</td>
+    <td>&quot;_&quot;</td>
+    <td>* %s</td>
+    <td>Engineering unit to be used for data transfer.</td>
+    <td>feet, deg F</td>
+    <td>Edit field, string</td>
+    <td>String</td>
+  </tr>
+  <tr>
+    <td>Mops OP</td>
+    <td>MOPS operation point</td>
+    <td>Enum</td>
+    <td>&quot;&quot;</td>
+    <td>ISA, OBS, PRE, MA1, **MA2</td>
+    <td>Operation point for MOPS.</td>
+    <td>OBS, MA1</td>
+    <td>Drop down list</td>
+    <td>String</td>
+  </tr>
+  <tr>
+    <td>Send to</td>
+    <td>Send to</td>
+    <td>Boolean</td>
+    <td>&quot;no&quot;</td>
+    <td>Yes, No</td>
+    <td>Indicates a channel to be sent.</td>
+    <td>Yes, No</td>
+    <td>Drop down list</td>
+    <td>Boolean</td>
+  </tr>
+  <tr>
+    <td>TDSES</td>
+    <td>Store in TDSES</td>
+    <td>Boolean</td>
+    <td>False</td>
+    <td>***</td>
+    <td>Channel value to be stored in TDSES.</td>
+    <td>True, False</td>
+    <td>Check box</td>
+    <td>Boolean</td>
+  </tr>
+  <tr>
+    <td>Installation correction factor</td>
+    <td>Correction factor</td>
+    <td>Float</td>
+    <td>&lt;empty&gt;</td>
+    <td>%6.2f</td>
+    <td>A correction factor to be applied if present</td>
+    <td>0.98, -0.0003</td>
+    <td>Edit field, float</td>
+    <td>Float</td>
+  </tr>
+</table>
+<p class="Note">This is the default display format for the given data type.</p>
+<p class="Note">Indicates using a drop down list in the Channel Editor containing the enumerated strings.</p>
+<p class="Note">An empty display format for Boolean attributes indicates using a check box in the Channel Editor.</p>
+<p>All site specific channel attributes and their properties are defined in one XML file (SiteSpecChanAttr.xml) located in the root directory of the configuration.</p>
+<p class="Note">Special care must be taken when editing the xml file as removing an attribute could result in removing the actual values of the attribute from all channel.xml files.</p>
+<p>Only the Configuration Server reads the SiteSpecChanAttr.xml file. The Channel Editor is the only general proDAS component using the site specific channel attributes. The Channel Editor displays one column for each site specific channel attribute. The columns appear after the last general generic column. The order of the columns for the site specific channel  attributes is  defined by their order in the SiteSpecChanAttr.xml file.</p>
+<h2 id="TabDelimitFileStructure">Tab-Delimited File Structure</h2>
+<p> Each Tab-Delimited configuration text file contains the first row header. The header usually contains each of the generic column names 
+  plus the additional subsystem specific columns in the correct order starting from the left of the Tab-Delimited text file. In some cases a subsystem may only require the generic columns to interface with proDAS.</p>
+<h3 id="BETCInputChans">Input Channels</h3>
+<p>The rules, syntax and guidelines for each basic definition parameter are displayed below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected<br>
+      in the column)</th>
+    <th>Multiple Values Allowed<br>
+      (See Note*)</th>
+    <th>Data Required<br>
+      (See Note**)</th>
+  </tr>
+  <tr>
+    <td>NAME</td>
+    <td>The name of the channel. This name must be unique for the configuration. EASIFIT format requires channel names to have 8 characters or less, all in uppercase.</td>
+    <td>Up to 40 characters (a-z, AZ, 0-9, underscore, #, %, @. Must start with a letter or an underscore (case sensitive).</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>ALTERNATE_NAME</td>
+    <td>An arbitrary string used as an alternative display name for the channel.</td>
+    <td>This entry is an arbitrary string without spaces and control characters.
+      <p class="TableNote">This field supports non-English characters.</p></td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>ENABLED</td>
+    <td>Flag indicating whether or not the channel is enabled.</td>
+    <td>true or false</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>IN_OUT</td>
+    <td>IN_OUT indicates whether the channel is an input (I) or an output (O) channel, as seen from the RTE.</td>
+    <td>I, O</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>SCAN_RATE</td>
+    <td>The rate in Hz at which the RTE scans the channel. The available scan rate depends on the subsystem.</td>
+    <td>Integer</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>CRITICAL</td>
+    <td>If the channel is a Critical Channel, the channel is logged in the critical log.
+      <p class="Note">This field no longer controls the limit checking of channels, see LIMIT_TYPE.</p></td>
+    <td>Y, N</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>CONTINUOUS_LOG</td>
+    <td>A flag indicating whether or not the channel will be recorded in the continuous log file</td>
+    <td>true or false</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>FULLSET_STABIL</td>
+    <td>A flag indicating whether or not fullset stability monitoring should be applied to the channel. If set, proDAS stores the minimum and maximum value acquired during the fullset period, the number of acquired samples and the standard deviation.
+      <p class="TableNote">Only applies to non-0 Hz float channels</p>
+      These values are stored in the FULLSETS table in the database.</td>
+    <td>true or false</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>CHAN_TYPE</td>
+    <td>FLOAT if the channel monitors a value or DISCRETE if the channel monitors a binary condition only.<br>
+      <br>
+      If the channel is a FLOAT channel, the definition must include the UNITS, MINimum Value and MAXimum Value, and (if the channel definition includes limits) may include a DEADBAND for the channel.<br>
+      <br>
+      If the channel is a DISCRETE channel, the definition may include the DISCrete_TEXT strings for True and False values.<br>
+      <br>
+      Limits and actions may be specified on either type of channel.</td>
+    <td>FLOAT, DISCRETE</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>QUALITY</td>
+    <td>Specifies the reliability a channel may achieve.</td>
+    <td>GOOD, SUSPECT, BAD</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>CVT</td>
+    <td>CVT indicates if the channel is recorded in the Current Value Table (CVT). Channels in the CVT can be displayed on Operator Pages, 
+      and recorded in Fullsets and Logs.</td>
+    <td>Y, N</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>FORMAT</td>
+    <td>The display format.</td>
+    <td>The display format depends on the DataType.</td>
+    <td>Yes</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>SIG_PATH</td>
+    <td>Specifies the physical signal path for this channel.</td>
+    <td>40 Character string (case sensitive)</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>SIGNAL_ID</td>
+    <td>The identification of the signal path.</td>
+    <td>No restriction. This entry is arbitrary and will not be checked.</td>
+    <td>Yes</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>GROUP</td>
+    <td>An arbitrary string used to group the channels together.</td>
+    <td>No restriction. This entry is arbitrary and will not be checked.</td>
+    <td>Yes</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>DELAY_TIME</td>
+    <td>The time in seconds to wait before triggering an Alarm
+      <p class="TableNote">Only applicable for float channels.</p></td>
+    <td>A float between 0 and 1200 seconds.</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>CALIB_SENSOR</td>
+    <td>Sensor whose associated curve is used for adjusting the measured range and correcting system bias</td>
+    <td>A string representing a sensor in the Sensor Calibration database, with the combined Sensor Name and Auxiliary Address</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>CALIB_GROUP</td>
+    <td>Group of sensors that have identical measurement range and breakpoints</td>
+    <td>A string.</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>FIXED_SENSOR</td>
+    <td>A second conversion that could be combined with the calibration sensor. This could be an EU conversion or a correction for the Calibration Sensor. Fixed sensors cannot not be calibrated</td>
+    <td>A string representing a sensor in the Sensor Calibration database (with the combined Sensor Name and Auxiliary Address), in the 2D Break Point Table collection, or in the Polynomial collection.</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>CUSTOMER_SENSOR</td>
+    <td>Customer defined sensor.
+      <p class="TableNote">This sensor cannot be changed using Sensor Calibration.</p></td>
+    <td>A string representing a sensor in the Sensor Calibration database (with the combined Sensor Name and Auxiliary Address), in the 2D Break Point Table collection, or in the Polynomial collection</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>RTD_REF_CHANNEL</td>
+    <td>The RTD reference channel.</td>
+    <td>Any available channel.</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>PUBLISH</td>
+    <td>A flag that determines if the channel is published.</td>
+    <td>Y, N</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be 
+      specified for a single channel. In this case, additional lines follow 
+      the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first 
+      column (the generic NAME column). Only fields that cause a channel 
+      to be defined on more than one line (like LIMIT_TYPE when a channel 
+      has more than one limit defined) are qualified as multi-line. Fields 
+      that appear multiple times as attributes of a multi-line field (like 
+      VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<h3 id="BETCOutputChans">Output Channels</h3>
+<p>An output channel is a channel where data flows from the RTE to the subsystem specific hardware. If a channel is defined as an output channel, meaning the column In_Out (O for output) is set to &quot;O&quot; in the Tab-Delimited configuration file (spreadsheet), then the subsequent Reference Name and Initial Value must be defined.</p>
+<p>The rules, syntax and guidelines for creating output based channels are described in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected<br>
+      in the column)</th>
+    <th>Multiple Values Allowed<br>
+      (See Note*)</th>
+    <th>Data Required<br>
+      (See Note**)</th>
+  </tr>
+  <tr>
+    <td>INITIAL_VAL</td>
+    <td>For output channels only. Specifies the name of the channel containing the value for output. One or both of INITIAL_VAL and 
+      REF_CHAN must be specified for an output channel.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>REF_CHAN</td>
+    <td>For output channels only. Specifies the name of the channel containing the value for output. One or both of INITIAL_VAL and 
+      REF_CHAN must be specified for an output channel.</td>
+    <td>Up to 40 characters (a-z, AZ, 0-9, underscore, #, %, @. Must start with a letter or an underscore (case sensitive).</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be 
+      specified for a single channel. In this case, additional lines follow 
+      the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first 
+      column (the generic NAME column). Only fields that cause a channel 
+      to be defined on more than one line (like LIMIT_TYPE when a channel 
+      has more than one limit defined) are qualified as multi-line. Fields 
+      that appear multiple times as attributes of a multi-line field (like 
+      VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single 
+      value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it 
+        cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<p>The rules, syntax and guidelines for creating <a href="?76#FloatChannels">float-based channels</a>, are described in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>UNITS</td>
+    <td>The unit name associated with the channel. The unit is added to the proDAS TRSCDB if it does not pre-exist. Used for display purposes only. Required for a float channel.</td>
+    <td>Up to 25 characters; No commas, quotation marks. (case sensitive)</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>MIN</td>
+    <td>The minimum value for displaying the channel on a RT Display page.<br>
+      <br>
+      For example, if the channel is displayed on an x-y plot, the minimum value on the y-axis would be the value in this column.<br>
+      <br>
+      Required for a float channel.</td>
+    <td>Floating point number</td>
+    <td>No</td>
+    <td>See Description </td>
+  </tr>
+  <tr>
+    <td>MAX</td>
+    <td>The maximum value for displaying the channel on a RT Display page.<br>
+      <br>
+      For example, if the channel is displayed on an x-y plot, the maximum<br>
+      Required for a float channel.</td>
+    <td>Floating point number</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>DEADBAND</td>
+    <td>DEADBAND specifies the deadband for limits applied to a FLOAT channel. The deadband prevents spurious warnings or alarms when a FLOAT channel oscillates close to the VALUE of a limit. Permitted for a float channel.</td>
+    <td>Floating point number</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel 
+      to be defined on more than one line (like LIMIT_TYPE when a channel  has more than one limit defined) are qualified as multi-line. Fields  that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<p>Rules, syntax and guidelines for creating <a href="?77#DiscreteChannels">discrete based channels</a> are described in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected<br>
+      in the column)</th>
+    <th>Multiple Values Allowed<br>
+      (See Note*)</th>
+    <th>Data Required<br>
+      (See Note**)</th>
+  </tr>
+  <tr>
+    <td>DISC_TEXT<br>
+      _FALSE</td>
+    <td>For discrete channels only. Text to display when discrete channel is FALSE.</td>
+    <td>40 Character string (case sensitive)</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>DISC_TEXT<br>
+      _TRUE</td>
+    <td>For discrete channels only. Text to display when discrete channel is TRUE.</td>
+    <td>40 Character string (case sensitive)</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be 
+      specified for a single channel. In this case, additional lines follow 
+      the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first 
+      column (the generic NAME column). Only fields that cause a channel 
+      to be defined on more than one line (like LIMIT_TYPE when a channel 
+      has more than one limit defined) are qualified as multi-line. Fields 
+      that appear multiple times as attributes of a multi-line field (like 
+      VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single 
+      value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it 
+        cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<p>The rules, syntax and guidelines for channel <a href="?78#LimitsAndActions">Limits and Actions</a> are described in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected<br>
+      in the column)</th>
+    <th>Multiple Values Allowed<br>
+      (See Note*)</th>
+    <th>Data Required<br>
+      (See Note**)</th>
+  </tr>
+  <tr>
+    <td>LIMIT_TYPE</td>
+    <td>Defines the types of limits required by a channel.<br>
+      <br>
+      The limit types for float channels are:<br>
+      HIHI (high alarm)<br>
+      HI (high warning)<br>
+      LO (low warning)<br>
+      LOLO (low alarm)<br>
+      ROC (Rate of Change)The limit types for discrete channels are:<br>
+      <br>
+      DISCINFO (if transitions are non-critical)<br>
+      DISCALARM (if transitions are critical)<br>
+      DISQUIET (if transitions are not reported, but action is taken)<br>
+      <br>
+      All defined limits are checked and transitions are reported in the 
+      UEL (except DISCQUIET).<br>
+      <br>
+      Transitions to HIHI and LOLO states automatically produce 
+      an audible alarm.</td>
+    <td>HIHI, HI, LO, LOLO and ROC for Float channels; DISCINFO, DISCALARM and DISQUIET for Discrete channels</td>
+    <td>Yes<br>
+      <br>
+      Each channel can have one limit of each type.</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>LIMIT_SEVERITY</td>
+    <td>Defines the severity of the limit.</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>VALUE</td>
+    <td>The value of the LIMIT. This can be a number if the limit is fixed, or a channel name for a sliding limit that is relative to the value of another channel. VALUE is required only if LIMIT_TYPE is defined.</td>
+    <td>Floating point number (0 or 1 for a discrete channel); or channel name</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>TRIGGER</td>
+    <td>For float channels, trigger the action when the limit is reached while the channel value is increasing (POS) or decreasing (NEG). For discrete channels, trigger the action when the state is entered (POS) or left (NEG). Required if a LIMIT_TYPE and ACTION are defined.</td>
+    <td>POS, NEG</td>
+    <td>Yes<br>
+      <br>
+      Each limit can have one trigger of each type.</td>
+    <td>See Description </td>
+  </tr>
+  <tr>
+    <td>ACTION</td>
+    <td>ACTION specifies the action taken if a Limit Type is defined, and a channel reaches a limit. One or more of the following actions can be specified for each limit:<br>
+      <br>
+      SET_DISCRETE - sets a discrete channel to +1.<br>
+      <br>
+      CLEAR_DISCRETE - resets a discrete channel to 0.<br>
+      <br>
+      Fullset - records a fullset<br>
+      <br>
+      Save_Critical_Log - saves the current<br>
+      Critical Log <br>
+      <br>
+      Start_User_Log - starts a Transient Log<br>
+      <br>
+      Stop_User_Log - stops and saves a running Transient Log<br>
+      <br>
+      Event_Comment - writes a comment on the Event Log and Test Results and Sensor Calibration Database (TRSCDB)<br>
+      <br>
+      INVOKE_SCRIPT - executes a VB script file or any executable file on a specified Windows PC or a Linux script or executable file on the Linux PC.<br>
+      <br>
+      Set_Quality_Good - sets the specified channel quality to GOOD<br>
+      <br>
+      Set_Quality_Bad - sets the specified channel quality to BAD<br>
+      <br>
+      Set_Quality_Suspect - sets the specified channel quality to SUSPECT. Only permitted if a LIMIT_TYPE is defined</td>
+    <td>SET_DISCRETE, CLEAR_DISCRETE, FULLSET, SAVE_CRITICAL_LOG, START_USER_LOG, STOP_USER_LOG, EVENT_COMMENT, INVOKE_SCRIPT, SET_QLTY_GOOD, SET_QUALITY_BAD, SET_QLTY_SUSPECT<br>
+      <br>
+      Note that the CHANGE_PAGE and AUDIO_ALARM action types were deleted. These actions can be accomplished via the INVOKE_SCRIPT action type.</td>
+    <td>Yes, each limit can have up to five actions per trigger per limit.</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>DESTINATION</td>
+    <td>DESTINATION specifies what the ACTION is applied to. 
+      The list below relates a destination to the entry in the ACTION column:<br>
+      <br>
+      If the action is SET_DISCRETE - enter the discrete channel name to be set.<br>
+      <br>
+      If the action is CLEAR_DISCRETE - enter the discrete channel name to be cleared.<br>
+      <br>
+      If the action is FULLSET - enter the time (between zero and 300 seconds) over which the fullset will be averaged.<br>
+      <br>
+      If the action is SAVE_CRITICAL_LOG - there is no destination.<br>
+      <br>
+      If the action is START_USER_LOG - enter a valid Transient Log name.<br>
+      <br>
+      If the action is STOP_USER_LOG - enter a valid Transient Log name.<br>
+      <br>
+      If the action is EVENT_COMMENT - enters a comment for the UEL and TRSCDB. This is limited to a maximum of 80 characters, and can include any number of special strings embedded in the comment in the format $chan_name(x,y), where chan_name can be any channel name. If found, this string will be replaced by the corresponding channel value.<br>
+      <br>
+      INVOKE_SCRIPT - file name to be executed<br>
+      <br>
+      SET_QLTY_GOOD - valid channel name<br>
+      <br>
+      SET_QUALITY_BAD - valid channel name<br>
+      <br>
+      SET_QLTY_SUSPECT - valid channel nameDESTINATION is required only if a LIMIT_TYPE and ACTION are defined.</td>
+    <td>Channel and log names are case-sensitive.<br>
+      <br>
+      The fullset time must be between zero and 300 seconds.<br>
+      <br>
+      In the $chan_name(x,y) string for the Event Comment, the (x.y) value format string is optional. If specified, it will be used to format the value, where x represents the width of the string, and y the number of decimal places. If not specified, the x will be sized to match the value being formatted, and y will default to 2 decimal places. The format can also be specified as (x) or as (y). <br>
+      <br>
+      For the invoke script command, the file name can be of the form:<br>
+      [[username]@hostname:] command </td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>PRIORITY</td>
+    <td>Sets the relative priorities (HI, MED, or LO) for each ACTION that is defined for a limit, and controls the order in which the actions occur when the limit is reached. PRIORITY is required only if a LIMIT_TYPE and ACTION are defined.</td>
+    <td>HI, MED, LO</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be 
+      specified for a single channel. In this case, additional lines follow 
+      the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first 
+      column (the generic NAME column). Only fields that cause a channel 
+      to be defined on more than one line (like LIMIT_TYPE when a channel 
+      has more than one limit defined) are qualified as multi-line. Fields 
+      that appear multiple times as attributes of a multi-line field (like 
+      VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single 
+      value. </p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<h2 id="CreateEditTabDelimited2">Creating Tab-Delimited Files</h2>
+<p>The Channel Editor allows the user to Create Tab-Delimited Files using the Import and Export functionalities.</p>
+<p class="Note">When importing and exporting tab-delimited files using the legacy option, only the columns in the legacy format will be included. Other columns only present in the generic format may not be included. For example, if a legacy file is exported, then imported into generic format, the extra columns in the generic format will be left empty. If a generic file is exported, then imported into legacy format, the extra columns in the generic file will not be included in the legacy format. When a generic file is imported into the legacy format, an error message informs the user which columns are not included.</p>
+<h3 id="Complete">Extras -- Complete TAB-delimited Export/Import</h3>
+<p>When selected, the Complete TAB-delimited Export/Import allows the user to export/import the entire configuration.</p>
+<h3 id="FileImportTAB">Extras -- Import TAB-delimited</h3>
+<p>A Tab-Delimited file can be imported using the menu item Import TAB-delimited file ... from the <a href="ChannelEditor.htm?#MenuExtras">Menu Extras</a>.</p>
+<p>The Import TAB-delimited file dialogue allows the user to:</p>
+<ul>
+  <li>select a directory</li>
+  <li>select one or many file names</li>
+  <li>select the Configuration Level</li>
+  <li>enter a description</li>
+  <li>specify if the imported data will Append to or Replace the existing configuration</li>
+</ul>
+<p class="Note">The name of the Tab-Delimited file must be the same as the subsystem that it will be associated with (i.e.: if the desired subsystem name is Calculated then the Tab-Delimited file must be named Calculated.txt).</p>
+<p class="Note">Importing TAB-delimited files supports importing non-English characters.</p>
+<div class="Container"><img src="images/OptionsImportTAB.PNG" alt="Options Import TAB" width="561" height="548"></div>
+<p>An entire configuration of Tab-Delimited files can be imported by selecting the Import all TAB-delimited files... menu item.</p>
+<h3 id="FileExportTAB">Extras -- Export TAB-delimited</h3>
+<p>A Tab-Delimited file can be created using the menu item Export TAB-delimited file ... from the <a href="ChannelEditor.htm?#MenuExtras">Menu Extras</a>.</p>
+<p>The Export TAB-delimited file dialogue allows the user to:</p>
+<ul>
+  <li> select a directory</li>
+  <li> enter a file name</li>
+  <li> select the Configuration Level</li>
+  <li> select one or all Subsystems</li>
+  <li> specify if all or part of the configuration is going to be exported </li>
+</ul>
+<p class="Note">When exporting a Tab-Delimited file, there is an option to export the GASS Subsystem hardware location, which is detailed in the configserver.ini file.</p>
+<div class="Container"></div>
+<div class="Container"><img src="images/OptionsExportTAB2.png" alt="Options Export TAB 2" width="560" height="540"></div>
+<p>All Tab-Delimited files can be exported by selecting the Export all TAB-delimited files... menu item.</p>
+<p>If the user chooses to export the channel definitions for all of the Subsystems, the Channel Editor creates a directory for each subsystem, a File named <strong>Subsystem Name.txt</strong> and places it in a subdirectory named <strong>Subsystem Name</strong>.</p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

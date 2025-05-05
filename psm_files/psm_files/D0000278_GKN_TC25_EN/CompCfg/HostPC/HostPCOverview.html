@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Host Computer - Overview</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left><h1>Host Computer<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<h2>Overview</h2>
+<p>The Host Computer runs a Real-Time multi-tasking Linux operating system which allows task priorities to be set in parallel, and ensures that important tasks are performed in a deterministic time frame.</p>
+<p>The Host Computer  manages the proDAS database and executes the proDAS real-time data acquisition software. The Host Computer is networked to all other proDAS computers and interfaces with the hardware subsystems to acquire and process data in real-time. The computer also makes the data available for display in real-time.</p>
+<p>proDAS collects test data and stores the test data on the Host Computer. Steady state data (fullsets) is stored in relational tables in the Oracle database. Transient data is stored as transient or critical logs in binary files on the system hard disk. The real-time data is displayed on the Real-Time Display Computer.</p>
+<p>For detailed information on the Host Computer, see:</p>
+<ul>
+  <li><a href="HostPCHW.html">Hardware Components</a></li>
+  <li><a href="HostPCSW.html">Software Components</a></li>
+  <li><a href="HostPCFS.html">File System Organisation</a></li>
+</ul>
+<h3>Linux Operating Levels</h3>
+<p>The Host Computer uses six different operating (run) levels, each with a corresponding operating mode. The operating mode is specified in the <em>init</em> program.</p>
+<p>The operating (run) levels are configured as follows:</p>
+<table width="74%" cellspacing="1" class="Table-Grey">
+  <tr valign="top">
+    <th width="14%" rowspan="2">Run Level</th>
+    <th width="86%" rowspan="2">Descriptions</th>
+  </tr>
+  <tr></tr>
+  <tr valign="top">
+    <td>0</td>
+    <td>Power-down mode.</td>
+  </tr>
+  <tr valign="top">
+    <td>1, S</td>
+    <td>Single-user mode is used to maintain the system (install or remove software, run back-ups, and check system files). Access to the Host Computer in this mode is through the Host Computer monitor only.</td>
+  </tr>
+  <tr valign="top">
+    <td>2</td>
+    <td>Multi-user mode, without Network File System (NFS).</td>
+  </tr>
+  <tr valign="top">
+    <td>3</td>
+    <td>Full multi-user mode.</td>
+  </tr>
+  <tr valign="top">
+    <td>5</td>
+    <td>Multi-user mode with X11, the normal operating mode.</td>
+  </tr>
+  <tr valign="top">
+    <td>6</td>
+    <td>Reboot mode (brings the system down and then brings it back up again).</td>
+  </tr>
+</table>
+<p>For detailed information on Linux operating (run) levels, see the on-line documentation that is provided with the software.</p>
+<br>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

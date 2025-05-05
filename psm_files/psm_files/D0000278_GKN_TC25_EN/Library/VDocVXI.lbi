@@ -1,0 +1,62 @@
+﻿<table class="Table-Grey">
+  <tr> 
+    <th class="row-VDocManufacturer">Manufacturer</th>
+    <th class="row-VDocTitle">Manual Title</th>
+    <th class="row-VDocType">Manual Type</th>
+    <th class="row-VDocPartNumber">Part Number</th>
+  </tr>
+  <tr>
+    <td>Agilent Technologies (Now Keysight Technologies)</td>
+    <td><a href="../References/VendorDocs/Agilent/UMCT400.pdf">CT-400 C-Size VXI Mainframe Chassis</a></td>
+    <td>User Manual</td>
+    <td>82-0050-000</td>
+  </tr>
+  <tr>
+    <td>Agilent Technologies (Now Keysight Technologies)</td>
+    <td><a href="../References/VendorDocs/Agilent/UME145890002.pdf">E1458A 96-Channel Digital Input/Output Module</a></td>
+    <td>User Manual</td>
+    <td>E1458-90002</td>
+  </tr>
+  <tr>
+    <td>Agilent Technologies (Now Keysight Technologies)</td>
+    <td><a href="../References/VendorDocs/Agilent/SI51858500.pdf">Safety Information</a></td>
+    <td>Safety Information</td>
+    <td>5185-8500</td>
+  </tr>
+  <tr>
+    <td>L-Com</td>
+    <td><a href="../References/VendorDocs/L-Com/CAT2K15M1124.pdf">SCSI Cable Assemblies, Adapters and Terminator</a></td>
+    <td>Product Data</td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td>National Instruments</td>
+    <td><a href="../References/VendorDocs/NationalInstruments/CATds367.pdf">777164-01 MXI-2 Cable</a></td>
+    <td>Product Data</td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td>National Instruments</td>
+    <td><a href="../References/VendorDocs/NationalInstruments/UM371692A01.pdf">777178-01 VXI-MXI-2 Extender Card</a></td>
+    <td>User Manual</td>
+    <td>371692A-01</td>
+  </tr>
+  <tr>
+    <td>National Instruments</td>
+    <td><a href="../References/VendorDocs/NationalInstruments/UM321032A01.pdf">777185 PCI-MXI-2 Card Kit</a></td>
+    <td>User Manual</td>
+    <td>321032A-01</td>
+  </tr>
+  <tr>
+    <td>VXI Technologies</td>
+    <td><a href="../References/VendorDocs/VTIInstruments/UMVT1413C.PDF">VT1413C 64-Channel High-Speed Scanning A/D Converter Card</a></td>
+    <td>User Manual</td>
+    <td>82-0073-000</td>
+  </tr>
+  <tr>
+    <td>VXI Technologies</td>
+    <td><a href="../References/VendorDocs/VTIInstruments/UM820079000.pdf">VT1503A Eight-Channel Programmable Filter and Gain SCP</a></td>
+    <td>User Manual</td>
+    <td>82-0079-000</td>
+  </tr>
+</table>

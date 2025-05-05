@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Ethernet - Overview</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1>Ethernet<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<h2>Overview</h2>
+<p>Ethernet (IEEE 802.3 standard) is a link layer protocol in the TCP/IP stack which describes how networked devices communicate by transferring data using packets and frames on the same local area network (LAN).</p>
+<p>There are Four main Ethernet communication networks in a typical test cell facility:</p>
+<ul>
+  <li>proDAS <a href="#EthernetNetwork">User Network</a> that connects the computers, printers and peripheral equipment</li>
+  <li>proDAS <a href="#RTNetwork">Real-Time Network</a> that connects to engine adapter temperature/pressure scanners, facility scanners and the PLC</li>
+  <li><a href="#DDSNetwork">Dynamic Data System (DDS) Network</a></li>
+  <li>Test facility client network that connects to client supplied equipment</li>
+</ul>
+<h2 id="EthernetNetwork">User Network</h2>
+<p>The User Network connects the Data Acquisition System (proDAS), the throttle display computer, and the client network. The User Network includes administrative and maintenance computers, such as the Host Computer, Real-Time Display computers, the Management GUI Computer, the Configuration Computer and the NAS backup. Each node on the network has an Internet Protocol (IP) address that is unique. This address is a 4-byte logical address used by the IP protocol on the network to uniquely identify each node. Each data packet sent over the network contains the IP address of the destination node. Most nodes have a host table that associates symbolic names and aliases to the addresses of the nodes on the network, allowing the network device to refer to hosts by name rather than by number.</p>
+<p>The network uses Ethernet and TCP/IP with 1000 Mb/s interface cards. Each node on the network has an Internet Protocol (IP) address used by the IP protocol on the network to uniquely identify each node. Each data packet sent over the network contains the IP address of the destination node. Most nodes have a host table that associates symbolic names and aliases to the addresses of the nodes on the network, allowing the network device to refer to hosts by name rather than by number. The Client assigns the network address, and MDS assigns the host address on the network. There is a single connection between the facility Test Cells and the client network, with a router, supplied by the client, regulating traffic flow over the connection.</p>
+<p>Major switches in the network are:</p>
+<ul>
+  <li>a <a href="#proDASSwitch">proDAS User-Network Switch</a></li>
+  <li>a <a href="#PRTswitch">proDAS Real-Time Network Switch</a>.</li>
+</ul>
+<p>These switches separate and isolate traffic into distinct segments, allowing the segments to reside on the same network, and providing better scalability when adding new segments to the network.</p>
+<h3 id="proDASSwitch">User Network Switch</h3>
+<p>The proDAS User Network switch typically connects to:</p>
+<ul>
+  <li>the <a href="../../CompCfg/HostPC/HostPCOverview.html">Host Computer</a> that is also connected to the Real-Time Network</li>
+  <li>the <a href="../../CompCfg/RTDPC/RTDPCOverview.html">Real-Time Display (RTD) Computer(s)</a></li>
+  <li>a <a href="../../CompCfg/MgmtPC/MgmtPCOverview.html">Management GUI Computer</a></li>
+  <li>an engine control computer</li>
+  <li>a printer</li>
+</ul>
+<h4 id="EDASSwitchPorts">User Network Switch Ports</h4>
+<p>The User Network switch has multiple ports. The switch typically provides ports for the following:</p>
+<ul>
+  <li>one port for the Host Computer</li>
+  <li>ports for the RTD Computers, the Management GUI Computer, the NAS backup, and the Throttle Display Computer</li>
+  <li>a limited number of spare ports</li>
+</ul>
+<h2 id="RTNetwork">Real-Time Network</h2>
+<p>The Real-Time Network connects the Host Computer running the proDAS Real-Time Engine (RTE) with all of the time-critical components used in collecting data such as the:</p>
+<ul>
+  <li>facility and engine scanners (temperature and pressure scanners)</li>
+  <li>the FCS PLC</li>
+  <li>the Throttle System</li>
+  <li>the vibration monitoring system</li>
+</ul>
+<h3 id="PRTswitch">Real-Time Network Switch</h3>
+<p>proDAS can receive data from multiple pressure/temperature scanners mounted on the engine and in the Test Cell. To reduce communication collisions and simplify cabling, these scanners are often served by smaller switches, each with 10/100 baseT ports for communication with the scanners and 2 1000 baseT ports for communication with the Real-Time network switch. The switch is also used to connect the facility scanners, the FCS PLC, and the <a href="../../CompCfg/HostPC/HostPCOverview.html">Host Computer</a> in the test cell.</p>
+<h2 id="DDSNetwork">Dynamic Data System (DDS) Network</h2>
+<p>The DDS Network connects the DDS computers and components to the Host Computer. For more details, see <a href="../../DynamicSystems/DDS-MullerBBM/DDSOper.html">DDS - Operation</a>.</p>
+<br>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

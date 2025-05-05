@@ -1,0 +1,30 @@
+
+<table class="Table-Grey">
+  <tr> 
+    <th class="row-RSPLManufacturer">Manufacturer</th>
+    <th class="row-RSPLQty">Quantity</th>
+    <th class="row-RSPLPartNumber">Part Number</th>
+    <th class="row-RSPLDescription">Description</th>
+    <th class="row-RSPLLeadTime">Lead Time</th>
+  </tr>
+  <tr> 
+    <td>HP</td>
+    <td>1</td>
+    <td><p>HP DL380 G7 643413-S01</p></td>
+    <td>491324-001 HP ProLiant DL380 G7 Base Server Computer
+     <ul>
+        <li>Intel® Xeon® Processor E5520 2.8 GHz</li>   
+        <li>8 GB RAM</li>  
+        <li>2U Rack Mount</li>  
+        <li>SAS hot-swap 2.5"</li>
+    </ul></td>
+    <td>10 weeks</td>
+  </tr>
+  <tr>
+    <td>HP</td>
+    <td>2</td>
+    <td>507127-B21</td>
+    <td>HP 300GB 10K 2.5 SAS DP HD</td>
+    <td>3 weeks</td>
+  </tr>
+</table>

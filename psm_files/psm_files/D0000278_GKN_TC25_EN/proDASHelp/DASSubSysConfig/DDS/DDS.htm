@@ -1,0 +1,1759 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>DDS Subsystem (Option*)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="DDS">DDS Subsystem (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The DDS Subsystem provides the interface to control the following Dynamic Data System (DDS) operations:</p>
+<ul>
+  <li>load and select  the  test definition file</li>
+  <li>command the DDS to select the next available disk set</li>
+  <li>place the DDS into MONITORING mode</li>
+  <li>place the DDS into READY mode</li>
+</ul>
+<p>During proDAS configuration, or upon a request from the Management Interface, the DDS Subsystem transmits the DDS configuration file from the proDAS system to the DDS.</p>
+<h3 id="EDASCommunication">DDS - proDAS Communication</h3>
+<p>The DDS software driver communicates with the Dynamic Data System (DDS) through a TCP/IP Ethernet connection. The driver provides an interface between the systems for file transfer. During configuration of the DDS System, or if requested from the Management Interface,  proDAS transmits a configuration file to the DDS that is based upon information in the proDAS database.</p>
+<p>The proDAS driver notifies the operator of communication problems with the DDS, including:</p>
+<ul>
+  <li>a broken Ethernet connection</li>
+  <li>configuration errors in DDS</li>
+  <li>file transfer errors</li>
+</ul>
+<p>The DDS Subsystem receives unsolicited status messages from the DDS to maintain the state of the DDS and for error tracing purposes. UEL messages include:</p>
+<ul>
+  <li>&quot;Failed to connect to the DDS&quot; </li>
+  <li>&quot;Established connection to the DDS&quot;</li>
+  <li>&quot;Lost connection to the DDS&quot;</li>
+  <li>&quot;Recovered connection to the DDS&quot;</li>
+  <li>&quot;Failed to configure the DDS&quot;</li>
+  <li>&quot;Failed to transition the DDS into MONITORING mode&quot;</li>
+  <li>&quot;Failed to transition the DDS into READY mode&quot;</li>
+  <li>&quot;Request to reconfigure the DDS ignored, another request is already in progress&quot;</li>
+  <li>&quot;Failed to reconfigure the DDS: Not connected&quot;</li>
+  <li>&quot;Failed to reconfigure the DDS: Internal error&quot;</li>
+</ul>
+<p>For successful messages, the UEL messages include:</p>
+<ul>
+  <li>&quot;DDS successfully transitioned into READY mode&quot;</li>
+  <li>&quot;DDS successfully transitioned into MONITORING mode&quot;</li>
+  <li>&quot;File transfer of dynamic file &lt;file name&gt; to the DDS succeeded&quot;</li>
+</ul>
+<h2 id="Operation">Operation</h2>
+<p>The DDS operates as a server to the DDS Subsystem. Functions within the DDS Subsystem send requests to the DDS to perform the required operations.</p>
+<p>The following information is read from the RTE <strong>.config</strong> file:</p>
+<ul>
+  <li>Hostname of the DDS</li>
+  <li>TCP Service Name for DDS communication</li>
+  <li>Timeout for communication</li>
+  <li>Test Definition File remote path for file transfers</li>
+  <li>Time Out for transition to Monitoring Mode</li>
+</ul>
+<p>Files that contain configuration definitions for the Dynamic System are imported through the <a href="../../CustomApps/CIE/CIE.htm">Configuration Import / Export Utility</a>.</p>
+<h2 id="ChanDefns">DDS Configuration Definitions</h2>
+<p>proDAS collects and stores engine test data by channels. Channels are grouped by subsystem. A channel definition file (sometimes referred to as a configuration file) is created for the Dynamic Data System (DDS). The difference with this file is that it contains multiple sections, none of which include the generic channel definitions.</p>
+<p>Each section starts with a line containing only the word START, followed by a &quot;space&quot; (not a &quot;tab&quot;) and the label of the section. For example, the device header section begins with START DEVICE_HEADER. The end of a section is indicated by a line containing only the word END, followed by a &quot;space&quot; (not a &quot;tab&quot;) and the label of the section. For example, the device header section ends with END DEVICE_HEADER.</p>
+<p>The file must contain all sections in the order below. Each section  contains specific columns as noted in the section descriptions below:</p>
+<ul>
+  <li><a href="?2#DeviceHeader">Device Header</a>(DEVICE_HEADER)</li>
+  <li><a href="?4#DAS333">DAS333 Channels</a>(DASS333)</li>
+  <li><a href="?5#Telemetry">Telemetry Channels</a> (TELEMETRY)</li>
+  <li><a href="?6#ChannelDefn">DDART Channel Definition</a> (DDART_CHANNELS)</li>
+  <li><a href="?7#FeatureDefn">DDART Feature Definition</a> (DDART_FEATURE)</li>
+  <li><a href="?8#SelectionDefn">DDART Selection Definition</a> (DDART_SELECTION)</li>
+  <li><a href="?9#OscilloscopeDefn">DDART Oscilloscope Definition</a> (DDART_SCOPE)</li>
+  <li><a href="?10#DisplayDefn">DDART Display Definition</a> (DDART_DISPLAY)</li>
+  <li><a href="?12#ShaftSpeedDefn">Shaft Speed Definition</a> (SHAFT_SPEED)</li>
+  <li><a href="?13#TelemetryControl">Telemetry Control (CHINCA)</a> (CONTROL_TELEMTERY) </li>
+  <li><a href="?14#STINCAControl">Telemetry Control (STINCA)</a> (STINCA_CONTROL)</li>
+  <li><a href="?25#TINCAControl">Telemetry Control (TINCA)</a> (TINCA_CONTROL) </li>
+  <li><a href="?26#FBOSTINCAControl">Telemetry Control (FBOSTINCA)</a> (FBOSTINCA_CONTROL)</li>
+  <li><a href="?27#FBOCHINCAControl">Telemetry Control (FBOCHINCA)</a> (FBOCHINCA_CONTROL)</li>
+  <li><a href="?15#AdditionalFields">Dynamic Configuration File Additional Fields</a>
+    <ul>
+      <li><a href="?17#DASTelFields">DAS333 and TELEMETRY Channel Calibration Fields</a></li>
+    </ul>
+  </li>
+</ul>
+<h3 id="DeviceHeader">Device Header</h3>
+<p>The label for this section is DEVICE_HEADER. The section has one line for each telemetry unit. <a href="../../CustomApps/CIE/CIE.htm#ConfigImportExport">Configuration Import/Export Utility</a> generates the proDAS <a href="../DDTC/DDTC.htm">DDTC Subsystem</a> configuration from this section. Channels are generated for each  INCA, STINCA, PINCA,  DIGBERT, FBOSTINCA, FBOCHINCA, TINCA, CWINCA, and CHINCA (or CHBERT) unit.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Number</th>
+    <th>Column Name</th>
+    <th>Description of the Field</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>1st</td>
+    <td>UNIT_ID</td>
+    <td>UNIT_ID is the unique identifier for the device. This must be the same as the Sensor name in the calibration database.</td>
+    <td>8 character string (case-sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>2nd</td>
+    <td>DEV_TYPE</td>
+    <td>DEV_TYPE identifies the type of device.</td>
+    <td>DAS333, PINCAIP, PINCAHP, STINCA, DIGBERT, CHBERT, FBOSTINCA, FBOCHINCA, TINCA, CWINCA</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>3rd</td>
+    <td>HIU_PORT</td>
+    <td>HIU_PORT is the physical port number.</td>
+    <td>Number &gt; 0, divisible by 5 for a DAS333 device, not divisible by 5 for a telemetry device</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>4th</td>
+    <td>DATA_STREAM</td>
+    <td>Specifies which data stream is connected to the HIU_PORT, A or B. Required for STINCA, FBOSTINCA, TINCA,  PINCAIP, and PINCAHP.</td>
+    <td>A or B</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td colspan="6"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single unit. In this case, additional lines follow the first line of a unit definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the UNIT_ID column).<br>
+      <br>
+      &quot;No&quot; means that the unit is restricted to a single value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<h3 id="DAS333">DAS333 Channels</h3>
+<p>The label for this section is DAS333.</p>
+<p>The following is the breakdown of the assigned DAS333 channel numbers:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>DAS333 Signal Type</th>
+    <th>Comment</th>
+  </tr>
+  <tr>
+    <td>AVM<br>
+      (channels 1-3)</td>
+    <td>Applicable for all Test Beds.<br>
+      Valid TYPE is &quot;AVM&quot;.</td>
+  </tr>
+  <tr>
+    <td>Speed Channels<br>
+      (channels 4-7, and 65-73)</td>
+    <td>Channels 4-7 are applicable for all Test Beds.<br>
+      Channels 65-73 are only applicable for Test Bed 58.<br>
+      Valid TYPE is &quot;SHAFT&quot;.</td>
+  </tr>
+  <tr>
+    <td>Dynamic Displacement<br>
+      (channels 8-16, 41-64)</td>
+    <td>Applicable for all Test Beds.<br>
+      Valid TYPE is &quot;DISPL&quot;.</td>
+  </tr>
+  <tr>
+    <td>Blue Box<br>
+      (channels 17-40)</td>
+    <td>Obsolete: no longer being used.</td>
+  </tr>
+  <tr>
+    <td>Yellow Box<br>
+      (channels 41-64)</td>
+    <td>Applicable for all Test Beds.<br>
+      Valid TYPE's are &quot;VELOCITY&quot;, &quot;ACCEL&quot;, &quot;PRESS&quot; and &quot;DISPL&quot;.</td>
+  </tr>
+  <tr>
+    <td>Detonator Channels<br>
+      (channels 74-81)</td>
+    <td>Applicable only for Test Bed 58.<br>
+      Valid TYPE is &quot;DETONATOR&quot;.</td>
+  </tr>
+  <tr>
+    <td>General Purpose Channels<br>
+      (channels 82-93)<br>
+      AC and DC Live Calibration<br>
+      (channels 8-16, 41-64)</td>
+    <td>Applicable only for Test Bed 58.<br>
+      Valid TYPE's are &quot;LIVE_CAL&quot; and &quot;DB_CAL&quot;.<br>
+      Applicable for all Test Beds.<br>
+      Valid TYPE's are &quot;LIVE_CAL.</td>
+  </tr>
+</table>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Number</th>
+    <th>Column Name</th>
+    <th>Description of the Field</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>1st</td>
+    <td>CHANNEL_NAME</td>
+    <td>CHANNEL_NAME is a unique identifier for the DAS333 channel.</td>
+    <td>16 character string (case-sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>2nd</td>
+    <td>UNITS</td>
+    <td>Engineering unit; a space may be present to separate the unit from one of the following optional unit qualifiers which can either be in uppercase or lowercase: PK or pk (peak, the default); P-P or p-p (peak-to-peak); RMS or rms.</td>
+    <td>25 character string (case-sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>3rd</td>
+    <td>HIU_PORT</td>
+    <td>HIU_PORT specifies which port the unit is connected to.</td>
+    <td>Number &gt;0, and divisible by 5</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>4th</td>
+    <td>CHANNEL_NO</td>
+    <td>Specifies the channel number within the DAS333 unit.</td>
+    <td>Number 1 - 93</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>5th</td>
+    <td>SAMPLE_RATE</td>
+    <td>SAMPLE_RATE specifies the sample rate required for the channel: 25,000 for 10KHz, 12,500 for 5KHz, 6,250 for 2.5KHz. All channels must be specified with the same sample rate.
+      <p class="Note">Default input to 25000 for all channels.</p></td>
+    <td>Number 25000, 12500 or 6250</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>6th</td>
+    <td>SENSOR_NAME</td>
+    <td>SENSOR_NAME identifies the sensor in the calibration database.</td>
+    <td>40 character string (case-sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>7th</td>
+    <td>TYPE</td>
+    <td>TYPE specifies the type of channel.</td>
+    <td>DISPL, VELOCITY, ACCEL, INTERCOM, SHAFT, AVM, PRESS, DETONATOR,<br>
+      DB_CAL,<br>
+      LIVE_CAL</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>8th</td>
+    <td>SENTRY</td>
+    <td>Flag to indicate if a channel is to be set up for  sentry recording; 48 channels maximum may be in the sentry.
+      <p class="Note">This field is now obsolete. It can still be specified but will be ignored by the DDS.</p></td>
+    <td>Y, N</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>9th</td>
+    <td>INPUT_RANGE</td>
+    <td>INPUT_RANGE specifies the DAS input range.</td>
+    <td>Number 0.1, 1.0 or 10</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>10th</td>
+    <td>QUALITY</td>
+    <td>QUALITY specifies reliability of a channel.</td>
+    <td>GOOD, SUSPECT, BAD</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>11th</td>
+    <td>MEAS_RANGE</td>
+    <td>MEAS_RANGE is the measurement range in engineering units. It is used to perform calibration.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>12th</td>
+    <td>MAXANALFREQ</td>
+    <td>Maximum analysis frequency; must be positive and &le;SAMPLE_RATE / 2.5<br>
+      <br>
+      <p class="Note">This field is now obsolete. It can still be specified but will be ignored by the DDS.</p></td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>13th</td>
+    <td>MINANALFREQ</td>
+    <td>MINANALFREQ specifies the Minimum analysis frequency.
+      <p class="Note">This field is now obsolete. It can still be specified but will be ignored by the DDS.</p></td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>14th</td>
+    <td>PROCESSING_FLAG</td>
+    <td>PROCESSING_FLAG determines whether processing is performed.
+      <p class="Note">This field is now obsolete. It can still be specified but will be ignored by the DDS.</p></td>
+    <td>Y, N</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>15th</td>
+    <td>PRINT_FLAG</td>
+    <td>PRINT_FLAG determines whether on line processing results are printed.
+      <p class="Note">This field is now obsolete. It can still be specified but will be ignored by the DDS.</p></td>
+    <td>Y, N</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>16th</td>
+    <td>REFERENCE</td>
+    <td>REFERENCE is the channel name of a reference variable for on line processing.
+      <p class="Note">This field is now obsolete. It can still be specified but will be ignored by the DDS.</p></td>
+    <td>40 Character string (case sensitive)</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>17th</td>
+    <td>PARAMSENS1</td>
+    <td>PARAMSENS1 specifies the transient parameter to use in offline analysis.
+      <p class="Note">This field is now obsolete. It can still be specified but will be ignored by the DDS.</p></td>
+    <td>40 Character string (case sensitive)</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>18th</td>
+    <td>PARAMSENS2</td>
+    <td>PARAMSENS2 specifies the transient parameter to use in offline analysis.
+      <p class="Note">This field is now obsolete. It can still be specified but will be ignored by the DDS.</p></td>
+    <td>40 Character string (case sensitive)</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>19th</td>
+    <td>GAIN</td>
+    <td>Specifies the gain of the channel; required for yellow box (CHANNEL_NO &gt; 16 AND &lt; 65).</td>
+    <td>Number, 1, 2, 5 or 10</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>20th</td>
+    <td>MULTIPLIER</td>
+    <td>Specifies the multiplier for the channel; required for yellow box (CHANNEL_NO &gt; 16 AND &lt; 65).</td>
+    <td>Number 1, 10 or 100</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td colspan="6"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the CHANNEL_NAME column). Only fields that cause a channel to be defined on more than one line are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field, are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<h3 id="Telemetry">Telemetry Channels</h3>
+<p>The label for this section is TELEMETRY.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Number</th>
+    <th>Column Name</th>
+    <th>Description of the Field</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>1st</td>
+    <td>CHANNEL_NAME</td>
+    <td>CHANNEL_NAME is a non-unique name to identify the telemetry channel. The same channel name can be specified across different banks (SELECTION_NO below) of the same telemetry unit.</td>
+    <td>16 character string (case-sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>2nd</td>
+    <td>UNITS</td>
+    <td>Engineering unit; a space may be present to separate the unit from one of the following optional unit qualifiers which can either be in uppercase or lowercase: PK or pk (peak, the default); P-P or p-p (peak-to-peak); RMS or rms.</td>
+    <td>25 character string (case-sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>3rd</td>
+    <td>HIU_PORT</td>
+    <td>HIU_PORT is the port to which the telemetry unit is connected.</td>
+    <td>Number &gt;0, and not divisible by 5</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>4th</td>
+    <td>SELECTION_NO</td>
+    <td>SELECTION_NO specifies the selected bank. Must be 1 for CHBERT, FBOCHINCA, TINCA and CWINCA.</td>
+    <td>Number 1 - 4</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>5th</td>
+    <td>CHANNEL_NO</td>
+    <td>CHANNEL_NO specifies the channel number in the selected bank.</td>
+    <td>Number 1 - 24</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>6th</td>
+    <td>SAMPLE_RATE</td>
+    <td>SAMPLE_RATE is the Telemetry unit sample rate. 78125 for STINCA,  PINCA, FBOSTINCA and TINCA; 39,062 for DIGBERT, CHBERT, FBOCHINCA and CWINCA.</td>
+    <td>Number 78125 or 39062</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>7th</td>
+    <td>SENTRY</td>
+    <td>SENTRY indicates if a channel is to be set up for sentry recording;48 channels maximum may be in the sentry.
+      <p class="Note">This field is now obsolete. It can still be specified but will be ignored by the DDS.</p></td>
+    <td>Y or N</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>8th</td>
+    <td>GAUGE_RES</td>
+    <td>GAUGE_RES is the strain gauge resistance in Ohms. Not required for CHBERT, FBOCHINCA, TINCA and CWINCA.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>9th</td>
+    <td>TOTAL_RES</td>
+    <td>TOTAL_RES is the strain gauge total resistivity in Ohms. Not required for CHBERT, FBOCHINCA, TINCA and CWINCA.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>10th</td>
+    <td>GAUGE_FACTOR</td>
+    <td>GAUGE_FACTOR is the strain gauge sensitivity. Not required for CHBERT, FBOCHINCA, TINCA and CWINCA.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>11th</td>
+    <td>YOUNGS_MODULUS</td>
+    <td>YOUNGS_MODULUS is the value of Young's modulus for the strain gauge in GPa. Not required for CHBERT, FBOCHINCA, TINCA and CWINCA.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>12th</td>
+    <td>QUALITY</td>
+    <td>QUALITY specifies reliability of a channel.</td>
+    <td>GOOD, SUSPECT, BAD</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>13th</td>
+    <td>MAXANALFREQ</td>
+    <td>MAXANALFREQ specifies the Maximum analysis frequency; must be positive and &le;SAMPLE_RATE / 2.5
+      <p class="Note">This field is now obsolete. It can still be specified but will be ignored by the DDS.</p></td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>14th</td>
+    <td>MINANALFREQ</td>
+    <td>MINANALFREQ specifies the Minimum analysis frequency.
+      <p class="Note">This field is now obsolete. It can still be specified but will be ignored by the DDS.</p></td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>15th</td>
+    <td>PROCESSING_FLAG</td>
+    <td>PROCESSING_FLAG determines whether processing is performed.
+      <p class="Note">This field is now obsolete. It can still be specified but will be ignored by the DDS.</p></td>
+    <td>Y, N</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>16th</td>
+    <td>PRINT_FLAG</td>
+    <td>PRINT_FLAG determines whether on line processing results are printed.
+      <p class="Note">This field is now obsolete. It can still be specified but will be ignored by the DDS.</p></td>
+    <td>Y, N</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>17th</td>
+    <td>REFERENCE</td>
+    <td>REFERENCE is the channel name of a reference variable for on line processing.
+      <p class="Note">This field is now obsolete. It can still be specified but will be ignored by the DDS.</p></td>
+    <td>40 character string (case-sensitive)</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>18th</td>
+    <td>PARAMSENS1</td>
+    <td>PARAMSENS1 specifies the transient parameter to  use in offline analysis.
+      <p class="Note">This field is now obsolete. It can still be specified but will be ignored by the DDS.</p></td>
+    <td>40 character string (case-sensitive)</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>19th</td>
+    <td>PARAMSENS2</td>
+    <td>PARAMSENS2 specifies the transient parameter to use in offline analysis.
+      <p class="Note">This field is now obsolete. It can still be specified but will be ignored by the DDS.</p></td>
+    <td>40 character string (case-sensitive)</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td colspan="6"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the CHANNEL_NAME column). Only fields that cause a channel to be defined on more than one line are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field, are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<h3 id="ChannelDefn">DDART Channel Definition</h3>
+<p>The label for this section is DDART_CHANNELS. The DDART Channel Definition Table describes the channels that can be monitored by DDART. It includes information for Peak Hold analysis, and can list up to 32 Fast Fourrier Transform (FFT) features in the <a href="?18#FeatureDefn">DDART Feature Definition Table</a>.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Number</th>
+    <th>Column Name</th>
+    <th>Description of the Field</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>1st</td>
+    <td>CHANNEL_NAME</td>
+    <td>CHANNEL_NAME is a unique name to identify the channel.
+      <p class="Note">This channel must be defined in either the DAS333 or TELEMETRY sections.</p></td>
+    <td>40 character string (case-sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>2nd</td>
+    <td>UNITS</td>
+    <td>Units this channel is measured in ; a space may be present to separate the unit from one of the following optional unit qualifiers: PK (peak, the default), P-P (peak-to-peak) or RMS
+      <p class="Note">This field is now obsolete. It can still be specified but will be ignored by the DDS.</p></td>
+    <td>25 character string (case-sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>3rd</td>
+    <td>MAX</td>
+    <td>MAX is the maximum display amplitude for the channel in the frequency domain.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>4th</td>
+    <td>MIN</td>
+    <td>MIN is the minimum display amplitude for this channel in the frequency domain.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>5th</td>
+    <td>FREQUENCY_SCALE</td>
+    <td>FREQUENCY_SCALE represents the X axis data for FFT display.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>6th</td>
+    <td>PKHD_WARNING</td>
+    <td>PKHD_WARNING is the warning limit for the Peak Hold data.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>7th</td>
+    <td>PKHD_EXCEEDENCE</td>
+    <td>PKHD_EXCEEDENCE is the exceedence limit for the Peak Hold data.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>8th</td>
+    <td>PKHD_FULLSCALE</td>
+    <td>PKHD_FULLSCALE is the maximum scale for the Peak Hold data.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>9th</td>
+    <td>UNEXPECTED_WARNING</td>
+    <td>UNEXPECTED_WARNING is the warning amplitude limit for an unexpected feature.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>10th</td>
+    <td>UNEXPECTED_EXCEEDENCE</td>
+    <td>Defines the level in EU at which the Unexpected Feature exceedence is triggered.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>11th</td>
+    <td>MIN_FREQ</td>
+    <td>Minimum frequency in Hz of configurable 2 nd frequency range.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>12th</td>
+    <td>MAX_FREQ</td>
+    <td>Maximum frequency in Hz of configurable 2 nd frequency range.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>13th</td>
+    <td>FFT_SIZE</td>
+    <td>Size of FFT (no of time series data points &ldquo;going into&rdquo; the FFT) to be performed to produce the frequency domain data for the configurable 2 nd frequency range.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>14th</td>
+    <td>MODE_NAME</td>
+    <td>MODE_NAME is the feature identification name (for this channel only). This name will be shown on any display pages.</td>
+    <td>8 character string (case-sensitive)</td>
+    <td>Yes</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>15th</td>
+    <td>FEATURE_NAME</td>
+    <td>FEATURE_NAME identifies the feature in the <a href="#FeatureDefn">DDART Feature Definition Table</a>.</td>
+    <td>40 character string (case-sensitive)</td>
+    <td>Yes</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td colspan="6"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the CHANNEL_NAME column). Only fields that cause a channel to be defined on more than one line (like MODE_NAME when a channel has more than one feature defined) are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field, are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<h3 id="FeatureDefn">DDART Feature Definition</h3>
+<p>The label for this section is DDART_FEATURE. The DDART Feature Definition Table describes a list of features; each identified by their <a href="?19#FeatureName">FEATURE_NAME</a>. These features can be associated with any of the channels, but are only used if the channel is selected for Fast Fourrier Transform (FFT) analysis (see <a href="?20#SelectionDefn">DDART Selection Definition</a> for details). The WARNING_LEVEL parameters either define a constant warning level (if only one point is specified) equal to the <a href="?21#WarnLevelLimit">WARNING_LEVEL_LIMIT</a> value, or a break point table consisting of a list of <a href="?22#WarnLevelRPM">WARNING_LEVEL_RPM</a> and WARNING_LEVEL_LIMIT ordered pairs. These speed-limit pairs define a staircase profile, where the speed for a particular value pair defines the lowest speed at which the limit is applicable, and the limit to be applied is constant between value pairs (i.e. not interpolated between limit values).</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Number</th>
+    <th>Column Name</th>
+    <th>Description of the Field</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>1st</td>
+    <td id="FeatureName">FEATURE_NAME</td>
+    <td>FEATURE_NAME is a unique name to identify the feature.</td>
+    <td>40 character string (case-sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>2nd</td>
+    <td>TACHO_NAME</td>
+    <td>TACHO_NAME is the name of the tacho channel associated with the channel (see <a href="?23#SpeedNum">DDART_SPEED_NUM</a>).</td>
+    <td>40 character string (case-sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>3rd</td>
+    <td>COEFFICIENT_0</td>
+    <td>COEFFICIENT_0 is the coefficient C used in the quadratic equation that defines a feature, using as input speed value in %.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>4th</td>
+    <td>COEFFICIENT_1</td>
+    <td>COEFFICIENT_1 is the coefficient B used in the quadratic equation that defines a feature, using as input speed value in %.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>5th</td>
+    <td>COEFFICIENT_2</td>
+    <td>COEFFICIENT_2 is the coefficient A used in the quadratic equation that defines a feature, using as input speed value in %.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>6th</td>
+    <td>EXCEEDENCE_FACTOR</td>
+    <td>EXCEEDENCE_FACTOR is the exceedence limit expressed as a multiple of warning level.</td>
+    <td>Number greater than 1</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>7th</td>
+    <td>MODE_FULL_SCALE</td>
+    <td>MODE_FULL_SCALE is the value that defines the 100% range for the mode display, expressed as a multiple of the warning level.</td>
+    <td>Number greater than the EXCEEDENCE_FACTOR</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>8th</td>
+    <td>TIME_WARNING</td>
+    <td>Time period in seconds after which a feature in continual transgression of the warning limit, causes a warning indication on the real-time monitoring display. Setting this to 0 results in no delay in indicating the warning condition.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>9th</td>
+    <td>TIME_EXCEEDENCE</td>
+    <td>Time period in seconds after which a feature in continual transgression of the exceedence limit, causes an alarm indication on the real-time monitoring display. Setting this to 0 results in no delay in indicating the alarm condition.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>10th</td>
+    <td>FEATURE_WIDTH</td>
+    <td>Total frequency range in Hz over which feature is to be detected relative to predicted frequency. This range is &ldquo;centred&rdquo; about the predicted frequency.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>11th</td>
+    <td>WARNING_TO_EXCEEDENCE_PROMOTION_TIME</td>
+    <td>Time period in seconds after which a feature in continual transgression of the warning level limit will be promoted to an alarm level indication on the alarm panel display.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>12th</td>
+    <td>FLASH_EXCEEDENCE_TIME</td>
+    <td>Time period in seconds after which a feature in continual transgression of the exceedence limit will result in a flashing alarm indication on the alarm panel display.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>13th</td>
+    <td>FLASH_PROMOTED_EXCEEDENCE_TIME</td>
+    <td>Time period in seconds after which a feature in continual transgression of the warning level limit that has also been promoted to an exceedence level transgression will result in a flashing alarm indication on the alarm panel display.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>14th</td>
+    <td id="WarnLevelRPM">WARNING_LEVEL_RPM</td>
+    <td>X value of a set of ordered pairs defining a Break Point Table, x,y can repeat up to 7 times per mode. The X values are specified in units of % speed, and not in RPM.</td>
+    <td>Number</td>
+    <td>Yes</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>15th</td>
+    <td id="WarnLevelLimit">WARNING_LEVEL_LIMIT</td>
+    <td>WARNING_LEVEL_LIMIT is the Y value of a set of ordered pairs defining a Break Point table. If only one pair is specified, then the Y value is a constant warning limit.</td>
+    <td>Number</td>
+    <td>Yes</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td colspan="6"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single feature. In this case, additional lines follow the first line of a feature definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the FEATURE_NAME column). Only fields that cause a feature to be defined on more than one line (like WARNING_LEVEL_RPM when a feature has more than one limit defined) are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field, are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the feature is restricted to a single value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<h3 id="SelectionDefn">DDART Selection Definition</h3>
+<p>The label for this section is DDART_SELECTION. The DDART Selection Definition table lists the user's preferences for the channels used for FFT analysis. There can be up to 48 FFT channels, each with a list of up to five channel names in order of preference. Whenever a channel is unavailable for analysis, DDART will select the next preferred channel.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Number</th>
+    <th>Column Name</th>
+    <th>Description of the Field</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>1st</td>
+    <td>FFT_CH_NUMBER</td>
+    <td>FFT_CH_NUMBER identifies the FFT channel number.</td>
+    <td>Number 1 - 48</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>2nd</td>
+    <td>CHANNEL_NAME</td>
+    <td>CHANNEL_NAME identifies the preferred channel to be used for this FFT channel.</td>
+    <td>40 character string (case-sensitive)</td>
+    <td>Yes</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td colspan="6"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single FFT. In this case, additional lines follow the first line of a FFT definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the FFT_CH_NUMBER column). Only fields that cause a FFT to be defined on more than one line (like CHANNEL_NAME when a FFT has more than one  defined) are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field, are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the FFT is restricted to a single value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<h3 id="OscilloscopeDefn">DDART Oscilloscope Definition</h3>
+<p>The label for this section is DDART_SCOPE. The DDART Oscilloscope Definition Table is similar to the <a href="?24#SelectionDefn">DDART Selection Table</a>, but applies only for oscilloscope channels.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Number</th>
+    <th>Column Name</th>
+    <th>Description of the Field</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>1st</td>
+    <td id="ScopeCHnum">SCOPE_CH_NUMBER</td>
+    <td>SCOPE_CH_NUMBER identifies the Scope channel number.
+      <p class="Note">This field is now obsolete. It can still be specified but will be ignored by the DDS.</p></td>
+    <td>Number 1 - 8</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>2nd</td>
+    <td>CHANNEL_NAME</td>
+    <td>CHANNEL_NAME identifies the  channel to be used for this Scope channel.
+      <p class="Note">This field is now obsolete. It can still be specified but will be ignored by the DDS.</p></td>
+    <td>40 character string (case-sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td colspan="6"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single scope. In this case, additional lines follow the first line of a scope definition.<br>
+      <br>
+      &quot;No&quot; means that the scope is restricted to a single value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<h3 id="DisplayDefn">DDART Display Definition</h3>
+<p>The label for this section is DDART_DISPLAY. The DDART Display Definition Table describes the views that can be displayed on each DDART monitor. For each view other than View 5, there is a list of FFT channels that the user wants included in the display, and a frequency that describes whether the displayed data is compressed or not. For View 5, which is not configurable, all oscilloscope data is displayed. The first view for each display is the default.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Number</th>
+    <th>Column Name</th>
+    <th>Description of the Field</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>1st</td>
+    <td>DISPLAY</td>
+    <td>DISPLAY identifies the DDART display.
+      <p class="Note">This field is now obsolete. It can still be specified but will be ignored by the DDS.</p></td>
+    <td>Number 1 - 3</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>2nd</td>
+    <td>VIEW</td>
+    <td>VIEW identifies the view to be used:
+      
+      1. Experimental Vibration 1 (12 Campbells)<br>
+      2. Experimental Vibration 2 (12 FFTs)<br>
+      3. Test Measurement 1 (2 Campbells/8FFTs)<br>
+      4. Test Measurement 2 (4 Campbells/Mode Disp.)<br>
+      5. Scope Summary View (Oscilloscope overview)
+      <p class="Note">This field is now obsolete. It can still be specified but will be ignored by the DDS.</p></td>
+    <td>Number 1 - 5</td>
+    <td>Yes</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>3rd</td>
+    <td>POSITION</td>
+    <td>POSITION identifies the position of the channel in this view. This field is ignored for View 5.
+      <p class="Note">This field is now obsolete. It can still be specified but will be ignored by the DDS.</p></td>
+    <td>Number 1 - 12</td>
+    <td>Yes</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>4th</td>
+    <td id="FFTCHnum">FFT_CH_NUMBER</td>
+    <td>FFT_CH_NUMBER identifies the FFT channel number to be displayed in this position. This field is ignored for View 5.
+      <p class="Note">This field is now obsolete. It can still be specified but will be ignored by the DDS.</p></td>
+    <td>Number 1 - 48</td>
+    <td>Yes</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>5th</td>
+    <td>FREQUENCY</td>
+    <td>FREQUENCY identifies the display frequency as Low (L) or High (H) of an FFT Channel. This field is ignored for View 5.
+      <p class="Note">This field is now obsolete. It can still be specified but will be ignored by the DDS.</p></td>
+    <td>L, H</td>
+    <td>Yes</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td colspan="6"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single view. In this case, additional lines follow the first line of a display definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the DISPLAY column). Only fields that cause a view to be defined on more than one line  are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field, are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the view is restricted to a single value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<h3 id="OnlineProcessDefn">Online Processing Definition</h3>
+<p>The label for this section is ANALYSIS_MAP.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Number</th>
+    <th>Column Name</th>
+    <th>Description of the Field</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>1st</td>
+    <td>ANALYSIS_TYPE</td>
+    <td>ANALYSIS_TYPE is the unique identifier for the device as shown in the DDS control window.
+      <p class="Note">This field is now obsolete. It can still be specified but will be ignored by the DDS.</p></td>
+    <td>40 character string (case-sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>2nd</td>
+    <td>PROC_SPEC_FILE</td>
+    <td>PROC_SPEC_FILE identifies the file name for the processing specification.
+      <p class="Note">This field is now obsolete. It can still be specified but will be ignored by the DDS.</p></td>
+    <td>40 character string (case-sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td colspan="6"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for an analysis type. In this case, additional lines follow the first line of an analysis definition.<br>
+      <br>
+      &quot;No&quot; means that the analysis type is restricted to a single value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<h3 id="ShaftSpeedDefn">Shaft Speed Definition</h3>
+<p>The label for this section is SHAFT_SPEED. As a minimum, the section has three rows. One for each shaft speed channel that is to be used by DDART. The first three rows are used to process the speed signals for DDART. Any additional rows are ignored by DDART, but are available for analysis processing on the Experimental Vibration Analysis System (EVAS).</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Number</th>
+    <th>Column Name</th>
+    <th>Description of the Field</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>1st</td>
+    <td>CHANNEL_NAME</td>
+    <td>Name of one of the SHAFT channels in the DAS333 section.</td>
+    <td>40 Character string (case sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>2nd</td>
+    <td id="SpeedNum">DDART_SPEED_NUM</td>
+    <td>The shaft to which this channel is associated.</td>
+    <td>Number 1, 2 or 3</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>3rd</td>
+    <td>HZ_PER_100%</td>
+    <td>The TACHO frequency at 100% of engine speed.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>4th</td>
+    <td>RPM_PER_100%</td>
+    <td>The engine RPM at 100% engine speed.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td colspan="6"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<h3 id="TelemetryControl">Telemetry Control (CHINCA)</h3>
+<p>The label for this section is CONTROL_TELEMETRY. The section has one line per CHBERT (CHINCA) data channel defined.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Number</th>
+    <th>Column Name</th>
+    <th>Description of the Field</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>1st</td>
+    <td>UNIT_ID</td>
+    <td>Sensor name of the CHINCA unit the channel belongs to, matching the UNIT_ID specified in the DEVICE_HEADER section.</td>
+    <td>8 Character String (case sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>2nd</td>
+    <td>CHANNEL_NUM</td>
+    <td>Specifies the channel number within the CHINCA unit</td>
+    <td>Number, 1 &ndash; 24</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>3rd</td>
+    <td>MODE</td>
+    <td>Specifies the mode of the channel: acceleration (A), velocity (V) or pressure (P)</td>
+    <td>A, V, P</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>4th</td>
+    <td>GAIN</td>
+    <td>Specifies the gain of the channel. Max gain is 16 in Acceleration and Pressure modes, 96 in Velocity mode.</td>
+    <td>Number, 1-16 or 1-96</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>5th</td>
+    <td>CONNECTED</td>
+    <td>Specifies whether the channel is to be connected (Y), or disconnected (N)</td>
+    <td>Y or N</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>6th</td>
+    <td>SENSOR_NAME</td>
+    <td>Sensor name to lookup in the calibration database for this channel</td>
+    <td>40 character string (case sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td colspan="6"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<h3 id="STINCAControl">Telemetry Control (STINCA)</h3>
+<p>The label for this section is STINCA_CONTROL. The section contains one line per STINCA unit selection.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Number</th>
+    <th>Column Name</th>
+    <th>Description of the Field</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>1st</td>
+    <td>UNIT_ID</td>
+    <td>Sensor name of the STINCA unit, matching the UNIT_ID specified in the DEVICE_HEADER section.</td>
+    <td>8 Character String (case sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>2nd</td>
+    <td>SELECTION</td>
+    <td>Specifies the STINCA selection.</td>
+    <td>A, B, C or D</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>3rd</td>
+    <td>GAIN1_12</td>
+    <td>Specifies the gain for channels 1-12 on the specified selection of the STINCA unit.</td>
+    <td>Number, 1 &ndash; 5</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>4th</td>
+    <td>GAIN13_24</td>
+    <td>Specifies the gain for channels 13-24 on the specified selection of the STINCA unit.</td>
+    <td>Number, 1 &ndash; 5</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td colspan="6"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single unit. In this case, additional lines follow the first line of a unit definition.<br>
+      <br>
+      &quot;No&quot; means that the unit is restricted to a single value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<h3 id="TINCAControl">Telemetry Control (TINCA)</h3>
+<p>The label for this section is TINCA_CONTROL. The section contains one line per TINCA data channel defined.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Number</th>
+    <th>Column Name</th>
+    <th>Description of the Field</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>1st</td>
+    <td>UNIT_ID</td>
+    <td>Sensor name of the TINCA unit the channel belongs to, matching the UNIT_ID specified in the DEVICE_HEADER section.</td>
+    <td>8 Character String (case sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>2nd</td>
+    <td>CHANNEL_NUM</td>
+    <td>Specifies the channel  number within the TINCA unit.</td>
+    <td>Number, 1 &ndash; 24</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>3rd</td>
+    <td>GAIN</td>
+    <td>Specifies the gain of  the channel.</td>
+    <td>Number, 0 - 2</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>4th</td>
+    <td>BRIDGE_CIRCUIT</td>
+    <td>Specifies the strain  gauge bridge arrangement of the channel. 1Q (&frac14; bridge), 1H (&frac12; bridge), and F (Full bridge).</td>
+    <td>2 Character String (1Q, 1H, F)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>5th</td>
+    <td>BRIDGE_POLAR</td>
+    <td>Specifies the  polarisation voltage of the channel.</td>
+    <td>Number, 0, 2, 5, 10</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>6th</td>
+    <td>BRIDGE_RES</td>
+    <td>Specifies the completion resistance of the channel.</td>
+    <td>34 Character String (120, 350)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>7th</td>
+    <td>MIN_SHUNT</td>
+    <td>Specifies the minimum change in reading for the shunt confidence check in mV.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>8th</td>
+    <td>MAX_SHUNT</td>
+    <td>Specifies the maximum  change in reading for the shunt confidence check in mV.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>9th</td>
+    <td>SENSOR_NAME</td>
+    <td>Sensor name to lookup in the calibration database for this channel.</td>
+    <td>40 Character String (case sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td colspan="6"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single unit. In this case, additional lines follow the first line of a unit definition.<br>
+      <br>
+      &quot;No&quot; means that the unit is restricted to a single value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<h3 id="FBOSTINCAControl">Telemetry Control (FBOSTINCA)</h3>
+<p>The label for this section is FBOSTINCA_CONTROL. The section contains one line per FBOSTINCA data channel defined.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Number</th>
+    <th>Column Name</th>
+    <th>Description of the Field</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>1st</td>
+    <td>UNIT_ID</td>
+    <td>Sensor name of the FBOSTINCA unit the channel belongs to, matching the UNIT_ID  specified in the DEVICE_HEADER section.</td>
+    <td>8 Character String (case sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>2nd</td>
+    <td>SELECTION</td>
+    <td>Specifies  the FBOSTINCA selection.</td>
+    <td>A,  B, C or D</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>3rd</td>
+    <td>CHANNEL_NUM</td>
+    <td>Specifies the channel number within the FBOSTINCA unit.</td>
+    <td>Number, 1 &ndash; 24</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>4th</td>
+    <td>GAIN</td>
+    <td>Specifies the gain of  the channel.</td>
+    <td>Number, 0 - 7</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td colspan="6"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single unit. In this case, additional lines follow the first line of a unit definition.<br>
+      <br>
+      &quot;No&quot; means that the unit is restricted to a single value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<h3 id="FBOCHINCAControl">Telemetry Control (FBOCHINCA)</h3>
+<p>The label for this section is FBOCHINCA_CONTROL. The section contains one line per FBOCHINCA data channel defined.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Number</th>
+    <th>Column Name</th>
+    <th>Description of the Field</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>1st</td>
+    <td>UNIT_ID</td>
+    <td>Sensor name of the FBOCHINCA unit the channel belongs to, matching the UNIT_ID  specified in the DEVICE_HEADER section.</td>
+    <td>8 Character String (case sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>2nd</td>
+    <td>CHANNEL_NUM</td>
+    <td>Specifies the channel number within the FBOCHINCA unit.</td>
+    <td>Number, 1 &ndash; 24</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>3rd</td>
+    <td>MODE</td>
+    <td>Specifies the mode of the channel: acceleration (A), velocity (V) or pressure (P).</td>
+    <td>A, V, P</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>4th</td>
+    <td>GAIN</td>
+    <td>Specifies the gain of  the channel.</td>
+    <td>Number, 0 - 3</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>5TH</td>
+    <td>SENSOR_NAME</td>
+    <td>Sensor name to lookup in the calibration database for this channel.</td>
+    <td>40 character string (case sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td colspan="6"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single unit. In this case, additional lines follow the first line of a unit definition.<br>
+      <br>
+      &quot;No&quot; means that the unit is restricted to a single value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<h3 id="AdditionalFields">Dynamic Configuration File Additional Fields</h3>
+<p>The following additional Test Cell Header section and channel calibration fields for the DAS333 and TELEMETRY sections of the Dynamic Configuration File are generated by the <a href="../../CustomApps/CIE/CIE.htm">Configuration Import/Export (CIE) Utility</a>.</p>
+<h4 id="Header">Test Cell Header</h4>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description of the Field</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>TEST_CELL_ID</td>
+    <td>The Test Cell ID.
+      <p class="Note">This field is not required by the DDS, but is generated and used by proDAS.</p></td>
+    <td>Number, from 0 to 5</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>TEST_CELL_NAME</td>
+    <td>The Test Cell Name.
+      <p class="Note">This field is not required by the DDS, but is generated and used by proDAS.</p></td>
+    <td>Matching the respective TEST_CELL_ID.</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>M_CONFIG_ID</td>
+    <td>The Master Configuration ID associated to this test.
+      <p class="Note">This field is not required by the DDS, but is generated and used by proDAS.</p></td>
+    <td>Number &gt; 0</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single unit. In this case, additional lines follow the first line of a unit definition.<br>
+      <br>
+      &quot;No&quot; means that the unit is restricted to a single value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<h4 id="DASTelFields">DAS333 and TELEMETRY Channel Calibration Fields</h4>
+<p>The colums below are appended to the end of the columns for the respective DAS333 and TELEMETRY sections.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description of the Field</th>
+    <th>Syntax (data type expected  in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>CALIBRATION_TYPE</td>
+    <td>The type of calibration stored for the channel &ndash; either polynomial or break point table. If POLYNOMIAL is specified, then the CAL_SYS_TD_Ax and CAL_SYS_FD_Ax polynomial calibration co-efficients should be used. If BPT is specified, then the CAL_BPT_TD_Xx, CAL_BPT_TD_Yx, CAL_BPT_FD_Xx and CAL_BPT_FD_Yx break point table calibration co-efficients should be used.
+      <p class="Note">These are proposed additional fields to accommodate future use of break point tables.</p></td>
+    <td>POLYNOMIAL or BPT</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>SYS_CAL_DATE</td>
+    <td>The date of calibration of the channel.
+      <p class="Note">This field is not required by the DDS, but is generated and used by proDAS.</p></td>
+    <td>40 Character string (case sensitive)</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>CAL_EQUIP_TYPE</td>
+    <td>The calibration equipment used to perform the calibration.
+      <p class="Note">This field is not required by the DDS, but is generated and used by proDAS.</p></td>
+    <td>40 Character string (case sensitive)</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>CAL_EQUIP_SER</td>
+    <td>The calibration equipment serial number.
+      <p class="Note">This field is not required by the DDS, but is generated and used by proDAS.</p></td>
+    <td>40 Character string (case sensitive)</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>CAL_BY</td>
+    <td>The name of the calibrator.
+      <p class="Note">This field is not required by the DDS, but is generated and used by proDAS.</p></td>
+    <td>40 Character string (case sensitive)</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>SENS_CAL_DATE</td>
+    <td>The calibration date of the sensor being used, where applicable.
+      <p class="Note">This field is not required by the DDS, but is generated and used by proDAS.</p></td>
+    <td>40 Character string (case sensitive)</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>CAL_SYS_TD_A0</td>
+    <td>The time domain polynomial calibration co-efficient A<sub>0</sub> used to convert the digitised data in units of count to engineering units if CALIBRATION_TYPE is POLYNOMIAL.</td>
+    <td>Number in exponential form.</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>CAL_SYS_TD_A1</td>
+    <td>The time domain polynomial calibration co-efficient A<sub>1</sub> used to convert the digitised data in units of count to engineering units if CALIBRATION_TYPE is POLYNOMIAL.</td>
+    <td>Number in exponential form.</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>CAL_SYS_TD_A2</td>
+    <td>The time domain polynomial calibration co-efficient A<sub>2</sub> used to convert the digitised data in units of count to engineering units if CALIBRATION_TYPE is POLYNOMIAL.</td>
+    <td>Number in exponential form.</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>CAL_SYS_TD_A3</td>
+    <td>The time domain polynomial calibration co-efficient A<sub>3</sub> used to convert the digitised data in units of count to engineering units if CALIBRATION_TYPE is POLYNOMIAL.</td>
+    <td>Number in exponential form.</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>CAL_SYS_TD_A4</td>
+    <td>The time domain polynomial calibration co-efficient A<sub>4</sub> used to convert the digitised data in units of count to engineering units if CALIBRATION_TYPE is POLYNOMIAL.</td>
+    <td>Number in exponential form.</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>CAL_SYS_TD_A5</td>
+    <td>The time domain polynomial calibration co-efficient A<sub>5</sub> used to convert the digitised data in units of count to  engineering units if CALIBRATION_TYPE is POLYNOMIAL.</td>
+    <td>Number in exponential form.</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>CAL_SYS_FD_A0</td>
+    <td>The frequency domain polynomial calibration co-efficient A<sub>0</sub> used to perform frequency correction to the EU data if CALIBRATION_TYPE is POLYNOMIAL.</td>
+    <td>Number in exponential form.</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>CAL_SYS_FD_A1</td>
+    <td>The frequency domain polynomial calibration co-efficient A<sub>1</sub> used to perform frequency correction to the EU data if CALIBRATION_TYPE is POLYNOMIAL.</td>
+    <td>Number in exponential form.</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>CAL_SYS_FD_A2</td>
+    <td>The frequency domain polynomial calibration co-efficient A<sub>2</sub> used to perform frequency correction to the EU data if CALIBRATION_TYPE is POLYNOMIAL.</td>
+    <td>Number in exponential form.</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>CAL_SYS_FD_A3</td>
+    <td>The frequency domain polynomial calibration co-efficient A<sub>3</sub> used to perform frequency correction to the EU data  if CALIBRATION_TYPE is POLYNOMIAL.</td>
+    <td>Number in exponential form.</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>CAL_SYS_FD_A4</td>
+    <td>The frequency domain polynomial calibration co-efficient A<sub>4</sub> used to perform frequency correction to the EU data  if CALIBRATION_TYPE is POLYNOMIAL.</td>
+    <td>Number in exponential form.</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>CAL_SYS_FD_A5</td>
+    <td>The frequency domain polynomial calibration co-efficient A<sub>5</sub> used to perform frequency correction to the EU data  if CALIBRATION_TYPE is POLYNOMIAL.</td>
+    <td>Number in exponential form.</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>CAL_BPT_TD_X01</td>
+    <td>The time domain calibration break point table raw data counts entry 1 used to convert the digitised data in units of count to engineering units if CALIBRATION_TYPE is BPT.
+      <p class="Note">These are proposed additional fields to accommodate future use of break point tables.</p></td>
+    <td>Number</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>CAL_BPT_TD_X02</td>
+    <td>The time domain calibration break point table raw data counts entry 2 used to convert the digitised data in units of count to engineering units if CALIBRATION_TYPE is BPT.
+      <p class="Note">These are proposed additional fields to accommodate future use of break point tables.</p></td>
+    <td>Number</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>...</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>CAL_BPT_TD_X32</td>
+    <td>The time domain calibration break point table raw data counts entry 32 used to convert the digitised data in units of count to engineering units if CALIBRATION_TYPE is BPT.
+      <p class="Note">These are proposed additional fields to accommodate future use of break point tables.</p></td>
+    <td>Number</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>CAL_BPT_TD_Y01</td>
+    <td>The time domain calibration break point table EU data entry 1 used to convert the digitised data in units of count to engineering units if CALIBRATION_TYPE is BPT.
+      <p class="Note">These are proposed additional fields to accommodate future use of break point tables.</p></td>
+    <td>Number</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>CAL_BPT_TD_Y02</td>
+    <td>The time domain calibration break point table EU data entry 2 used to convert the digitised data in units of count to engineering units if CALIBRATION_TYPE is BPT.
+      <p class="Note">These are proposed additional fields to accommodate future use of break point tables.</p></td>
+    <td>Number</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>...</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>CAL_BPT_TD_Y32</td>
+    <td>The time domain calibration break point table EU data entry 32 used to convert the digitised data in units of count to engineering units if CALIBRATION_TYPE is BPT.
+      <p class="Note">These are proposed additional fields to accommodate future use of break point tables.</p></td>
+    <td>Number</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>CAL_BPT_FD_X01</td>
+    <td>The frequency domain calibration break point table frequency setting entry 1 used to perform frequency correction to the EU data if CALIBRATION_TYPE is BPT.
+      <p class="Note">These are proposed additional fields to accommodate future use of break point tables.</p></td>
+    <td>Number</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>CAL_BPT_FD_X02</td>
+    <td>The frequency domain calibration break point table frequency setting entry 2 used to perform frequency correction to the EU data if CALIBRATION_TYPE is BPT.
+      <p class="Note">These are proposed additional fields to accommodate future use of break point tables.</p></td>
+    <td>Number</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>CAL_BPT_FD_X32</td>
+    <td>The frequency domain calibration break point table frequency setting entry 32 used to perform frequency correction to the EU data if CALIBRATION_TYPE is BPT.
+      <p class="Note">These are proposed additional fields to accommodate future use of break point tables.</p></td>
+    <td>Number</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>...</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>CAL_BPT_FD_Y01</td>
+    <td>The frequency domain calibration break point table EU correction factor entry 1 used to perform frequency correction to the EU data if CALIBRATION_TYPE is BPT.
+      <p class="Note">These are proposed additional fields to accommodate future use of break point tables.</p></td>
+    <td>Number</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>CAL_BPT_FD_Y02</td>
+    <td>The frequency domain calibration break point table EU correction factor entry 2 used to perform frequency correction to the EU data if CALIBRATION_TYPE is BPT.
+      <p class="Note">These are proposed additional fields to accommodate future use of break point tables.</p></td>
+    <td>Number</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>...</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>CAL_BPT_FD_Y32</td>
+    <td>The frequency domain calibration break point table EU correction factor entry 32 used to perform frequency correction to the EU data if CALIBRATION_TYPE is BPT.
+      <p class="Note">These are proposed additional fields to accommodate future use of break point tables.</p></td>
+    <td>Number</td>
+    <td>No</td>
+    <td>See Desc.</td>
+  </tr>
+  <tr>
+    <td>EU_AT_CAL</td>
+    <td>Indicates the channel EU value at the standard calibration setting.
+      <p class="Note">This field is not required by the DDS, but is generated and used by proDAS.</p></td>
+    <td>Number</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single unit. In this case, additional lines follow the first line of a unit definition.<br>
+      <br>
+      &quot;No&quot; means that the unit is restricted to a single value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

@@ -1,0 +1,18 @@
+ <table class="Table-Grey">
+  <tr>
+    <th class="row-DwgNumber">Drawing Number</th>
+    <th class="row-DwgTitle">Drawing Title</th>
+  </tr>
+  <tr>
+    <td><a href="../References/MDSDrawings/A0000243.pdf">A-0000243</a></td>
+    <td>Assembly-Wiring, GKN, Test Cell 25, Discrete IO</td>
+  </tr>
+  <tr>
+    <td><a href="../References/MDSDrawings/A0000278.pdf">A-0000278</a></td>
+    <td>Assembly-Cable, 16 Channel Digital I/O, Interface</td>
+  </tr>
+  <tr>
+    <td><a href="../References/MDSDrawings/D0000542.pdf">D-0000542</a></td>
+    <td>Block Digram, GKN, Test Cell 25, DIO</td>
+  </tr>
+</table>

@@ -1,0 +1,222 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Replay Control</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1>Replay Control<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The Replay Control Graphical User Interface (GUI) is a VCR-style control panel that allows the user to control the Replay component of the Real-Time Engine (RTE). The Replay Control GUI is opened by the Management GUI on completion of the RTE configuration. Replay mode allows the user to:</p>
+<ul>
+  <li>select a log file for replay</li>
+  <li>move to a specific time in the log file </li>
+  <li>select the log file replay speed</li>
+  <li>start, stop, pause and continue the replay</li>
+  <li>single step forward or backward</li>
+  <li>move forward or backward in time at the selected replay speed</li>
+</ul>
+<p>During the replay of a selected log, the user can record fullsets and transient logs, execute test procedures and External Hooks Programs, monitor alarms, and do any other function normally performed in real-time data acquisition.</p>
+<h2 id="ReplayControlGUI">Replay Control GUI</h2>
+<p>The Replay Control GUI is shown below and described in the following table.</p>
+<div class="Container"><img src="images/AbsoluteMode.png" alt="AbsoluteMode" width="510" height="329"></div>
+<br>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="2" rowspan="1" id="ReplayControlGUItable">Replay Control GUI</th>
+  </tr>
+  <tr>
+    <th>Buttons and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td><img src="images/SliderBar.png" alt="Slider Bar" width="471" height="34"></td>
+    <td id="SetTimeWithSliderControl">The Slider Control allows the user to move to a specific time in the log file (also see <a href="?2#MoveToSpecificTime">Time field</a> and <a href="?3#MoveToSpecificDate">Date field</a>). <br>
+      <br>
+      The Slider Control is enabled only when the log is paused or stopped.<br>
+      <br>
+      The Slider position is updated during playback. </td>
+  </tr>
+  <tr>
+    <td><img src="images/ForwardBtn.gif" alt="Forward Btn" width="36" height="42"></td>
+    <td>Playback can be run forward by selecting the Forward button or Crtl+Right Arrow from the keyboard.<br>
+      <br>
+      When the cursor is placed over the Forward button, a tool-tip, with 
+      the name of the button and the short-cut key combination, is displayed.</td>
+  </tr>
+  <tr>
+    <td><img src="images/PauseBtn.gif" alt="Pause Btn" width="23" height="28"></td>
+    <td >Playback can be paused by selecting the Pause button or Crtl+Down Arrow from the keyboard.<br>
+      <br>
+      When playback is paused, the time position within the log does not change.<br>
+      <br>
+      Playback can be resumed by selecting the Forward button (or Crtl+Right Arrow from the keyboard) or the Reverse button (or Crtl+Left Arrow from the keyboard).</td>
+  </tr>
+  <tr>
+    <td><img src="images/StopBtn.gif" alt="Stop Btn" width="24" height="29"></td>
+    <td>Selecting the Stop button (or Crtl+Up Arrow from the keyboard) discontinues the playback and returns to the start of the log.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BackwardBtn.gif" alt="Backward Btn" width="36" height="42"></td>
+    <td>Playback can be run backward by selecting the Reverse button or Crtl+Left Arrow from the keyboard.</td>
+  </tr>
+  <tr>
+    <td><img src="images/StepBackwardBtn.gif" alt="Step Backward Btn" width="23" height="30"></td>
+    <td>Playback can be single-stepped backward by selecting the Pause button and then selecting the Step Backward button or Alt+Left Arrow from the keyboard.</td>
+  </tr>
+  <tr>
+    <td><img src="images/StepForwardBtn.gif" alt="Step Forward Btn" width="25" height="29"></td>
+    <td>Playback can be single-stepped forward by selecting the Pause button and then selecting the Step Forward button or Alt+Right Arrow from the keyboard.</td>
+  </tr>
+  <tr>
+    <td><img src="images/SkipBackwardBtn.gif" alt="Skip Backward Btn" width="25" height="30"></td>
+    <td>Playback can be skipped backward by selecting the Skip Backward button or Shift+Left Arrow from the keyboard.<br>
+      <br>
+      Skip Backward is enabled only when Continuous Logs are played back and whenever the replay is in a paused or stopped state. Skip Backward is disabled if a transient log is loaded or if a continuous log is loaded that contains only one log file. Skip Backward is disabled if the replay is at the start of the first continuous log file.<br>
+      <br>
+      From the middle of a file, selecting Skip Backward will move the pointer to the beginning of the current continuous log file.<br>
+      <br>
+      From the beginning of a file, selecting Skip Backward will move the pointer to the beginning of the previous continuous log file.</td>
+  </tr>
+  <tr>
+    <td><img src="images/SkipForwardBtn.gif" alt="Skip Forward Btn" width="24" height="29"></td>
+    <td>Playback can be skipped forward by selecting the Skip Forward button or Shift+Right Arrow from the keyboard.<br>
+      <br>
+      Skip Forward is enabled only when Continuous Logs are played back and whenever the replay is in a paused or stopped state. Skip Forward is disabled if a transient log is loaded or if a continuous log is loaded that contains only one log file. Skip Forward is disabled if the replay is in the last continuous log file.<br>
+      <br>
+      Selecting Skip Forward moves the pointer to the beginning of the next continuous log file.</td>
+  </tr>
+  <tr>
+    <td><img src="images/SpeedFactorControl.png" alt="Speed Factor Control" width="167" height="37"></td>
+    <td>The Speed Factor field displays the selected playback speed. The playback speed can be set with the up and down arrows or by entering a value from the keyboard.<br>
+      <br>
+      The value 1.0 represents normal playback.<br>
+      <br>
+      A value greater than 1 causes the log to skip samples during playback (e.g.: a speed factor of 5 would process every fifth sample in a log file). <br>
+      <br>
+      A value of less than 1.0 slows down the replay.</td>
+  </tr>
+  <tr>
+    <td><img src="images/AbsoluteRelativeSelect.png" alt="Absolute Relative Select" width="103" height="62"></td>
+    <td>Select Relative or Absolute from the drop-down box to switch between an absolute time reference and a time reference that is relative to the start of the log.</td>
+  </tr>
+  <tr>
+    <td><img src="images/TimeDisplay.png" alt="Time Display" width="174" height="42"></td>
+    <td>The time is determined by the selection of an Absolute or Relative time reference in the drop-down box.<br>
+      <br>
+      <a name="MoveToSpecificTime"></a>To move to a specific time in the log file, enter the time from the keyboard or use the <a href="?4#SetTimeWithSliderControl">Slider Control</a>.<br>
+      <br>
+      The Time field is accessible only when the log is paused or stopped. <br>
+      <br>
+      The Time field is updated automatically during playback.</td>
+  </tr>
+  <tr>
+    <td><img src="images/DateDisplay.png" alt="Date Display" width="187" height="40"><br>
+      <br>
+      <img src="images/CalendarDisplay.png" alt="Calendar Display" width="250" height="186"></td>
+    <td id="MoveToSpecificDate">To move to a specific date in the log file, enter the date from the keyboard, use the <a href="?5#SetTimeWithSliderControl">Slider Control</a>, or select a data from the drop-box.<br>
+      <br>
+      The calendar is displayed when the down-arrow on the drop-box is selected.<br>
+      <p class="Note">The calendar is only available in the Absolute mode.<br>
+        <br>
+        In the Relative mode, the calendar is replaced with an edit box, which allows the user to enter the number of days from the beginning of the log.</p>
+      The Date field is accessible only when the log is paused or stopped.<br>
+      <br>
+      During playback, the Date field is updated automatically.</td>
+  </tr>
+  <tr>
+    <td><img src="images/HiderBar.png" alt="Hider Bar" width="488" height="14"></td>
+    <td>The Hider Bar toggles to hide or reveal the lower half of the Replay Control GUI (i.e.: the Replay Options panel and the Help button).<br>
+      <br>
+      For example, the following Replay Control GUI is displayed if the Hider Bar is selected from the full Replay Control GUI:
+      <p align="center"><img src="images/HideDetails.png" alt="Hide Details" width="340" height="129"></p></td>
+  </tr>
+  <tr>
+    <td><img src="images/LogFileField.png" alt="Log File Field" width="444" height="30"></td>
+    <td>The Log File field displays the name of the selected log file.</td>
+  </tr>
+  <tr>
+    <td><img src="images/FolderBtnBig.png" alt="Folder Btn Big" width="42" height="38"></td>
+    <td>Selecting this button opens a dialogue box, allowing the user to select a log file for replay (see <a href="?6#SelectLogFileForPlayback">Selecting a Log File for Replay</a>).<br>
+      <br>
+      The name of the selected log file is displayed in the Log File field.</td>
+  </tr>
+  <tr>
+    <td><img src="images/EventsField.png" alt="Events Field" width="481" height="30"><strong>Events</strong> box</td>
+    <td>The Events: drop-box field is enabled when Continuous Logs are being played back. The Events drop-box allows the user to move quickly to a particular event that occurred within the log and to play the log from the beginning of that event.</td>
+  </tr>
+  <tr>
+    <td><img src="images/HelpMenu.gif" alt="Help Menu" width="283" height="83"></td>
+    <td>Selecting <strong>Help &gt;&gt;</strong> displays the Help menu.<br>
+      <br>
+      From the Help menu, the user can:
+      <ul>
+        <li> access the context sensitive Help on the Replay Control GUI section of the online documentation<br>
+          (i.e.: select <strong>Topics</strong> or push the F1 key)</li>
+        <li> access the DocStation (available only if the proDAS Docstation has been purchased)<br>
+          (i.e.: select <strong>DocStation...</strong>)</li>
+        <li> search the online documentation<br>
+          (i.e.: select <strong>Search...</strong>)</li>
+        <li> view the application information, including the version number and copyright<br 
+        >
+          (i.e.: select <strong>About Replay Control GUI...</strong>)</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td colspan="2"><p class="Note">When the cursor is placed over a button on the Replay Control GUI, a tool-tip, with the name of the 
+      button and the short-cut key combination, is displayed.</p>
+      <p class="Note">When a button is selected, the colour of the button changes from blue to green.</p>
+      <p class="Note">If the cursor is placed in the Slider Bar, the Start Time and the End Time is shown for the log selected for playback.<br>
+        <br>
+        <img src="images/StartStopTimePopUp.png" alt="Start Stop Time Pop Up" width="206" height="48"> </p></td>
+  </tr>
+</table>
+<h2 id="SelectLogFileForPlayback">Selecting a Log File for Replay</h2>
+<p>To select a log for playback:</p>
+<ol>
+  <li>Select <img src="images/FolderBtn.png" alt="Folder Btn" width="27" height="25"> from the Replay Control GUI (below).
+    <p class="Note">If no log is loaded, all buttons will be disabled.</p>
+    <img src="images/AbsoluteMode.png" alt="Absolute Mode" width="510" height="329"><br>
+    <br>
+    The Open dialogue box (below) is displayed.<br>
+    <br>
+    <img src="images/ReplayDialogBoxA.png" alt="Replay Dialog Box A" width="561" height="413"><br>
+    <br>
+  </li>
+  <li>From the <strong>Look in:</strong> drop-list, select the folder (e.g.: hist_logs) where the 
+    log file is located.</li>
+  <li>Select the log file (e.g.: CE_DEMO_X115C_C5) from the list and select <strong>Open</strong>.<br>
+    The Open dialogue box is closed.<br>
+    The selected log file is sent to the RTE and the location of the selected log file is displayed in the Log File: field of the Replay Control GUI.<br>
+    <br>
+    <img src="images/ReplayGUIfileSelectedA.png" alt="Replay GUI file Selected A" width="510" height="329"><br>
+    <br>
+    <p class="Note">Since the selected log file is not a continuous log, the Skip buttons and Events: box are disabled.</p>
+    <p class="Note">In a continuous log file, playback will stop if a log file has a different channel configuration than the log file which has previously been played. A UEL message is displayed that indicates the difference in channel configuration and advises the user to:<br>
+      <br>
+      &gt; skip to the next file if at the end of the current log file<br>
+      <br>
+      &gt; skip to the previous file if at the beginning of the current log file</p>
+  </li>
+  <li>For information on using the Replay Control GUI to play back the selected log file, see the <a href="Replay.html">Replay Control GUI table</a>.</li>
+</ol>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

@@ -1,0 +1,442 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Introduction to proDAS</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="IntroProDAS">Introduction to proDAS<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" >
+</a><div float:right></div></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>proDAS is a state-of-the-art, high-performance, Real-Time data 
+  acquisition, control, and analysis system that meets the requirements of a modern, 
+  multipurpose, engine test facility. proDAS uses a Real-Time Linux operating 
+  system to provide a deterministic response to alarms and user inputs. proDAS 
+  offers a high degree of user friendliness, flexibility, and programmability. 
+  proDAS provides high-resolution graphics with real-time updates and uses an 
+  ORACLE database for the storage of test results and calibrations.</p>
+<p>The operator can use proDAS to control the information that is recorded during an engine test, control the steps of an engine test, and make test information available for analysis and reporting.</p>
+<p class="Note"> In proDAS, &quot;engine&quot; refers to any turbomachine being tested and includes, but not limited to, all types of gas turbine engines (industrial, marine, military or civil aviation gas turbine engine), compressors, turbines, pumps etc.</p>
+
+<p>proDAS is based on the concept that an engine test consists of configuration information (channel lists, hardware definitions, etc.), measured data (transient and steady-state data recordings), derived performance data, and reports.</p>
+<p>proDAS can provide the following features:</p>
+<ul>
+  <li>graphical user interfaces, specifically designed for use by engine operators, calibrators, and test engineers, that incorporate simple point-and-click operation and configuration</li>
+  <li>modular hardware and software architecture and the linking of components using industry standard computers, buses, and protocols</li>
+  <li>true multitasking on multiple CPUs, accomplishing real-time data acquisition and real-time calculations up to 200 hertz</li>
+  <li>real time alarm checking with automatic, programmable actions in response to alarms and &quot;on the fly&quot; alarm limit adjustments</li>
+  <li>user configurable displays that can present engine data in the form of digits, gauges, bar charts, x-y strip charts and graphs with &quot;on the fly&quot; screen editing </li>
+  <li>acquisition of time averaged steady-state data that is stored in a database for analysis</li>
+  <li>acquisition of transient time-based data that is stored for analysis</li>
+  <li>user configurable rotating critical log buffer that continuously monitors a predetermined set of engine parameters</li>
+  <li>continuous logging to automatically record all hardware channel data whenever proDAS is scanning (the availability of this feature will depend on the hardware setup)</li>
+  <li>logging of all system event messages, including operator interactions, alarm conditions, warning messages, error messages, and self-test diagnostics</li>
+  <li>security controlled remote diagnostic access via modem</li>
+  <li>multilevel security that is configurable to meet your requirements</li>
+  <li>point-and-click operation of integrated test procedures</li>
+  <li>assisted calibration routines</li>
+  <li>auto calibration (the availability of this feature will depend on the hardware setup)</li>
+  <li>remote network access, allowing viewing of real-time data across the network</li>
+</ul>
+
+<h2 id="proDASArchitecture">proDAS Architecture</h2>
+<p>The proDAS system is comprised of:</p>
+<ul>
+  <li><a href="?2#proDASComputerSystems">proDAS Computer Systems</a></li>
+  <li><a href="?3#HardwareSubsystems">Hardware Subsystems</a></li>
+  <li><a href="?4#SoftwareSubsystems">Software Subsystems</a></li>
+  <li><a href="?5#ConfigDatabase">Configuration Database</a></li>
+  <li><a href="?6#TestResultsSensorCalDatabase">Test Results and Sensor Calibration Database (TRSCDB)</a></li>
+  <li><a href="?7#SoftwareUtilities">proDAS Software Utilities</a></li>
+  <li><a href="?8#RTDataAcquisitionSoftware">Real-Time Data Acquisition Software</a></li>
+</ul>
+<h3 id="proDASComputerSystems">proDAS Computer Systems</h3>
+<p>Each proDAS computer system plays a vital role in the systems architecture. All of the computers are networked together to allow the proDAS software applications to communicate with each other and to communicate with the respective hardware subsystems that have been configured for the engine test.</p>
+<p class="Note">WIBU keys are used to protect/prevent proDAS software from being copied. A WIBU key is required for each Windows computer and the Linux Host Computer.</p>
+<p>The proDAS computer systems include:</p>
+<ul>
+  <li>Linux Host Computer</li>
+  <li>Management GUI Computer</li>
+  <li>multiple Real-Time Display Computers</li>
+</ul>
+<h4 id="HostComputer">Linux Host Computer</h4>
+<p>The Linux Host Computer runs a multitasking operating system called 
+  TimeSys which is a Real-Time version of Linux. This multitasking operating system 
+  allows task priorities to be set in parallel, ensuring that important tasks 
+  are performed in a deterministic time frame. The Linux Host Computer manages the proDAS 
+  Test Results and Sensor Calibration Database (TRSCDB) and executes the proDAS Real-Time 
+  data acquisition software (RTE). The Linux Host Computer, networked to all other proDAS 
+  computers, interfaces with the hardware subsystems to acquire and process engine 
+  test data.</p>
+<h4 id="UIComputer">Management GUI Computer</h4>
+<p>The Management GUI Computer is a PC-based computer running 
+  Windows. The Management GUI Computer communicates and interacts with the 
+  proDAS real-time software, the Test Results and Sensor Calibration database, 
+  and individual hardware subsystems. The operator is provided with a graphical 
+  interface called the proDAS Management Interface. The functions on the Management 
+  GUI Control Panel are point-and-click activated by the operator. Each main 
+  function, on the Management Interface, is security controlled and sensitive 
+  to the login level used by the operator. An operator will use the proDAS Management 
+  Interface in the preparation, testing, and reporting stages of an engine test.</p>
+<p>The Management Interface allows the operator to:</p>
+<ul>
+  <li>select the test configuration</li>
+  <li>prepare proDAS for an engine test by performing pre-run checks</li>
+  <li>use the configuration editor for creating and editing channel definitions and test configurations</li>
+  <li>calibrate channels</li>
+  <li>add or delete user accounts and change passwords</li>
+  <li>control test sequences and data recording</li>
+  <li>process and report test data</li>
+</ul>
+<h4 id="RTDisplays">Real-Time Display Computers</h4>
+<p>The Real-Time Display Computers are PC-based computers running Windows.</p>
+<p>The Real-Time Computers display the engine parameters that are being scanned and recorded. The engine test operators and recorders are provided with a configurable number of Real-Time Displays. These GUIs (screens) allow the operator to:</p>
+<ul>
+  <li>monitor the engine test data</li>
+  <li>display operator pages</li>
+  <li>create and modify operator pages</li>
+  <li>setup transient log definitions</li>
+  <li>monitor the engine test</li>
+  <li>record data</li>
+  <li>view the event handler window</li>
+  <li>playback previously recorded engine test data</li>
+  <li>process and report test data</li>
+</ul>
+<h3 id="HardwareSubsystems">Hardware Subsystems</h3>
+<p>The hardware subsystems are electronic measuring devices connected 
+  to the Linux Host Computer, allowing the proDAS data acquisition software to process 
+  all the different engine and associated facility signal types. </p>
+<p>The hardware subsystems provide the proDAS Real-Time data acquisition 
+  software with a digital representation of the signal being measured by the hardware 
+  subsystem. Each hardware subsystem communicates with the proDAS Real-Time data 
+  acquisition software through a dedicated driver that is compatible with the 
+  protocol of the associated hardware. </p>
+<p>The hardware subsystems that can be handled by proDAS include:</p>
+<p class="Note">proDAS is configured based upon customer requirements. For this reason the following subsystems below are classified as optional.</p>
+<ul>
+  <li><a href="../../DASSubSysConfig/AFDX/AFDX.htm">AFDX</a></li>
+  <li><a href="../../DASSubSysConfig/AVM/AVM.html">Aircraft Vibration Monitoring (AVM)</a></li>
+  <li><a href="../../DASSubSysConfig/AllenBradleyPLC/AllenBradleyPLC.htm"> Allan Bradley PLC</a></li>
+  <li><a href="../../DASSubSysConfig/ATH/ATH.htm">Ambient Temperature/Humidity (ATH)</a></li>
+  <li><a href="../../DASSubSysConfig/ARINC/ARINC.htm">ARINC 429</a></li>
+  <li><a href="../../DASSubSysConfig/CEC/CEC.htm">CEC Vibration</a></li>
+  <li><a href="../../DASSubSysConfig/Consort/Consort.htm">Consort</a></li>
+  <li><a href="../../DASSubSysConfig/DPS/DPS.htm">DSA Pressure Scanner (DPS)</a></li>
+  <li><a href="../../DASSubSysConfig/DTS3250/DTS3250.htm">DTS3250 Subsystem</a></li>
+  <li><a href="../../DASSubSysConfig/DDS/DDS.htm">Dynamic Data System (DDS)</a></li>
+  <li><a href="../../DASSubSysConfig/DDTC/DDTC.htm">Dynamic Data Telemetry Control (DDTC)</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigAIs/ConfigAIs.htm#GASSAI">GASS Analogue Input</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigAOs/ConfigAOs.htm">GASS Analogue Output</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigAIs/ConfigAIs.htm#GASSTC">GASS Frequency Input</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigDIOs/ConfigDIOs.htm">GASS Digital Input/Output</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigAIs/ConfigAIs.htm#GASSVXI">GASS VXI</a></li>
+  <li><a href="../../DASSubSysConfig/GEFanucFCS/GEFanucFCS.htm">Generic PLC</a></li>
+  <li><a href="../../DASSubSysConfig/HighSpeedVXI/HighSpeedVXI.htm">High Speed VXI (HSV)</a></li>
+  <li><a href="../../DASSubSysConfig/MechScanivalve/MechScanivalve.htm">Mechanical Scanivalve (MSS)</a></li>
+  <li><a href="../../DASSubSysConfig/M1553/M1553.htm">M1553 Subsystem Driver</a></li>
+  <li><a href="../../DASSubSysConfig/Modbus/Modbus.htm#EthernetDriver">Modbus (Ethernet)</a></li>
+  <li><a href="../../DASSubSysConfig/Modbus/Modbus.htm#SerialDriver">Modbus (Serial)</a></li>
+  <li><a href="../../DASSubSysConfig/OMRONPLC/OMRONPLC.htm">OMRON PLC Driver</a></li>
+  <li><a href="../../DASSubSysConfig/OPC/OPC.htm">OPC Subsystem</a></li>
+  <li><a href="../../DASSubSysConfig/PressureBricks/PressureBricks.htm">Pressure Brick Subsystem (PBS)</a></li>
+  <li><a href="../../DASSubSysConfig/PWM/PWM.htm">Process Write Monitoring (PWM)</a></li>
+  <li><a href="../../DASSubSysConfig/RTPDriver/RTPDriver.htm">Real-Time Product (RTP)</a></li>
+  <li><a href="../../DASSubSysConfig/ScanivalveHyscan/ScanivalveHyscan.htm">Scanivalve HYSCAN</a></li>
+  <li><a href="../../DASSubSysConfig/SCUTR/SCUTR.html">Scanning Uniform Temperature Reference (SCUTR)</a></li>
+  <li><a href="../../DASSubSysConfig/TDM/TDM.htm">Time Division Multiplexing (TDM)</a></li>
+  <li><a href="../../DASSubSysConfig/TSM/TSM.htm">Temperature Scanner Module (TSM)</a></li>
+  <li><a href="../../DASSubSysConfig/TBDAU/TBDAU.htm">Test Bed Data Acquisition Unit (TBDAU)</a></li>
+  <li><a href="../../DASSubSysConfig/THG/THG.htm">Thrust Generic (THG)</a></li>
+  <li><a href="../../DASSubSysConfig/ThrustMeasure/ThrustMeasure.htm">Thrust Measurement</a></li>
+  <li><a href="../../DASSubSysConfig/TruTemp/TruTemp.htm">TruTemp Temperature Measurement</a></li>
+  <li><a href="../../DASSubSysConfig/UTRH/UTRH.htm">UTR Half Box (UTRH)</a></li>
+  <li><a href="../../DASSubSysConfig/VEXA/VEXA.htm">VEXA Subsystem</a></li>
+</ul>
+<h3 id="SoftwareSubsystems">Software Subsystems</h3>
+<p>In addition to the hardware subsystems identified in Hardware Subsystems, the proDAS System also contains a number of purely software based 
+  subsystems.</p>
+<p>These software based subsystems provide additional functionality 
+  and support features that are available in the proDAS Real-Time data acquisition 
+  software. proDAS uses these software subsystems to perform computations, time-stamp 
+  data logs, and allow external programs access to data values residing in the 
+  proDAS current value table (CVT).</p>
+<p>The software subsystems that can be handled by proDAS include:</p>
+<ul>
+  <li><a href="../../DASSubSysConfig/ConfigCalcChannels/ConfigCalcChannels.htm">Calculated 
+    Channel</a></li>
+  <li><a href="../../DASSubSysConfig/ExternalHooks/ExternalHooks.htm">External 
+    Hooks</a></li>
+  <li>Internal</li>
+  <li>Fullset</li>
+  <li>Log Playback</li>
+  <li>Replay</li>
+  <li>Data Server</li>
+  <li>Limit and Actions</li>
+  <li>Network Data Distribution Service (NDDS)</li>
+</ul>
+<p class="Note">The NDDS subsytem type is added via the Configuration Server initialisation file.</p>
+<h3 id="ConfigDatabase">Configuration Database</h3>
+<p>The Configuration Database contains all configuration data of the proDAS system which can be changed by the user, except the calibration data.</p>
+<p>The Configuration Database is based on XML files in a directory structure located on the Management GUI Computer. proDAS components are reading and writing the contained data via the Configuration Server.</p>
+<p>The Configuration Server gives access to the complete database via its automation interface.</p>
+<p>The directory structure of the Configuration Database reflects the <a href="../../DASSubSysConfig/ConfigAdmin/ConfigAdmin.htm#ConfigHierarchy">Configuration Hierarchy</a>. The root directory is defined in the <a href="../../References/DASIniFiles/SoftwareiniFiles.pdf">initialisation file of the Configuration Server</a>. The sub-directories EngineClasses and TestCells of the root directory do not contain any files, since they do not correspond to a configuration. Each of the other database directories contains an Configuration.xml file containing the meta data of the configuration and may also contain a file for each data category as listed in the following table - except for the engineering units which only appears in the root directory.</p>
+<table class="Table-Grey">
+  <tr>
+    <th><strong>Data Category</strong></th>
+    <th>File Name</th>
+  </tr>
+  <tr>
+    <td>Meta Data</td>
+    <td>Configuration.xml</td>
+  </tr>
+  <tr>
+    <td>Subsystem Data</td>
+    <td>Subsystems.xml</td>
+  </tr>
+  <tr>
+    <td>Channel Data</td>
+    <td>Channels.xml</td>
+  </tr>
+  <tr>
+    <td>Break Point Tables</td>
+    <td>BreakPointTables.xml</td>
+  </tr>
+  <tr>
+    <td>Polynomials</td>
+    <td>Polynomials.xml</td>
+  </tr>
+  <tr>
+    <td>Transient Log Definitions</td>
+    <td>TransientLogDefs.xml</td>
+  </tr>
+  <tr>
+    <td>User Functions</td>
+    <td>UserFunctions.xml</td>
+  </tr>
+  <tr>
+    <td>Text Output Pages</td>
+    <td>TextOutputPages.xml</td>
+  </tr>
+  <tr>
+    <td>Engineering Units</td>
+    <td>EngineeringUnits.xml</td>
+  </tr>
+  <tr>
+    <td>Macros</td>
+    <td>Macros.xml</td>
+  </tr>
+  <tr>
+    <td>Site Specific Channel Attributes</td>
+    <td>SiteSpecChanAttr.xml</td>
+  </tr>
+</table>
+<h3 id="TestResultsSensorCalDatabase">Test Results and Sensor Calibration Database (TRSCDB)</h3>
+<p>The proDAS System uses an ORACLE database as a primary storage 
+  location for data. The database is a three-dimensional series of related tables 
+  that have been structured to accommodate calibration data and engine test data.</p>
+<p>Data is placed into these structured tables by various applications 
+  and utilities. The proDAS Real-Time engine stores data in the database during 
+  an engine test and the proDAS User Interface interacts with the database during 
+  calibration activities. For more information, see <a href="../../StandardTools/TRSCDB/TRSCDB.htm">Test Results and Sensor Calibration (TRSCDB) 
+    Database</a>.</p>
+<h3 id="SoftwareUtilities">proDAS Software Utilities</h3>
+<p>The proDAS System is accompanied by a series of user friendly 
+  tools (i.e.: software utilities) that simplify the various tasks that the operator 
+  performs. The software utilities are used to build engine configurations, ensure 
+  that data is properly managed and that the associated test data can be archived 
+  after the test has been completed.</p>
+<p>The proDAS software utilities have been divided into the following categories:</p>
+<ul>
+  <li>Configuration Tools which include:
+    <ul>
+      <li><a href="../../DASConfigTools/BPTableEditor/BPTableEditor.htm">Break Point Table Editor</a></li>
+      <li><a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm#ChannelEditor">Channel Editor</a></li>
+      <li><a href="../../DASSubSysConfig/ConfigAdmin/ConfigAdmin.htm">Configuration Administrator</a></li>
+      <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm">Configuration Editor</a></li>
+      <li><a href="../../DASConfigTools/DisplayPages/DisplayPages.htm">Creating and Modifying Display Pages</a></li>
+      <li><a href="../../DASConfigTools/EUEditor/EUEditor.htm">Engineering Unit Editor</a></li>
+      <li><a href="../../DASConfigTools/MacroEditor/MacroEditor.htm">Macro Editor</a></li>
+      <li><a href="../../DASConfigTools/PolyEditor/PolyEditor.htm">Polynomial Editor</a></li>
+      <li><a href="../../DASConfigTools/DisplayPages/DisplayPages.htm">RTD Editor</a></li>
+      <li><a href="../../DASConfigTools/ScriptEditor/ScriptEditor.htm">Script Editor</a></li>
+      <li><a href="../../DASConfigTools/SensorEditor/SensorEditor.htm">Sensor Editor</a></li>
+      <li><a href="../../DASSubSysConfig/SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a></li>
+      <li><a href="../../DASConfigTools/TextOutputPages/TextOutputPages.htm">Text Output Pages</a></li>
+      <li><a href="../../DASConfigTools/TransLogDefnEditor/TransLogDefnEditor.htm">Transient Log Definition Editor</a></li>
+      <li><a href="../../DASConfigTools/UserFunctions/UserFunctions.htm">User Functions</a><br>
+      </li>
+    </ul>
+  </li>
+  <li>Standard Tools and Utilities which include:
+    <ul>
+      <li><a href="../../StandardTools/AlarmsWarnings/AlarmsWarnings.htm">Alarms and Warnings</a></li>
+      <li><a href="../../StandardTools/CalibrateChannels/CalibrateChannels.htm">Channel Calibration</a></li>
+      <li><a href="../../StandardTools/ChanNameSearch/ChanNameSearch.htm">Channel Name Search (CNS)</a></li>
+      <li><a href="../../StandardTools/ContinuousPrinting/ContinuousPrinting.htm">Continuous Printing</a></li>
+      <li><a href="../../StandardTools/FormatControl/FormatControl.htm">Format Controls</a></li>
+      <li><a href="../../StandardTools/OfflineReviewEventLogs/OfflineReviewEventLogs.htm">Off-line Review of Unified Event Log</a></li>
+      <li><a href="../../StandardTools/RAVE/RAVE.htm">Reporting and Viewing Environment (RAVE</a>)</li>
+      <li><a href="../../StandardTools/Replay/Replay.html">Replay Control</a></li>
+      <li><a href="../../StandardTools/CalibrateChannels/CalibrateChannels.htm#SCA">Sensor Calibration Application (SCA)</a></li>
+      <li><a href="../../StandardTools/SetupDataRecording/SetupDataRecording.htm">Setup Data Recording</a></li>
+      <li><a href="../../StandardTools/TabChanDisplay/TabChanDisplay.htm">Tabular Channel Display (TCD)</a></li>
+      <li><a href="../../StandardTools/TAU/TAU.htm">Test Archive Utility (TAU)</a></li>
+      <li><a href="../../StandardTools/TRSCDB/TRSCDB.htm">Test Results and Sensor Calibration Database (TRSCDB)</a></li>
+      <li><a href="../../StandardTools/OfflineReviewEventLogs/OfflineReviewEventLogs.htm"></a><a href="../../StandardTools/USS/USS.htm">User Security System</a><br>
+      </li>
+    </ul>
+  </li>
+  <li>Custom Applications which include:
+    <ul>
+      <li><a href="../../CustomApps/ArincChanList/ArincChanList.htm">ARINC Channel List</a></li>
+      <li><a href="../../CustomApps/ACI/ACI.htm">Automated CITS Import into proDAS (ACI)</a></li>
+      <li><a href="../../CustomApps/InstrumentControls/InstrumentControls.htm#AVMConfigDianostic">AVM Configuration and Diagnostics</a></li>
+      <li><a href="../../CustomApps/CDS/CDS.htm">Calibration Data Sync (CDS) Utility</a></li>
+      <li><a href="../../CustomApps/CIE/CIE.htm">Configure Import/Export (CIE) Utility</a></li>
+      <li><a href="../../CustomApps/CUTI/CUTI.htm">Configure User Test Information (CUTI)</a></li>
+      <li><a href="../../CustomApps/DCU/DCU.htm">Data Conversion Utility (DCU)</a></li>
+      <li><a href="../../CustomApps/InstrumentControls/InstrumentControls.htm#DDSAVMCal">DDS AVM Calibration</a></li>
+      <li><a href="../../CustomApps/InstrumentControls/InstrumentControls.htm#DDSCal">DDS Calibration</a></li>
+      <li><a href="../../CustomApps/CIE/CIE.htm"></a><a href="../../CustomApps/Easifit/Easifit.html">EASIFIT</a></li>
+      <li><a href="../../CustomApps/TrimBalance/TrimBalance.htm">Engine Trim Balance</a></li>
+      <li><a href="../../CustomApps/ExtHookFramework/ExtHookFramework.htm">External Hook Framework</a></li>
+      <li><a href="../../CustomApps/InstrumentControls/InstrumentControls.htm#FBOGUI">FBO GUI</a></li>
+      <li><a href="../../CustomApps/InstrumentControls/InstrumentControls.htm#IEEEcontrols">IEEE Controls</a></li>
+      <li><a href="../../CustomApps/InstrumentControls/InstrumentControls.htm">Instrument Controls</a></li>
+      <li><a href="../../CustomApps/MDSThrustCalUtility/MDSThrustCalUtility.htm">MDS Thrust Calibration Utility</a></li>
+      <li><a href="../../CustomApps/OMS/OMS.htm">Onboard Maintenance System (OMS)</a></li>
+      <li><a href="../../CustomApps/REMS/REMS.html">Richmond Emission Measurement System (REMS) External Hook Application</a></li>
+      <li><a href="../../CustomApps/RuleEditor/RuleEditor.htm">Rule Editor</a></li>
+      <li><a href="../../CustomApps/SnecmaXML/SnecmaXML.htm">Snecma XML Transfer</a></li>
+      <li><a href="../../CustomApps/TCA/TCA.htm">Thrust Calibration Application (TCA)</a></li>
+      <li><a href="../../CustomApps/TOCEUM/TOCEUM.htm">TOCEUM</a></li>
+      <li><a href="../../CustomApps/WeatherStation/WeatherStation.htm">Weather Station (WS)n</a></li>
+    </ul>
+  </li>
+</ul>
+<h3 id="RTDataAcquisitionSoftware">Real-Time Data Acquisition Software</h3>
+<p>The proDAS Real-Time Engine (RTE) is a real-time data acquisition 
+  engine that monitors and controls the data acquisition process. The RTE is the 
+  core of proDAS and is isolated to provide a higher degree of reliability.</p>
+<p>The proDAS Real-Time Engine software runs on the Linux Host Computer 
+  and communicates with the  Management GUI Computer. The proDAS RTE:</p>
+<ul>
+  <li>monitors the operating conditions in real-time during the test</li>
+  <li>acquires data from the engine sensors and the test facility sensors</li>
+  <li>stores the acquired steady state (fullset) data in the TRSCDB</li>
+  <li> stores transient data on the Linux Host Computer hard disk</li>
+  <li>monitors critical channels and raises and handles alarms as necessary if 
+    preset channel limits are exceeded (alarms can trigger actions such as: save 
+    a critical log, set/clear discrete channels, etc.)</li>
+</ul>
+<p>During an engine test, various sensors, located on the engine 
+  and in the engine test facility, monitor such operating parameters as pressures, 
+  temperatures, and frequencies. The sensors convert the physical measurements 
+  into electrical signals (engine test data), which are scanned by proDAS and 
+  placed into a predefined area of memory, on the Linux Host Computer, referred to as 
+  the Current Value Table (CVT). The Current Value Table holds instantaneous scanned 
+  values, identified by channel name, for every input and output channel in the 
+  system. The data stored in the CVT is used for screen updates, logging, cross-channel 
+  calculations and alarm monitoring. </p>
+
+<h2 id="RealTimeEngineStates">Real-Time Engine States</h2>
+<p>The RTE transitions through the various states during a typical engine test. The Real-Time states are determined by operator input from the 
+  Management GUI Computer. The actions that can be performed by an operator are dependent on the current Real-Time state. The Real-Time Engine states are:</p>
+<ul>
+  <li>initialisation state</li>
+  <li>no_state</li>
+  <li>configuration state</li>
+  <li>idle state</li>
+  <li>start_scan state</li>
+  <li>scan state</li>
+  <li>stop_scan state</li>
+  <li>close state</li>
+  <li>abort state</li>
+</ul>
+<p>The sequential logic flow of the proDAS Real-Time states is shown 
+  in the following flowchart:</p>
+<div class="Container"><img src="images/RTEstates.gif" width="265" height="505" alt="RTE States"></div>
+<h3 id="InitialisationState">Initialisation State</h3>
+<p>The initialisation state is referred to as a transition state 
+  and occurs when the RTE is first started. During the Initialisation state, 
+  the RTE parses the initialisation file and initialises its internal data structure. 
+  This transition state is very quick and completely transparent to the user 
+  of the system.</p>
+<h3 id="NoState">No_state</h3>
+<p>Once the RTE finishes its initialisation, it is the no-state. 
+  While the RTE is in this state, it waits for further instructions from the Management 
+  Interface.</p>
+<h3 id="ConfigurationState">Configuration State</h3>
+<p>When the Operator of the system has selected and applied an engine 
+  configuration, the data is downloaded from the configuration database to the 
+  RTE and the RTE enters the configuration state. The Unified Event Log records 
+  and displays all messages as each subsystem is configured.</p>
+<p>If system errors occur during the configuration state, the RTE 
+  reports the error and attempts to correct it. If successful, the configuration 
+  process continues. On successful completion of the configuration process, the 
+  RTE enters the idle state.</p>
+<p class="Note">Some subsystems may fail to configure but the RTE will still continue configuration. The RTE reports the failure in the Unified Event Log, creates a report file (if applicable), puts the subsystem off-line and continues the configuration process.</p>
+<h3 id="IdleState">Idle State</h3>
+<p>The idle state is reached when the configuration has been completely 
+  downloaded to the RTE. The operator is presented with the message &quot;RTE Reference 
+  Resolution OK&quot; in the UEL. In the idle state, the Linux Host Computer is not scanning 
+  data but has prepared all of the subsystems to acquire data. When the RTE is 
+  in the idle state, the user can:</p>
+<ul>
+  <li>start an engine test</li>
+  <li>edit operator pages</li>
+  <li>edit transient log definitions</li>
+  <li>play back saved transient and critical log test data (steady-state and transient) 
+    from the current or previous tests</li>
+  <li>exit proDAS</li>
+</ul>
+<p class="Note">The user's ability to perform some of these actions will depend on the access level assigned to the user name.</p>
+<h3 id="StartScanState">Start_scan State</h3>
+<p>The start_scan state is a transition state that occurs when the Operator has selected the &quot;Start Scan&quot; button on the Management GUI Control Panel. During this state, the RTE prepares the scan threads to acquire data from each subsystem.</p>
+<h3 id="ScanState">Scan State</h3>
+<p>In the scan state, the RTE monitors the engine test, acquires and logs data, and displays the test data. When the RTE is in the scan state, 
+  the operator can:</p>
+<ul>
+  <li>carry out test procedures</li>
+  <li>monitor and respond to alarms or system events</li>
+  <li>take fullset recordings and save them to the database</li>
+  <li>save critical logs</li>
+  <li>start and stop transient logs</li>
+  <li>play back saved critical logs and transient logs</li>
+  <li>print a hard-copy snapshot of the current values of all of the channels 
+    being monitored</li>
+  <li>add comments to the Unified Event Log (UEL)</li>
+  <li>display and modify operator pages</li>
+  <li>calibrate channels</li>
+</ul>
+<h3 id="StopScanState">Stop_scan State</h3>
+<p>The stop_scan state is a transition state that occurs after the 
+  Operator has selected the &quot;Stop Scan&quot; button on the Management GUI Control Panel. During this state, the RTE closes the scan threads to each subsystem.</p>
+<h3 id="CloseState">Close State</h3>
+<p>The close state occurs when the Operator selects either the De-configure proDAS or Exit proDAS from the File menu of the Management GUI Control Panel. The RTE closes progressively until the application 
+  has been exited completely. </p>
+<h3 id="AbortState">Abort State</h3>
+<p>The RTE encounters the abort state when the operator de-configures proDAS during the configuration process.</p>
+<h2 id="NetworkDiagram">Network Diagram</h2>
+<p>A typical network diagram (below) displays an overview of proDAS related hardware connectivity with the support systems such as PBS, RTP, PLC and customer supplied systems.</p>
+<div class="Container"><img src="images/NetworkDiagram.gif" width="669" height="663" alt="Network Diagram"></div>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

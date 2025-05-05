@@ -1,0 +1,588 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Configuration Editors</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+
+<div float:left><h1 id="ConfigurationEditors">Configuration Editors<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" >
+</a><div float:right></div></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The configuration editors are the user interfaces that allow the operator to setup and control proDAS configurations. All of the configuration editors share some common features. An overview of these features is provided in this module.</p>
+<p>The following editors are available to the operator:</p>
+<ul>
+  <li><a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> - used to create and edit <a href="../ConfigAdmin/ConfigAdmin.htm#WhatisaChannel">channel</a> definitions (the definitions include the channel name, limits, and associated 
+  subsystems)</li>
+  <li><a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a> - used to create and edit subsystem definitions (the definitions include the subsystem name, type, and specific hardware data)</li>
+  <li><a href="../../DASConfigTools/EUEditor/EUEditor.htm">Engineering Unit Editor</a> - used to create and edit engineering unit definitions (the definitions include the unit name, group, and its relationship to the group primary unit)</li>
+  <li><a href="../../DASConfigTools/PolyEditor/PolyEditor.htm">Polynomial Editor</a> - used to create and edit polynomial definitions (the definitions include the polynomial name and its associated coefficients)</li>
+  <li><a href="../../DASConfigTools/BPTableEditor/BPTableEditor.htm">Breakpoint Table Editor</a> - used to create and edit breakpoint table definitions (the definitions include the breakpoint table name, engineering units, and table entries)</li>
+  <li><a href="../../DASConfigTools/TransLogDefnEditor/TransLogDefnEditor.htm">Transient Log Definition Editor</a> - used to create and edit transient log definitions (the definitions include the transient log name, scan rate, and associated channels)</li>
+  <li><a href="../../DASConfigTools/MacroEditor/MacroEditor.htm">Macro Editor</a> - used to create and edit macro definitions (the definitions include the macro name and text)</li>
+  <li> <a href="../../DASConfigTools/UserFunctions/UserFunctions.htm">User Functions</a> - used to create and edit user function definitions (the definitions include the user function name and text)</li>
+  <li><a href="../../DASConfigTools/TextOutputPages/TextOutputPages.htm">Text Output Pages</a> - used to create and edit the text output page definitions (the definitions include the name, size, and layout of the output page)</li>
+</ul>
+<h2 id="UserSecurity">User Security</h2>
+<p>A configuration editor can be started in one of two ways:</p>
+<ul>
+  <li>via the Management GUI Control Panel where the username and password are passed automatically</li>
+  <li>as an independent editor where the username and password are not passed automatically</li>
+</ul>
+<h4>To start a configuration editor from the Management GUI Control Panel:</h4>
+<ol>
+  <li>From the Tools menu, select the applicable editor. The selected editor is started and a <strong>Processing...</strong> dialogue box is displayed to prevent the user from doing anything until the  configuration data is loaded. Once loaded, the main screen for the editor is displayed.
+    <p class="Note">The operator is automatically logged into the editor with the same user name and privileges as entered for the Management GUI.</p>
+  </li>
+</ol>
+<h4>To start a configuration editor as an independent editor:</h4>
+<ol>
+  <li>Double-click the executable file, from your directory structure, for the applicable editor.<br>
+    The Login window is displayed.
+    <div class="Container"><img src="Images/Login.png" alt="Login" width="407" height="272"></div>
+  </li>
+  <li>Enter a valid Username and Password.<br>
+    The user name and password must be a minimum of three characters and five characters long, respectively, to enable the <strong>Login</strong> button.</li>
+  <li>Select <strong>Login</strong>.<br>
+    The selected editor is started and a <strong>Processing...</strong> dialogue box is displayed to prevent the user from doing anything until the configuration data is loaded. Once loaded, the main screen for the editor is displayed.</li>
+  <li>To close the Login window, select <strong>Cancel</strong>.</li>
+</ol>
+<h2 id="GraphicalElements">Graphical Elements</h2>
+<p>The screen comprises the following graphical elements:</p>
+<ul>
+  <li>pull-down menus</li>
+  <li>buttons</li>
+  <li>navigation bar if the editor is configuration dependent
+    <div class="Container"><img src="Images/Navigation.png" alt="Navigation" width="700" height="17"></div>
+  </li>
+  <br>
+  <li>splitter windows:
+    <ul>
+      <li>list of data records as a spreadsheet on the left</li>
+      <li>detailed information of the specific data record selected on the left f the data record has specific data (i.e.: data that is not common for all data records of a specific data category)</li>
+    </ul>
+  </li>
+  <li>window for the list of messages</li>
+</ul>
+<p>The generic functionalities are accessed by the following menus and columns:</p>
+<ul>
+  <li><a href="?2#MenuFile">File</a></li>
+  <li><a href="?3#MenuEdit">Edit</a></li>
+  <li><a href="?4#MenuView">View</a></li>
+  <li><a href="?5#MenuConfiguration">Configuration</a></li>
+  <li><a href="?6#MenuHelp">Help</a></li>
+  <li><a href="?7#GenCol">Index, Level, Enabled, Active, LastModDate, Name and Description columns</a></li>
+</ul>
+<h3 id="MenuFile">File</h3>
+<p>The generic <strong>File</strong> menu (displayed below) is described in the table below.</p>
+<div class="Container"><img src="Images/File.PNG" alt="File" width="262" height="235"></div>
+<br>
+<p class="Note">The File menu displays options that are common to all editors and may also display options that are editor specific.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td id="Save">Save (Ctrl+S)</td>
+    <td>Allows the user to save the current data records back to the Configuration Server. Before saving a check for consistency is performed.
+      <p class="Note">The Save feature is disabled when operating in browse mode.</p></td>
+  </tr>
+  <tr>
+    <td>Reload Config</td>
+    <td>Allows the user to reload the current configuration including all data categories. Using the reload, the user is able to get the current configuration including all changes which were done in the meantime using another Configuration Editor.</td>
+  </tr>
+  <tr>
+    <td id="FileImportMenu">Import...</td>
+    <td>Selecting Import... displays the Import window, allowing the user to import xml files into the configuration.<br>
+      <br>
+      <div class="Container"><img src="Images/ImportXml.png" alt="ImportXml" width="350" height="337" ></div>
+      <br>
+      The <strong>File name:</strong> combo box corresponds to the current subsystem.<br>
+      <br>
+      The <strong>Configuration Level:</strong> combo box allows the user to determine the configuration level of the data to import.<br>
+      <br>
+      Selecting the Current Data radio buttons allows the operator to either Append To, Merge With or Replace the current data.</td>
+  </tr>
+  <tr>
+    <td id="Export">Export...</td>
+    <td>Selecting Export... displays the Export window, allowing the user to export xml files from the current configuration.<br>
+      <br>
+      <div class="Container"><img src="Images/ExportXml.png" alt="Export Xml" width="350" height="316" ></div>
+      <br>
+      The <strong>File name:</strong> combo box corresponds to the current subsystem.<br>
+      <br>
+      The <strong>Configuration Level:</strong> combo box allows the user to determines the configuration level of the data to export. 
+      This can be a single configuration level or all configuration levels.<br>
+      <br>
+      Selecting the Data Records To Be Exported radio buttons determines which data is to be exported: all data records, only the visible data records or just the selected data records.</td>
+  </tr>
+  <tr>
+    <td id="#File3S">Print... (Ctrl+P)</td>
+    <td>Displays the Print window. The Print window allows the user to define the orientation of the printout, margins (given in cm) and additional  options.<br>
+      <br>
+      <div class="Container"><img src="Images/PrintDlg.png" alt="Print Dialogue" width="383" height="311"></div>
+      <br>
+      Select <strong>Print</strong> to print the data records.</td>
+  </tr>
+  <tr>
+    <td id="PrintPreview">Print Preview</td>
+    <td>Allows the user to preview the printout prior to printing.</td>
+  </tr>
+  <tr>
+    <td id="PrintSetup">Print Setup...</td>
+    <td>The Print Setup window is displayed which allows the user to change the printer and printing options. The user can define the orientation of the printout, margins (given in cm) and additional options.<br>
+      <br>
+      <div class="Container"><img src="Images/PrintSetupDlg.png" alt="Print Setup Dialogue" width="383" height="311" ></div></td>
+  </tr>
+  <tr>
+    <td id="#File4S">Exit</td>
+    <td>Closes the configuration editor. If the user has modified data, a dialogue is displayed, where the user is asked whether he wants to save his modifications or not.<br>
+      <br>
+      <div class="Container"><img src="Images/EditorSave.png" alt="Editor Save" width="339" height="161"></div></td>
+  </tr>
+</table>
+<h3 id="MenuEdit">Edit</h3>
+<p>The Edit menu comprises all possibilities to manipulate data. It corresponds to the context menu which can be activated by pressing the right mouse button when editing the list of data records in the left splitter window (pane). The <strong>Edit</strong> menu (displayed below) is described in the table below.</p>
+<div class="Container"><img src="Images/Edit.png" alt="Edit" width="264" height="573" ></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td id="#Edit1S">Cut (Ctrl+X)</td>
+    <td>Allows the user to cut the selected data records to the clipboard which are then deleted from the data record view.
+      <p class="Note">Not all cells can be cut.</p></td>
+  </tr>
+  <tr>
+    <td>Copy (Ctrl+C)</td>
+    <td>Copies the selected data records to the clipboard.
+      <p class="Note">Not all cells can be copied.</p></td>
+  </tr>
+  <tr>
+    <td>Paste (Ctrl+V)</td>
+    <td>Pastes the content of the clipboard into the selected cell. Where an entire row has been saved to the clipboard, the row is generally 
+      appended to the end of the data records. In the case of BPT points, the row will be pasted into the BPT as indicated by the cursor.
+      <p class="Note">Not all cells can have data pasted into them.</p></td>
+  </tr>
+  <tr>
+    <td>Paste External Data Source</td>
+    <td>Pastes the content of the clipboard (from external data source).</td>
+  </tr>
+  <tr>
+    <td>Insert After</td>
+    <td>Inserts the copied data (content of the clipboard) after the selected row.</td>
+  </tr>
+  <tr>
+    <td>Autofill</td>
+    <td>Functionality of Microsoft Excel<br>
+      Fills all selected cells according to the following scheme:<br>
+      <br>
+      If the content of the non-empty cell(s) ends with a number, the adjacent selected cells are filled in compliance with an arithmetic series. For instance the given contents x1, y3 of the first two cells produces the order x1, y3, x2, y4, x3, ... (1st column of the example).<br>
+      <br>
+      If a fixed increment can be detected, it is considered (2nd column of the example). Otherwise an increment of 1 is expected.<br>
+      In the case the string ends with a character, the content of the first non-empty cell(s) is repeated (3rd column of the example).<br>
+      This scheme is applied to each column independently.<br>
+      <br>
+      <img src="Images/AutofillSelected.PNG" alt="Autofill Selected">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ---&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="Images/Autofilled.PNG" alt="Autofilled"></td>
+  </tr>
+  <tr>
+    <td>Replicate first</td>
+    <td>Functionality of Microsoft Excel<br>
+      <br>
+      Fills all selected cells with the content of the first selected cell of the corresponding column. Existing text in the selected block is overwritten except for referenced names.<br>
+      <br>
+      <img src="Images/ReplicateSelected.PNG" alt="Replicate Selected" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; ---&gt; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="Images/Replicated.PNG" alt="Replicated"></td>
+  </tr>
+  <tr>
+    <td id="#Edit2S">Find... (Ctrl+F)</td>
+    <td>Displays the Find window which allows the user to search for a string. Another find criteria is a regular expression. For this, the user selects the <strong>Regular expression</strong> check box and enters a regular expression (e.g.: ^m finds only words beginning with m, but not words beginning with M). For more information about regular expressions, see <a href="?99#RegExpr">Regular Expressions</a>.<br>
+      <br>
+      Using the check boxes, the user can define the search conditions (Match whole word only, Match case). Furthermore, the user can select the search range (All, Selection) and search direction (Up, Down).<br>
+      <div class="Container"><img src="Images/FindDlg.png" alt="Find Dialogue" width="440" height="156" ></div>
+      <ol>
+        <li>To start the search and/or search for the next position, select <strong>Find Next</strong>.</li>
+        <li>Select <strong>Mark All</strong>, all text passages matching the regular expression are coloured.</li>
+        <li>To remove all marks, select <strong>Remove Marks</strong>.</li>
+        <li>To close the Find window, select <strong>Cancel</strong>.</li>
+      </ol></td>
+  </tr>
+  <tr>
+    <td>Replace... (Ctrl+H)</td>
+    <td>Displays the Replace window, which allows the user to search for a string or regular expression and replace it with any other string.
+      <div class="Container"><img src="Images/ReplaceDlg.png" alt="Replace Dialogue" width="438" height="187" ></div>
+      Using the check boxes, the user can define the search conditions (Match whole word only, Match case or <a href="?99#RegExpr">Regular Expression</a>). Furthermore, the user can select the search range (All, Selection) and search direction (Up, Down).
+      <ol>
+        <li>To start the search and/or search for the next position, select <strong>Find Next</strong>.<br>
+          The cursor marks the position if the find text exists and the Replace dialogue is set to the foreground. Otherwise a message box is displayed, that the text was not found.</li>
+        <li>To replace the text at the current cursor position with the Replace with text , select <strong>Replace</strong>.</li>
+        <li>To replace all text passages matching the find text without further inquiry, select <strong>Replace All</strong>.</li>
+        <li>To remove all marks, select <strong>Remove Marks</strong>.</li>
+        <li>To close the Replace window, select <strong>Cancel</strong>.</li>
+      </ol></td>
+  </tr>
+  <tr>
+    <td id="#Edit3S">Sort by active column</td>
+    <td>Sorts the data records either alphabetically or numerically, depending on the current active column. The sort is also performed after 
+      a double-click on a column header.</td>
+  </tr>
+  <tr>
+    <td id="#Edit4S">Regular Filter</td>
+    <td>Filters the rows by a column using a regular expression. The user selects the column to filter with the combo box to the right of the <strong>Paste</strong> button in the tool bar. The user enters the regular expression in the edit field to the right of the above mentioned combo box (i.e.: ^m finds only words beginning with m, but not words beginning with M).
+      <div class="Container"><img src="Images/RegFilterFields2.png" alt="Reg Filter Fields 2" width="332" height="24"></div>
+      For more information about regular expressions, see <a href="?99#RegExpr">Regular Expressions</a>.<br>
+      <br>
+      The user then selects the regular Filter button <img src="Images/RegularFilter.png" alt="Regular Filter" width="25" height="23">. 
+      To remove the filter, select the regular Filter button again.</td>
+  </tr>
+  <tr>
+    <td>Simple Filter</td>
+    <td>Filtering depends on the position and value of the current cell. For instance, if the cursor is positioned in the Level column with the value 3, then only data records with the configuration level 3 are displayed.<br>
+      <br>
+      Select the appropriate cell with the mouse, then select the simple Filter button <img src="Images/SingleFilter.png" alt="Single Filter" width="20" height="19">. To remove the filter, select the simple Filter button again. </td>
+  </tr>
+  <tr>
+    <td id="#Edit5S">Append Data Record</td>
+    <td>Appends a data record to the bottom of the list of data records. In some cases, the user is asked to select the data record type (e.g.: for instance <i class="Body">2d</i> or <i class="Body">3d</i> when appending a break point table).</td>
+  </tr>
+  <tr>
+    <td>Delete Data Record</td>
+    <td>Deletes the data record selected (i.e.: the current row selected with the mouse).</td>
+  </tr>
+  <tr>
+    <td>Undelete Data Record</td>
+    <td>Revokes the last deletion of a data record and appends it at the end of the list of data records. This menu item is only available if <strong>Delete Data Record</strong> has been used before.</td>
+  </tr>
+  <tr>
+    <td>Extended Check (Channel Editor only)</td>
+    <td>Enables a more time consuming check of the configuration when selected. Verifies if the sensor exists in the Test Results and Sensor Calibration Database (TRSCDB).</td>
+  </tr>
+  <tr>
+    <td  id="#Edit6S">Check</td>
+    <td>Allows the user to check the data for consistency and display the results.
+      <div class="Container"><img src="Images/Check.PNG" alt="Check" width="234" height="161" ></div></td>
+  </tr>
+</table>
+<h3  id="MenuView">View</h3>
+<p>The <strong>View</strong> menu (shown below) is described in the table below.</p>
+<div class="Container"><img src="Images/View.png" alt="View" width="219" height="253" align="middle"></div>
+<br>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Toolbar</td>
+    <td>Displays the toolbar. If activated, a checkmark appears in front of the item. Selecting the item again causes the disappearance of the toolbar and the checkmark.</td>
+  </tr>
+  <tr>
+    <td>Status Bar</td>
+    <td>Displays the status bar. If activated, a checkmark appears in front of the item. Selecting the item again causes the disappearance of the status bar and the checkmark.</td>
+  </tr>
+  <tr>
+    <td>Hide Columns</td>
+    <td>Hides the selected columns and marks the position using a vertical blue line. This menu item is only available if one or more columns are selected.</td>
+  </tr>
+  <tr>
+    <td>Show Columns</td>
+    <td>Cancels the hidden status of the columns and makes them visible again. This also shows all of the hidden subsystem specific columns.</td>
+  </tr>
+  <tr>
+    <td>Show Columns in Range</td>
+    <td>Cancels the hidden status of the columns within the user selected range and displays them. This menu item is only available if the hidden columns are located in the user selected range.</td>
+  </tr>
+  <tr>
+    <td>Fix Columns</td>
+    <td>Displays a vertical blue line along the left margin of the current column. All columns before this line are fixed and therefore still displayed if the horizontal scroll bar is used. Selecting the item again causes the disappearance of the blue line and unfixes the columns.</td>
+  </tr>
+  <tr>
+    <td>Hide Rows</td>
+    <td>Hides the selected rows and marks the position using a horizontal blue line. This menu item is only available if one or more rows are selected.</td>
+  </tr>
+  <tr>
+    <td>Show Rows</td>
+    <td>Cancels the hidden status of the rows and makes them visible again. This menu item is only available if <strong>Hide Rows</strong> was used before.</td>
+  </tr>
+  <tr>
+    <td>Filter Messages</td>
+    <td>Displays the Filter Messages window and allows the user to filter the messages that are displayed at the bottom of the editor screen. It is only available after clicking into the message window.
+      <div class="Container"><img src="Images/FilterMessagesDlg.PNG" alt="Filter Messages Dialogue" width="285" height="324" ></div>
+      The <strong>Minimum Severity</strong> combo box allows the user to select the minimum severity for displaying messages 
+      (i.e.: all messages with a lower severity are suppressed). The following severities are available for selection:
+      <ul>
+        <li>Information</li>
+        <li>Warning</li>
+        <li>Error</li>
+        <li>Fatal Error</li>
+      </ul>
+      The <strong>Time</strong> criteria has the ability to display the following:
+      <ul>
+        <li>All - all messages can be displayed</li>
+        <li>Since- only messages since a user defined a point in time</li>
+        <li>Seconds before now - messages that have been sent in the last number 
+          of seconds</li>
+      </ul>
+      <strong>Regular Expression for Message Text</strong> filter criteria is a user defined regular expression for the message text, 
+      for instance ^m finds only messages beginning with m, but not messages beginning with M.<br>
+      <br>
+      For more information about regular expressions, see <a href="?99#RegExpr">Regular 
+        Expressions</a>.<br>
+      <br>
+      <strong>Buffer Size</strong> determines how many messages can be stored in the buffer that can be scrolled in the 
+      message view window.</td>
+  </tr>
+  <tr>
+    <td>Colours</td>
+    <td>Enables the user to select any colour for every level of the configuration hierarchy.</td>
+  </tr>
+</table>
+<h3 id="MenuConfiguration">Configuration</h3>
+<p>The <strong>Configuration</strong> menu (shown below) is described in the table below.</p>
+<div class="Container"><img src="Images/Config.png" alt="Config" width="245" height="187"></div>
+<br>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td colspan="2">The following configuration menus corresponds to the facility part of the configuration hierarchy providing the ability to navigate through the test cell part or the <a href="../ConfigAdmin/ConfigAdmin.htm#ConfigHierarchy">configuration hierarchy</a>. For more information, see <a href="../ConfigAdmin/ConfigAdmin.htm">Configuration Administrator</a>.</td>
+  </tr>
+  <tr>
+    <td  id="#Config1S">Test Cell</td>
+    <td>Allows the user to select a test cell, an engine type in the selected test cell, and a test configuration ID for the selected engine in the selected test cell. </td>
+  </tr>
+  <tr>
+    <td>Engine Type in Test Cell xyz</td>
+    <td>Allows the user to select an engine type in the test cell of the current configuration and then a test configuration ID, for a configuration for the selected engine in the current test cell (e.g.: xyz).</td>
+  </tr>
+  <tr>
+    <td>Configuration ID</td>
+    <td>Allows the user to select the Configuration ID of a test configuration for the Engine Type and Test Cell of the current configuration.</td>
+  </tr>
+  <tr>
+    <td colspan="2">The following configuration menus corresponds to the engine part of the test configuration allowing the user to traverse the engine configuration portion of the <a href="../ConfigAdmin/ConfigAdmin.htm">configuration hierarchy</a>.</td>
+  </tr>
+  <tr>
+    <td  id="#Config2S">Engine Type</td>
+    <td>Allows the user to select the following (in sequence):
+      <ul>
+        <li>Engine Type</li>
+        <li>Engine Standard for the selected engine type</li>
+        <li>Customer for the selected engine</li>
+        <li>Configuration ID (referring to the current customer)</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Engine Standard</td>
+    <td>Allows the user to select an Engine Standard, a Customer for the selected Engine Standard and a Test Configuration ID.</td>
+  </tr>
+  <tr>
+    <td>Customer</td>
+    <td>Allows the user to select a customer for the engine standard of the current configuration and a test configuration ID for the selected 
+      customer.</td>
+  </tr>
+  <tr>
+    <td>Configuration ID</td>
+    <td>Allows the user to select a test configuration ID for the Customer of the current configuration.</td>
+  </tr>
+</table>
+<h3  id="MenuHelp">Help</h3>
+<p>The <strong>Help</strong> menu (displayed below) is described in the table below:</p>
+<div class="Container"><img src="Images/Help.png" alt="Help" width="210" height="99"></div>
+<br>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Getting Started</td>
+    <td>Opens the first page of the proDAS Integrated Help.</td>
+  </tr>
+  <tr>
+    <td  id="#Help1S">Topic</td>
+    <td>Contains all specific help topics referring to the current configuration editor.</td>
+  </tr>
+  <tr>
+    <td  id="#Help2S">About...</td>
+    <td>Displays information about the current configuration editor (i.e. Channel Editor) comprising the name, version number, and copyright.
+      <div class="Container"><img src="Images/About.gif" alt="About" width="404" height="276"></div></td>
+  </tr>
+</table>
+<h3  id="GenCol">Index, Level, Enabled, Active, LastModDate, Name and Description Columns</h3>
+<p>The left pane of the splitter window contains a list of data records in the form of a spreadsheet. The first seven columns of this spreadsheet define the category independent attributes that are defined for every data record, independent of the category for all configuration editors.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Index</td>
+    <td>n/a</td>
+    <td>Index is where the data records are located in the configuration server. This is assigned automatically by the editor</td>
+    <td>Integer</td>
+    <td>Read-only</td>
+  </tr>
+  <tr>
+    <td>Level</td>
+    <td>n/a</td>
+    <td>The configuration level of the data record.</td>
+    <td>Integer</td>
+    <td>Integers between 0 and 6. The values refer to the following levels in the <a href="../ConfigAdmin/ConfigAdmin.htm">configuration hierarchy</a>:
+      <ul>
+        <li>0 for Root</li>
+        <li>1 for Test Cell</li>
+        <li>2 for Engine Type</li>
+        <li>3 for Engine Type in Test Cell</li>
+        <li>4 for Engine Standard</li>
+        <li>5 for Customer</li>
+        <li>6 for Test Configuration</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Enabled</td>
+    <td>Enabled</td>
+    <td>If the enabled flag is unchecked, the data record will not be included during configuration.</td>
+    <td>Check box</td>
+    <td>True or False</td>
+  </tr>
+  <tr>
+    <td>Active</td>
+    <td>n/a</td>
+    <td>A data record is set as active if the following conditions are fulfilled:
+      <ul>
+        <li> the data record is enabled</li>
+        <li> the data is consistent</li>
+        <li> no data record with the same name but a higher configuration level exists</li>
+      </ul>
+      <p class="Note">6 (Test Configuration) is defined as the highest level.</p></td>
+    <td>Check box</td>
+    <td>Read-only</td>
+  </tr>
+  <tr>
+    <td>LastModDate</td>
+    <td>LastModificationDate</td>
+    <td>The date and time of the last modification.</td>
+    <td>String</td>
+    <td>Read-only</td>
+  </tr>
+  <tr>
+    <td>Name</td>
+    <td>Name</td>
+    <td>The name of the data record. Since a data record is identified by its name, data records with the same name and configuration level will generate a consistency error.</td>
+    <td>String</td>
+    <td>A valid channel name:
+      <ul>
+        <li> must begin with either a letter or underscore </li>
+        <li> must not contain a space or the following characters 
+          ! . $ ^ &amp; * ( ; ) </li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Description</td>
+    <td>Description</td>
+    <td>The description of the data record.</td>
+    <td>String</td>
+    <td>Any characters.</td>
+  </tr>
+</table>
+<p>The left pane can be navigated with similar keyboard shortcuts as spreadsheet programs: </p>
+<ul>
+  <li>CTRL&ndash;down arrow: navigate to the last row of the spreadsheet </li>
+  <li>CTRL&ndash;right arrow: navigate to the last column of the spreadsheet </li>
+  <li>CTRL&ndash;up arrow: navigate to the first row of the spreadsheet </li>
+  <li>CTRL&ndash;left arrow: navigate to the first column of the spreadsheet </li>
+  <li>CTRL&ndash;END: navigate to the right most cell in the last row of the spreadsheet</li>
+</ul>
+<h2 id="RegExpr">Regular Expressions</h2>
+<p>A regular expression is a series of characters that define a pattern. The pattern is then compared to a target string to see whether there are any matches of the pattern in the target string. Often, the characters in a pattern will simply match themselves in the target string, such as looking for all occurrences of the pattern <strong>the</strong> in "the quick brown fox chased the lazy dog".</p>
+<p>Special characters, called meta-characters, can also be used to indicate character positioning, grouping, and repetition (e.g.: the use of the asterisk (*) as a wildcard for matching any character when doing a directory search in DOS is an example of a regular expression meta-character).</p>
+<p>It is also possible to search for pattern sequences using regular expressions (e.g.: the regular expression [a-c] will match any a, b, or c in the target string.</p>
+<p>Regular expressions include several special meta-character and sequences to allow more complex pattern matching. Negative character, digit sets, and ranges can also be expressed (e.g.: [^abc] will match any characters not enclosed in brackets). An expression (e.g.: [^m-q]) can also be written for a negative range.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Symbol</th>
+    <th>Description</th>
+    <th>Usage and Examples</th>
+  </tr>
+  <tr>
+    <td>*</td>
+    <td>used as a wild-card character</td>
+    <td>t*e will match <strong>the</strong>, <strong>tre</strong>nch, s<strong>tringe</strong>r</td>
+  </tr>
+  <tr>
+    <td>^</td>
+    <td>indicates the beginning of a string</td>
+    <td>^i will match <strong>i</strong>s, <strong>i</strong>nto, <strong>i</strong>dentity but not mi</td>
+  </tr>
+  <tr>
+    <td>$</td>
+    <td>indicates the end of a string</td>
+    <td>$i will match M<strong>I</strong> but not is, into, identity</td>
+  </tr>
+  <tr>
+    <td>+</td>
+    <td>used to match the preceding character one or more times</td>
+    <td>fo+ will match <strong>foo</strong> but not f</td>
+  </tr>
+  <tr>
+    <td>?</td>
+    <td>used to match the preceding character zero times or just one time</td>
+    <td> a?ve? will match the <strong>ve</strong> in ne<strong>ve</strong>r</td>
+  </tr>
+  <tr>
+    <td>.</td>
+    <td>used to match any single character except the new line character</td>
+    <td>a.b will match <strong>aab</strong> and <strong>a3b</strong>, but not ab</td>
+  </tr>
+  <tr>
+    <td>|</td>
+    <td>used for alternative matching</td>
+    <td>a|b will match either <strong>a</strong> or <strong>b</strong></td>
+  </tr>
+  <tr>
+    <td>{ }</td>
+    <td>parentheses { } are used to express (enclose) the number of matches against the target string<br>
+      <br>
+      the number of matches may be entered as an exact number (e.g.: {n}) or 
+      as a minimum and maximum number of matches (e.g.: {n,m}) </td>
+    <td>e{2} will match f<strong>ee</strong>d but not f<strong>e</strong>d<br>
+      o{1,3} will match all the o's in f<strong>oo</strong>d or s<strong>o</strong>d, but will only 
+      match the first three o's in s<strong>ooo</strong>ooie) </td>
+  </tr>
+  <tr>
+    <td>[ ]</td>
+    <td>square brackets <strong>[</strong><strong> ]</strong> are used to express (enclose) character sets, digit sets, and ranges</td>
+    <td>[abcd] will match any of the enclosed characters in the target string<br>
+      [a-z] will match the whole lower-case alphabet<br>
+      [A-Z] will match the whole upper-case alphabet<br>
+      [a-zA-Z] will match both the whole lower- and upper-case alphabet <br>
+      [0-9] will match digits in a string</td>
+  </tr>
+</table>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

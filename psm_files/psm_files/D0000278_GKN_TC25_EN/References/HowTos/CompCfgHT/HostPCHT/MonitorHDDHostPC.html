@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>How To &ndash; Monitor Disks on the Running Host Computer</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left>
+  <h1>How To &ndash; Monitor Disks on the Running Host Computer<a href="#" onClick="window.print(); return false;"><img src="../../../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<p>This <strong>How To</strong> provides the steps required to monitor the hard disk drives on the Host Computer.</p>
+<h2>Monitoring Disks on the Running Host Computer</h2>
+<p>The Host Computer contains the following three sets of RAID disks: </p>
+<ul>
+  <li>a system mirrored RAID configuration (system disk) &ndash; one pair of 300GB disks (disk #1 and disk #2) containing the operating system</li>
+  <li>an Oracle database mirrored RAID configuration (Oracle disk) &ndash; one pair of 300 GB disks (disk #3 and disk #4) containing the Oracle database</li>
+  <li>a proDAS RAID 5 configuration (proDAS disk) &ndash; three 300GB disks (disk #5, disk #6 and disk #7) containing the proDAS executable files, transient log files and event log files</li>
+</ul>
+<p> All three RAID configurations can survive the failure of one disk. The operator should monitor the running Host Computer hard disks as part of daily regular maintenance schedules to detect any failure of a disk drive. Visual inspection of the front of the Host Computer provides indication of a failed disk via a fault LED. A green disk LED indicates that the disk is functional, normal and OK. A flashing red LED indicates that the disk has a problem and must be replaced.</p>
+<p>Once this single disk failure is detected, the system still operates in a degraded RAID mode. The recovery mechanism is to replace the faulty disk with the same sized spare disk. All the disks are hot-swappable, and can be removed and inserted while the system is up and running. The disk replacement should be done while the system is up and running. The RAID controller automatically rebuilds the newly inserted disk with the required file information, and the system is restored to a normal state.</p>
+<p class="Note">Do not replace a disk unless all the disks in the same RAID are up and running.</p>
+<p>If this recovery procedure is followed and only a single disk failure has occurred, then no data is lost and there is no need to re-run any engine tests. Once the failed disk is removed and replaced, send the failed disk to an HP office in order to obtain a replacement.</p>
+<h2>Recovery Procedures for Multiple Disk Failures</h2>
+<p>If more than one disk in the same RAID fails, then all the data that was on the disks will be lost. In this case, the disks from the spare Host Computer (if available) can be moved into the main Host Computer, but the disk contents will have to be rebuilt from a system backup.</p>
+<p class="Note">If the RAID disks fail, any data that had been acquired since the most recent backup operation will have been lost, and will require the re-running of that portion of the engine test in order to re-acquire the data.</p>
+<h3>Recovery of the System Mirrored RAID Disks (System Disk #1 and #2)</h3>
+<p>The mirrored disks (system disk) are the two 300GB disks, containing one file system: <strong>/file</strong> system. If both disks fail, the file system need to be restored. To restore the file system:</p>
+<ol>
+  <li>Remove the two faulty disks from the main Host Computer.</li>
+  <li>Remove the two 300GB disks from the spare Host Computer and insert them into the main Host Computer.</li>
+  <li>Power on the main Host Computer and boot the system from the Acronis Disaster Recovery CD.</li>
+  <li>Follow the Acronis disaster recovery instructions to restore the system disk.</li>
+  <li>Reboot the system (<strong>shutdown &ndash;r now</strong>).</li>
+</ol>
+<h3>Recovery of the Oracle Mirrored RAID Disks (Oracle Disk #3 and #4)</h3>
+<p>The Oracle mirrored disks are two 300GB disks, containing one file system:&nbsp;<strong>/disk2</strong>&nbsp;file system. If both disks fail, the system needs to be restored. To restore the file system:</p>
+<ol>
+  <li>Remove the two faulty disks from the main Host Computer.</li>
+  <li>Remove the two 300GB disks from the spare Host Computer and insert them into the main computer.</li>
+  <li>Power on the main Host Computer and start the system.</li>
+  <li>Once the system has started, log in to the system as root.</li>
+  <li>Shutdown the Oracle database (<strong>/etc/initid/oracle stop</strong>) and proDAS session (<strong>/etc/initid/runprodas stop</strong>).</li>
+  <li>Follow the Acronis instructions to restore the Oracle disk.</li>
+  <li>Restart the Oracle database (<strong>/etc/initid/oracle start</strong>) and proDAS session (<strong>/etc/initid/runprodas start</strong>).</li>
+</ol>
+<h3>Recovery of the proDAS RAID 5 Disks (proDAS Disk #5, #6, and #7)</h3>
+<p>The proDAS disk has three 300GB disks, containing the&nbsp;<strong>/disk3</strong>&nbsp;file system. If more than one disk fails, the&nbsp;<strong>/disk3</strong>&nbsp;file system needs to be recovered.</p>
+<ol>
+  <li>Remove the faulty 300 GB disks from the main Host Computer.</li>
+  <li>Remove the 300 GB disks from the spare Host Computer and insert them into the main Host Computer.</li>
+  <li>Power on the main Host Computer and start the system.</li>
+  <li>Once the system has started, log in to the system as root.</li>
+  <li>Shutdown the Oracle database (<strong>/etc/init.d/oracle stop</strong>) and proDAS session (<strong>/etc/init.d/runprodas stop</strong>).<br>
+  </li>
+  <li>Follow the Acronis instructions to restore the proDAS disk.</li>
+  <li>Restart the Oracle database (<strong>/etc/init.d/oracle start</strong>) and proDAS session (<strong>/etc/init.d/runprodas start</strong>).</li>
+</ol>
+<h2>To Turn Off the Host Computer from the Linux Command Line:</h2>
+<ol>
+  <li>On the Host Computer, in the Linux Command Line window, log in as<strong> root</strong>. </li>
+  <li>Enter the following command: <strong>shutdown -h now </strong>.The system will automatically turn off.</li>
+  <li>Turn off the Host Computer monitor.</li>
+  <br>
+</ol>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

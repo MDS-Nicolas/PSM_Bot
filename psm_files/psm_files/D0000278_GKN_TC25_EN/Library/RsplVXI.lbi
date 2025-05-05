@@ -1,0 +1,51 @@
+<table class="Table-Grey">
+  <tr> 
+    <th class="row-RSPLManufacturer">Manufacturer</th>
+    <th class="row-RSPLQty">Quantity</th>
+    <th class="row-RSPLPartNumber">Part Number</th>
+    <th class="row-RSPLDescription">Description</th>
+    <th class="row-RSPLLeadTime">Lead Time</th>
+  </tr>
+  <tr>
+    <td>Agilent</td>
+    <td>1</td>
+    <td>AT-E1458A</td>
+    <td>96 Channel Digital I/O card</td>
+    <td>6 weeks</td>
+  </tr>
+  <tr>
+    <td>National Instruments</td>
+    <td>1</td>
+    <td>777185-01</td>
+    <td>Universal PCI-MXI-2 Card</td>
+    <td>2 weeks</td>
+  </tr>
+  <tr>
+    <td>National Instruments</td>
+    <td>1</td>
+    <td>777178-01</td>
+    <td>VXI-MXI mainframe extender, MXI 2.0 compliant</td>
+    <td>3 weeks</td>
+  </tr>
+  <tr>
+    <td>National Instruments</td>
+    <td>1</td>
+    <td>777164-02</td>
+    <td>M2 MXI-2 cable, straight point connector to right angle</td>
+    <td>3 weeks</td>
+  </tr>
+  <tr>
+    <td>VTI Instruments</td>
+    <td>1</td>
+    <td>VT1413C</td>
+    <td>64 Channel Analogue/Digital Converter Card</td>
+    <td>4 weeks</td>
+  </tr>
+  <tr>
+    <td>VTI Instruments</td>
+    <td>1</td>
+    <td>VT1503A</td>
+    <td>8 Channel, Programmable Filter Input Card</td>
+    <td>4 weeks</td>
+  </tr>
+</table>

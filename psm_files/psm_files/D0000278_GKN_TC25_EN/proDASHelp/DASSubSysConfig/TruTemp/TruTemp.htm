@@ -1,0 +1,408 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>TruTemp Temperature Measurement Subsystem - Overview</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="TruTemp">TruTemp Temperature Measurement Subsystem (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+
+<h2 id="Overview">Overview</h2>
+<p>The TruTemp Temperature Measurement Subsystem measures the thermocouple (T/C) input voltage and Resistance Temperature Detector (RTD) resistance and  transmits these values to the Real-Time Engine (RTE) for storage in the Current Value Table (CVT). As a reference, an RTD measures the temperature of the cold junction in a TruTemp Scanner Unit.</p>
+<h2 id="ConfigTruTempChannel">Configuring a TruTemp Channel</h2>
+<p>To configure a TruTemp Temperature Measurement Channel:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</li>
+  <li>Select the name of the TruTemp Temperature Measurement Subsystem from the list of available subsystems.
+    <div class="Container"><img src="images/SelectSubsystemName.PNG" alt="SelectSubsystemName" width="387" height="317"></div>
+  </li>
+  <br>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a>.</li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.</li>
+  <li>Set the <strong>Gateway</strong> column.</li>
+  <li>Set the <strong>Scanner</strong> column.</li>
+  <li>Set the <strong>Measurement Type</strong> column.</li>
+  <li>Set the <strong>Channel Number</strong> column.</li>
+  <li>Set the <strong>Range</strong> column.</li>
+  <li>For a channel with a Measurement Type of Thermocouple or Thermocouple Cold Junction, a Fixed Sensor needs to be defined. The Fixed Sensor identifies the 2D breakpoint table in the <a href="../../StandardTools/TRSCDB/TRSCDB.htm">Test Results and Sensor Calibration Database (TRSCDB)</a> used for engineering unit conversion.
+    <div class="Container"><img src="images/ChannelEditor.png" alt="ChannelEditor" width="700" height="424"></div>
+  </li>
+</ol>
+<h2 id="ConfigFileStructure">Configuration File Structure</h2>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu"> Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import a <strong>TruTemp</strong> channel, see <a href="?2#XMLFileStructure"> XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import a <strong>TruTemp</strong> channel, see <a href="?3#TabDelimitFileStructure"> Tab-Delimited File Structure</a>.</p>
+<h3 id="XMLFileStructure">XML File Structure</h3>
+<h4 id="ChannelsXML">Channels</h4>
+<p>The channels are stored in files Channels.xml in the configuration directories.</p>
+<p>A TruTemp Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor - Generic Channel Parameters - XML File Structure</a>, and the specific attributes <strong>GatewayName</strong>, <strong>ScannerNumber</strong>, <strong>ChannelNumber</strong>, <strong>TemperatureType</strong>, and <strong>Range</strong>. These attributes are explained in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Gateway</td>
+    <td>GatewayName</td>
+    <td>GATEWAY</td>
+    <td>The name of the gateway</td>
+    <td>String</td>
+    <td>As defined in the Gateway collection of the TruTemp  subsystem</td>
+  </tr>
+  <tr>
+    <td>RTD Name</td>
+    <td>RTDName</td>
+    <td>RTD_NAME</td>
+    <td>Specifies the name of the reference RTD for the  channel. Currently, this attribute is not used, and doesn&rsquo;t need to be included  in the XML file.</td>
+    <td>String</td>
+    <td>Empty string</td>
+  </tr>
+  <tr>
+    <td>Scanner</td>
+    <td>ScannerNumber</td>
+    <td>SCANNER</td>
+    <td>The scanner number on the gateway</td>
+    <td>Integer</td>
+    <td>An Integer between 1 and 239</td>
+  </tr>
+  <tr>
+    <td>Type</td>
+    <td>TemperatureType</td>
+    <td>TEMP_TYPE</td>
+    <td>The TruTemp channel type</td>
+    <td>String</td>
+    <td><em>TC</em> = Thermocouple<br>
+      <em>TC_RAW</em> = Thermocouple Raw<br>
+      <em>TC_COMP</em> = Thermocouple Cold Junction<br>
+      <em>RTD</em> = RTD<br>
+      <em>RTD_RAW</em> = RTD Raw</td>
+  </tr>
+  <tr>
+    <td>Channel Number</td>
+    <td>ChannelNumber</td>
+    <td>CHAN_NUM</td>
+    <td>The channel number of the thermocouple within the box (1 - 20) or the RTD number (1 - 4)</td>
+    <td>Integer</td>
+    <td>An Integer between 1 and 20</td>
+  </tr>
+  <tr>
+    <td>Range</td>
+    <td>Range</td>
+    <td>RANGE</td>
+    <td>The range of the Thermocouple in millivolts</td>
+    <td>Combo Box</td>
+    <td>30 or 60</td>
+  </tr>
+</table>
+<p> The structure of a TruTemp Temperature Measurement Channel complies with the following example:</p>
+<blockquote><code>&lt;Channels LastModificationDate=&quot;<strong>2015-06-11 11:15:22</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;<br>
+  &lt;Channel Name=&quot;TruTemp1&quot; <br>
+  Description=&quot;&quot; <br>
+  Enabled=&quot;true&quot; <br>
+  LastModificationDate=&quot;2015-06-11 11:15:22&quot; <br>
+  SubsystemName=&quot;ZZTruTemp&quot; <br>
+  SubsystemType=&quot;TruTemp&quot; <br>
+  AlternateName=&quot;&quot; <br>
+  DataType=&quot;Float&quot; <br>
+  InitialValue=&quot;-999999&quot; <br>
+  Format=&quot;4.2f&quot; <br>
+  UpdateRate=&quot;1&quot; <br>
+  QualityCeiling=&quot;GOOD&quot; <br>
+  Critical=&quot;false&quot; <br>
+  EngineeringUnit=&quot;-&quot; <br>
+  DisplayMin=&quot;0&quot; <br>
+  DisplayMax=&quot;100&quot; <br>
+  DeadBand=&quot;0&quot; <br>
+  Output=&quot;false&quot; <br>
+  ReferenceChannel=&quot;&quot; <br>
+  Group=&quot;&quot; <br>
+  SignalId=&quot;&quot; <br>
+  CalSensor=&quot;&quot; <br>
+  CalGroup=&quot;&quot; <br>
+  FixedSensor=&quot;&quot; <br>
+  CustomerSensor=&quot;&quot; <br>
+  FullsetStability=&quot;false&quot; <br>
+  ContinuousLog=&quot;true&quot; <br>
+  TemperatureType=&quot;TC&quot; <br>
+  RTDName=&quot;&quot; <br>
+  GatewayName=&quot;Gateway1&quot; <br>
+  ScannerNumber=&quot;1&quot; <br>
+  ChannelNumber=&quot;2&quot; <br>
+  Range=&quot;30&quot;/&gt;<br>
+  &lt;/Channels&gt;<br>
+</code></blockquote>
+<h4 id="SubsystemsXML">Subsystems</h4>
+<p>The subsystem definitions are stored in files Subsystems.xml in the configuration directories.</p>
+<p>A TruTemp Subsystem contains generic information, described in <a href="../SubsystemEditor/SubsystemEditor.htm#XMLFileStructure"> Subsystem 
+  Editor - Generic Subsystem Parameters - XML File Structure</a>, and the specific attributes</p>
+<ul>
+  <li><strong>Units</strong></li>
+  <li><strong> Scanners </strong></li>
+  <li><strong> Gateways</strong></li>
+</ul>
+<p>The specific attribute <strong>Units</strong> defines a collection of Units implemented in the subsystem. Each Unit is a box that integrates a number of scanners i.e. thermocouple input modules. Each Unit is defined by the following attribute:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Id</td>
+    <td>Id</td>
+    <td>TRUTEMP_UNIT</td>
+    <td>The identification number of the unit</td>
+    <td>Integer</td>
+    <td>An integer</td>
+  </tr>
+</table>
+<p>The specific attribute <strong>Scanners</strong> defines a collection of Scanners that are connected to each unit.  Each Scanner defines four 5-channel UTR blocks, where each block has its own reference temperature sensor. Each Unit defines up to 5 scanners. Each Scanner is defined by the following attribute.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Address</td>
+    <td>Address</td>
+    <td>SCANNER_ADDRESS</td>
+    <td>The scanner address</td>
+    <td>Integer</td>
+    <td>An integer between 1 and 239</td>
+  </tr>
+</table>
+<p>The specific attribute <strong>Gateways</strong> defines a collection of Gateways which are required to define the Ethernet support for the TruTemp Units. One Gateway can support up to 3 TruTemp Units. In order to service the maximum rate of 10 frames per second, only one unit can be connected to each gateway. If the scan rate of the gateway is dropped to 1 frame per second, the maximum 3 units can be supported. Each Gateway has the following properties:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Name</td>
+    <td>Name</td>
+    <td>GATEWAY_NAME</td>
+    <td>The name of the Gateway</td>
+    <td>String</td>
+    <td> A string that identify the gateway within the TruTemp subsystem</td>
+  </tr>
+  <tr>
+    <td>Scan rate</td>
+    <td>ScanRate</td>
+    <td>GW_SCAN_RATE</td>
+    <td>The scan rate of the specific gateway in Hz</td>
+    <td>Integer</td>
+    <td>An integer, either 1 or 10</td>
+  </tr>
+</table>
+<p>There is no direct dependency between the Units and Gateways defined here in the Subsystem Editor. Both attributes simply define collections of items within the TruTemp Subsystem.</p>
+<p>The structure of a TruTemp Subsystem is shown in the following example:</p>
+<blockquote>
+  <pre>&lt;Subsystems   LastModificationDate=&quot;<strong>2008-09-04   14:13:03</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Subsystem Name=&quot;ZZTruTemp&quot;
+Description=&quot;&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2008-04-28 13:44:58&quot;
+Id=&quot;0&quot;
+Type=&quot;TruTemp&quot;
+CreationDate=&quot;2008-04-28 13:39:47&quot;&gt;
+&lt;Gateways&gt;
+&lt;Device Name=&quot;Gateway1&quot;
+ScanRate=&quot;10&quot; /&gt;
+&lt;/Gateways&gt;
+&lt;Units&gt;
+&lt;Unit Id=&quot;1&quot;&gt;
+&lt;Scanners&gt;
+&lt;Device Address=&quot;1&quot; /&gt;
+&lt;/Scanners&gt;
+&lt;/Unit&gt;
+&lt;/Units&gt;
+&lt;/Subsystem&gt;</pre>
+</blockquote>
+<h3 id="TabDelimitFileStructure">Tab-Delimited File Structure</h3>
+<p>The TruTemp Temperature Measurement Subsystem channel definition includes all <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic channel definition columns</a> and the specific TruTemp input parameters defined in the tab-delimited configuration file.</p>
+<p>The rules, syntax and guidelines for creating TruTemp channels are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>BP_TABLE</td>
+    <td>The name of the breakpoint table used for converting millivolt readings to temperature for this channel. This is used to look up a breakpoint 
+      table in the calibration database.<br>
+      <br>
+      Must be entered in the form: &quot;SensorName.AuxiliaryAddress&quot; (dot separated).<br>
+      <br>
+      The sensor must exist in the calibration database. Required for TC and TC_COMP channel types only.</td>
+    <td>40 character alphanumeric, (case sensitive)</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>TEMP_TYPE</td>
+    <td>Specifies the channel type as one of TC (thermocouple temperature), TC_RAW (millivolts), TC_COMP (cold junction millivolts), RTD (temperature), or RTD_RAW (resistance).</td>
+    <td>TC, TC_RAW, TC_COMP, RTD, or RTD_RAW (case sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>RTD_NAME</td>
+    <td>Specifies the name of the reference RTD for the channel. Currently, this field is not used.</td>
+    <td>40 character alphanumeric, (case sensitive)</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>GATEWAY</td>
+    <td>Specifies the name of the gateway used by the channel.</td>
+    <td>20 character alphanumeric, (case sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>SCANNER</td>
+    <td>Specifies the scanner number for the particular gateway.</td>
+    <td>Number 1-239</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>CHAN_NUM</td>
+    <td>Specifies the thermocouple or RTD channel number for the scanner, in the range:
+      <ul>
+        <li>1-20 for TC, TC_RAW, or TC_COMP channels</li>
+        <li>1-4 for RTD or RTD_RAW channel</li>
+      </ul></td>
+    <td>Number 1-20</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>RANGE</td>
+    <td>Specifies the millivolt range of the thermocouple. Required for TC, TC_COMP, and TC_RAW channel types only.</td>
+    <td>Number <br>
+      30 or 60</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines 
+      follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel 
+      to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. 
+      Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single line of the spread sheet.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is always optional.</p></td>
+  </tr>
+</table>
+<h2 id="SubSysEditorTruTemp">Subsystem Editor for TruTemp Channels</h2>
+<p>To edit the TruTemp Subsystem, the Subsystem Editor must be selected from within the Configuration Administrator.</p>
+<p>The tool bar in the Configuration Administrator allows the various configuration editors available for proDAS to be selected.</p>
+<p>The Subsystem Editor allows new subsystems to be added to the current configuration.</p>
+<div class="Container"><img src="images/SubsystemEditor.png" alt="SubsystemEditor" width="700" height="423"></div>
+<br>
+<p><strong>To add a new subsystem:</strong></p>
+<ol>
+  <li>From the Edit menu, select <strong>Append Data Record</strong> or, click in the left pane of the splitter window and then click the right mouse button and select <strong>Append Data Record</strong> from the context sensitive menu.</li>
+  <li>Select <strong>TruTemp</strong> in the dialogue box to select the type of subsystem. <br>
+    A new line in the Subsystem Editor is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to <strong>TruTemp</strong>. The user must then assign a name and description to the subsystem.</li>
+</ol>
+<h3 id="AddTruTempScanner">Adding a TruTemp Scanner</h3>
+<p>To add an additional Scanner to the <a href="?4#SubsystemsXML">Subsystem</a>:</p>
+<ol>
+  <li>Select the <strong>Units</strong> tab in the right hand pane of the splitter window where Units, Scanners and Gateways are defined.</li>
+  <li>From the <a href="../SubsystemEditor/SubsystemEditor.htm#MenuEdit">Subsystem Editor</a>, select <strong>Subsystem TruTemp/Scanner/Append</strong>. A new line for a new Scanner is added to the list of Units in the subsystem.</li>
+  <li>Define the scanner attribute Address. The Address of the scanner (in a range from 1 to 239) must be unique within the subsystem.</li>
+</ol>
+<p class="Note">For more information, see the restrictions and recommendations mentioned in the <a href="?5#SubsystemsXML">Subsystem</a> definition above.</p>
+<h3 id="AddTruTempUnit">Adding a TruTemp Unit</h3>
+<p>To add an additional Unit to the <a href="?6#SubsystemsXML">Subsystem</a>:</p>
+<ol>
+  <li>Select the <strong>Units</strong> tab in the right hand pane of the splitter window where Units, Scanners and Gateways are defined.</li>
+  <li>From the <a href="../SubsystemEditor/SubsystemEditor.htm#MenuEdit">Subsystem Editor</a>, select <strong>Subsystem TruTemp/Unit/Append</strong>. A new line for a new Unit is added to the list of Units in the subsystem.</li>
+  <li>Define the unit attribute ID. The identification number of the TruTemp Unit must be unique within the TruTemp Subsystem.</li>
+</ol>
+<h3 id="AddTruTempGateway">Adding a TruTemp Gateway</h3>
+<br>
+<div class="Container"><img src="images/SubsystemEditorGateways.png" alt="SubsystemEditorGateways" width="700" height="423"></div>
+<br>
+<p>To add an additional Gateway to the <a href="TruTemp.htm?7#SubsystemsXML">Subsystem</a>:</p>
+<ol>
+  <li>Select the <strong>Gateways</strong> tab in the right hand pane of the splitter window where Units, Scanners and Gateways are defined.</li>
+  <li>From the <a href="../SubsystemEditor/SubsystemEditor.htm#MenuEdit">Subsystem Editor</a>, select <strong>Subsystem TruTemp/Gateway/Append</strong>. A new line for a new Gateway is added to the list of Gateways in the subsystem.</li>
+  <li>Define the Gateway attributes Name (must be unique within the subsystem) and Scan Rate (1 or 10 Hz).</li>
+</ol>
+<p class="Note">For more information, see the restrictions and recommendations mentioned in the <a href="?8#SubsystemsXML">Subsystem</a> definition above.</p>
+<h2 id="RTEInitialiseFile">RTE Initialisation File</h2>
+<p>The TruTemp Temperature Measurement Subsystem is configured by the RTE, along with all the other subsystems, as a request from the Management Interface GUI. For legacy purposes, the configuration request can also be specified in the command line of the RTE.</p>
+<p>A typical RTE initialisation file would include the following TruTemp Temperature Measurement Subsystem information:</p>
+<blockquote>
+  <p>#--------------------------------------------------------------------------<br>
+    # TRUTEMP subsystem<br>
+    #--------------------------------------------------------------------------<br>
+    SS TRUTEMP TRUE<br>
+    # Well known service port name (/etc/services)<br>
+    CI tt_service_name tt_gate<br>
+    # Retry gateway connection this many times<br>
+    CI comm_retries 1<br>
+    # Delay time in mS between reconnect attempts<br>
+    CI comm_retry_interval 1000<br>
+    # File to dump TruTemp diagnostics info<br>
+    CI diag_filename TTdiag.log<br>
+    # Gateway host names (/etc/hosts) &amp; synch pulse address<br>
+    CI gateway rrc7ttg2 0<br>
+    CI gateway rrc7ttg1 0xf0<br>
+    CI gateway rrc7ttg3 0xf1<br>
+    # Dump the coefficients to the TTdiag file<br>
+    CI dump_coeffs FALSE<br>
+    # Perform loop resistance testing for all<br>
+    CI loop_resist FALSE<br>
+    # Perform earth conductance testing for all<br>
+    CI earth_cond FALSE</p>
+</blockquote>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click here to see the RTE Initialisation file.</a></p>
+<h2 id="MgmtInitialisationFile">Management Initialisation File</h2>
+<p><a href="../../References/DASIniFiles/SoftwareiniFiles.pdf">Click here to see the Management Initialisation file.</a></p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

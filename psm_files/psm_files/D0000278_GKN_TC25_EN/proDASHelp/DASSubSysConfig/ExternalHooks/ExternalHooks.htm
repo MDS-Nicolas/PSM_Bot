@@ -1,0 +1,1249 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>External Hooks Subsystem</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="ExternalHooks">External Hooks Subsystem (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The External Hooks subsystem provides a method of accessing data from the proDAS current value table (CVT) by external client applications. The External Hook programs run independently of proDAS but access proDAS channel values. These programs can:</p>
+<ul>
+  <li>run while proDAS is running</li>
+  <li>read data from any proDAS channel</li>
+  <li>write data to predefined external hooks channels in proDAS (but not to other subsystem channels)</li>
+</ul>
+<p>Data written to external hooks channels can be processed by proDAS, and used to register an alarm or perform other functions. External Hook programs enhance proDAS by providing a method of using proDAS data to perform functions, such as iterative or performance calculations, outside the normal proDAS scope.</p>
+<p>External Hook programs can be developed on either LINUX platforms using a C compiler or Windows platforms using Microsoft Visual C#.</p>
+<p class="Note">Any other Windows .NET development language (e.g.: managed Visual C++ or Visual Basic .NET) capable of linking a .NET DLL can also be used. Please contact MDS for further details.</p>
+<p>MDS provides an application program interface (API) in the form of header and library files for LINUX and sample program for Windows.</p>
+<h2 id="StartXHookPgms">Starting External Hook Programs</h2>
+<p>proDAS interacts with external hook programs in two methods:</p>
+<ul>
+  <li>external hooks started and stopped by proDAS</li>
+  <li>external hooks run independently of proDAS</li>
+</ul>
+<p>proDAS treats each external hooks program as a separate subsystem with its own communication thread. Each external hooks subsystem is listed in the proDAS .config file, and is started according to the subsystem parameters in that file. Socket connections are available for use.</p>
+<p>On initialisation, the proDAS .config file sets any parameters required by the external hooks programs. These parameters control:</p>
+<ul>
+  <li>the type of connection used  - the default and only connection type is socket</li>
+  <li>the command line that starts the external hooks program</li>
+  <li>the service port used for the socket communication - ex_serv is the default service
+    <ul>
+      <li>as part of initialisation, the EXTERNAL subsystem binds and listens on the socket specified in the .config file, usually ex_serv</li>
+    </ul>
+  </li>
+</ul>
+<p>Regardless of the program's origin, only one external hook program at a time can be connected to a specific External Hooks Subsystem server in proDAS.</p>
+<h3 id="XhookStartStopEDAS">External Hooks Started and Stopped by proDAS</h3>
+<p>In this case, the proDAS .config file needs to include the command line used to start the external hooks program. This command line parameter is used to launch the external hooks program, which can run locally on the host computer, or remotely on a Windows computer. If the external hooks program is running on a remote computer, a command interface like RSH or SSH must be used to launch the application.</p>
+<h3 id="XhookStartStop">External Hooks Run Independently of proDAS</h3>
+<p>In this case, the external hook program is started manually, independently of proDAS.</p>
+<div class="Container"><img src="images/ProcessHost.gif" alt="ProcessHost" width="362" height="326"></div>
+<div class="Container"><img src="images/ProcessClient.gif" alt="ProcessClient" width="626" height="383"></div>
+<br>
+<h2 id="Implementation">Implementation</h2>
+<p>On the Host Computer, the external hook programs and the proDAS software are executed as different LINUX processes.</p>
+<p>A client-server communication link communicates between the two processes, where the server is one of the proDAS threads, and the client is the external hook program.</p>
+<p>For socket communication, a service name must be specified in the proDAS .config file for the external hooks subsystem. The same service name must be in the services file on the proDAS Host Computer and external hooks program computer.</p>
+<blockquote>
+  <pre>
+LINUX:   /etc/services
+Windows: %windir%\system32\drivers\etc\services
+e.g.:    ex_serv 15011</pre>
+</blockquote>
+<p>Also, the host name or an alias to the proDAS machine must appear in the hosts file as <strong>rtehost</strong>.</p>
+<blockquote>
+  <pre>
+LINUX:    /etc/hosts
+Windows:  %windir%\system32\drivers\etc\hosts
+e.g.:     160.50.110.10 rtehost
+</pre>
+</blockquote>
+<p>In the example above, the service ex_serv is defined, and the subsystem and the program use this service name to connect to each other. A service name must be unique. The same service name cannot be used by different external hooks programs.</p>
+<p>The exchange of information between proDAS and the external hooks programs is in request-reply format. The request is always initiated by the client (external hooks program) and the reply is always sent back by the server (proDAS).</p>
+<p>The external hooks programs can: access the Current Value Table (CVT) using a predefined interface, read channel values from the CVT, and write values to the external hooks channels. These channels must be defined in the configuration and must be downloaded to proDAS when proDAS is configured. <br>
+</p>
+<h2 id="InterfaceFunctionCPgms">Interface Functions for C Programs</h2>
+<p>The Interface Functions for C programs are:</p>
+<ul>
+  <li><a href="?14#EPHLinitFunction">EPHL_init</a></li>
+  <li><a href="?15#EPHLwriteChan">EPHL_write_channel</a></li>
+  <li><a href="?16#EPHLwriteChanvq">EPHL_write_channel_vq</a></li>
+  <li><a href="?17#EPHLwirteList">EPHL_write_list</a></li>
+  <li><a href="?18#EPHLwirteListvq">EPHL_write_list_vq</a></li>
+  <li><a href="?33#EPHLreadHeader">EPHL_read_header</a></li>
+  <li><a href="?19#EPHLreadChan">EPHL_read_channel</a></li>
+  <li><a href="?20#EPHLreadChanvq">EPHL_read_channel_vq</a></li>
+  <li><a href="?21#EPHLreadList">EPHL_read_list</a></li>
+  <li><a href="?22#EPHLreadListvq">EPHL_read_list_vq</a></li>
+  <li><a href="?23#EPHLreadChanInfo">EPHL_read_channel_info</a></li>
+  <li><a href="?24#EPHLreadListInfo">EPHL_read_list_info</a></li>
+  <li><a href="?25#EPHLrwListvq">EPHL_rw_list_vq</a></li>
+  <li><a href="?26#EPHLrwList">EPHL_rw_list</a></li>
+  <li><a href="?27#EPHLwriteListaddr">EPHL_write_list_addr</a></li>
+  <li><a href="?28#EPHLwriteListaddrvq">EPHL_write_list_addr_vq</a></li>
+  <li><a href="?29#EPHLreadListaddr">EPHL_read_list_addr</a></li>
+  <li><a href="?30#EPHLreadListaddrvq">EPHL_read_list_addr_vq</a></li>
+  <li><a href="?31#EPHLgetHBTerr">EPHL_get_hbt_err</a></li>
+  <li><a href="?32#EPHLcloseFunc">EPHL_close</a></li>
+</ul>
+<h3 id="EPHLinitFunction">EPHL_init</h3>
+<p>The EPHL_init function initializes the EPHL library.</p>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="3" rowspan="1">Extern eEPHL_RETURN EPHL_init(conn_type, serv_key)</th>
+  </tr>
+  <tr>
+    <td>eEPHL_CONN_TYPE</td>
+    <td>conn_type;</td>
+    <td>type of connection used (always EPHL_SOCKET)</td>
+  </tr>
+  <tr>
+    <td>char*</td>
+    <td>serv_key;</td>
+    <td>service name for socket mechanism</td>
+  </tr>
+</table>
+<h3 id="EPHLwriteChan">EPHL _write_channel</h3>
+<p>The EPHL _write_channel function writes a new value to the CVT for a single channel name owned by the EXTERNAL subsystem.</p>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="3" rowspan="1">Extern eEPHL_RETURN EPHL_write_channel(name, value)</th>
+  </tr>
+  <tr>
+    <td>char*</td>
+    <td>name;</td>
+    <td>channel name to update</td>
+  </tr>
+  <tr>
+    <td>float</td>
+    <td>value;</td>
+    <td>new value for this channel</td>
+  </tr>
+</table>
+<h3 id="EPHLwriteChanvq">EPHL _write_channel_vq</h3>
+<p>The EPHL _write_channel_vq function allows a new value and quality to be written to the CVT for a single channel name owned by the EXTERNAL subsystem.</p>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="3" rowspan="1">Extern eEPHL_RETURN EPHL_write_channel_vq(name, value, quality)</th>
+  </tr>
+  <tr>
+    <td>char</td>
+    <td>*name;</td>
+    <td>channel name to update</td>
+  </tr>
+  <tr>
+    <td>float</td>
+    <td>value;</td>
+    <td>new value for this channel</td>
+  </tr>
+  <tr>
+    <td>int</td>
+    <td>quality;</td>
+    <td>new quality for this channel </td>
+  </tr>
+</table>
+<h3 id="EPHLwirteList">EPHL_write_list</h3>
+<p>The EPHL_write_list function writes a new value to the CVT for a list of channel names owned by the EXTERNAL subsystem.</p>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="3" rowspan="1">Extern eEPHL_RETURN EPHL_write_list(number_of_channels, names, values)</th>
+  </tr>
+  <tr>
+    <td>int</td>
+    <td>number_of_channels;</td>
+    <td>number of channels in the list</td>
+  </tr>
+  <tr>
+    <td>char**</td>
+    <td>names;</td>
+    <td>array of channel names</td>
+  </tr>
+  <tr>
+    <td>float*</td>
+    <td>values;</td>
+    <td>array of channel values</td>
+  </tr>
+</table>
+<h3 id="EPHLwirteListvq">EPHL_write_list_vq </h3>
+<p>The EPHL_write_list_vq function allows a new value and quality to be written to the CVT for a list of channel names owned by the EXTERNAL subsystem.</p>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="3" rowspan="1">Extern eEPHL_RETURN EPHL_write_list_vq(number_of_channels, names, values, qualities)</th>
+  </tr>
+  <tr>
+    <td>int</td>
+    <td>number_of_channels;</td>
+    <td>number of channels in the list</td>
+  </tr>
+  <tr>
+    <td>char</td>
+    <td>**names;</td>
+    <td>array of channel names</td>
+  </tr>
+  <tr>
+    <td>float</td>
+    <td>*values;</td>
+    <td>array of channel values</td>
+  </tr>
+  <tr>
+    <td>int</td>
+    <td>*qualities;</td>
+    <td>array of channel qualities </td>
+  </tr>
+</table>
+<h3 id="EPHLreadHeader">EPHL_read_header</h3>
+<p>The EPHL_read_header function reads the engine test header information from the CVT when proDAS is configured.</p>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="3" rowspan="1">Extern eEPHL_RETURN EPHL_read_header(header_info)</th>
+  </tr>
+  <tr>
+    <td>EPHL_HEADER*</td>
+    <td>header_info;</td>
+    <td>engine test header information</td>
+  </tr>
+</table>
+<h3 id="EPHLreadChan">EPHL_read_channel</h3>
+<p>The EPHL_read_channel function reads a value from the CVT for a single channel name owned by any subsystem.</p>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="3" rowspan="1">Extern eEPHL_RETURN EPHL_read_channel(name, value)</th>
+  </tr>
+  <tr>
+    <td>char*</td>
+    <td>name;</td>
+    <td>channel name</td>
+  </tr>
+  <tr>
+    <td>float*</td>
+    <td>value;</td>
+    <td>channel value in CVT</td>
+  </tr>
+</table>
+<h3 id="EPHLreadChanvq">EPHL_read_channel_vq</h3>
+<p>The EPHL_read_channel_vq function allows a value and quality to be read from the CVT for a single channel name owned by any subsystem.</p>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="3" rowspan="1">Extern eEPHL_RETURN EPHL_read_channel_vq(name, value, quality)</th>
+  </tr>
+  <tr>
+    <td>char</td>
+    <td>*name;</td>
+    <td>channel name</td>
+  </tr>
+  <tr>
+    <td>float</td>
+    <td>*value;</td>
+    <td>channel value in CVT</td>
+  </tr>
+  <tr>
+    <td>int</td>
+    <td>*quality;</td>
+    <td>channel quality in CVT </td>
+  </tr>
+</table>
+<h3 id="EPHLreadList">EPHL_read_list</h3>
+<p>The EPHL_read_list function reads a value from the CVT for a list of channel names owned by any subsystem.</p>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="3" rowspan="1">Extern eEPHL_RETURN EPHL_read_list(number_of_channels, names, values)</th>
+  </tr>
+  <tr>
+    <td>int</td>
+    <td>number_of_channels;</td>
+    <td>number of channels in the list</td>
+  </tr>
+  <tr>
+    <td>char**</td>
+    <td>names;</td>
+    <td>array of channel names</td>
+  </tr>
+  <tr>
+    <td>float*</td>
+    <td>values;</td>
+    <td>array of channel values</td>
+  </tr>
+</table>
+<h3 id="EPHLreadListvq">EPHL_read_list_vq</h3>
+<p>The EPHL_read_list_vq function allows a value and quality to be read from the CVT for a list of channel names owned by any subsystem.</p>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="3" rowspan="1">Extern eEPHL_RETURN EPHL_read_list_vq(number_of_channels, names, values, qualities)</th>
+  </tr>
+  <tr>
+    <td>int</td>
+    <td>number_of_channels;</td>
+    <td>number of channels in the list</td>
+  </tr>
+  <tr>
+    <td>char</td>
+    <td>**names;</td>
+    <td>array of channel names</td>
+  </tr>
+  <tr>
+    <td>float</td>
+    <td>*values;</td>
+    <td>array of channel values</td>
+  </tr>
+  <tr>
+    <td>int</td>
+    <td>*qualities;</td>
+    <td>array of channel qualities</td>
+  </tr>
+</table>
+<h3 id="EPHLreadChanInfo">EPHL_read_channel_info</h3>
+<p>The EPHL_read_channel_info function reads specific information from the CVT for a single channel name owned by any subsystem.</p>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="3" rowspan="1">Extern eEPHL_RETURN EPHL_read_channel_info(name, info)</th>
+  </tr>
+  <tr>
+    <td>char*</td>
+    <td>name;</td>
+    <td>channel name</td>
+  </tr>
+  <tr>
+    <td>EPHL_CHAN_INFO*</td>
+    <td>info;</td>
+    <td>channel information from CVT</td>
+  </tr>
+</table>
+<h3 id="EPHLreadListInfo">EPHL_read_list_info</h3>
+<p>The EPHL_read_list_info function reads specific information from the CVT for a list of channel names owned by any subsystem.</p>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="3" rowspan="1">Extern eEPHL_RETURN EPHL_read_list_info(number_of_channels, names, infos)</th>
+  </tr>
+  <tr>
+    <td>int</td>
+    <td>number_of_channels;</td>
+    <td>number of channels in the list</td>
+  </tr>
+  <tr>
+    <td>char**</td>
+    <td>names;</td>
+    <td>array of channel names</td>
+  </tr>
+  <tr>
+    <td>EPHL_CHAN_INFO*</td>
+    <td>infos;</td>
+    <td>array of channel information from the CVT</td>
+  </tr>
+</table>
+<h3 id="EPHLrwList">EPHL_rw_list </h3>
+<p>The EPHL_rw_list function reads and writes channels from proDAS in one function call. This is equivalent to using the EPHL_read_list function followed by the EPHL_write_list function.</p>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="3" rowspan="1">Extern eEPHL_RETURN EPHL_rw_list(number_of_channels, names, values, rw_list)</th>
+  </tr>
+  <tr>
+    <td>int</td>
+    <td>number_of_channels;</td>
+    <td>number of channels in the list</td>
+  </tr>
+  <tr>
+    <td>char**</td>
+    <td>names;</td>
+    <td>array of channel names</td>
+  </tr>
+  <tr>
+    <td>float*</td>
+    <td>values;</td>
+    <td>array of channel values</td>
+  </tr>
+  <tr>
+    <td>EPHL_RW*</td>
+    <td>rw_list;</td>
+    <td>array of operation types</td>
+  </tr>
+</table>
+<h3 id="EPHLrwListvq">EPHL_rw_list_vq</h3>
+<p>The EPHL_rw_list_vq function allows channels and qualities to be read from and written to proDAS in one function call. This is equivalent to using the EPHL_read_list_vq followed by the EPHL_write_list_vq functions.</p>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="3" rowspan="1">Extern eEPHL_RETURN EPHL_rw_list_vq(number_of_channels, names, values, qualities, rw_list)</th>
+  </tr>
+  <tr>
+    <td>int</td>
+    <td>number_of_channels;</td>
+    <td>number of channels in the list</td>
+  </tr>
+  <tr>
+    <td>char</td>
+    <td>**names;</td>
+    <td>array of channel names</td>
+  </tr>
+  <tr>
+    <td>float</td>
+    <td>*values;</td>
+    <td>array of channel values</td>
+  </tr>
+  <tr>
+    <td>int</td>
+    <td>*qualities;</td>
+    <td>array of channel qualities</td>
+  </tr>
+  <tr>
+    <td>EPHL_RW</td>
+    <td>*rw_list;</td>
+    <td>array of operation types</td>
+  </tr>
+</table>
+<h3 id="EPHLwriteListaddr">EPHL_write_list_addr </h3>
+<p>The EPHL_write_list_addr function allows channels to be written to proDAS in one function call.</p>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="3" rowspan="1">Extern eEPHL_RETURN EPHL_write_list_addr(number_of_ch, addr, values)</th>
+  </tr>
+  <tr>
+    <td>int</td>
+    <td>number_of_ch;</td>
+    <td>number of channels in the list</td>
+  </tr>
+  <tr>
+    <td>int</td>
+    <td>*addr;</td>
+    <td>array of channel addresses</td>
+  </tr>
+  <tr>
+    <td>float</td>
+    <td>*values;</td>
+    <td>array of channel values</td>
+  </tr>
+</table>
+<h3 id="EPHLwriteListaddrvq">EPHL_write_list_addr_vq</h3>
+<p>The EPHL_write_list_addr_vq function allows channels and qualities to be written to proDAS in one function call.</p>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="3" rowspan="1">Extern eEPHL_RETURN EPHL_write_list_addr_vq(number_of_ch, addr, values, qualities)</th>
+  </tr>
+  <tr>
+    <td>int</td>
+    <td>number_of_ch;</td>
+    <td>number of channels in the list</td>
+  </tr>
+  <tr>
+    <td>int</td>
+    <td>*addr;</td>
+    <td>array of channel addresses</td>
+  </tr>
+  <tr>
+    <td>float</td>
+    <td>*values;</td>
+    <td>array of channel values</td>
+  </tr>
+  <tr>
+    <td>int</td>
+    <td>*qualities;</td>
+    <td>array of channel qualities</td>
+  </tr>
+</table>
+<h3 id="EPHLreadListaddr">EPHL_read_list_addr</h3>
+<p>The EPHL_read_list_addr function allows channels to be read from proDAS in one function call.</p>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="3" rowspan="1">Extern eEPHL_RETURN EPHL_read_list_addr(number_of_ch, addr, values)</th>
+  </tr>
+  <tr>
+    <td>int</td>
+    <td>number_of_ch;</td>
+    <td>number of channels in the list</td>
+  </tr>
+  <tr>
+    <td>int</td>
+    <td>*addr;</td>
+    <td>array of channel addresses</td>
+  </tr>
+  <tr>
+    <td>float</td>
+    <td>*values;</td>
+    <td>array of channel values</td>
+  </tr>
+</table>
+<h3 id="EPHLreadListaddrvq">EPHL_read_list_addr_vq</h3>
+<p>The EPHL_read_list_addr_vq function allows channels and qualities to be read from proDAS in one function call.</p>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="3" rowspan="1">Extern eEPHL_RETURN EPHL_read_list_addr_vq(number_of_ch, addr, values, qualities)</th>
+  </tr>
+  <tr>
+    <td>int</td>
+    <td>number_of_ch;</td>
+    <td>number of channels in the list</td>
+  </tr>
+  <tr>
+    <td>int</td>
+    <td>*addr;</td>
+    <td>array of channel addresses</td>
+  </tr>
+  <tr>
+    <td>float</td>
+    <td>*values;</td>
+    <td>array of channel values</td>
+  </tr>
+  <tr>
+    <td>int</td>
+    <td>*qualities;</td>
+    <td>array of channel qualities</td>
+  </tr>
+</table>
+<h3 id="EPHLgetHBTerr">EPHL_get_hbt_err</h3>
+<p>The EPHL_get_hbt_err function gets the name of the ERROR and HEARTBEAT channels from the CVT.</p>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="3" rowspan="1">Extern eEPHL_RETURN EPHL_get_hbt_err(hbt_channel, hbt_len, err_channel, err_len)</th>
+  </tr>
+  <tr>
+    <td>char*</td>
+    <td>hbt_channel;</td>
+    <td>heartbeat channel name</td>
+  </tr>
+  <tr>
+    <td>int</td>
+    <td>hbt_len;</td>
+    <td>length allocated for the heartbeat channel</td>
+  </tr>
+  <tr>
+    <td>char*</td>
+    <td>err_channel;</td>
+    <td>error channel name</td>
+  </tr>
+  <tr>
+    <td>int</td>
+    <td>err_len;</td>
+    <td>length allocated for the error channel name</td>
+  </tr>
+</table>
+<h3 id="EPHLcloseFunc">EPHL_close</h3>
+<p>The EPHL_close function closes the connection with the server, which is made by calling EPHL_init ().</p>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="3" rowspan="1">extern eEPHL_RETURN EPHL_close(void)</th>
+  </tr>
+</table>
+<h2 id="UNIXcompileXHook">Compiling External Hooks Programs on LINUX</h2>
+<p>The External Hooks Programs Library links external hooks programs to communicate with proDAS. The library functions are contained in the library file libhook.a, located in the /users/RTE/build/lib directory. The file example.c, in the directory /users/RTE/build/prodas_src, is an example of an external hooks program that can be compiled and linked to the hooks library by the following LINUX command:</p>
+<blockquote>
+  <p>make -f makefile</p>
+</blockquote>
+<p>Below is the source code for the external hooks C program called <em>example.c</em>.</p>
+<blockquote>
+  <pre>
+  /*                               *************
+  |********************************* example.c *********************************
+  |*                               *************
+  |*
+  |*  Author: Franck Fauvel, MDS Aero Support Corporation
+  |*
+  |*  Description:
+  |*    Sample external hooks program.
+  |*
+  |*  Interface Function:
+  |*    int main (argc, argv);
+  |*
+  |*  Notes:
+  |*    To use the compiled program type the following command line (EDAS must
+  |*    be running with an external hooks sub-system configured and enabled):
+  |*      example  service_name channel_name
+  |*    service_name is the Ethernet service to use (use &quot;ex_serv&quot; by default)
+  |*    channel_name is the name of the EDAS channel to read (like &quot;Second&quot;)
+  |*
+  |*  Date created: Thu Apr 11 13:14:59 1996
+  |*
+|****************************************************************************/
+#include &lt;stdio.h&gt;
+  #include &lt;string.h&gt;
+#include &quot;ANSI_dec.h&quot;
+  #include &quot;EPHL_lib.h&quot;
+/****************************************************************************
+  |* LOCAL DECLARATIONS
+  |****************************************************************************/
+  /* DO NOT REMOVE THE FOLLOWING SCCS ID DECLARATION */
+  /* SCCS id variable that shows up when &quot;what&quot; is used on this executable */
+  static char example_c[] = &quot;@(#) EDASNG:src/ss_sw/ext_hooks/$RCSfile: example.c,v $; Version $Revision: 33010 $; extracted $Date: 2014-10-22 15:32:45 -0400 (Wed, 22 Oct 2014) $, MDS Aero&quot;;
+/****************************************************************************
+  |* INTERFACE SECTION
+  |****************************************************************************/
+/*                                 ********
+  |*********************************** main ************************************
+  |*                                 ********
+  |*
+  |*  Author: Franck Fauvel, MDS Aero Support Corporation
+  |*
+  |*  Description:
+  |*    Main function for the external hook sample program.
+  |*
+  |*  Use:  status = main (argc, argv)
+  |*
+  |*  Input:
+  |*   int   argc;        Argument count; must be &gt;= 3
+  |*   char* argv[];      Argument values:
+  |*                        - argv[1] is the Ethernet service to use
+  |*                        - argv[2] is the name of the EDAS channel to read
+  |*
+  |*  Output:
+  |*   int status;        Return: 0 if OK, -1 otherwise.
+  |*
+  |*  Notes:
+  |*   The parameters used here are specified on the command line;  they don't have
+  |*   to be used for all external hooks programs.
+  |*
+  |*  Date created:  Thu Apr 11 13:17:20 1996
+  |*
+  |****************************************************************************/
+#ifdef ANSI_C
+  extern int main (int argc, char **argv)
+#else  /* K&amp;R C */
+  extern int main (argc, argv)
+  int argc;
+  char **argv;
+#endif /* ANSI_C */
+  {
+  eEPHL_RETURN  return_code;
+  float         channel_value;
+ /* Specify network service to use and channel name */
+  if( argc &lt; 3 ) {
+  printf(&quot;Usage: %s service_name channel_name\n&quot;, argv[0]);
+  return -1;
+  }
+ /* Initialize a socket connection to EDAS */
+  if( EPHL_init(EPHL_SOCKET, argv[1]) != EPHL_OK ) {
+  printf(&quot;Error in EPHL_init\n&quot;);
+  return -1;
+  }
+ /* Read channel values from EDAS */
+  return_code = EPHL_read_channel(argv[2], &amp;channel_value);
+/* Print channel value or error code */
+  if( return_code == EPHL_OK ) {
+  printf(&quot;%s = %f\n&quot;, argv[2], channel_value);
+  } else {
+  printf(&quot;Error in EPHL_read_channel, return code = %d\n&quot;, return_code);
+  }
+ return 0;
+  }
+/************************ THIS IS THE END OF THE FILE ***********************/
+
+		  </pre>
+</blockquote>
+<h2 id="UNIXcompileXHook2">Compiling UEL Programs on LINUX</h2>
+<p>The  UEL Program Library sends Text messages to the Unified Event Log. The  messages stored in the event log are displayed in the UEL display. The library functions are contained in the  library file libUL.a, located in the /users/RTE/build/lib directory. The file UL_example.c,  in the directory /users/RTE/build/prodas_src, is an example of the UEL program  that can be compiled and linked to the UL library by the following LINUX  command:</p>
+<blockquote>
+  <p> make -f makefile</p>
+</blockquote>
+<p> Below  is an example of the UEL C program called UL_connect and UL_register functions  using the socket mechanism to connect to the UEL. The UL_send_msg function sends  the message to proDAS.</p>
+<blockquote>
+  <pre>
+  /*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; **************** 
+    |****************************  UL_example.c *****************************
+    |*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp; ****************
+    |*&nbsp;&nbsp;&nbsp; 
+    |*&nbsp; Author: John Douglas, MDS Aero Support  Corporation
+    |*&nbsp; 
+    |*&nbsp; Description:
+    |*&nbsp;&nbsp;&nbsp; Sample UEL client program.
+    |*
+    |*&nbsp; Interface Function: 
+    |*&nbsp;&nbsp;&nbsp; int main (argc, argv);
+    |*&nbsp; 
+    |*&nbsp; Notes:
+    *
+    |*&nbsp;&nbsp;&nbsp; To use the compiled program type the  following command line (EDAS must
+    |*&nbsp;&nbsp;&nbsp; be running with a UEL server enabled):
+    |*
+    |*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UL_example&nbsp; host_name source_name text
+    |*
+    |*&nbsp;&nbsp;&nbsp; host_name is the Ethernet host or IP  address to use
+    |*&nbsp;&nbsp;&nbsp; source_name is the name registered with the  UEL
+    |*&nbsp;&nbsp;&nbsp; text is any arbitrary text
+    |*
+    |*&nbsp; Date created: Wed Aug 13 14:08:18 1997
+    |*
+    |*&nbsp; Related documents: 
+    |*
+    |*
+    |****************************************************************************/
+  &nbsp;&nbsp;&nbsp; 
+    #include &lt;stdio.h&gt;
+    #include &lt;time.h&gt;
+    #include &lt;sys/time.h&gt; 
+    #include &quot;UL_lib.h&quot;
+  &nbsp;&nbsp;&nbsp; 
+    /****************************************************************************
+    |* LOCAL DECLARATIONS
+    |****************************************************************************
+  &nbsp; 
+ /****************************************************************************
+    |* INTERFACE SECTION
+    |****************************************************************************/
+  &nbsp; 
+  &nbsp;
+    /*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ********
+    |***********************************  main ************************************
+    |*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;********
+    |*
+    |*&nbsp; Author: John Douglas, MDS Aero Support  Corporation
+    |*
+    |*&nbsp; Description:
+    |*&nbsp;&nbsp;&nbsp; Main function for the UEL sample program.
+    |*
+    |*&nbsp; Use:&nbsp;  status = main (argc, argv)
+    |*
+    |*&nbsp; Input:
+    |*&nbsp;&nbsp;&nbsp; int&nbsp;&nbsp;  argc;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Argument count; must  be &gt;= 4
+    |*&nbsp;&nbsp;&nbsp; char* argv[];&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Argument values:
+    |*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - argv[1] is the  Ethernet host or IP address to use
+    |*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - argv[2] is the source  name to register
+    |*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - argv[3] is the text  to send to the UEL
+    |*
+    |*
+    |*&nbsp; Output:
+    |*&nbsp;&nbsp;&nbsp; int status;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Return: 0 if OK, -1 otherwise.
+    |*
+    |*&nbsp; Notes:
+    |*&nbsp;&nbsp;&nbsp; The parameters used here are specified on  the command line;&nbsp; they don't
+    |*&nbsp;&nbsp;&nbsp; have to be used for all UEL client  programs.
+    |*
+    |****************************************************************************/
+    #ifdef ANSI_C
+    extern int main (int argc,  char **argv)
+ #else&nbsp; /* K&amp;R C */
+    extern int main (argc, argv)
+    int argc;
+    char **argv;
+ #endif /* ANSI_C */
+    {
+  &nbsp; int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; socket;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Connection to UEL server */
+  &nbsp; int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_id;&nbsp;&nbsp;&nbsp; /* Registration of source name */
+  &nbsp; struct timeval&nbsp; clock;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  /* For computing timestamp */
+  &nbsp; struct tm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  *tms;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* For computing  timestamp */
+  &nbsp; UL_TIME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; timestamp;&nbsp;&nbsp;&nbsp; /* Timestamp sent with message */
+  &nbsp; /* Specify network host to use, source name,  and text */
+  &nbsp; if( argc &lt; 4 ) {
+  &nbsp;&nbsp;&nbsp; printf(&quot;Usage: %s host_name  source_name text\n&quot;, argv[0]);
+  &nbsp;&nbsp;&nbsp; return -1;
+  &nbsp; }
+  &nbsp; /* Initialization a socket connection to the  UEL */
+  &nbsp; if ( UL_connect( argv[1], &amp;socket ) !=  UL_OK ) {
+  &nbsp;&nbsp;&nbsp; printf( &quot;Cannot open connection to  unified event log&quot; );
+  &nbsp;&nbsp;&nbsp; return -1;
+  &nbsp; }
+  &nbsp; /* Register the source name */
+  &nbsp; if ( UL_register( socket, argv[2],  &amp;source_id) != UL_OK ) {
+  &nbsp;&nbsp;&nbsp; printf( &quot;Cannot register %s as an  event source&quot;, argv[2] );
+  &nbsp;&nbsp;&nbsp; return -1;
+  &nbsp;&nbsp;}
+  &nbsp; /* Initialize the timestamp structure. */
+  &nbsp; gettimeofday( &amp;clock, NULL );
+  &nbsp; tms = localtime( &amp;clock.tv_sec );
+  &nbsp; timestamp.Day = tms-&gt;tm_yday;
+  &nbsp; timestamp.Hours = tms-&gt;tm_hour;
+  &nbsp; timestamp.Minutes = tms-&gt;tm_min;
+  &nbsp; timestamp.Seconds = tms-&gt;tm_sec;
+  &nbsp; timestamp.Milliseconds = clock.tv_usec /  1000;
+  &nbsp; /* Send the message to EDAS, with a specific  timestamp */
+  &nbsp; if (UL_send_msg( source_id, &amp;timestamp,  UL_WARNINGBOX, argv[3])!= UL_OK ) {
+  &nbsp;&nbsp;&nbsp; printf( &quot;error sending event&quot; );
+  &nbsp;&nbsp;&nbsp; return -1;
+  &nbsp; }
+  &nbsp; /* Log off */
+  &nbsp; if ( UL_disconnect( socket ) != UL_OK ) {
+  &nbsp;&nbsp;&nbsp; printf ( &quot;Error closing connection to  unified event log&quot; );
+  &nbsp;&nbsp;&nbsp; return -1;
+  &nbsp; }
+  &nbsp; return 0;
+    }
+  /************************ THIS  IS THE END OF THE FILE ***********************/
+  
+  </pre>
+</blockquote>
+<h2 id="HeaderFileXhooksPgmLibrary2">Header File for External Hooks Program Library</h2>
+<p>The library functions are contained in the library file EPHL_lib.h located in /users/RTE/build/prodas_src/. The file EPHL_lib.h describes the interface to the EPHL library for C programs and is used in the source code for all external hooks programs.</p>
+<blockquote>
+  <pre>
+  #ifndef EPHL_LIB_H
+  #define EPHL_LIB_H
+  /*                              **************
+  |******************************** EPHL_lib.h *********************************
+  |*                              **************
+  |*
+  |*  Author: Franck Fauvel, MDS Aero Support Corporation
+  |*
+  |*  Description: 
+  |*    This file contains the declarations of the functions which can be called 
+  |*    from C programs to access CVT channel values.
+  |*
+  |*  Interface Functions: 
+  |*
+  |*  Notes: 
+  |*    For ANSI C compilation, &quot;ANSI_C&quot; must be defined to compiler (typically
+  |*    using &quot;-D ANSI_C&quot; on the compiler command line).
+  |*
+  |*  Date created: Tue Feb 14 18:24:31 1995
+  |*
+  |****************************************************************************/
+  /* DO NOT REMOVE THE FOLLOWING SCCS ID DECLARATION */
+  /* SCCS id variable that shows up when &quot;what&quot; is used on this executable */
+static char EPHL_lib_h[] = &quot;@(#) EDASNG:include/$RCSfile: EPHL_lib.h,v $; Version $Revision: 33010 $; extracted $Date: 2014-10-22 15:32:45 -0400 (Wed, 22 Oct 2014) $, MDS Aero&quot;;
+#ifdef _WIN32
+  #include &quot;LV_strucs.h&quot;       // Include file for labview type
+  #endif /* _WIN32 */
+#define  EPHL_CLI_TIMEOUT    10  /* EX_driver IPC Client Timeout value (sec) */
+#ifndef _PRODAS
+  #define EPHL_HOST &quot;edas_rt&quot;
+  #else
+  #define EPHL_HOST &quot;rtehost&quot;
+  #endif
+/* If you change this define, need to be update in the LabView Ext 
+  Hook wrapper for all string define with this size. */
+  #define EPHL_UNIT_LEN 26
+/* If you change this define, need to be update in the LabView Ext 
+  Hook wrapper for all string define with this size. */
+  #define EPHL_HEADER_LEN 60
+/* opcode to call the External Hooks Server */
+  typedef enum {
+  /* 0 */   EX_GET_ADDR,
+  /* 1 */   EX_WRITE_VAL_NAME,
+  /* 2 */   EX_READ_VAL_NAME,
+  /* 3 */   EX_WRITE_VAL_ADDR,
+  /* 4 */   EX_READ_VAL_ADDR,
+  /* 5 */   EX_READ_INFO_NAME,
+  /* 6 */   EX_QUIT,
+  /* 7 */   EX_RW_VAL_NAME,
+  /* 8 */   EX_GET_HBT_ERR,
+  /* 9 */   EX_READ_HEADER,
+  /* 10 */  EX_WRITE_VQ_NAME,
+  /* 11 */  EX_READ_VQ_NAME,
+  /* 12 */  EX_WRITE_VQ_ADDR,
+  /* 13 */  EX_READ_VQ_ADDR,
+  /* 14 */  EX_RW_VQ_NAME
+  } eEX_OPCODE;
+/* typedef defining the channel type */
+  typedef enum {
+  EPHL_FP_CHAN,
+  EPHL_DISC_CHAN,
+  EPHL_INT_CHAN
+  } eEPHL_CHAN_TYPE;
+/* structure returned by EPHL_read_channel_info */
+  /* and EPHL_read_list_info */
+  typedef struct {
+  float            scan_rate;
+  eEPHL_CHAN_TYPE  chan_type;
+  char             unit[EPHL_UNIT_LEN];
+  char             pad1[4-(EPHL_UNIT_LEN%4)];
+  float            min;
+  float            max;
+  } EPHL_CHAN_INFO;
+/* structure returned by EPHL_read_header */
+  typedef struct {
+  char             engine_name[EPHL_HEADER_LEN];
+  char             test_name[EPHL_HEADER_LEN];
+  char             testcell_name[EPHL_HEADER_LEN];
+  char             eng_serial_num[EPHL_HEADER_LEN];
+  char             eng_build_num[EPHL_HEADER_LEN];
+  int              test_id;
+  }EPHL_HEADER;
+#ifdef _WIN32
+  /* bundle returned by EPHL_read_header_lv, specific to LabView */
+  typedef struct {
+  LStrHandle       engine_name; 
+  LStrHandle       test_name;
+  LStrHandle       testcell_name;
+  LStrHandle       eng_serial_num;
+  LStrHandle       eng_build_num;
+  int32            test_id;
+  } EPHL_HEADER_LV;
+/* structure returned by EPHL_read_channel_info_lv*/
+  /* and EPHL_read_list_info_lv, specific to LabView*/
+  typedef struct {
+  FP32_ARR_HDL     scan_rate;
+  I32_ARR_HDL      chan_type;
+  STR_ARR_HDL      unit;
+  FP32_ARR_HDL     min;
+  FP32_ARR_HDL     max;
+  } EPHL_CHAN_INFO_ARRAY_LV;
+typedef struct {
+  float32          scan_rate;
+  int32            chan_type;
+  LStrHandle       unit;
+  float32          min;
+  float32          max;
+  } EPHL_CHAN_INFO_LV;
+#endif /* _WIN32 */
+
+/* return code from External Hooks Server to client */
+  /* contained in reply buffer ( first 4 bytes ) */
+  /* and return code from EPHL interface functions */
+  typedef enum {
+  EPHL_NOT_CONNECTED = -1,
+  EPHL_OK,
+  EPHL_ERROR,
+  EPHL_BAD_MODE,
+  EPHL_NEW_CONFIG,
+  EPHL_NOT_CONFIGURED,
+  EPHL_BAD_CHANNEL,
+  EPHL_NOT_INIT
+  } eEPHL_RETURN;
+/* type of operation to do on a channel */
+  typedef enum {
+  EPHL_READ,
+  EPHL_WRITE
+  } eEPHL_RW;
+/* type of connection */
+  typedef enum {
+  EPHL_SOCKET,
+  EPHL_SH_MEM
+  } eEPHL_CONN_TYPE;
+/* max length of heartbeat and error channel names */
+  #define EPHL_MAX_HBT_ERR  41
+/* value for a bad channel */
+  #define EPHL_BAD_VALUE    -99999.0
+  /* NOTE: should be the same definition as BAD_VALUE in the EDAS CVT */
+#ifdef __cplusplus
+  extern &quot;C&quot;
+  {
+  #endif
+/* Use &quot;-D ANSI_C&quot; on compile line to use ANSI C */
+  #ifdef ANSI_C
+/* ANSI C compiler function declarations */
+  extern eEPHL_RETURN EPHL_write_channel     (char* name, float value);
+  extern eEPHL_RETURN EPHL_write_list        (int num_ch, char** names,
+  float* values);
+  extern eEPHL_RETURN EPHL_read_channel      (char* name, float* value);
+  extern eEPHL_RETURN EPHL_read_list         (int num_ch, char** names,
+  float* values);
+  extern eEPHL_RETURN EPHL_get_addr          (int num_ch, char** names,
+  int* addresses);
+  extern eEPHL_RETURN EPHL_write_list_addr   (int num_ch, int *addr,
+  float* values);
+  extern eEPHL_RETURN EPHL_read_list_addr    (int num_ch, int *addr,
+  float* values);
+  extern eEPHL_RETURN EPHL_read_channel_info (char* name,
+  EPHL_CHAN_INFO* info);
+  extern eEPHL_RETURN EPHL_read_list_info    (int num_ch, char** names,
+  EPHL_CHAN_INFO* infos);
+  extern eEPHL_RETURN EPHL_rw_list           (int num_ch, char** names,
+  float* values, eEPHL_RW* rw_list);
+  extern eEPHL_RETURN EPHL_get_hbt_err       (char* hbt_channel, int hbt_len,
+  char* err_channel, int err_len);
+  extern eEPHL_RETURN EPHL_init              (eEPHL_CONN_TYPE conn_type,
+  char* serv_key);
+  extern eEPHL_RETURN EPHL_read_header       (EPHL_HEADER* header_info);
+  extern eEPHL_RETURN EPHL_close             (void);
+extern eEPHL_RETURN EPHL_write_channel_vq  (char* name, float value, int quality);
+  extern eEPHL_RETURN EPHL_write_list_vq     (int num_ch, char** names,
+  float* values, int *qualities);
+  extern eEPHL_RETURN EPHL_read_channel_vq   (char *name, float *value, int *quality);
+  extern eEPHL_RETURN EPHL_read_list_vq      (int num_of_ch, char **names, 
+  float *values, int *qualities);
+  extern eEPHL_RETURN EPHL_write_list_addr_vq (int num_ch, int *addr,
+  float* values, int *qualities);
+  extern eEPHL_RETURN EPHL_read_list_addr_vq (int num_ch, int *addr,
+  float* values, int *qualities);
+  extern eEPHL_RETURN EPHL_rw_list_vq (int num_of_ch, char **names, float *values,
+  int *qualities, eEPHL_RW *rw_list);
+#ifndef _WIN32
+  extern int EPHL_write_channel_ (char* name, float* value, int name_sz);
+  extern int EPHL_write_list_    (int* num_ch, char** names, float* vals,
+  int name_sz);
+  extern int EPHL_read_channel_  (char *name, float* val, int name_sz);
+  extern int EPHL_read_list_     (int* num_ch, char** names, float* vals,
+  int name_sz);
+  extern int EPHL_init_          (int conn_type, char* serv_key,
+  int serv_key_size);
+  #endif /* _WIN32 */
+#ifdef _WIN32
+  extern eEPHL_RETURN EPHL_write_list_lv       (STR_ARR_HDL All_Channel_Names, 
+  float *values);
+  extern eEPHL_RETURN EPHL_read_list_lv        (STR_ARR_HDL All_Channel_Names, 
+  float *values);
+  extern eEPHL_RETURN EPHL_rw_list_lv          (STR_ARR_HDL All_Channel_Names, 
+  float *values, eEPHL_RW *rw_list);
+  extern eEPHL_RETURN EPHL_get_addr_lv         (STR_ARR_HDL All_Channel_Names,
+  int *addresses);
+  extern eEPHL_RETURN EPHL_read_header_lv      (EPHL_HEADER_LV *header_info);
+  extern eEPHL_RETURN EPHL_read_list_info_lv   (STR_ARR_HDL All_Channel_Names, 
+  EPHL_CHAN_INFO_ARRAY_LV *infos);
+  extern eEPHL_RETURN EPHL_read_channel_info_lv (char *name, 
+  EPHL_CHAN_INFO_LV *infos);
+&nbsp;
+#endif /* _WIN32 */
+/* Non-ANSI C compiler function declarations */
+  #else
+extern eEPHL_RETURN EPHL_write_channel      ();
+  extern eEPHL_RETURN EPHL_write_list         ();
+  extern eEPHL_RETURN EPHL_read_channel       ();
+  extern eEPHL_RETURN EPHL_read_list          ();
+  extern eEPHL_RETURN EPHL_get_addr           ();
+  extern eEPHL_RETURN EPHL_write_list_addr    ();
+  extern eEPHL_RETURN EPHL_read_list_addr     ();
+  extern eEPHL_RETURN EPHL_read_channel_info  ();
+  extern eEPHL_RETURN EPHL_read_list_info     ();
+  extern eEPHL_RETURN EPHL_rw_list            ();
+  extern eEPHL_RETURN EPHL_get_hbt_err        ();
+  extern eEPHL_RETURN EPHL_init               ();
+  extern eEPHL_RETURN EPHL_read_header        ();
+  extern eEPHL_RETURN EPHL_close              ();
+  extern eEPHL_RETURN EPHL_write_channel_vq   ();
+  extern eEPHL_RETURN EPHL_write_list_vq      ();
+  extern eEPHL_RETURN EPHL_read_channel_vq    ();
+  extern eEPHL_RETURN EPHL_read_list_vq       ();
+  extern eEPHL_RETURN EPHL_write_list_addr_vq ();
+  extern eEPHL_RETURN EPHL_read_list_addr_vq  ();
+  extern eEPHL_RETURN EPHL_rw_list_vq         ();
+
+#ifndef _WIN32  /* in a dll, only C can be used! */
+  extern int EPHL_write_channel_ ();
+  extern int EPHL_write_list_    ();
+  extern int EPHL_read_channel_  ();
+  extern int EPHL_read_list_     ();
+  extern int EPHL_init_          ();
+  #endif /* _WIN32 */
+#ifdef _WIN32
+  extern eEPHL_RETURN EPHL_write_list_lv      ();
+  extern eEPHL_RETURN EPHL_read_list_lv       ();
+  extern eEPHL_RETURN EPHL_rw_list_lv         (); 
+  extern eEPHL_RETURN EPHL_get_addr_lv        ();
+  extern eEPHL_RETURN EPHL_read_header_lv     ();
+  extern eEPHL_RETURN EPHL_read_list_info_lv  ();
+  extern eEPHL_RETURN EPHL_read_channel_info_lv ();
+
+  #endif /* _WIN32 */ 
+#endif
+  #ifdef __cplusplus
+  }
+  #endif
+#endif /* EPHL_LIB_H */
+  /************************ THIS IS THE END OF THE FILE ***********************/
+</pre>
+</blockquote>
+<h2 id="HeaderFileXhooksPgmLibrary">Header File for UEL Program Library</h2>
+<p>The  library functions are contained in the library file UL_lib.h located in <em>/users/RTE/build/prodas_src</em>. The file UL_lib.h describes the interface functions  to the UEL interface library for C programs.</p>
+<blockquote>
+  <pre>
+  #ifndef  UL_LIB_H
+    #define  UL_LIB_H
+    /*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;************
+    |*********************************  UL_lib.h **********************************
+    |*&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ************
+    |*
+    |*&nbsp; Author: John Douglas, MDS Aero Support  Corporation
+    |*
+    |*&nbsp; Description:
+    |*&nbsp;&nbsp;&nbsp; The public header file for the UEL  Interface Library.
+    |*
+    |*&nbsp; Interface Function:&nbsp;&nbsp;&nbsp; 
+    |*&nbsp;&nbsp;&nbsp; None.
+    |*
+    |*&nbsp; Notes:
+    |*
+    |*
+    |*&nbsp; Date created: Tue Apr 15 09:18:02 1997 
+    |* 
+    |*&nbsp; Related documents:
+    |*
+    |****************************************************************************/
+  &nbsp; /* The following enumeration defines the  status codes */
+    /*  returned by the interface library functions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */ 
+ /* Define  ANSI_C marco for WIN32 platform compiler*/ 
+    #ifdef  _WIN32
+    #ifndef  ANSI_C 
+    #define  ANSI_C __STDC__
+    #endif
+    #endif
+  typedef  enum {
+  &nbsp; UL_OK,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Operation successful */
+  &nbsp; UL_ERROR&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Operation failed */
+    }  eUL_STATUS;
+  &nbsp;
+  /* The  following enumeration defines codes specifying how to process a&nbsp;&nbsp; */
+    /*  message.&nbsp; These are chiefly used in the  GUI, but are defined here as&nbsp; */
+    /* the  Message Table module initializes the table of messages with them. */
+    /* (This  enumeration is a subset of eEV_MSG_CLASS, defined in EV_event.h */
+    /*  Consistency must be maintained between these two enumerations).&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */
+    typedef  enum {
+  &nbsp; UL_NULL_CLASS,&nbsp;&nbsp;&nbsp;&nbsp; /* For internal EDAS use only. */
+  &nbsp; UL_EVENTHANDLER,&nbsp;&nbsp; /* Message appears as info in Event window  only */
+  &nbsp; UL_EVENTOK,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Message displayed in channel OK  colour */
+  &nbsp; UL_EVENTWARN,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Message displayed in warning colour */
+  &nbsp; UL_EVENTALARM,&nbsp;&nbsp;&nbsp;&nbsp; /* Message displayed in alarm colour */ 
+  &nbsp; UL_INFOBOX,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Message also displayed in blue info  box, which */
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*&nbsp;&nbsp; disappears after about 40 seconds */
+  &nbsp; UL_WARNINGBOX,&nbsp;&nbsp;&nbsp;&nbsp; /* Message also displayed in yellow  warning box, which */
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*&nbsp;&nbsp; remain until user acknowledges */
+  &nbsp; UL_NUM_CLASSES&nbsp;&nbsp;&nbsp;&nbsp; /* Number of classes defined (must be last  enum field) */
+    }  eUL_MSG_CLASS; 
+  &nbsp;
+  /* The  following structure contains the time fields passed to UL_send_msg() */
+    typedef struct  {
+  &nbsp; int&nbsp;  Day;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Day of year  (1-366) */
+  &nbsp; int&nbsp;  Hours;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Hours since  midnight (0-23) */
+  &nbsp; int&nbsp;  Minutes;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Minutes after the  hour (0-59) */
+  &nbsp; int&nbsp;  Seconds;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Seconds after the  minute (0-59) */
+  &nbsp; int&nbsp;  Milliseconds; /* Milliseconds after the second (0-999) */
+    }  UL_TIME;
+  &nbsp;
+  /* The  following public constants define the maximum lengths of strings */
+  #define  UL_MSG_LEN&nbsp; 256&nbsp;&nbsp;&nbsp; /* Maximum length of message text,  including */
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*&nbsp;&nbsp; timestamp, source name, and null terminator  */
+    #define  UL_SRC_LEN&nbsp; 9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Maximum length of source names,  including */
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*&nbsp;&nbsp; null terminator */
+  /* The  following enumeration defines types of messages sent */
+    /* from  the UEL Interface Library to the UEL Server.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */
+    typedef  enum {
+  &nbsp; UL_CONNECT,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Connection message */
+  &nbsp; UL_REGISTER,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Source registration message */
+  &nbsp; UL_EVENT,&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Event message */
+  &nbsp; UL_DISCONNECT,&nbsp;&nbsp;&nbsp;&nbsp; /* Disconnection message */
+  &nbsp; UL_NUM_MSGS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Number of message types defined */
+    }  eUL_MSG_TYPE;
+  &nbsp;
+  /* The  following data structure is the message sent by UL_send_msg() */
+    typedef  struct {
+  &nbsp; int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  version;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Version  number of message format */
+  &nbsp; eUL_MSG_CLASS&nbsp;  msg_class;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Specifies GUI  processing */
+  &nbsp; UL_TIME&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  timestamp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Binary form  of timestamp */
+  &nbsp; int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  source_id;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Identifies  who is sending event */
+  &nbsp; char&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  msg[UL_MSG_LEN];&nbsp; /* Message text  */
+    }  UL_EVENT_MSG;
+  #define  UL_VERSION 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/* Version of message format */
+  /* The  following data structure is the reply message */
+    /*  received by the UEL interface library&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; */
+    typedef  struct {
+  &nbsp; eUL_STATUS&nbsp;  status;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Status of  registration */
+  &nbsp; int&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  source_id;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Returned  source id */
+    }  UL_REPLY;
+  #define  UL_SERVICE &quot;uel_serv&quot;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /*  Service name */
+  #define UL_TIMEOUT 30&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /* Client IPC timeout, in seconds  */
+  /*Define API macro for, it is __stdcall in WIN32  platform, otherwise, nothing*/
+    #ifdef  _WIN32
+    #ifndef  API
+    #define  API __stdcall
+    #endif
+    #else
+    #define  API
+    #endif
+  #ifdef  ANSI_C
+  /*For the  C++ compiler, indicates use &quot;C&quot; call convention in WIN32 Platform*/
+    /*WARNING:  in other platform, when called from C++ code, the same change is needed*/
+    #ifdef  _WIN32
+    #ifdef  __cplusplus
+    extern  &quot;C&quot;
+    {
+    #endif /*  __cplusplus */
+    #endif /*  _WIN32 */
+  extern  eUL_STATUS API UL_connect( char *edas_rt, int *socket );
+    extern  eUL_STATUS API UL_register( int socket, char *src_name, int *src_desc );
+    extern  eUL_STATUS API UL_send_msg( int src_desc, UL_TIME *timestamp,
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; eUL_MSG_CLASS  msg_class, char *msg );
+    extern  eUL_STATUS API UL_disconnect( int socket );
+    #ifdef  _WIN32
+    #ifdef  __cplusplus
+    }
+    #endif /*  __cplusplus */
+    #endif /*  _WIN32 */
+  #else /*  K&amp;R C */
+  extern  eUL_STATUS UL_connect();
+    extern  eUL_STATUS UL_register();
+    extern  eUL_STATUS UL_send_msg();
+    extern  eUL_STATUS UL_disconnect();
+  #endif /*  ANSI_C */
+  /************************  THIS IS THE END OF THE FILE ***********************/
+    #endif /*  UL_LIB_H */</pre>
+
+</blockquote>
+<h2 id="ConfigExternalChannels">Configuring External Channels</h2>
+<p>External channels provide access to proDAS channels for external hooks programs. External channels allow an external hooks program to write information to proDAS. External hook programs can only modify these external channels and cannot modify other proDAS subsystem channels. External channels can be displayed on an Operator Page like any other proDAS channel. Only the generic channel definition fields need to be defined for an external channel.</p>
+<p>To configure an External Hook Channel the user has to perform to following actions:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<ol>
+  <li>Append a channel using the Append item in the Edit Menu described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</li>
+  <li>Select the name of the External Hook Subsystem from the list of available Subsystems.
+    <div class="Container"><img src="Images/SelectSubsystemName.png" alt="SelectSubsystemName" width="387" height="317"></div>
+  </li>
+  <br>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a><a href="../ConfigEditors/ConfigEditors.htm"></a>.</li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure"> Channel Editor</a>.
+    <div class="Container"><img src="Images/ChannelEditor.png" alt="ChannelEditor" name="IMG1" width="700" height="424" id="IMG1"></div>
+  </li>
+</ol>
+<h2 id="ConfigFileStructure">Configuration File Structure</h2>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu">Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import an External Hook  channel, see <a href="?10#XMLFileStructure"> XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras 
+  -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import an External Hook channel, see <a href="?11#TabDelimitFileStructure"> Tab-Delimited File Structure</a>.</p>
+<h3 id="XMLFileStructure">XML File Structure</h3>
+<h4 id="ChannelsXML">Channels</h4>
+<p>The channels are stored in files called Channels.xml in the configuration directories.</p>
+<p>An External Hook Channel only contains the generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor 
+- Generic Channel Parameters - XML File Structure</a>.</p>
+<p>The structure of an External Hook Channel complies with the following example:</p>
+<blockquote><code>&lt;Channels LastModificationDate=&quot;<strong>2015-06-11 08:35:26</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;<br>
+  &lt;Channel Name=&quot;ZZExternal1&quot; <br>
+  Description=&quot;&quot; <br>
+  Enabled=&quot;true&quot; <br>
+  LastModificationDate=&quot;2015-06-11 08:35:26&quot; <br>
+  SubsystemName=&quot;EXTERNAL&quot; <br>
+  SubsystemType=&quot;External&quot; <br>
+  AlternateName=&quot;&quot; <br>
+  DataType=&quot;Float&quot; <br>
+  InitialValue=&quot;-999999&quot; <br>
+  Format=&quot;4.2f&quot; <br>
+  UpdateRate=&quot;1&quot; <br>
+  QualityCeiling=&quot;GOOD&quot; <br>
+  Critical=&quot;false&quot; <br>
+  EngineeringUnit=&quot;-&quot; <br>
+  DisplayMin=&quot;0&quot; <br>
+  DisplayMax=&quot;100&quot; <br>
+  DeadBand=&quot;0&quot; <br>
+  Output=&quot;false&quot; <br>
+  ReferenceChannel=&quot;&quot; <br>
+  Group=&quot;&quot; <br>
+  SignalId=&quot;&quot; <br>
+  CalSensor=&quot;&quot; <br>
+  CalGroup=&quot;&quot; <br>
+  FixedSensor=&quot;&quot; <br>
+  CustomerSensor=&quot;&quot; <br>
+  FullsetStability=&quot;false&quot; <br>
+  ContinuousLog=&quot;true&quot;/&gt;<br>
+  &lt;/Channels&gt;<br>
+</code></blockquote>
+<h4 id="SubsystemsXML">Subsystems</h4>
+<p>The subsystems are stored in files Subsystems.xml in the configuration directories.</p>
+<p>An External Subsystem contains generic information, described in <a href="../SubsystemEditor/SubsystemEditor.htm#XMLFileStructure"> Subsystem Editor - Generic Subsystem Parameters - XML File Structure</a>. There are no subsystem specific columns.</p>
+<h3 id="TabDelimitFileStructure">Tab-Delimited File Structure</h3>
+<p>The external hooks subsystem channel definition includes all <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic 
+channel definition columns</a>. No subsystem specific configuration information is required.</p>
+<h2 id="SubsysEditorExternalchannels">Subsystem Editor for External Channels</h2>
+<p>To edit an External Hook&nbsp;Subsystem, the Subsystem Editor must be selected from within the Configuration Administrator.</p>
+<p>The tool bar in the Configuration Administrator allows the various configuration editors available for proDAS to be selected.</p>
+<p>The Subsystem Editor allows new subsystems to be added to the current configuration.</p>
+<div class="Container"><img src="images/SubsystemEditor.png" alt="SubsystemEditor" width="700" height="423"></div>
+<br>
+<p><strong>To add a new subsystem:</strong></p>
+<ol>
+  <li>From the Edit menu, select <strong>Append Data Record</strong> or in the left pane of the splitter window click the right mouse button and select <strong>Append Data Record</strong> from the context sensitive menu.</li>
+  <li> Select <strong>External</strong> in the dialogue box to select the type of subsystem.<br>
+    A new line in the Subsystem Editor is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to <strong>External</strong>. The user must then assign a name and description to the subsystem.</li>
+</ol>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

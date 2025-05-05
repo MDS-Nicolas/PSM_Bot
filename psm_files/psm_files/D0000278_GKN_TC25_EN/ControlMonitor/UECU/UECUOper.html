@@ -1,0 +1,178 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Throttle - Operation</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left><h1>Throttle<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<h2>Operation</h2>
+<p>The Throttle System allows an operator to accurately control the fuel supply to a test engine. The Throttle System can be run in manual mode or auto throttle mode. In manual mode the operator controls the fuel supply to the test engine manually using the throttle lever(s). In auto throttle mode, the fuel supply to the engine is controlled automatically based on a selected feedback signal from the engine. For more details, see <a href="../../References/HowTos/ControlMon/UECU/RunModeAuto.html">How To &ndash; Run an Engine in Auto Throttle Mode</a>.</p>
+<h3>Configuration</h3>
+<p>The Throttle System uses configuration files to determine the configuration of the system components. The configuration files are <em>.</em>xml files that are stored in the display computer in the throttle quadrant. The applicable configuration is loaded from the configuration files when an engine is selected on the display computer.</p>
+<p>The block diagram below describes the location and content of the configuration files.</p>
+<div class="Container"><img src="../../References/HowTos/ControlMon/UECU/images/BDConfigfile.png" alt="Block Diagram Configuration File" width="851" height="492"></div>
+<p><br>
+For more details, see <a href="../../References/HowTos/ControlMon/UECU/Configuration.html">Reference &ndash;  Configuration Files</a>.</p>
+<h3>Fuel Valve Control</h3>
+<p>The Throttle System can accommodate a resolver, rotary variable   displacement transducer (RVDT), mechanical actuator, or a combination of the   three to control the fuel valve on an engine.</p>
+<h4>Actuator</h4>
+<p>An actuator uses a Proportional, Integral, Derivative (PID) control loop to control the fuel valve. The PID control loop  continuously calculates the  difference between a desired setpoint (e.g. commanded fuel valve position) and the measured  variable (e.g. measured fuel valve position). The throttle controller  attempts to minimise the error by adjusting  the control variable for the  position of the  fuel valve.</p>
+<p>The PID control loops for the actuators take the lever command as the setpoint for the PID control loop. The  lever command is sent in degrees to the actuator's PID routine in the throttle controller. This PID setpoint is limited and scaled according to  the PID  minimum and maximum  settings in the master configuration file.</p>
+<h4>Resolver/RVDT</h4>
+<p>The Resolver and RVDT actuator types do not need a PID control loop to control the fuel valve.   The  lever command is sent to the RVDT/Resolver scaling routine in the throttle controller. The throttle controller scales the output as required and converts the output to 14 bit binary signals. The signals are sent to the TTL  output card in the throttle controller.</p>
+<p>The resolver and RVDT both have two outputs to the engine's electronic engine control (EEC). The outputs can both be scaled using the same scaling factors or each output can have its own scaling factors. This is configured directly in the  master configuration file.</p>
+<h3>Using the Throttle System</h3>
+<p>The procedure below, provides a quick overview on using the throttle system.</p>
+<p class="Caution">To prevent injury and damage to equipment, only trained operators who are familiar with all applicable procedures at the engine testing facility and the procedures in this manual should operate the throttle system.</p>
+<ol>
+  <li>Start the Throttle System and wait for it to boot up. See <a href="../../References/HowTos/ControlMon/UECU/StartUECU500.html">How To &ndash; Start the UECU-500 Mark III Throttle</a>.</li>
+  <li>Using the display computer in the throttle quadrant, select an engine. See <a href="../../References/HowTos/ControlMon/UECU/SelectEngine.html">How To &ndash; Select an Engine</a>.</li>
+  <li>If applicable, rig all actuators defined for the engine. See <a href="../../References/HowTos/ControlMon/UECU/RigActuator.html">How To &ndash; Rig an Actuator</a>.</li>
+  <li>Enter <em><strong>Run Mode</strong></em> and turn on the fuel supply to the Engine. See <a href="../../References/HowTos/ControlMon/UECU/RunModeManual.html">How To &ndash; Run an Engine in Run Mode (Manual)</a>.</li>
+  <li>Start the engine using the particular engine testing facility procedures.</li>
+  <p class="Note">It is not possible to start the engine using the throttle quadrant.</p>
+  <li>Use the throttle lever(s) on the throttle quadrant to control the engine under test.</li>
+  <li>Use the Trip buttons to move to any preset trip points.</li>
+</ol>
+<h2 id="HowTo">How Tos</h2>
+<p>The following table contains links to instructional information for the UECU-500 Mark III Throttle System:</p>
+<table width="74%" cellspacing="1" class="Table-Grey">
+  <tr>
+    <th width="73%">Topic</th>
+  </tr>
+  <tr valign="top">
+    <th><strong>Installing the UECU-500 Mark III Throttle System</strong></th>
+  </tr>
+  <tr valign="top">
+    <td><h4><a href="../../References/HowTos/ControlMon/UECU/UECUConnectDAS.html">How To &ndash; Connect an Analogue Position Indicator or Data Acquisition System (DAS)</a></h4></td>
+  </tr>
+  <tr valign="top">
+    <td><h4><a href="../../References/HowTos/ControlMon/UECU/DaisyChainResolver.html">How To &ndash; Daisy Chain the Controller, RVDT and Resolver Chassis</a></h4></td>
+  </tr>
+  <tr valign="top">
+    <td><h4><a href="../../References/HowTos/ControlMon/UECU/UECUInstallation.html">How To &ndash; Install the UECU-500 Mark III</a></h4></td>
+  </tr>
+  <tr valign="top">
+    <th><strong>Calibrating and Configuring the</strong> <strong>UECU-500 Mark III Throttle System</strong></th>
+  </tr>
+  <tr valign="top">
+    <td><h4><a href="../../References/HowTos/ControlMon/UECU/CalibrateActuator.html">How To - Calibrate the Actuator</a></h4></td>
+  </tr>
+  <tr valign="top">
+    <td><h4><a href="../../References/HowTos/ControlMon/UECU/CalibrateChannel.html">How To &ndash; Calibrate a Channel</a></h4></td>
+  </tr>
+  <tr valign="top">
+    <td><h4><a href="../../References/HowTos/ControlMon/UECU/CalibrateLever.html">How To - Calibrate the Throttle Lever</a></h4></td>
+  </tr>
+  <tr valign="top">
+    <td><h4><a href="../../References/HowTos/ControlMon/UECU/Configuration.html">Reference &ndash;  Configuration Files</a></h4></td>
+  </tr>
+  <tr valign="top">
+    <th><strong>Operating the UECU-500 Mark III Throttle System</strong></th>
+  </tr>
+  <tr valign="top">
+    <td><h4><a href="../../References/HowTos/ControlMon/UECU/UseOverrideSystem.html">How To &ndash; Activate and Reset the Override System</a></h4></td>
+  </tr>
+  <tr valign="top">
+    <td><h4><a href="../../References/HowTos/ControlMon/UECU/RigActuator.html">How To &ndash; Rig an Actuator</a></h4></td>
+  </tr>
+  <tr valign="top">
+    <td><h4><a href="../../References/HowTos/ControlMon/UECU/RunModeManual.html">How To &ndash; Run an Engine in Run Mode (Manual)</a></h4>
+      <br>
+      This How To contains details on:
+      <ul>
+      <li>Entering Run Mode</li>
+      <li>Turning the Fuel On and Off</li>
+      <li>Setting the Engine State to Flight Idle</li>
+      <li> Tripping the Engine to a Predefined Position</li>
+      <li> Adding and Remove Stops</li>
+      <li> Exiting Run Mode</li>
+    </ul></td>
+  </tr>
+  <tr valign="top">
+    <td><h4><a href="../../References/HowTos/ControlMon/UECU/RunModeAuto.html">How To &ndash; Run an Engine in Run Mode (Auto)</a><br>
+      <br>
+    </h4>
+      This How To contains details on:
+      <ul>
+      <li> Analogue Discrete Inputs and Outputs</li>
+      <li>Starting Auto Mode Using Analogue/Discrete Inputs</li>
+      <li>Pausing Auto Mode Using Analogue/Discrete Inputs</li>
+      <li> Resuming Auto Mode Using Analogue/Discrete Inputs(after Pause)</li>
+      <li>Stopping Auto Mode Using Analogue/Discrete Inputs</li>
+      <li>Changing Control Modes Using Analogue/Discrete Inputs</li>
+      <li>Auto Mission Scripts</li>
+      <li> Auto missions run using proDAS test procedures</li>
+      <li>Auto missions run from a script stored in the throttle quadrant Display Computer</li>
+      <li>Auto Throttle Mode Interlocks</li>
+      <li>Starting an Auto Throttle Mission</li>
+      <li>Auto Ramp (Auto Throttle)</li>
+      <li>Auto Mission (Auto Throttle)</li>
+    </ul></td>
+  </tr>
+  <tr valign="top">
+    <td><h4><a href="../../References/HowTos/ControlMon/UECU/SelectEngine.html">How To &ndash; Select an Engine</a></h4></td>
+  </tr>
+  <tr valign="top">
+    <td><h4><a href="../../References/HowTos/ControlMon/UECU/StartUECU500.html">How To &ndash; Start the UECU-500 Mark III Throttle</a></h4></td>
+  </tr>
+  <tr valign="top">
+    <th><strong>Maintaining the</strong> <strong>UECU-500 Mark III Throttle System</strong></th>
+  </tr>
+  <tr valign="top">
+    <td><h4><a href="../../References/HowTos/ControlMon/UECU/AdjustOverride.html">How To - Adjust the Actuator Override Stop Position</a></h4></td>
+  </tr>
+  <tr valign="top">
+    <td><h4><a href="../../References/HowTos/ControlMon/UECU/UECUBackupRecovery.html">How To &ndash; Backup and Recover Data for the UECU-Mark III Throttle System</a></h4></td>
+  </tr>
+  <tr valign="top">
+    <td><h4><a href="../../References/HowTos/ControlMon/UECU/SpurBacklashGear.html">How To - Check the Actuator Spur and Anti-Backlash Gears</a></h4></td>
+  </tr>
+  <tr valign="top">
+    <td><h4><a href="../../References/HowTos/ControlMon/UECU/ActuatorWiring.html">How To - Check the Actuator Enclosure Assembly (Screws,Wires, Fasteners)</a></h4></td>
+  </tr>
+  <tr valign="top">
+    <td><h4><a href="../../References/HowTos/ControlMon/UECU/CheckThrottleWiring.html">How To - Check the Throttle Quadrant Wiring</a></h4></td>
+  </tr>
+  <tr valign="top">
+    <td><h4><a href="../../References/HowTos/ControlMon/UECU/ThrottleControllerWiring.html">How To - Check the Wiring in the Throttle Controller Enclosure Assembly</a></h4></td>
+  </tr>
+  <tr valign="top">
+    <td><h4><a href="../../References/HowTos/ControlMon/UECU/CleanThrottleQuad.html">How To - Clean the Throttle Quadrant</a></h4></td>
+  </tr>
+  <tr valign="top">
+    <td><h4><a href="../../References/HowTos/ControlMon/UECU/InspectBrushes.html">How To - Inspect the Brushes on the Throttle Lever</a></h4></td>
+  </tr>
+  <tr valign="top">
+    <td><h4><a href="../../References/HowTos/ControlMon/UECU/AirMotor.html">How To - Lubricate the Air Motor</a></h4></td>
+  </tr>
+  <tr valign="top">
+    <td><h4><a href="../../References/HowTos/ControlMon/UECU/SetupLeverPot.html">How To - Set Up the Lever Potentiometer</a></h4></td>
+  </tr>
+  <tr valign="top">
+    <td><h4><a href="../../References/HowTos/ControlMon/UECU/TroubleshootResolver.html">How To &ndash; Troubleshoot Issues with a Resolver</a></h4></td>
+  </tr>
+  <tr valign="top">
+    <td><h4><a href="../../References/HowTos/ControlMon/UECU/VerifyOverride.html">How To - Verify the Actuator Override System Operation</a></h4></td>
+  </tr>
+  
+</table>
+<br>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

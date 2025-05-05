@@ -1,0 +1,98 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Off-line Review of Event Logs</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1>Off-line Review of Unified Event Logs<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The proDAS Unified Event Log (UEL) tracks all the events that occur while proDAS is running. All messages from the Real-Time Engine are stored in a single event log file. Text messages are written to the event log file whenever an event occurs (e.g.: starting test monitoring, taking a fullset, or registering an alarm).</p>
+<p>A new event log is created and started whenever proDAS is reconfigured.</p>
+<p>Event logs are saved to the hard disk of the Host Computer:</p>
+<p>/users/RTE/logs/<em><strong>&lt;enginename&gt;/&lt;testname&gt;</strong></em>/event_logs/el<strong><em>YYMMDDHHmmss</em></strong></p>
+<p> where:</p>
+<ul>
+  <li><em>enginename</em> is the name of the test engine</li>
+  <li><em>testname</em> is the name of the test record</li>
+  <li>el identifies the file as an event log</li>
+  <li><em>YYMMDD</em> is the date (in a year (YY), month (MM), and day (DD) format) that the log was opened</li>
+  <li><em>HHmmss</em> is the time (in an hours (HH) (i.e.: 00-23), minutes (mm), and seconds (ss) format) that the log was opened </li>
+</ul>
+<h2 id="OfflineAccessEventLog">Off-line Access to an Event Log File</h2>
+<p>The Unified Event Logs can be reviewed off-line from any location as long as the operator has access to the UELDisplayServer.exe file. To review the event logs from previous engine tests:</p>
+<ol>
+  <li>Select <strong>Start\All Programs\Accessories\Run</strong> from the Taskbar.<br>
+    The Run window is displayed.
+    <div class="Container"><img src="images/RunWindow01.png" alt="Run Window 01" width="427" height="235"></div>
+  </li>
+  <li>If the location of the UELDisplayServer.exe file is known, enter the location (e.g.: D:\proDAS\bin\UELDisplayServer.exe) in the Open: field.<br>
+    If the location of the UELDisplayServer.exe file is not known, <a href="?2#ServerFileLocationNotKnow">go to Step 4</a>.
+    <div class="Container"><img src="images/RunWindow02.png" alt="Run Window 02" width="427" height="235"></div>
+  </li>
+  <li><a name="Step3AppendCommandLineFlag"></a>Append the command line flag <strong>/offline</strong> to the UELDisplayServer.exe file and <a href="?3#EventLogLocationKnown">go to Step 9</a>.
+    <div class="Container"><img src="images/RunWindow03.png" alt="Run Window 03" width="427" height="235"></div>
+  </li>
+  <li><a name="ServerFileLocationNotKnow"></a>If the location of the UELDisplayServer.exe file is not known, select <strong>Browse...</strong> from the Run window.<br>
+    The Browse window is displayed.
+    <div class="Container"><img src="images/Browse01.png" alt="Browse Dialog" width="640" height="512"></div>
+  </li>
+  <li>Select the file path (e.g.: proDAS) from the Look in: box on the Browse window.<br>
+    The contents of the proDAS folder are displayed in the Browse window.
+    <div class="Container"><img src="images/Browse01A.png" alt="Browse Dialog A" width="640" height="512"></div>
+  </li>
+  <li>Select the file path (e.g.: bin) from the Look in: box on the Browse window.<br>
+    The contents of the bin folder are displayed in the Browse window.
+    <div class="Container"><img src="images/Browse01B.png" alt="Browse Dialog B" width="640" height="512"></div>
+  </li>
+  <li>Select a file (e.g.: UELDisplayServer.exe) from the contents of the bin folder displayed in the Browse window.<br>
+    The file name is displayed in the File name: field when the file (e.g.: UELDisplayServer.exe) is selected.
+    <div class="Container"><img src="images/Browse02.png" alt="Browse 02" width="640" height="512"></div>
+    <br>
+  </li>
+  <li>Select <strong>Open</strong> and <a href="?4#Step3AppendCommandLineFlag">go to Step 3</a>.</li>
+  <li><a name="EventLogLocationKnown"></a>If the location of the Event Log file (e.g.: D:\proDAS\data\UEL Files\el030812164454.uel) is known, enter the location in the Open: field after the /offline flag.
+    <div class="Container"><img src="images/EventLogLocation.png" alt="Event Log Location" width="427" height="235"></div>
+  </li>
+  <li>Select <strong>OK</strong>.<br>
+    The <a href="?5#UELDisplay">Unified Event Log (UELDisplay) window</a> is opened.</li>
+  <li>If the location of the log file was not entered in Step 9, an Open dialogue window is displayed.
+    <div class="Container"><img src="images/ViewOpen.png" alt="View Open" width="561" height="413"></div>
+  </li>
+  <li>From the Open dialogue window, browse for the event log file using the Look in: box on the Open window and selecting the log file from the Open window display area.
+    <p class="Note">Log files saved through the UELDisplay have a .uel extension. Event logs created by the RTE do not have an extension.</p>
+  </li>
+  <li>To view the files created by the RTE, click on the <strong>Files of type:</strong> box and select <strong>All Files (*.*)</strong>.
+    <div class="Container"><img src="images/SelectAllFiles.png" alt="Select All Files" width="561" height="430"></div>
+    The display area of the Open dialogue box window is populated with all the log files in the selected folder.
+    <div class="Container"><img src="images/DisplayAllFiles.png" alt="Display All Files" width="561" height="413"></div>
+  </li>
+  <li>From the list of files in the Open window, select the file (e.g.: el030812164454.uel) to be opened.
+    <div class="Container"><img src="images/el030812164454select.png" alt="Select" width="561" height="413"></div>
+  </li>
+  <li>Select <strong>Open</strong>.<br>
+    The Unified Event Log Display (i.e.: UELDisplay) screen is opened.
+    <div class="Container" id="UELDisplay"><img src="images/UELofflineWithoutFilterPane.png" alt="UEL Offline" width="700" height="353"></div>
+    <a href="../../TestwithDAS/RunEngineTest/RunEngineTest.htm#UnifiedEventLog"><br>
+      Click here for detailed information on the Unified Event Log Display</a>.</li>
+</ol>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

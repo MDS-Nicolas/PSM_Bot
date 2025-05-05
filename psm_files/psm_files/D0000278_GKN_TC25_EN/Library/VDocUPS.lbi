@@ -1,0 +1,20 @@
+<table class="Table-Grey">
+  <tr> 
+    <th class="row-VDocManufacturer">Manufacturer</th>
+    <th class="row-VDocTitle">Manual Title</th>
+    <th class="row-VDocType">Manual Type</th>
+    <th class="row-VDocPartNumber">Part Number</th>
+  </tr>
+  <tr> 
+    <td>UPS-Teknik</td>
+    <td><a href="../References/VendorDocs/UPSTeknik/CATKR3110.pdf">KR 31 (3p-1p) 10-20 kVA</a></td>
+    <td>Product Data</td>
+    <td>110913</td>
+  </tr>
+  <tr>
+    <td>UPS-Teknik</td>
+    <td><a href="../References/VendorDocs/UPSTeknik/UMKR11KR316.pdf">KR Series UPS (6-10kVA)</a></td>
+    <td>User Manual</td>
+    <td>--</td>
+  </tr>
+</table>

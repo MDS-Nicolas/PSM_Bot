@@ -1,0 +1,88 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Linux Host Computer- Troubleshooting</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left>
+  <h1> Troubleshooting<a href="#" onClick="window.print(); return false;"><img src="../../../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<p>This section provides common troubleshooting  steps for the  Host Computer. </p>
+<p>It contains procedures for:</p>
+<ul>
+  <li><a href="#HostPCFreeze"> If the Host Computer Freezes</a></li>
+  <li><a href="#SoftwareFreeze">If the proDAS Software on the Host Computer Freezes</a></li>
+  <li><a href="#CompFail">Recovering from a Component Failure</a></li>
+  <li><a href="#CommFail">Recovering from a Communications Failure</a></li>
+  <li><a href="#SocketError">Error Message - Socket Bind Error</a></li>
+</ul>
+<p>&nbsp;</p>
+<h2 id="HostPCFreeze">If the Host Computer Freezes</h2>
+
+<ol><li>Reboot the Host Computer. <br>
+  To reboot the Host Computer, see <a href="RebootHostPC.html">How To &ndash; Reboot the Host Computer</a>.</li>
+  <li>If the Host Computer does not reboot, there is a system problem, such as a loose or damaged component.<br>
+    For system problems, see the Red Hat Enterprise Linux vendor documentation:
+      <ul>
+        <li><a href="../../../VendorDocs/RedHat/IGrheMRGR.pdf">Red Hat Enterprise MRG 1.2 Realtime Installation Guide</a></li>
+        <li><a href="../../../VendorDocs/RedHat/RGrheMRGR.pdf">Red Hat Enterprise MRG 1.2 Realtime Reference Guide</a></li>
+        <li><a href="../../../VendorDocs/RedHat/EnterInstallGuide.pdf">Red Hat Enterprise Linux 5.2 Installation Guide</a></li>
+        <li><a href="../../../VendorDocs/RedHat/EnterDeployGuide.pdf"> Red Hat Enterprise Linux 5.2 Deployment Guide</a></li>
+      </ul>
+  </li>
+</ol>
+<h2 id="SoftwareFreeze">If the proDAS Software on the Host Computer Freezes</h2>
+<p>If the proDAS software freezes, proDAS should restart automatically and the Management GUI should reconnect. </p>
+<p>If proDAS does not restart automatically:</p>
+<ol>
+  <li> Log in as <strong>root</strong>.</li>
+  <li>Enter <strong>ps -el | grep proDAS</strong>. A list of processes is displayed. <br>
+  If the proDAS session is one of the processes that is displayed on the list, contact MDS.</li>
+</ol>
+<p>If the proDAS session is not one of the processes that is displayed on the list, restart the session with the following procedure: </p>
+<ol>
+  <li>Log in as <strong>root</strong>. </li>
+  <li> Enter <strong>/etc/init.d/runprodas start</strong> on a command line. </li>
+  <li> Enter <strong>ps -ef | grep proDAS</strong>. </li>
+  <li> If proDAS does not start, contact MDS.</li>
+</ol>    
+  <h2 id="CompFail">Recovering from a Component Failure</h2>
+  <p>If there is a component failure on the Host computer, a message is displayed on the  System Console.  </p>
+  <p>To recover from a component failure:</p>
+  <ol>
+    <li> Troubleshoot the failed component.</li>
+    <li> After the Host computer is repaired, it is recommended that the entire proDAS system be powered down and restarted. For details, see <a href="../../proDAS/InstrPowerDown.html">How To &ndash; Power Down the Instrumentation System</a>.</li>
+  </ol>  
+
+
+<h2 id="CommFail">Recovering from a Communications Failure</h2>
+<p>If a communication error message is displayed on the Management GUI Computer as a result of a communications failure between the Management GUI Computer and proDAS:</p>
+<ol>
+  <li>On the Management GUI Computer, return to the Management GUI Home screen and select <strong>Quit</strong>.</li>
+  <li> Close all other running applications.</li>
+  <li> Reboot the Management GUI Computer. proDAS exits and then restarts automatically within 10-20 seconds.</li>
+  <li> On the Management GUI Computer, restart the proDAS Management Interface application and login to proDAS.<br>
+  Communications between the Management GUI Computer and the Host Computer should now be restored and the engine test can be continued.</li>
+</ol>
+<h2 id="SocketError">Error Message - Socket Bind Error</h2>
+<p>If the server exits (Host Computer) while the client(s) (Windows computers) are still connected, the operating system places the server socket for the connection to the client into a transition state: <strong>fin_wait_2</strong>.</p>
+<p class="Note"> The time out for the transition state is 13 - 14 minutes.</p>
+<p>If a socket bind error message is displayed when starting proDAS or any server, either reboot or wait 15 minutes and retry.</p>
+<br>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

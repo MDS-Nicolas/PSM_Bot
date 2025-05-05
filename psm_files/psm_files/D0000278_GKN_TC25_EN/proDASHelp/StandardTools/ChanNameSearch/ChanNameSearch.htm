@@ -1,0 +1,217 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Channel Name Search (CNS)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1>Channel Name Search (CNS)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+
+<h2 id="Overview">Overview</h2>
+<p>The Channel Name Search (CNS) is a stand-alone application for searching references of channels in the XML configuration, scripts referenced by macros, RTD pages and Tabular Channel Display (TCD) files. The Channel Name Search (CNS) can be launched:</p>
+<ul>
+  <li>as a stand-alone application</li>
+  <li>from the Test Page by selecting <img src="images/CNSbtn.gif" alt="CNS btn" width="28" height="27"> from the Set Channel tab</li>
+  <li>from the Channel Editor by selecting <strong>Find Channel in proDAS</strong> from the <strong>Edit</strong> menu or from the context sensitive menu</li>
+  <li>from the Channel Editor <strong>Edit Channel</strong> window by selecting <img src="images/BtnSearch.png" alt="Btn Search" width="26" height="22"></li>
+</ul>
+<p class="Note">The path to the Channel Name Search is defined in the ChannelEditor.ini file. If the path is not defined in the ini file, the Channel Editor startup directory is used.</p>
+<h2 id="GUI">Channel Name Search Window</h2>
+<p>The main window consists of:</p>
+<ul>
+  <li>Menus</li>
+  <li>Search Controls
+    <ul>
+      <li>a combined list and text box for specifying a channel name</li>
+      <li>a Find button</li>
+      <li>checkboxes and controls for selecting/deselecting data categories</li>
+    </ul>
+  </li>
+  <li>Result Table</li>
+  <li>Status Bar</li>
+</ul>
+<div class="Container"><img src="images/CNS.gif" alt="CNS" width="700" height="479"></div>
+<h3 id="Menus">Menus</h3>
+<p>The main menu is divided into the following pull-down menus:</p>
+<ul>
+  <li><a href="?7#File">File</a></li>
+  <li><a href="?8#Search">Search</a></li>
+  <li><a href="?10#Help">Help</a></li>
+</ul>
+<h4 id="File">File</h4>
+<p>The <strong>File</strong> menu (displayed below) is described in the table below.</p>
+<div class="Container"><img src="images/MenuFile.gif" alt="MenuFile" width="154" height="75"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Save Results... </td>
+    <td>Allows the user to export results of a search into a CVS file.</td>
+  </tr>
+  <tr>
+    <td>Exit</td>
+    <td>Closes the Channel Name Search application.</td>
+  </tr>
+</table>
+<h4 id="Search">Search</h4>
+<p>The <strong>Search</strong> menu (displayed below) is described in the table below.</p>
+<div class="Container"><img src="images/MenuSearch.gif" alt="Menu Search" width="234" height="47"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Select Configuration...</td>
+    <td>Displays the Select proDAS configuration window. This window allows the user to select a  configuration.
+      <div class="Container"><img src="images/CNSSelectConfig.gif" alt="CNS Select Config" width="421" height="305"></div></td>
+  </tr>
+</table>
+<h4 id="Help">Help</h4>
+<p>The <strong>Help</strong> menu (displayed below) is described in the table below.</p>
+<div class="Container"><img src="images/MenuHelp.gif" alt="Menu Help" width="259" height="96"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Getting Started...</td>
+    <td>Opens the first page of the proDAS Integrated Help.</td>
+  </tr>
+  <tr>
+    <td>Topics</td>
+    <td>Contains all specific help topics referring to the Channel Name Search.</td>
+  </tr>
+  <tr>
+    <td>About...</td>
+    <td>Displays information about the Channel Name Search, comprising the name, version number, and copyright.</td>
+  </tr>
+</table>
+<h3 id="Controls">Search Controls</h3>
+<p>A combined text and list box is available where the operator can specify a channel name. Initially, the list box contains the recently used channel names. After selecting a configuration, all available channels of the selected configuration are available.</p>
+<div class="Container"><img src="images/CNSControls.gif" alt="CNS Controls" width="700" height="101"></div>
+<br>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Channel Name</td>
+    <td>Displays a list of available channel names.</td>
+  </tr>
+  <tr>
+    <td>Find</td>
+    <td>Starts the search.</td>
+  </tr>
+  <tr>
+    <td>Numbers of occurrences per category</td>
+    <td>Displays the number of hits for each category based on the last search displayed. Checkboxes are available to select/deselect categories for the specified channel name being searched.</td>
+  </tr>
+  <tr>
+    <td>All</td>
+    <td>Selects all categories.</td>
+  </tr>
+  <tr>
+    <td>None</td>
+    <td>Deselects all categories.</td>
+  </tr>
+  <tr>
+    <td>Invert</td>
+    <td>Deselects all selected categories and selects all deselected categories.</td>
+  </tr>
+</table>
+<h3 id="ResultTable">Result Table</h3>
+<p>The result table displays the locations where  the channel name was found.</p>
+<div class="Container"><img src="images/CNSResults.gif" alt="CNS Results" width="700" height="94"></div>
+<br>
+<table class="Table-Grey">
+  <tr>
+    <th>Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Category</td>
+    <td>Displays the data category.</td>
+  </tr>
+  <tr>
+    <td>Item Name</td>
+    <td>Displays the name of the entity within the data category.
+      <p class="Note">For TCD files and RTD pages a file name is displayed.</p></td>
+  </tr>
+  <tr>
+    <td>Level</td>
+    <td>Displays the level within the XML configuration.
+      <p class="Note">Not applicable for TCD files and RTD pages.</p></td>
+  </tr>
+  <tr>
+    <td>Enabled</td>
+    <td>Displays whether the item is enabled in the configuration.
+      <p class="Note">Not applicable for TCD files and RTD pages.</p></td>
+  </tr>
+  <tr>
+    <td>Active</td>
+    <td>Displays whether the item is active in the configuration.
+      <p class="Note">Not applicable for TCD files and RTD pages.</p></td>
+  </tr>
+  <tr>
+    <td>Type</td>
+    <td>Displays the item type.
+      <p class="Note">Contents depends on the category. Does not apply to all categories.</p></td>
+  </tr>
+  <tr>
+    <td>File Path</td>
+    <td>Displays the path to the macros, TCD files and RTD pages.</td>
+  </tr>
+  <tr>
+    <td>Location</td>
+    <td>Describes the location of the channel reference within the item.</td>
+  </tr>
+  <tr>
+    <td>#Occurrences</td>
+    <td>Describes the number of occurrences within macros, TCD files and RTD pages.</td>
+  </tr>
+</table>
+<h3 id="StatusBar">Status Bar</h3>
+<p>The status bar displays the currently selected configuration.</p>
+<div class="Container"><img src="images/StatusBar.gif" alt="StatusBar" width="700" height="25"></div>
+<br>
+<h2 id="PerformCNS">Performing a Channel Name Search</h2>
+<p>To perform a Channel Name Search:</p>
+<ol>
+  <li>Launch the Channel Name Search from the MGT GUI Test Page (<img src="images/CNSbtn.gif" alt="CNS btn" width="28" height="27">), Channel Editor (<strong>Find Channel in proDAS</strong> from the <strong>Edit</strong> menu or from the context sensitive menu) or Edit Channel window (<img src="images/BtnSearch.png" alt="Btn Search" width="26" height="22">). The Channel Name Search is displayed.
+    <div class="Container"><img src="images/CNS.gif" alt="" width="700" height="479"></div>
+  </li>
+  <li>From the Search menu, select <strong>Select Configuration...</strong>. The Select proDAS configuration window is displayed.
+    <div class="Container"><img src="images/CNSSelectConfig.gif" alt="" width="421" height="305"></div>
+  </li>
+  <li>Select the required configuration, select <strong>OK</strong>. The Channel Name Search window is displayed.
+    <div class="Container"><img src="images/CNS.gif" alt="CNS" width="700" height="479"></div>
+  </li>
+  <li>Specify a channel name and search criteria (select/deselct desired categories), select <strong>Find</strong>. The search results are displayed in the Results table.</li>
+  <li>From the File menu, select <strong>Save Results...</strong> to export the results.</li>
+  <li>Import the CSV file into Excel  (delimiter is tab).</li>
+</ol>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

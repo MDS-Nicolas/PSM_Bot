@@ -1,0 +1,94 @@
+<!DOCTYPE HTML><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>VXI Hardware Components</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+
+<div float:left><h1>VXI Hardware Interface<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<h2>Components</h2>
+<p>The VXI System consists of a VXI chassis which contains various plug-in cards.</p>
+<p>The VXI System is located in the Instrumentation Room in rack CM2, slot A5.</p>
+<p>The VXI Subsystem in proDAS communicates to the VXI chassis through a PCI-MXI-2 card in the PCI Expansion Chassis of the <a href="../../CompCfg/HostPC/HostPCOverview.html">Host Computer</a>. An MXI-2 cable connects the PCI-MXI-2 card to a VXI-MXI-2 Extender Card installed in the VXI chassis.</p>
+<p>The VXI Hardware Interface System contains the following major components:</p>
+<table class="Table-Grey">
+  <tr>
+    <th width="20%" class="row-Component">Component</th>
+    <th width="50%" class="row-CompDescription">Description</th>
+  </tr>
+  <tr>
+    <td>VXI Chassis</td>
+    <td>The CT-400 C-Size VXI mainframe chassis provides a communications backplane for the VXI cards and a communications interface to proDAS. The chassis is mounted in an equipment rack to provide easy access for servicing and maintenance. The chassis contains a power supply, which provides power to the chassis and to all the VXI cards installed in the chassis. Fans within the chassis cool the power supply and the cards.</td>
+  </tr>
+  <tr>
+    <td>VT1413C 64-Channel High-Speed Scanning A/D Converter Card</td>
+    <td>The VT1413C 64-channel high-speed scanning A/D converter card converts analogue signals to digital signals. It provides:
+      <ul>
+		  <li>high-speed scanning</li>      
+		  <li>16-bit resolution</li>
+		  <li>0.02% full scale accuracy</li>     
+		  <li>4 mV to 16 V full-scale input</li>
+		  <li>64 kSa dual-ported FIFO buffer</li>
+		  <li>current value buffer for on-line monitoring</li>
+		  <li>automatic self-calibration of the complete path for every channel</li>
+		  <li>auto zero</li>
+		  <li>built-in self-test diagnostics</li>
+    </ul></td>
+  </tr>
+  <tr>
+    <td>VT1503A Eight-Channel Programmable Filter and Gain SCP</td>
+    <td>The VT1503A eight-channel programmable filter and gain SCP conditions up to eight channels.<br>
+      <br>
+Each channel has a programmable low-pass passive filter with cutoff frequency settings of 2, 10, and 100 Hz. The card converts channels at up to 200 Hz scan rate. The programmable input amplifiers for each channel have gain settings of 1, 8, and 64. The card provides input over-voltage protection and open transducer detection for each channel.</td>
+  </tr>
+  <tr>
+    <td>E1458A 96-Channel Digital Input/Output (I/O) Module</td>
+    <td>The E1458A 96-channel digital input/output (I/O) module has twelve ports intended for digital input/output control in electronic environments. It is  compatible with both TTL levels (0-5 volts) and CMOS levels (using an external pull-up). It contains twelve 8-bit input or output ports for data acquisition, plus six handshake lines for each port. Each port can be configured for input or output using the Channel Editor but, all channels on a port must have identical configuration, input or output.<br>
+    <br>Ribbon cable connects the input/output data lines to a terminal panel containing optical isolators. All inputs and outputs used in this facility for the E1458A card are optically isolated. The output data lines can be configured as decimal, binary, octal, or hexadecimal. The read or write operation of a data port is carried out on a per-port basis. This implementation controls and monitors each bit.</td>
+  </tr>
+  <tr>
+    <td>PCI-MXI-2 extender card</td>
+    <td>The VXI Subsystem in proDAS communicates with the VXI chassis through a PCI-MXI-2 card in the PCI expansion chassis of the <a href="../../CompCfg/HostPC/HostPCOverview.html">Host Computer</a>. A MXI-2 cable connects the PCI-MXI-2 card to a VXI-MXI-2 extender card in the VXI chassis.</td>
+  </tr>
+  <tr>
+    <td>777185-01</td>
+    <td>National Instruments PCI-MXI-2 Card Kit</td>
+  </tr>
+  <tr>
+    <td>777164-02</td>
+    <td>The MXI-2 cable connects the VXI chassis to the PCI expansion chassis.</td>
+  </tr>
+  <tr>
+    <td>CA801-2M</td>
+    <td>The L-Com 2m SCSI-2 cable connects the VTI1413C  card in the VXI chassis to the VXI terminal panel. For connection details, see <a href="../../References/MDSDrawings/A0000237.pdf">A-0000237 Assembly-Wiring, GKN, Test Cell 25, Analog Inputs</a>.</td>
+  </tr>
+  <tr>
+    <td>CA801-3M</td>
+    <td>The L-Com 3m SCSI-2 cable connects the VTI1413C and the VTI1415A cards in the VXI chassis to the VXI terminal panel. For connection details, see <a href="../../References/MDSDrawings/A0000237.pdf">A-0000237 Assembly-Wiring, GKN, Test Cell 25, Analog Inputs</a>.</td>
+  </tr>
+  <tr>
+    <td>A-0000278</td>
+    <td>The digital I/O ribbon cable assembly connects the E1458A card in the VXI chassis to the digital input/output chassis.</td>
+  </tr>
+</table>
+	<p>For OEM operational information, see <a href="VXIVDocs.html">Vendor Documentation</a>.</p>
+<br>
+  <br>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

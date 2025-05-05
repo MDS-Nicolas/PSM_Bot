@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Power Supplies - Maintenance</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left><h1>Power Supplies (DC)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<h2 id="Maintenance">Maintenance</h2>
+
+<p>There is no MDS recommended maintenance for the Power Supplies (DC).</p>
+<p class="Note">For details on cleaning the power supplies and all of the components in the racks, see <a href="../Racks/RacksMaint.html">Equipment Racks</a>.</p>
+<p>The <a href="#trouble">Troubleshooting</a> information may assist in determining the cause of power supply failures.</p>
+<p class="Note">See the <a href="PowerVDocs.html">vendor documentation</a> for OEM recommended maintenance.</p>
+<p class="Warning">To prevent serious injury and or irreparable damage to equipment, observe all manufacturer's warnings and safety precautions during operation and/or maintenance.</p>
+<p class="Caution">To prevent injury and damage to equipment, ensure components are mechanically or electrically isolated prior to performing maintenance. </p>
+<p class="Caution">To prevent injury and damage to equipment, the operation and/or maintenance should be carried out by a qualified technician.</p>
+<h2 id="trouble">Troubleshooting</h2>
+<p>The following table indicates possible causes for power supply failure.</p>
+<table width="746" class="Table-Grey">
+  <tr>
+    <th width="36%"  rowspan="2" class="row-Topic">Item</th>
+    <th colspan="2">Troubleshooting</th>
+  </tr>
+  <tr>
+    <th width="28%">Detection Method</th>
+    <th width="36%">Possible Causes</th>
+  </tr>
+  <tr>
+    <td>Power supply failure.</td>
+    <td>PLC HMI message.</td>
+    <td>Temperature<br>
+      Humidity<br>
+      Vibration.</td>
+  </tr>
+  <tr>
+    <td>Output voltage not correct.</td>
+    <td>Power supply digital display indicates problem, or devices not working correctly.</td>
+    <td>Output level control has been accidentally or improperly adjusted.<br><br>
+    <strong>Solution</strong>: Set output control to proper level. Check output using a multimeter. </td>
+  </tr>
+  <tr>
+    <td>Output voltage too low.</td>
+    <td>Power supply digital display indicates problem, or devices not working correctly.</td>
+    <td><strong>Solution</strong>: Remove excess load from the power supply.<br>
+    Increase current limit setting (refer to User Manual for procedure).</td>
+  </tr>
+  <tr>
+    <td>Power supply will not start after power cycle.</td>
+    <td>Power supply digital display indicates problem, or devices not working correctly.</td>
+    <td>Equipment cold startup load is too high.<br>
+    <strong>Solution</strong>: Remove excess load from the power supply temporarily by opening some of the power distribution fuses. Reinstall the fuses gradually to slowly increase the load. Increase current limit setting (refer to User Manual for procedure.)</td>
+  </tr>
+  <tr>
+    <td>Some devices connected to the power supplies powers-up and some devices don't power up.</td>
+    <td>Some devices don't power-up.</td>
+    <td>Check individual fuses.</td>
+  </tr>
+</table>
+
+<h3>Special Tools and Equipment </h3>
+<p>The following equipment is required during troubleshooting:</p>
+<ul>
+  <li>Multimeter (The multimeter must be able to read AC signals up to 5 kHz.)</li>
+  <li> Dual trace 10 MHz or greater portable digital oscilloscope</li>
+  <li>Portable loop calibrator (Source, DC Volts &amp; current, Thermocouple output)</li>
+</ul>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

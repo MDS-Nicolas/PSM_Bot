@@ -1,0 +1,14 @@
+<table class="Table-Grey">
+  <tr>
+    <th class="row-DwgNumber">Drawing Number</th>
+    <th class="row-DwgTitle">Drawing Title</th>
+  </tr>
+  <tr>
+    <td><a href="../References/MDSDrawings/A0000237.pdf">A-0000237</a></td>
+    <td>Assembly - Wiring, GKN, Test Cell 25, Analogue Inputs</td>
+  </tr>
+  <tr>
+    <td><a href="../References/MDSDrawings/D0000509.pdf">D-0000509</a></td>
+    <td>Block Diagram, GKN, Test Cell 25, Analogue</td>
+  </tr>
+</table>

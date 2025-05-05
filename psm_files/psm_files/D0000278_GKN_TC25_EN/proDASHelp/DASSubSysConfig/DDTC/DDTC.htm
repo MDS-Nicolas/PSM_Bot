@@ -1,0 +1,754 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Dynamic Data Telemetry Control (DDTC) Subsystem</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left>
+  <h1 id="DDTCS">Dynamic Data Telemetry Control (DDTC) Subsystem (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The DDTC Subsystem driver provides functions to open and close the communication over the telemetry control link to the telemetry devices. The DDTC Subsystem scans the status of the Telemetry Units, stores the status in CVT channels, and sends control requests to the Telemetry Units.</p>
+<h2 id="Operation">Operation</h2>
+<p>The proDAS DDTC Subsystem driver controls communications on the telemetry control link to the  telemetry units.</p>
+<p> proDAS transmits control commands to the STINCA units to:</p>
+<ul>
+  <li>select one of four banks of channels (labeled A, B, C and D)</li>
+  <li>automatically sets the gain for either or both groups of channels within the current bank based upon the selection change</li>
+  <li>set the gauge depolarisation ON or OFF</li>
+  <li>set the  calibration signal ON or OFF</li>
+  <li>get the power status and air status</li>
+</ul>
+<p>For parameter details, see <a href="../DDS/DDS.htm#STINCAControl">Telemetry Control (STINCA) in DDS Subsystem</a>.</p>
+<p>proDAS transmits control commands to the DIGBERT receiver and wing box devices to:</p>
+<ul>
+  <li>get/set the tuning level for the receiver</li>
+  <li>get/select one bank of channels among 3 (labeled A, B, and C)</li>
+  <li>get the rotor power and temperature status</li>
+  <li>get/set the gauge depolarization ON or OFF</li>
+  <li>get/set the calibration signal ON or OFF</li>
+</ul>
+<p>proDAS transmits control commands to the PINCA receiver and wing box devices to:</p>
+<ul>
+  <li>get/select one bank of channels among 4 (labeled A, B, C, and D)</li>
+  <li>get/set the tuning level for receiver A and B</li>
+  <li>get/set the gauge depolarization ON or OFF</li>
+  <li>get/set the calibration signal ON or OFF</li>
+  <li>get/set the power switch for the DIGBERT device ON or OFF</li>
+  <li>get/ramp the power level</li>
+  <li>get the coil loading</li>
+  <li>get the rotor power feedback, temperature status, and air on status</li>
+  <li>get/control the wing box power supply (STANDBY or ON)</li>
+  <li>get the UHF status</li>
+</ul>
+<p>proDAS transmits control commands to the CHINCA units to:</p>
+<ul>
+  <li>get/select the desired channel number in the 1 - 24 range (using the control channels; CH_INCR, CH_DECR and CH_SEL)</li>
+  <li>get/set the MODE (Acceleration, Velocity, or  Pressure) for the currently selected channel</li>
+  <li>get/set the GAIN (RANGE) for the currently  selected channel</li>
+  <li>connect or disconnect the input for the current  channel</li>
+  <li>get/set the Calibration (ON or OFF) of the CHINCA  unit</li>
+  <li>get the Air status, and Power status of the  CHINCA unit </li>
+</ul>
+<p>For parameter details, see <a href="../DDS/DDS.htm#TelemetryControl">Telemetry Control (CHINCA) in DDS Subsystem</a>.</p>
+<p>proDAS transmits control commands to the FBOSTINCA unit to: </p>
+<ul>
+  <li>get/set one bank of channels among 4 (labeled A, B, C and D)</li>
+  <li>get/set the desired channel number (in the range 1-24)</li>
+  <li>get/set the GAIN (RANGE) for the currently selected channel (in the range 0-7)</li>
+  <li>get/set the calibration frequency (in the range 0-15)</li>
+  <li>get/set the gauge depolarization (ON/OFF)</li>
+  <li>get/set the Calibration (ON/OFF)</li>
+  <li>get/set the unit gauge trip (ON/OFF)</li>
+  <li>get the channel trip status (TRIP/NOT TRIP)</li>
+</ul>
+<p>For parameter details, see <a href="../DDS/DDS.htm#FBOSTINCAControl">Telemetry Control (FBOSTINCA) in DDS Subsystem</a>.</p>
+<p>proDAS transmits control commands to the FBOCHINCA unit to: </p>
+<ul>
+  <li>get/set the desired channel number (in the range 1-24)</li>
+  <li>get/set the GAIN (RANGE) for the currently selected channel (in the range 0-3)</li>
+  <li>get/set the MODE (Acceleration, Velocity, or Pressure) for the currently selected channel</li>
+  <li>get/set the calibration frequency (in the range 0-15)</li>
+  <li>get/set the Calibration (ON/OFF)</li>
+  <li>get/set the Calibration mode (ON/OFF)</li>
+  <li>get/set the gauge depolarization (ON/OFF)</li>
+  <li>get/set the unit gauge trip (ON/OFF)</li>
+  <li>get the channel trip status (TRIP/NOT TRIP) </li>
+</ul>
+<p>For parameter details, see <a href="../DDS/DDS.htm#FBOCHINCAControl">Telemetry Control (FBOCHINCA) in DDS Subsystem</a>.</p>
+<p>proDAS transmits control commands to the TINCA unit to: </p>
+<ul>
+  <li>get/set the desired channel number (in the range 1-24)</li>
+  <li>get/set the GAIN (RANGE) for the currently selected channel (in the range 0-2)</li>
+  <li>get/set the auto balance bridge command (ON/OFF)</li>
+  <li>get/set the reset auto balance bridge command (ON/OFF)</li>
+  <li>get the bridge circuit status (1/4, &frac12;, full bridge)</li>
+  <li>get the resistance status (350&Omega; or 120&Omega;)</li>
+  <li>get/set the calibration frequency (in the range 0-15)</li>
+  <li>get/set the bridge polarization setting (0V, 2V, 5V, 10V)</li>
+  <li>get/set the Calibration mode (ON/OFF)</li>
+  <li>get/set the Calibration (ON/OFF)</li>
+  <li>get/set the gauge depolarization (ON/OFF)</li>
+  <li>get/set the unit gauge trip (ON/OFF)</li>
+  <li>get the channel trip status (TRIP/NOT TRIP)</li>
+</ul>
+<p>For parameter details, see <a href="../DDS/DDS.htm#TINCAControl">Telemetry Control (TINCA) in DDS Subsystem</a>.</p>
+<p>proDAS transmits control commands to the CWINCA unit to: </p>
+<ul>
+  <li>get/set the desired channel number (in the range 1-24)</li>
+  <li>get/set the GAIN (RANGE) for the currently selected channel (in the range 0)</li>
+  <li>get/set the test mode (ON/OFF)</li>
+  <li>get/set the unit gauge trip (ON/OFF)</li>
+  <li>get the channel trip status (TRIP/NOT TRIP)</li>
+</ul>
+<p>Communication errors  are reported with the proDAS Unified Event Log (UEL).</p>
+<p>proDAS obtains the following general status information from the FBOSTINCA, FBOCHINCA, TINCA, and CWINCA devices: </p>
+<ul>
+  <li>get the unit id of the selected device</li>
+  <li>get the unit temperature</li>
+  <li>get the air supply indication (ON/OFF)</li>
+  <li>get the positive power indication (HIGH/LOW)</li>
+  <li>get the negative power indication (HIGH/LOW)</li>
+  <li>get the over temperature indication (ON/OFF)</li>
+</ul>
+<h3>Channel Addresses</h3>
+<p>The following  channel addresses are used (in the Configuration Import/Export (CIE) Utility's setup file):</p>
+<p>For each STINCA  device:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Channel identifier</th>
+    <th>Purpose of the channel</th>
+  </tr>
+  <tr>
+    <td>SEL_A</td>
+    <td>Selection A</td>
+  </tr>
+  <tr>
+    <td>SEL_B</td>
+    <td>Selection B</td>
+  </tr>
+  <tr>
+    <td>SEL_C</td>
+    <td>Selection C</td>
+  </tr>
+  <tr>
+    <td>SEL_D</td>
+    <td>Selection D</td>
+  </tr>
+  <tr>
+    <td>POL</td>
+    <td>Gauge depolarization</td>
+  </tr>
+  <tr>
+    <td>CAL</td>
+    <td>Calibration signal enable</td>
+  </tr>
+  <tr>
+    <td>AIR</td>
+    <td>Air cooling</td>
+  </tr>
+  <tr>
+    <td>GN1_STEP</td>
+    <td>Gain step value for channels 1-12</td>
+  </tr>
+  <tr>
+    <td>GN2_STEP</td>
+    <td>Gain step value for channels 13-24</td>
+  </tr>
+  <tr>
+    <td>GN1</td>
+    <td>Gain value for channels 1-12</td>
+  </tr>
+  <tr>
+    <td>GN2</td>
+    <td>Gain value for channels 13-24</td>
+  </tr>
+  <tr>
+    <td>MVE_LO</td>
+    <td>-ve supply lo</td>
+  </tr>
+  <tr>
+    <td>MVE_HI</td>
+    <td>-ve supply hi</td>
+  </tr>
+  <tr>
+    <td>PVE_LO</td>
+    <td>+ve supply lo</td>
+  </tr>
+  <tr>
+    <td>PVE_HI</td>
+    <td>+ve supply hi</td>
+  </tr>
+</table>
+<p>For each PINCA (receiver and wing box) device:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Channel identifier</th>
+    <th>Purpose of the channel</th>
+  </tr>
+  <tr>
+    <td>SEL_A</td>
+    <td>Selection A</td>
+  </tr>
+  <tr>
+    <td>SEL_B</td>
+    <td>Selection B</td>
+  </tr>
+  <tr>
+    <td>SEL_C</td>
+    <td>Selection C</td>
+  </tr>
+  <tr>
+    <td>SEL_D</td>
+    <td>Selection D</td>
+  </tr>
+  <tr>
+    <td>POL</td>
+    <td>Gauge depolarization </td>
+  </tr>
+  <tr>
+    <td>CAL</td>
+    <td>Calibration signal enable</td>
+  </tr>
+  <tr>
+    <td>ROT</td>
+    <td>Indicates whether rotor is off</td>
+  </tr>
+  <tr>
+    <td>PWR_INC</td>
+    <td>Instructs INCA to ramp power level up</td>
+  </tr>
+  <tr>
+    <td>PWR_DEC</td>
+    <td>Instructs INCA to ramp power level down</td>
+  </tr>
+  <tr>
+    <td>PWR_HLD</td>
+    <td>Instructs INCA to hold power level</td>
+  </tr>
+  <tr>
+    <td>COL_INC</td>
+    <td>Coil loading increment</td>
+  </tr>
+  <tr>
+    <td>COL_DEC</td>
+    <td>Coil loading decrement</td>
+  </tr>
+  <tr>
+    <td>FBK_IC</td>
+    <td>Current in power feedback</td>
+  </tr>
+  <tr>
+    <td>FBK_OC</td>
+    <td>Current out power feedback</td>
+  </tr>
+  <tr>
+    <td>FBK_OV</td>
+    <td>Voltage out power feedback</td>
+  </tr>
+  <tr>
+    <td>STB</td>
+    <td>Stand by</td>
+  </tr>
+  <tr>
+    <td>WB_ON</td>
+    <td>Wing Box on</td>
+  </tr>
+  <tr>
+    <td>TVA</td>
+    <td>Tuning value A</td>
+  </tr>
+  <tr>
+    <td>TVB</td>
+    <td>Tuning value  B</td>
+  </tr>
+  <tr>
+    <td>TVA_STEP</td>
+    <td>Tuning step value for receiver A, to be used unless value is zero, or maximum</td>
+  </tr>
+  <tr>
+    <td>TVB_STEP</td>
+    <td>Tuning step value for receiver B, to be used unless value is zero, or maximum</td>
+  </tr>
+  <tr>
+    <td>TDM_DS</td>
+    <td>TDM data source (receiver A,B,or none)</td>
+  </tr>
+  <tr>
+    <td>TSA_UP</td>
+    <td>Tuning status A up</td>
+  </tr>
+  <tr>
+    <td>TSA_HD</td>
+    <td>Tuning status A hold</td>
+  </tr>
+  <tr>
+    <td>TSA_DN</td>
+    <td>Tuning status A down</td>
+  </tr>
+  <tr>
+    <td>TSB_UP</td>
+    <td>Tuning status B up</td>
+  </tr>
+  <tr>
+    <td>TSB_HD</td>
+    <td>Tuning status B hold</td>
+  </tr>
+  <tr>
+    <td>TSB_DN</td>
+    <td>Tuning status B down</td>
+  </tr>
+  <tr>
+    <td>PWRDL</td>
+    <td>Power demand level</td>
+  </tr>
+  <tr>
+    <td>PWRL</td>
+    <td>Power level</td>
+  </tr>
+  <tr>
+    <td>NOA</td>
+    <td>No Air</td>
+  </tr>
+  <tr>
+    <td>PAO</td>
+    <td>PA Over Temperature</td>
+  </tr>
+  <tr>
+    <td>SCU_OFF</td>
+    <td>SCU off</td>
+  </tr>
+  <tr>
+    <td>SCU_ON</td>
+    <td>SCU on</td>
+  </tr>
+  <tr>
+    <td>NO_UHF</td>
+    <td>No UHF data</td>
+  </tr>
+  <tr>
+    <td>COL</td>
+    <td>Coil loading value</td>
+  </tr>
+</table>
+<p>For each DIGBERT (receiver and wing box) device:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Channel identifier</th>
+    <th>Purpose of the channel</th>
+  </tr>
+  <tr>
+    <td>SEL_A</td>
+    <td>Selection A</td>
+  </tr>
+  <tr>
+    <td>SEL_B</td>
+    <td>Selection B</td>
+  </tr>
+  <tr>
+    <td>SEL_C</td>
+    <td>Selection C</td>
+  </tr>
+  <tr>
+    <td>POL</td>
+    <td>Gauge depolarization</td>
+  </tr>
+  <tr>
+    <td>CAL</td>
+    <td>Calibration signal enable</td>
+  </tr>
+  <tr>
+    <td>ROT</td>
+    <td>Indicates whether rotor is off</td>
+  </tr>
+  <tr>
+    <td>TVA </td>
+    <td>Tuning Value A </td>
+  </tr>
+  <tr>
+    <td>TVA-STEP</td>
+    <td>Tuning step value for receiver A, to be used unless value is zero, or maximum</td>
+  </tr>
+  <tr>
+    <td>TSA_UP</td>
+    <td>Tuning status A up</td>
+  </tr>
+  <tr>
+    <td>TSA_HD</td>
+    <td>Tuning status A hold</td>
+  </tr>
+  <tr>
+    <td>TSA_DN</td>
+    <td>Tuning status A down</td>
+  </tr>
+  <tr>
+    <td>UNIT-TEMP</td>
+    <td>Unit Temperature</td>
+  </tr>
+</table>
+<p>For each CHINCA device:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Channel identifier</th>
+    <th>Purpose of the channel</th>
+  </tr>
+  <tr>
+    <td>CH_INCR</td>
+    <td>Next channel</td>
+  </tr>
+  <tr>
+    <td>CH_DECR</td>
+    <td>Previous channel</td>
+  </tr>
+  <tr>
+    <td>CH_SEL</td>
+    <td>Select channel</td>
+  </tr>
+  <tr>
+    <td>CH_MODE</td>
+    <td>Current channel's mode</td>
+  </tr>
+  <tr>
+    <td>CH_GAIN</td>
+    <td>Current channel's gain</td>
+  </tr>
+  <tr>
+    <td>CH_CONNECT</td>
+    <td>Current channel's input connected flag</td>
+  </tr>
+  <tr>
+    <td>CAL</td>
+    <td>Calibration signal enable</td>
+  </tr>
+  <tr>
+    <td>AIRON</td>
+    <td>Unit Air status </td>
+  </tr>
+  <tr>
+    <td>PWRFLT</td>
+    <td>Unit Power fault</td>
+  </tr>
+</table>
+<p>For each FBOSTINCA device:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Channel  identifier</th>
+    <th>Purpose  of the channel</th>
+  </tr>
+  <tr>
+    <td>CH_INCR</td>
+    <td>Increase the channel number by 1</td>
+  </tr>
+  <tr>
+    <td>CH_DECR</td>
+    <td>Decrease the channel number by 1 channel</td>
+  </tr>
+  <tr>
+    <td>CH_SEL</td>
+    <td>Set/get the channel number (1-24)</td>
+  </tr>
+  <tr>
+    <td>CH_GAIN</td>
+    <td>Get the channel gain (0-7)</td>
+  </tr>
+  <tr>
+    <td>FREQ_INCR</td>
+    <td>Increase the calibration frequency by 1</td>
+  </tr>
+  <tr>
+    <td>FREQ_DECR</td>
+    <td>Decrease the calibration frequency by 1</td>
+  </tr>
+  <tr>
+    <td>FREQ_SEL</td>
+    <td>Set/get the calibration frequency (0-15)</td>
+  </tr>
+  <tr>
+    <td>SEL_A</td>
+    <td>Set/get Selection A</td>
+  </tr>
+  <tr>
+    <td>SEL_B</td>
+    <td>Set/get Selection B</td>
+  </tr>
+  <tr>
+    <td>SEL_C</td>
+    <td>Set/get Selection C</td>
+  </tr>
+  <tr>
+    <td>SEL_D</td>
+    <td>Set/get Selection D</td>
+  </tr>
+  <tr>
+    <td>POL</td>
+    <td>Set/get Gauge depolarization</td>
+  </tr>
+  <tr>
+    <td>CAL</td>
+    <td>Set/get the unit's calibration signal (ON/OFF)</td>
+  </tr>
+  <tr>
+    <td>GAUGE_TRIP</td>
+    <td>Set/get the unit gauge trip mode (ON/OFF)</td>
+  </tr>
+  <tr>
+    <td>TRIP_STAT</td>
+    <td>channel trip status (TRIP/NOT TRIP) </td>
+  </tr>
+</table>
+<p>For each FBOCHINCA  device:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Channel identifier</th>
+    <th>Purpose of the channel</th>
+  </tr>
+  <tr>
+    <td>CH_INCR</td>
+    <td>Increase the channel number by 1</td>
+  </tr>
+  <tr>
+    <td>CH_DECR</td>
+    <td>Decrease the channel number by 1</td>
+  </tr>
+  <tr>
+    <td>CH_SEL</td>
+    <td>Set/get the channel number (1-24)</td>
+  </tr>
+  <tr>
+    <td>CH_GAIN</td>
+    <td>Get the channel gain (0-3)</td>
+  </tr>
+  <tr>
+    <td>FREQ_INCR</td>
+    <td>Increase the calibration frequency by 1</td>
+  </tr>
+  <tr>
+    <td>FREQ_DECR</td>
+    <td>Decrease the calibration frequency by 1</td>
+  </tr>
+  <tr>
+    <td>FREQ_SEL</td>
+    <td>Set/get the calibration frequency (0-15)</td>
+  </tr>
+  <tr>
+    <td>CH_MODE</td>
+    <td>Set/get the current channel's mode</td>
+  </tr>
+  <tr>
+    <td>POL</td>
+    <td>Set/get Gauge depolarization</td>
+  </tr>
+  <tr>
+    <td>CAL</td>
+    <td>Set/get the unit's calibration signal (ON/OFF)</td>
+  </tr>
+  <tr>
+    <td>GAUGE_TRIP</td>
+    <td>Set/get the unit gauge trip mode (ON/OFF)</td>
+  </tr>
+  <tr>
+    <td>TRIP_STAT</td>
+    <td>Get the channel trip status (TRIP/NOT TRIP)</td>
+  </tr>
+</table>
+<p>For each TINCA  device:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Channel identifier</th>
+    <th>Purpose of the channel</th>
+  </tr>
+  <tr>
+    <td>CH_INCR</td>
+    <td>Increase the channel number by 1</td>
+  </tr>
+  <tr>
+    <td>CH_DECR</td>
+    <td>Decrease the channel number by 1</td>
+  </tr>
+  <tr>
+    <td>CH_SEL</td>
+    <td>Set/get the channel number (1-24)</td>
+  </tr>
+  <tr>
+    <td>CH_GAIN</td>
+    <td>Get the channel gain (0-2)</td>
+  </tr>
+  <tr>
+    <td>FREQ_INCR</td>
+    <td>Increase the calibration frequency by 1</td>
+  </tr>
+  <tr>
+    <td>FREQ_DECR</td>
+    <td>Decrease the calibration frequency by 1</td>
+  </tr>
+  <tr>
+    <td>FREQ_SEL</td>
+    <td>Set/get the calibration frequency (0-15)</td>
+  </tr>
+  <tr>
+    <td>AUTO_BAL</td>
+    <td>Set/get the auto balance bridge command</td>
+  </tr>
+  <tr>
+    <td>RESET_BAL</td>
+    <td>Set/get the reset balance bridge command</td>
+  </tr>
+  <tr>
+    <td>A_BAL_ALL</td>
+    <td>Set/get the auto balance bridge all channels command</td>
+  </tr>
+  <tr>
+    <td>R_BAL_ALL</td>
+    <td>Set/get the reset balance bridge all channels command</td>
+  </tr>
+  <tr>
+    <td>ENABLE_BAL</td>
+    <td>Set/get the enable channel for auto/reset balance bridge (all) commands</td>
+  </tr>
+  <tr>
+    <td>BC1_4</td>
+    <td>Get the &frac14; bridge circuit status</td>
+  </tr>
+  <tr>
+    <td>BC1_2</td>
+    <td>Get the &frac12; bridge circuit status</td>
+  </tr>
+  <tr>
+    <td>BC_FULL</td>
+    <td>Get the FULL bridge circuit status</td>
+  </tr>
+  <tr>
+    <td>BP0</td>
+    <td>Set/get the 0V bridge polarization setting</td>
+  </tr>
+  <tr>
+    <td>BP2</td>
+    <td> Set/get the 2V bridge polarization setting </td>
+  </tr>
+  <tr>
+    <td>BP5</td>
+    <td>Set/get the 5V bridge polarization setting</td>
+  </tr>
+  <tr>
+    <td>BP10</td>
+    <td>Set/get the 10V bridge polarization setting</td>
+  </tr>
+  <tr>
+    <td>BRIDG_RES</td>
+    <td>Get the resistance status (350 or 120)</td>
+  </tr>
+  <tr>
+    <td>POL</td>
+    <td>Set/get Gauge depolarization</td>
+  </tr>
+  <tr>
+    <td>CAL</td>
+    <td>Set/get the unit's calibration signal (ON/OFF)</td>
+  </tr>
+  <tr>
+    <td>CAL_MODE</td>
+    <td>Set/get the calibration mode (ON/OFF)</td>
+  </tr>
+  <tr>
+    <td>GAUGE_TRIP</td>
+    <td>Set/get the unit gauge trip mode (ON/OFF)</td>
+  </tr>
+  <tr>
+    <td>TRIP_STAT</td>
+    <td>Get the channel trip status (TRIP/NOT TRIP)</td>
+  </tr>
+</table>
+<p>For each CWINCA device:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Channel identifier</th>
+    <th>Purpose of the channel</th>
+  </tr>
+  <tr>
+    <td>CH_INCR</td>
+    <td>Increase the channel number by 1</td>
+  </tr>
+  <tr>
+    <td>CH_DECR</td>
+    <td>Decrease the channel number by 1</td>
+  </tr>
+  <tr>
+    <td>CH_SEL</td>
+    <td>Set/get the channel number (1-24)</td>
+  </tr>
+  <tr>
+    <td>CH_GAIN</td>
+    <td>Get the channel gain (0)</td>
+  </tr>
+  <tr>
+    <td>TEST_MODE</td>
+    <td>Set/get the test mode (ON/OFF)</td>
+  </tr>
+  <tr>
+    <td>GAUGE_TRIP</td>
+    <td>Set/get the unit gauge trip mode (ON/OFF)</td>
+  </tr>
+  <tr>
+    <td>TRIP_STAT</td>
+    <td>Get the channel trip status (TRIP/NOT TRIP)</td>
+  </tr>
+</table>
+<p>For each FBOSTINCA, FBOCHINCA, TINCA, CWINCA device:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Channel  identifier</th>
+    <th>Purpose  of the channel</th>
+  </tr>
+  <tr>
+    <td>UID</td>
+    <td>Unit ID</td>
+  </tr>
+  <tr>
+    <td>MVE_LO</td>
+    <td>-ve supply lo</td>
+  </tr>
+  <tr>
+    <td>MVE_HI</td>
+    <td>-ve supply hi</td>
+  </tr>
+  <tr>
+    <td>PVE_LO</td>
+    <td>+ve supply lo</td>
+  </tr>
+  <tr>
+    <td>PVE_HI</td>
+    <td>+ve supply hi</td>
+  </tr>
+  <tr>
+    <td>UNIT_TEMP</td>
+    <td>Unit temperature</td>
+  </tr>
+  <tr>
+    <td>AIR</td>
+    <td>Air cooling</td>
+  </tr>
+  <tr>
+    <td>OVER_TEMP</td>
+    <td>Over temperature </td>
+  </tr>
+</table>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

@@ -1,0 +1,1369 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" -->
+<title>Running an Engine Test</title><!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="RunningAnEngineTest">Running an Engine Test<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" >
+</a><div float:right></div></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>This module is designed to be used as a reference guide in the everyday work of the test cell operator. The different operator functions that can be performed while proDAS is scanning and acquiring data are explained through step-by-step procedures.</p>
+<p>Before an engine test can be started and data acquired, there are several set up tasks that may be required to be performed. The following is a list of preparation tasks that might apply and the associated sections that describe the desired task:</p>
+<ul>
+  <li>Performing Calibrations - see <a href="../../StandardTools/CalibrateChannels/CalibrateChannels.htm#SCA" >Sensor Calibration Application (SCA)</a> and <a href="../../DASConfigTools/SensorEditor/SensorEditor.htm">Sensor Editor</a> for details on how to perform calibrations on VXI channels</li>
+  <li>Performing Thrust Calibration - see Thrust Calibration</li>
+  <li> Setting up Data Recording - see <a href="../../StandardTools/SetupDataRecording/SetupDataRecording.htm" >Setup Data Recording</a> for details on how to set up data recording functions such as transient logs</li>
+  <li> Setting up Test Procedure Scripts - see <a href="../../DASConfigTools/ScriptEditor/ScriptEditor.htm" >Script Editor</a></li>
+  <li> Creating Operator Display Pages - see <a href="../../DASConfigTools/DisplayPages/DisplayPages.htm" >Creating and Modifying Display Pages</a></li>
+</ul>
+<p>After all the appropriate tasks have been completed proDAS must be configured with a master configuration. The operators are required to enter test information including test name, engine serial number, and the operator&rsquo;s names into the Test Information Page. Please see <a href="../StartConfigStopDAS/StartConfigStopDAS.htm">Starting, Configuring and Stopping proDAS</a> for more information on the configuration process. </p>
+<p>proDAS gives the operator the ability to run various pre-run checks prior to acquiring data. These tests may allow the user to perform functions such as confirming channel readings are within the appropriate ranges, and zeroing temperature and pressure channels.</p>
+<p>The execution of the pre-run checks depends on Customer hardware and procedures. For details on the pre-run checks, see <a href="../../CustomApps/InstrumentControls/InstrumentControls.htm#InstrumentControls">Instrument Controls</a>.</p>
+
+ <p class="Note">Please refer to the &quot;Home&quot; section of the Docstation for details on your applicable pre-run checks.</p>
+<p>proDAS provides several user configurable displays that can be used to view the current data during an engine test, including:</p>
+<ul>
+  <li><a href="#RTDDriver">Real-Time Display (RTD) Driver</a></li>
+  <li><a href="#UsingSpotlight">Spotlights</a></li>
+  <li><a href="../../CustomApps/ArincChanList/ArincChanList.htm">ARINC Display (available only if ARINC is configured)</a></li>
+</ul>
+<p>proDAS performs logging of all system event messages, including operator interactions, alarm conditions, warning messages, and error messages using the following:</p>
+<ul>
+  <li><a href="#UnifiedEventLog">Unified Event Log (UEL)</a></li>
+  <li>Alarm Summary Display (see <a href="#InterpretAlarmsWarnings2">Interpreting Alarms and Monitoring</a>)</li>
+</ul>
+<p>During an engine test, most of the testing tasks can be performed using the Test Page. Please see <a href="#OpenTestEngPage">Opening the Test Page</a> for further details.</p>
+<p>proDAS has the ability to run predefined engine test procedure scripts that instruct the operators on how to test the engine as well as automatically record data such as fullsets or logs. Please see <a href="#SelectRunTestProcedure">Selecting and Running a Test Procedure</a> for further details. </p>
+<p>If required, the operators may also record test data independent of an engine test script. proDAS can record the following:</p>
+<ul>
+  <li><a href="#RecordHistoryLogs">Transient Logs</a></li>
+  <li><a href="#RecordFullset">Fullsets</a></li>
+  <li><a href="#RecordCriticalLog">Critical Logs</a></li>
+  <li><a href="#ContinuousLog">Continuous Logs (if configured)</a></li>
+  <li><a href="#InsertOpComments">Test Comments</a></li>
+  <li><a href="../../DASSubSysConfig/HighSpeedVXI/HighSpeedVXI.htm">High Speed Logs (if HSV hardware is available)</a></li>
+</ul>
+<p>During an engine test the operator has the ability to modify the following channel parameters:</p>
+<ul>
+  <li><a href="#UseChanRedirect">Set/Redirect Channel Value</a></li>
+  <li><a href="#SettingChannelQuality">Set Channel Quality</a></li>
+  <li><a href="#ModChanLimitsWhileproDASScans">Set Channel Limit</a></li>
+</ul>
+<p>proDAS gives the operator access to several reports that may be useful during an engine test. These reports are accessed through the <a href="#RTReports">Real Time (RT) Reports GUI</a>.</p>
+<p>proDAS has a built in Timer that operators can use during the engine test. Please see <a href="#UsingStopWatchFeature">Using the Timer Feature</a> for further details.</p>
+
+<h2 id="SelectRTDisplay">Selecting a Real-Time Display</h2>
+<p>The Real-Time Display System is used for viewing engine data in real-time. It consists of the Real-Time Display Editor and Real-Time Display Driver.</p>
+<p>For more information on the Real-Time Display Editor, see <a href="../../DASConfigTools/DisplayPages/DisplayPages.htm" >Real-Time Display Editor in Creating and Modifying Display Pages</a>.</p>
+<h3 id="RTDDriver">Real-Time Display Driver</h3>
+<p>The Real-Time Display Driver (RTD Driver) displays information during the execution of a test run and allows the user to control test bed and test objects (an engine or component such as a compressor). It displays pre-configured display pages and Spotlight Sticky's.</p>
+<p class="Note">The user can execute multiple instances of the Real-Time Display Driver on the same computer at the same time. This is particularly useful if multiple views or multiple monitors are used on the same PC.</p>
+<p class="Note">When the RTD Driver is closed the Spotlight Sticky definitions are saved to file and the existing Spotlight Sticky definition files are deleted. When the RTD Driver is re-opened the most recent Spotlight Sticky's are automatically loaded.</p>
+<p class="Caution">Performance can be impacted if too many displays are selected.</p>
+<p>The RTD Driver comprises the <a href="?33#PageView">View Test Page</a> window, the <a href="?34#ControlView">Control View</a> and the <a href="?35#AutoInterface">Automation Interface.</a></p>
+<p>For detailed information on the COM interface(s), refer to <a href="../../References/ICDs/ICD2822RTDPS.PDF"> ICD78026.2822 Real-Time Data Proxy Server</a>.</p>
+<h4 id="RTDD-Security">Security Levels</h4>
+<p>The RTD Driver can operate in either Read Only or Write mode, depending on the security level of the user. Security levels are defined through the <a href="../../StandardTools/USS/USS.htm">User Security System</a>.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>User Level</th>
+    <th>User Access Privilege</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Read, notification of insufficient write privileges</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Write</td>
+  </tr>
+</table>
+<h4 id="PageView">View Test Page Window</h4>
+<p>The RTD Driver View Test Page window supports the following menu options:</p>
+<ul>
+  <li><a href="?36#MenuFile" >File</a></li>
+  <li><a href="?37#MenuExecution">Execution</a></li>
+  <li><a href="?38#MenuView">View</a></li>
+  <li><a href="?39#MenuTest">Test</a></li>
+  <li><a href="?40#MenuFullsets">Fullsets</a></li>
+  <li><a href="?41#MenuHelp">Help</a></li>
+  <li><a href="?42#PauseZoom">Pausing and Zooming an Operator Display</a></li>
+  <li><a href="?43#PageSelection">Selecting an Operator Page</a></li>
+  <li><a href="?44#PageSequences">Page Sequences</a></li>
+</ul>
+<div class="Container"><img src="images/RTDDriverPageView.PNG" width="700" height="76" alt="RTD Driver Page View"></div>
+<p id="MenuFile"><strong>File Menu</strong></p>
+<p>The <strong>File</strong> menu includes:</p>
+<div class="Container"><img src="images/PageViewMenuFile.PNG" alt="Page View Menu File" width="292" height="505"></div>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="2" rowspan="1">File Menu</th>
+  </tr>
+  <tr>
+    <th>Buttons and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td>Open page (Ctrl+O)</td>
+    <td>Opens the selected test page, see <a href="?45#PageSelection" >Selecting an Operator Page</a>.</td>
+  </tr>
+  <tr>
+    <td>Reload page</td>
+    <td>Reloads the currently selected page.</td>
+  </tr>
+  <tr>
+    <td>Close Page</td>
+    <td>Displays the alarm/warning limit as defined in the configuration file.</td>
+  </tr>
+  <tr>
+    <td>Close View</td>
+    <td>Displays the current value of the channel.</td>
+  </tr>
+  <tr>
+    <td>Print (Ctrl+P)</td>
+    <td>Prints a screenshot of the currently selected page.</td>
+  </tr>
+  <tr>
+    <td>Print... (Ctrl+Shift+P)</td>
+    <td>Print... (Ctrl+Shift+P) - opens the print setup dialogue box.</td>
+  </tr>
+  <tr>
+    <td>Print all RTD controls</td>
+    <td>Prints all RTD controls of the currently selected page.</td>
+  </tr>
+  <tr>
+    <td>Save Image... (Ctrl+S)</td>
+    <td>Save Image... (Ctrl+S) - opens the <a href="?46#SaveImage" >Save Image dialogue box</a>.</td>
+  </tr>
+  <tr>
+    <td>Save all RTD controls...</td>
+    <td>Opens the <a href="?47#SaveRTDControls" >Save All RTD Controls dialogue box</a>.</td>
+  </tr>
+</table>
+<p id="SaveImage"><strong>Save Image</strong></p>
+<p>The Save Image dialogue box is used to save a copy of the current Display Page in EMF format. To save an image:</p>
+<ol>
+  <li>Select <strong>File/Save Image...</strong> from the View Test Page window.<br>
+    The Select image file dialogue box is displayed.
+    <div class="Container"><img src="images/SaveImage.PNG" width="561" height="413" alt="Save Image"></div>
+  </li>
+  <li>Enter the file name in the <strong>File name:</strong> field.</li>
+  <li>Ensure that the data type is *.EMF and select <strong>Save</strong>.</li>
+</ol>
+<p id="SaveRTDControls"><strong>Save All RTD Controls</strong></p>
+<p>The Save All RTD Controls dialogue box is used to save all RTD controls of the current Display Page in EMF format. To save all RTD controls:</p>
+<ol>
+  <li>Select <strong>File/Save all RTD controls...</strong> from the View Test Page window.<br>
+    The Browse for Folder dialogue box is displayed.
+    <div class="Container"><img src="images/BrowseFolder.PNG" width="324" height="334" alt="Browse Folder"></div>
+  </li>
+  <li>Select the directory for the image file.</li>
+</ol>
+<p id="MenuExecution"><strong>Execution Menu</strong></p>
+<p>The <strong>Execution</strong> menu includes:</p>
+<div class="Container"><img src="images/PageViewMenuExecution.PNG" alt="Page View Menu Execution" width="241" height="113"></div>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="2" rowspan="1">Execution Menu</th>
+  </tr>
+  <tr>
+    <th>Buttons and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td>Pause (F5)</td>
+    <td>Pauses the update of the selected display, see <a href="?48#PauseZoom" >Pausing and Zooming an Operator Display</a>.</td>
+  </tr>
+  <tr>
+    <td>Visual Update Frequency...</td>
+    <td>Opens the Visual Update Frequency dialogue box, see <a href="?49#SetFrequency" >Setting the Update Frequency</a>.</td>
+  </tr>
+  <tr>
+    <td>Alternate Names Italics</td>
+    <td>Enables the display of all alternate names in italics.</td>
+  </tr>
+  <tr>
+    <td>Refresh</td>
+    <td>Removes all previous information and data points from Y/X, Profile Plot and Strip Charts and re-initialises the display.</td>
+  </tr>
+</table>
+<p id="MenuView"><strong>View Menu</strong></p>
+<p>The <strong>View</strong> menu includes:</p>
+<div class="Container"><img src="images/PageViewMenuView.PNG" width="252" height="269" alt="Page View Menu View"></div>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="2" rowspan="1"> View Menu</th>
+  </tr>
+  <tr>
+    <th>Buttons and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td>Toolbar</td>
+    <td>Enables the display of the toolbar.</td>
+  </tr>
+  <tr>
+    <td>Toolbar page selection</td>
+    <td>Enables the display of the toolbar Page Selection.</td>
+  </tr>
+  <tr>
+    <td>Toolbar page selection text</td>
+    <td>Enables the display of the text of the toolbar Page Selection.</td>
+  </tr>
+  <tr>
+    <td>Status Bar</td>
+    <td>Enables the display of the status bar.</td>
+  </tr>
+  <tr>
+    <td>Tooltips</td>
+    <td>Enables the display of the tooltips.</td>
+  </tr>
+  <tr>
+    <td>Zoom factor...</td>
+    <td>Opens the Zoom factor dialogue box.
+      <div class="Container"><img src="images/DialogZoomFactor.PNG" width="189" height="104" alt="Dialog Zoom Factor"></div>
+      <p class="Note">The View menu items concerning Zoom are described in <a href="?50#PauseZoom" >Pausing and Zooming an Operator Display</a>.</p></td>
+  </tr>
+  <tr>
+    <td>Zoom mode (ESC)</td>
+    <td>Ends the zoom mode.</td>
+  </tr>
+  <tr>
+    <td>Zoom in</td>
+    <td>Zooms in the currently selected page.</td>
+  </tr>
+  <tr>
+    <td>Zoom out</td>
+    <td>Zooms out the currently selected page.</td>
+  </tr>
+  <tr>
+    <td>Zoom reset</td>
+    <td>Resets the zoom of the currently selected page.</td>
+  </tr>
+  <tr>
+    <td>Close view</td>
+    <td>Closes the view.</td>
+  </tr>
+</table>
+<p id="MenuTest"><strong>Test Menu</strong></p>
+<p>The <strong>Test</strong> menu includes:</p>
+<div class="Container"><img src="images/PageViewMenuTest.PNG" alt="Page View Menu Test" width="143" height="47"></div>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="2" rowspan="1"> Test Menu</th>
+  </tr>
+  <tr>
+    <th>Buttons and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td>Object list</td>
+    <td>Displays a window which contains information about the objects of the current page:
+      <div class="Container"><img src="images/InfoListObjects.PNG" width="510" height="520" alt="Info List Objects"></div></td>
+  </tr>
+</table>
+<p id="MenuFullsets"><strong>Fullsets Menu</strong></p>
+<p>The <strong>Fullsets</strong> menu includes:</p>
+<div class="Container"><img src="images/PageViewMenuFullsets.PNG" width="175" height="69" alt="Page View Menu Fullsets"></div>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="2" rowspan="1">Fullsets Menu</th>
+  </tr>
+  <tr>
+    <th>Buttons and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td>Select Fullsets...</td>
+    <td>Opens the fullset selection dialogue where groups of fullsets may be created with each of them consisting of a certain number of fullsets, and displayed as overlay curves in RTD Y/X and Profile Plot ActiveX Controls, if the latter are configured accordingly. For more details on the fullset selection procedure and the respective dialogue refer to <a href="#SelectFullsets" >Fullset Selection</a>.</td>
+  </tr>
+  <tr>
+    <td>Clear Fullsets</td>
+    <td> Removes all fullset data points displayed by any RTD Y/X or Profile Plot ActiveX Controls of the current display page.</td>
+  </tr>
+</table>
+<p id="MenuHelp"><strong>Help Menu</strong></p>
+<p>The <strong>Help</strong> menu includes:</p>
+<div class="Container"><img src="images/PageViewMenuHelp.PNG" alt="Page View MenuHelp" width="188" height="99"></div>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="2" rowspan="1"> Help Menu</th>
+  </tr>
+  <tr>
+    <th>Buttons and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td>Getting Started</td>
+    <td>Opens the first page of the proDAS Integrated Help.</td>
+  </tr>
+  <tr>
+    <td>Topic</td>
+    <td> Contains all specific help topics referring to the  RTD Driver.</td>
+  </tr>
+  <tr>
+    <td>About RTDDriver</td>
+    <td>Displays information about the RTD Driver, comprising the name, version number, and copyright.
+      <div class="Container"><img src="images/AboutRTDDriver.gif" width="404" height="276" alt="About RTD Driver"></div></td>
+  </tr>
+</table>
+<p id="PauseZoom"><strong>Pausing and Zooming an Operator Display</strong></p>
+<p><strong>To pause and zoom an entire Operator Display:</strong></p>
+<ol>
+  <li>Select <strong>Execution/Pause</strong> or the pause button <img alt="" src="images/ButtonPause.PNG" >.<br>
+    The display page stops updating. Data required for graphical displays, such as YX Plots and Strip Charts, are buffered.
+    <p class="Caution">If the display is paused for an extended time, display data may be lost.</p>
+  </li>
+  <li>Select the zoom buttons <img alt="" src="images/ButtonsZoom.PNG" > to zoom in (+), zoom out (-) or reset (=) the display page.</li>
+  <li>Select <strong>Execution/Pause</strong> or the pause button <img alt="" src="images/ButtonPause.PNG" > .<br>
+    The display page resumes updating.
+    <p class="Note">The user can pause individual RTD Active X Controls using the context menu of the desired RTD Active X Control.</p>
+    The mode of action of the zoom feature depends on the Visibility Properties which can be set in the <a href="../../DASConfigTools/DisplayPages/DisplayPages.htm">RTD Editor</a> (i.e.: individual objects may not be visible unless zoomed). </li>
+</ol>
+<p id="PageSelection"><strong>Selecting an Operator Page</strong></p>
+<p>To select an Operator Page for display:</p>
+<ol>
+  <li>From the <a href="?52#PageView">View Test Page</a>, select <strong>File/Open page</strong>.<br>
+    A file open dialogue is displayed.</li>
+  <li>Choose the name of the file to be displayed and select <strong>Open</strong>.<br>
+    The selected page file is displayed.</li>
+</ol>
+<p class="Note">If a page was already displayed, it is listed in the Recent Pages drop-down list of the View Test Page window.</p>
+<p class="Note">Instead of selecting a display page from the drop-down list of recent pages, the user can step through the reachable pages using the buttons for Back <img alt="Scroll Back" src="images/ScrollBack.PNG"> and Forward <img alt="Scroll Forward" src="images/ScrollForward.PNG"> , respectively, which operate similar to the corresponding buttons in a web browser.</p>
+<p>To select an Operator Page from an already selected <a href="?53#PageSequences">Page Sequence</a>:</p>
+<p class="Note">Ensure that the Real-Time Engine (RTE) is scanning.</p>
+<ol>
+  <li>Use the up and down arrows to the left of the <strong>Pages:</strong> drop-down list to step through the display pages of the selected page sequence and select the Show button <img alt="Button Show" src="images/ButtonShow.PNG">.<br>
+    <strong>OR</strong></li>
+  <li>Directly select a page by clicking it from the <strong>Pages:</strong> drop-down list.<br>
+    The selected page is displayed.</li>
+</ol>
+<p id="PageSequences"><strong>Page Sequences</strong></p>
+<p>Page Sequences are used to group displays into a specific order, such as the order that the operator would like them to be displayed in a test. The sequences are in the current configuration, see <a href="../../DASConfigTools/DisplayPages/DisplayPages.htm#RTDEPageAdmin" >instructions on how to create a page sequence</a>:</p>
+<ol>
+  <li>Select the name of the desired sequence using the <strong>Page Sequence:</strong> drop-down list on the View Test Page window.<br>
+    The pages listed in the selected page sequence are displayed in the <strong>Pages:</strong> drop-down list.</li>
+</ol>
+<h4 id="ControlView">Control View</h4>
+<p>The RT Display Driver window is used by the operator to access many of the Real-Time Display Driver functions. The RT Display Driver dialogue box opens automatically when the operator enters the Scan Mode.</p>
+<div class="Container"><img src="images/RTDControl.png" width="398" height="116" alt="RTD Control"></div>
+<p class="Note">The Control dialogue location is stored in the RTDDriver.ini file. See <a href="#RTDDriver">Real-Time Display Driver</a> for more information.</p>
+<p>The RT Display Driver Control View comprises the following functionalities:</p>
+<table class="Table-Grey">
+  <tr >
+    <th colspan="2" rowspan="1"> Control View</th>
+  </tr>
+  <tr >
+    <th>Buttons and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td>Select <img alt="Button Create New Window" src="images/ButtonCreateNewWindow.PNG"> or <strong>Create View... </strong>from the <strong>Views</strong> menu</td>
+    <td>Create a new <a href="?54#RTDDriver">RTD Driver</a> view window.</td>
+  </tr>
+  <tr>
+    <td>Select <img alt="Button Search" src="images/ButtonSearch.PNG" > or <strong>Find in files...</strong> from the <strong>Views</strong> menu</td>
+    <td><a href="?55#FindInFiles" >Search for Variables</a>.</td>
+  </tr>
+  <tr>
+    <td>Select <img alt="Button Freqency" src="images/ButtonFreqency.PNG" > or <strong>Set visual update frequency... </strong>from the <strong>Views</strong> menu</td>
+    <td><a href="?56#SetFrequency" >Set the visual update frequency for all windows</a>.</td>
+  </tr>
+  <tr>
+    <td>Select <img alt="Button Fullset Selection" src="images/ButtonFullsetSelection.PNG" > or <strong>Select Fullsets... from</strong> the <strong>Fullsets</strong> menu</td>
+    <td><a href="?57#SelectFullsets" >Fullset selection to define fullset groups and insert fullset data</a>.</td>
+  </tr>
+  <tr>
+    <td>Select <img alt="Button Spotlight Sticky" src="images/ButtonSpotlightSticky.PNG"> or <strong>Create Spotlight... from</strong> the <strong>Tools</strong> menu</td>
+    <td><a href="?58#UsingSpotlight" >Using the Spotlight Feature</a> / <a href="?54#UseChanInfoContxMenu" >Using the Channel Info Context Menu</a>.</td>
+  </tr>
+  <tr>
+    <td>Select <img alt="Button Hide RTD Applications" src="images/ButtonHideRTDApplications.PNG"> or <strong>Hide all windows </strong>from the <strong>Views</strong> menu</td>
+    <td>Hide all RTD Driver application windows.</td>
+  </tr>
+  <tr>
+    <td>Select <img alt="Button Run RTD Editor" src="images/ButtonRunRTDEditor.PNG"> or <strong>Start RTD Editor </strong>from the <strong>Tools</strong> menu</td>
+    <td>Run the RTD Editor application.</td>
+  </tr>
+  <tr>
+    <td>Select <img alt="Button Settings" src="images/ButtonSettings.PNG" > or <strong>Settings </strong>from the <strong>Tools</strong> menu</td>
+    <td><a href="?59#Settings">Adjust settings for the RTD Driver application</a>.</td>
+  </tr>
+  <tr>
+    <td>Select <img src="images/ButtonHideRTDControlView.png" alt="Button Hide RTD Control View" width="36" height="37"> or <strong>Hide </strong>from the <strong>Application</strong> menu</td>
+    <td>Hide the RTD Control View.</td>
+  </tr>
+  <tr>
+    <td>Select <img alt="Button Quit" src="images/ButtonQuit.PNG" > or <strong>Quit </strong>from the <strong>Application</strong> menu</td>
+    <td>Quit the RTD Driver application.</td>
+  </tr>
+</table>
+<h4 id="FindInFiles">Search for Variables</h4>
+<p>The Control View comprises a search for variable names in the display page files.</p>
+<p class="Note">Data on the Data View pages is not refreshed when the RTD Driver performs a search of data views that contain specified channels.</p>
+<p><strong>To search for a variable:</strong></p>
+<ol>
+  <li>Select <img alt="Button Search" src="images/ButtonSearch.PNG" > or select <strong>Find in files...</strong> from the <strong>Views</strong> menu.<br>
+    The Find variable in display pages dialogue box is displayed.
+    <div class="Container"><img src="images/DialogSearch.PNG" alt="Dialog Search" width="350" height="342" ></div>
+    <br>
+  </li>
+  <li>Select the type of the variable (Channel, Polynomial, 2D Breakpoint Table).</li>
+  <li>Select the name of the channel, polynomial, or two-dimensional breakpoint table respectively.</li>
+  <li>Select <strong>Find</strong> to start the search. <br>
+    The files which contain the variable are listed.</li>
+  <li>Select <strong>Refresh </strong>to repeat the search and update the file list.<br>
+    The user can hide the search dialogue by selecting <strong>Hide</strong>.</li>
+  <li>Select <strong>Close</strong> to close the search dialogue.</li>
+</ol>
+<h4 id="SetFrequency">Setting the Update Frequency</h4>
+<p>To open the Visual Update Frequency dialogue box:</p>
+<ol>
+  <li>Select <img alt="Button Freqency" src="images/ButtonFreqency.PNG" > or select <strong>Set visual update frequency</strong> from the <strong>Views </strong>menu of the RT Display Driver (Control View) window or select <strong>Visual Update Frequency</strong> from the <strong> Execution </strong> menu of the View Test Page window.
+    <div class="Container"><img src="images/DialogFrequency.PNG" alt="Dialog Frequency" width="189" height="104"></div>
+    <br>
+  </li>
+  <li>Select <strong>OK</strong> to accept the entered value (i.e.: up to 10 Hz).<br>
+    Accepting the entered value sets the value for all current and future Page Views if the dialogue has been launched from the <a href="?60#ControlView">Control View</a> and for the current view, but only if it has been launched from the <a href="?61#PageView">View Test Page</a> window.</li>
+</ol>
+<h4 id="SelectFullsets">Fullset Selection</h4>
+<p>The Select Fullsets dialogue displays all previously added groups (subsets) of fullsets in the spreadsheet table on top in order to offer the possibility to compare the current fullset with previously recorded data.</p>
+<div class="Container"><img src="images/DialogControlViewFullsets.PNG" alt="Dialog Control View Fullsets" width="700" height="642"></div>
+<p><strong>To add a fullset:</strong></p>
+<ol>
+  <li>Select <strong>New Group</strong>.</li>
+  <li>Specify a string for this subset of fullsets.<br>
+    The string is displayed as part of a legend in the diagram of graphical RTD Y/X and/or Profile Plot Controls on the display page. By default (i.e.: if nothing is entered by the user in the respective input field), this string contains all the information specific to the currently used configuration (i.e.: engine type, engine standard, built, customer, etc.). In addition, the shape and colour of the marker symbols, indicating the fullset data points on the diagrams, may be specified. </li>
+  <p class="Note">The colour selected for these marker symbols is applied to both the RTD Y/X and Profile Plot Controls, their shape is only applied in case of RTD Profile Plot Controls. In RTD Y/X Plot Controls, the shape of the marker symbols for the overlaid fullset data is adopted from the corresponding online data points.</p>
+  <li>In order to access fullsets available in the database, several items displayed in the tree control list on the left hand side of the dialogue have to be unfolded by clicking on them.</li>
+  <li>Mark a specific test (lowest level of the configuration tree) to display all fullsets taken during this run in the Selection Options spreadsheet to the right of the tree control.<br>
+    This list of displayed fullsets may be filtered by certain criteria which can be specified or modified by selecting the <img alt="Define Filter" src="images/DefineFilter.png"> button on the <strong>Selection Options</strong> toolbar. In this filter settings dialogue, not only can certain value ranges for specific channels be defined but also the conjunctions and disjunctions of pairs of those value ranges.<br>
+    After the changes made in the filter settings dialogue have been applied by closing it again, the filter criteria may be applied to the list of selected fullsets by selecting the <img alt="Apply Filter" src="images/ApplyFilter.png"> button on the <strong>Selection Options</strong> toolbar. Then, only those fullsets for which the filter criteria are fulfilled are displayed in the list.<br>
+    Clicking on the <img alt="" src="images/SelectAllFullsets.png"> button selects all fullsets currently displayed in the list. Specific fullsets may also be selected or deselected by clicking in the corresponding check boxes in the fullset list. The <img alt="" src="images/DeselectAllFullsets.png" > button deselects all fullsets in the list, while the <img alt="" src="images/InvertSelectedFullsets.png" > button inverts the selected and deselected fullsets.
+    <p class="Note">Since not only fullsets from a single test run can be added to a subset, this selection procedure may be repeated for one or more other tests after each of them has been selected in the tree control.</p>
+  </li>
+  <li>Use the radio button group <strong>Apply settings</strong> to specify whether the modifications made in the fullset selection dialogue are to be applied only to the current page view (only applicable, if the fullset selection dialogue has been called via the menu of a page view), to all views of this instance of the RTD Driver, or to all views of all RTD Drivers on the various computers of this proDAS installation.
+    <div class="Container"><img src="images/ApplySettings.png" alt="Apply Settings" width="240" height="93"></div>
+  </li>
+  <li> To delete a specific fullset group, mark the fullset group in the respective spreadsheet and select the <strong>Delete Group</strong> button. </li>
+</ol>
+<p class="Note">All modifications made in the fullset selection dialogue are applied only when the OK button is finally pressed and, as a result, the dialogue is closed. Pressing the Cancel button closes the dialogue and disregards all changes since the dialogue has been opened.</p>
+<p class="Note">When a new group is created, the active column of the new group must be clicked twice to select or deselect it in the list.</p>
+<h4 id="Settings">Settings for the RTD Driver</h4>
+<p>The Settings dialogue (below) is called by either selecting the <img alt="Button Settings" src="images/ButtonSettings.PNG" > button or selecting <strong>Settings</strong> from the <strong>Tools</strong> menu.</p>
+<p>To print colour pages in black and white, select <strong>Black and white printer</strong> in the Print settings panel of the Settings dialogue.</p>
+<div class="Container"><img src="images/DialogSettings.PNG" alt="Dialog Settings" width="461" height="217" ></div>
+<h4 id="AutoInterface">Automation Interface</h4>
+<p>The RTD Driver offers an automation interface, allowing the displays to be accessed programmatically. For information on RTD Driver interface, refer to <a href="../../References/ICDs/ICD2652RTDdriver.PDF" > ICD78022.2652 for Real-Time Display Driver</a>.</p>
+
+<h2 id="UsingSpotlight">Using the Spotlight Feature</h2>
+<p>Spotlight Sticky's are small windows created during an engine test which display current values for some channels. They are useful for troubleshooting or monitoring a channel not appearing on one of the currently selected Real-Time Displays.</p>
+<p class="Note">When the RTD Driver is closed the Spotlight Sticky's are saved to file. When the RTD Driver is re-opened the Spotlight Sticky's are automatically loaded.</p>
+<p class="Note">When setting channel values through spotlight sticky's, a warning message appears in the UEL if the value is not appropriate for the channel. If the value is appropriate, a message appears in the UEL showing the update is successful.</p>
+<h3 id="CreateSpotlightSticky">Creating Spotlight Sticky Windows</h3>
+<p>To create a Spotlight Sticky:</p>
+<ol>
+  <li>Select <strong>Tools - Create Spotlight</strong> or the <img alt="" src="images/ButtonSpotlightSticky.PNG" > button on the <a href="?62#ControlView">RT Display Driver Control View</a>.<br>
+    The Create Spotlight Window is displayed.
+    <div class="Container"><img src="images/SpotlightStickyCreateDialog.PNG" alt="Spotlight Sticky Create Dialog" width="467" height="439"></div>
+    The list on the left contains the names of the available channels in alphabetical order. Entering characters in the <strong>Filter</strong> field above the list provokes a filtration of the list depending on the input.</li>
+  <li>Select the channels either by double-clicking them or using the buttons <strong>Add = &gt;</strong> / <strong>&lt;= Remove</strong> respectively. Up to 10 channels are possible.<br>
+    If the channel is a setable channel (a calculated channel with a constant equation and an Acquisition Rate = n) and the check box <strong>Enable Input</strong> is clicked, the Spotlight Sticky is displayed as an input control. Otherwise a value control is displayed.</li>
+  <p class="Note">The Set EU button enables the operator to select another appropriate Engineering Unit (EU) for displaying the value of a channel. The RTD Driver converts the values of this channel automatically.</p>
+  <li>Push <strong>Create</strong> to create the Spotlight Sticky.
+    <div class="Container"><img src="images/SpotlightStickyQualityGood.PNG" width="456" height="50" alt="Spotlight Sticky Quality Good"></div>
+    <br>
+    <div class="Container"><img src="images/SpotlightStickyQualitySuspect.PNG" width="456" height="50" alt="Spotlight Sticky Quality Suspect"></div>
+    <br>
+    <div class="Container"><img src="images/SpotlightStickyQualityBad.PNG" width="456" height="50" alt="Spotlight Sticky Quality Bad"></div>
+    <br>
+    <div class="Container"><img src="images/SpotlightBinary.png" width="457" height="50" alt="Spotlight Binary"></div>
+    <br>
+    A Spotlight Sticky displays the channel names, the EU converted value, the engineering unit and the raw value.<br>
+    The coloured symbols provide information about the <a href="?63#SettingChannelQuality">quality of the channel</a>.</li>
+</ol>
+
+<h2 id="UseChanInfoContxMenu">Using the Channel Info Context Menu</h2>
+<p id="DisplayBasicChanConfigParam">The Channel Info Context menu displays all relevant channel information at the time of call. This is possible for both Active X Controls and Spotlight Sticky's.</p>
+<h3 id="UseChanInfoContxMenu2">Displaying Basic Channel Configuration Parameters</h3>
+<p>To open the context menu of an Active X Control on a <a href="?64#RTDDriver">Display page</a>:</p>
+<ol>
+  <li>Push the right mouse button on an Active X Control.</li>
+  <li>Select <strong>Information on data variables</strong>.<br>
+    The channel information is displayed.</li>
+</ol>
+<p>To open the context menu of a Spotlight Sticky:</p>
+<ol>
+  <li>Push the right mouse button on a Spotlight Sticky.</li>
+  <li>Select <strong>Show channel info.</strong><br>
+    The channel information is displayed. </li>
+</ol>
+<p>The first row contains configuration data, the second row displays the cyclic values at the time the dialogue was called, i.e. the data is not updated.</p>
+<div class="Container"><img src="images/ChannelInfo.PNG" width="600" height="152" alt="Channel Info"></div>
+<h2 id="UnifiedEventLog">Unified Event Log (UEL)</h2>
+<p>The Unified Event Log (UEL) is responsible for tracking all events that occur while proDAS is running. All messages from the Real-Time Engine are displayed in the UEL Display window, along with filter masks, are stored in a single event log file. Text messages are written to the UEL whenever an event occurs (e.g.: starting test monitoring, taking a fullset, or registering an alarm).</p>
+<p>A new event log is created and started whenever proDAS is reconfigured.</p>
+<p>Event logs are saved to the hard disk, of the Host Computer, in the file:</p>
+<p class="Indented1">/users/RTE/logs/<strong><em>enginename</em></strong>/<em><strong>testname</strong></em>/event_logs/el<strong><em>YYMMDDHHmmss</em></strong></p>
+<p>where:</p>
+<ul>
+  <li>enginename is the name of the test engine</li>
+  <li>testname is the name of the test record</li>
+  <li>el identifies the file as an event log</li>
+  <li>YYMMDD is the year, month, and day on which the log was opened</li>
+  <li>HHmmss is the hour (0-23), minute, and second at which the log was opened</li>
+</ul>
+<p>The events displayed on the event log are stored in a text file. The event log can be stopped at any time, and all statements will be saved to the text file.</p>
+<p class="Note">The messages written in the text file support non-English characters.</p>
+<h3 id="EventHandlerWindow">Unified Event Log Display</h3>
+<p>The messages stored in the event log are displayed in the UEL display. proDAS may open several UEL displays that contain filters that determine the events that appear in the window. New messages always cause the UEL display to scroll down to the last entry in the event log.</p>
+<div class="Container"><img height="476" src="images/UELDisplay.png" alt="UEL Display" width="700" ></div>
+<table class="Table-Grey">
+  <tr>
+    <th colSpan="2" rowSpan="1">Unified Event Log (UEL) Display Window</th>
+  </tr>
+  <tr>
+    <th>Buttons and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td><img src="images/MenuFile.png" width="195" height="195" alt="Menu File"></td>
+    <td>From the File menu, the user can:
+      <ul>
+        <li>open a previously saved event list from a file</li>
+        <li>save the Event list to a file</li>
+        <li>print the Event list</li>
+      </ul>
+      In Online mode, opening a file will cause another instance of the application to be opened and run.
+      <p class="Note">The last four opened files are saved in the file history of the application which is accessible through the File menu.</p></td>
+  </tr>
+  <tr>
+    <td><img src="images/MenuEdit.png" width="178" height="99" alt="Menu Edit"></td>
+    <td>From the Edit menu, the user can:
+      <ul>
+        <li>copy selected events from the Event list</li>
+        <li>clear all events from the Event list </li>
+        <li>delete selected events from the Event list </li>
+      </ul>
+      To delete selected events from the Event list, use the Ctrl/Shift keys and the mouse or arrows keys to select events in the Event list. When the events have been selected, select <strong>Delete</strong> from the <strong>Edit</strong> menu or select the <strong>Delete</strong> button.<br>
+      <br>
+      To delete all events in the Event list, select <strong>Clear All</strong> from the <strong>Edit</strong> menu or select all the events in the Event list and select the <strong>Delete</strong> button.
+      <p class="Note">Clearing or deleting events affects the display only. The log that is stored on the Host computer is not affected.</p></td>
+  </tr>
+  <tr>
+    <td><img src="images/MenuView.png" width="307" height="225" alt="Menu View"></td>
+    <td>From the View menu, the user can:
+      <ul>
+        <li>check the font settings</li>
+        <li>enable/disable autoscroll</li>
+        <li>sort by:
+          <ul>
+            <li>severity</li>
+            <li>time</li>
+            <li>source</li>
+            <li>message</li>
+            <li>ascending order</li>
+            <li>descending order</li>
+          </ul>
+        </li>
+        <li>show/hide Filter Option pane</li>
+        <li>show/hide Toolbar</li>
+        <li>show/hide Statusbar</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td><img src="images/MenuHelp.png" alt="MenuHelp" width="196" height="99"></td>
+    <td>From the Help menu, the user can:
+      <ul>
+        <li> access the first page of the proDAS Integrated Help<br>
+          (i.e.: select <strong>Getting Started </strong>)</li>
+        <li> access all specific help topics referring to the UEL Display<br>
+          (i.e.: select <strong>Topic</strong>)</li>
+        <li> displays the application information,comprising the name, version number, and copyright<br>
+          (i.e.: select <strong>About UEL Display</strong>)</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td><img height="13" src="images/UELiconFolder.gif" alt="UEL Icon Folder" width="15"></td>
+    <td>Select the folder button to open a previously saved event list from a file.</td>
+  </tr>
+  <tr>
+    <td><img height="14" src="images/UELiconSave.gif" alt="UEL Icon Save" width="14"></td>
+    <td>Select the save button to save the Event list to a file.</td>
+  </tr>
+  <tr>
+    <td><img height="15" src="images/UELiconScan.gif" alt="UEL Icon Scan" width="16"></td>
+    <td>Select the scan button to open a previously saved event list from a file.</td>
+  </tr>
+  <tr>
+    <td><img height="14" src="images/UELiconPrint.gif" alt="UEL Icon Print" width="16"></td>
+    <td>Select the print button to print the Event list.</td>
+  </tr>
+  <tr>
+    <td><img height="13" src="images/UELiconDelete.gif" alt="UEL Icon Delete" width="14" ></td>
+    <td>Select the delete button to delete selected events from the Event list.</td>
+  </tr>
+  <tr>
+    <td><img height="14" src="images/UELiconAutoScroll.gif" alt="UEL Icon Auto Scroll" width="16"></td>
+    <td>Anytime a new event is received, it is added to the bottom of the event list. The event list automatically scrolls to the bottom of the event list as each new event is added.<br>
+      <br>
+      The scroll feature can be enabled or disabled by selecting <strong>Pause Autoscroll</strong> from the <strong>View</strong> menu or by selecting the Pause/Resume button.</td>
+  </tr>
+  <tr>
+    <td><img height="16" src="images/UELiconWhatisthis.gif" alt="UEL Icon What is this" width="16" ></td>
+    <td>Select the What is this? button to display context sensitive help.</td>
+  </tr>
+  <tr>
+    <td>Filter Options Pane</td>
+    <td>The Filter Options pane provides a series of user selectable filtering masks which can be defined and applied to the event list. The selectable filtering masks are:
+      <ul>
+        <li>Severity </li>
+        <li>Time </li>
+        <li>Event Source </li>
+        <li>Messages Containing the Word(s) </li>
+      </ul>
+      <br>
+      <strong>Filter Option pane</strong>from the <strong>View</strong> menu.<br>
+      <br>
+      The Filter Options pane is closed be deselecting <strong>Filter Options</strong> pane in the <strong>View</strong> menu or selecting the close button (<strong>X</strong>) at the top right corner of the <strong>Filter Options</strong> pane.</td>
+  </tr>
+  <tr>
+    <td>Severity</td>
+    <td>Defines the filters to apply to the Event list, allowing the user to view events with specific severities. The selectable filters are:
+      <ul>
+        <li>Return to Normal </li>
+        <li>Information </li>
+        <li>Warning </li>
+        <li>Error </li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Time</td>
+    <td>The Time section of the Filter Options pane allows the user to view events generated within a specific time frame.<br>
+      <br>
+      The time frame can be defined by selecting the filter and setting the time frame parameters.</td>
+  </tr>
+  <tr>
+    <td>Event Source</td>
+    <td>The Event Source section of the Filter Options pane allows the user to view events generated by a specific source. The source can be selected from the Event Source field.</td>
+  </tr>
+  <tr>
+    <td>Messages Containing the Word(s)</td>
+    <td>The Messages Containing the Word(s) section of the Filter Options pane allows the user to view events with messages that match the message selected from the Messages Containing the Word(s) field.</td>
+  </tr>
+  <tr>
+    <td><img height="21" src="images/UELbtnApply.gif" alt="UEL Button Apply"  width="66"></td>
+    <td>Select the <strong>Apply</strong> button to apply the selected filtering mask to the event list.</td>
+  </tr>
+  <tr>
+    <td><img height="21" src="images/UELbtnClearAll.gif" alt="UEL Button Clear All" width="66"></td>
+    <td>Select the <strong>Clear All</strong> button to clear the the filtering mask in the Filter Options pane.</td>
+  </tr>
+  <tr>
+    <td><img src="images/UELbtnUndo.gif" alt="UEL Button Undo" width="66" height="21"></td>
+    <td>Select the <strong>Undo</strong> button if the changes to the filtering mask is not to be applied.</td>
+  </tr>
+  <tr>
+    <td>Event List pane</td>
+    <td>Each row in the Event List pane is one UEL event. The severity of the event is indicated by the color of the row:
+      <ul>
+        <li><img height="16" src="images/UELredalarm.gif" alt="UEL Red Alarm" width="16" > red - alarm</li>
+        <li><img height="16" src="images/UELyellowwarning.gif" alt="UEL Yellow Warning" width="16" > yellow - warning </li>
+        <li><img height="16" src="images/UELblueinfo.gif" alt="UEL Blue Info"  width="16" > blue - information message </li>
+        <li><img height="15" src="images/UELnormal.gif" alt="UEL Normal" width="12" > green - normal </li>
+      </ul>
+      Each column provides specific information about the event. The Event List can be sorted by selecting the sort options from the <strong>View</strong> menu or by clicking on the column header. A small triangle on the column header indicates the sort order (i.e.: ascending or descending) as well as which column was selected to sort the event list.<br>
+      <br>
+      The sort order can be toggled by selecting the column with the small triangle on the column header.</td>
+  </tr>
+  <tr>
+    <td>Severity</td>
+    <td>The Severity column displays an icon that indicates the severity of the event.</td>
+  </tr>
+  <tr>
+    <td>Time</td>
+    <td>The Time column displays the date and time that the event occurred. The date and time is in the format:<br>
+      <br>
+      dd/mm/yyyy hh:mm:ss:sss<br>
+      <br>
+      where:
+      <ul>
+        <li>dd is the day </li>
+        <li>mm is the month</li>
+        <li>yyyy is the year </li>
+        <li>hh is the time in hours </li>
+        <li>mm is the time in minutes </li>
+        <li>ss is the time in seconds </li>
+        <li>sss is the time in thousandths of a second </li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Source</td>
+    <td>The Source column displays the source of the event.</td>
+  </tr>
+  <tr>
+    <td>Message</td>
+    <td>The Message column displays a message describing the event.</td>
+  </tr>
+</table>
+<p class="Note" id="InterpretAlarmsWarnings">Messages created in the Management GUI and the Test Information Page, and displayed in the UEL, support non-English characters.</p>
+
+<h2 id="InterpretAlarmsWarnings2">Interpreting Alarms and Warnings</h2>
+<p>During an engine test, an operator will be notified, by an Alarm or Warning, when the value of a monitored channel is beyond the safe operating threshold. The operating threshold is determined by the limit value assigned to the channel(s) in the configuration. proDAS indicates the channel that caused the alarm or warning, the initiating subsystem, and the type of alarm in the <a href="?68#AlarmSummaryWindow">Alarm Summary Display Window</a>. A warning or an alarm can trigger a subsequent predefined action, such as changing the value of a discrete channel, recording a fullset, or starting a transient log.</p>
+<p>For detailed information on defining alarm conditions in the test configuration, see the <a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm">Channel Editor</a>.</p>
+<p>Warnings indicate when a channel is exceeding its defined normal operating range. Warnings do not trigger an audible alarm and may or may not require acknowledgment by the operator. A warning is indicated by:</p>
+<ul>
+  <li>displaying a message in yellow in the Event Handler window and in the Alarm Summary window</li>
+  <li>recording the warning message in the Unified Event Log (UEL)</li>
+  <li>by changing the operator page objects that represents the channel change to yellow</li>
+</ul>
+<p>Alarms indicate when a channel has surpassed its defined extreme value and operator intervention is required to correct the problem.</p>
+<p>An alarm is indicated by:</p>
+<ul>
+  <li>displaying a message in red in the Unified Event Log window indicating subsystem name, channel name and alarm type (HIHI, LOLO or DISCALARM)</li>
+  <li>displaying the channel in the Alarm Summary window with its limit value and current recorded value</li>
+  <li>a message recorded in the Unified Event Log</li>
+  <li>the colour of any display object showing that channel will change to red</li>
+  <li>an immediate audible alarm (buzzer) is sounded (if so equipped)</li>
+</ul>
+<p>All alarms must be acknowledged by the user. If the audible alarm is triggered by more than one alarm, then each alarm must be acknowledged. However, the audible alarm is turned off after the first acknowledgment.</p>
+<p>Warning and alarm types that are processed by proDAS are:</p>
+<ul>
+  <li>high alarm (HIHI) - red</li>
+  <li>high warning (HI) - yellow</li>
+  <li>low warning (LO) - yellow</li>
+  <li>low alarm (LOLO) - red</li>
+  <li> rate of change (ROC) - yellow</li>
+  <li>blue discrete info message (DISCINFO)</li>
+  <li>red discrete alarm (DISCALARM)</li>
+  <li>invisible discrete alarm (DISQUIET) provides no audible or visible signal that the limit has been violated</li>
+</ul>
+<p>A channel that has one or more sliding limits can have limits that contradict each other. For example, if channel B has a LO limit defined by channel C as well as a fixed HI limit of 150, it is possible for the LO limit to be greater than the HI limit. These contradictions are resolved according to the following rules of precedence:</p>
+<ul>
+  <li>LO limits can be overridden by any other limit</li>
+  <li>HI limits can be overridden by LOLO or HIHI limits</li>
+  <li>LOLO limits can be overridden by HIHI limits</li>
+  <li>HIHI limits can never be overridden</li>
+</ul>
+<h3 id="AlarmSummaryWindow">Alarms Summary Display Window</h3>
+<p>The Alarm Summary Display window provides a list of the proDAS channels as the channels transition from normal to warning and alarm states. The Alarm Summary Display window can be moved and resized by dragging the window borders.</p>
+<p>The Alarm Summary Display window is displayed when Start Scan is selected on the Management GUI Control Panel.</p>
+<div class="Container"><img height="225" src="images/AlarmSummaryDisplay.png" alt="Alarm Summary Display" width="700" ></div>
+<p>The Alarm Summary Display window:</p>
+<ul>
+  <li>displays a list of proDAS channels in alarm and warning states, including limit values, current values, minimum or maximum value reached while in alarm, and the maximum deviation beyond the limit state </li>
+  <li>displays channels in an alarm state (HIHI, LOLO, or DISCALARM) in black characters on a red background and displays red characters on a black background when the alarm is acknowledged</li>
+  <li>displays channels in the warning state (HI or LO) in yellow characters on a black background when unacknowledged and displays black characters on a yellow background when acknowledged or if proDAS is configured so as to not require the acknowledgment of warnings</li>
+  <li>displays an ordered list from newest to oldest, with channels in an alarm state followed by channels in a warning state </li>
+  <li>inserts new alarms at the top of the list</li>
+  <li>inserts new warnings at the top of the warning list (just after the oldest alarm). As new messages are added, channels below the insertion point are moved down, with any channel at the bottom of the window disappearing</li>
+  <li>upon receipt of a new alarm, the display is brought to the front of all running windows </li>
+  <li>displays a channel in the Alarm Summary Display window only once, regardless of how many times it transitions between alarm and warning states </li>
+</ul>
+<p class="Note">When idle, the Alarm Summary Display window periodically sends a heartbeat message to proDAS. If a preset number of consecutive failures is encountered, the Alarm Summary Window checks for the presence of the RTE. If the RTE is not found, the Status bar will show the RTE connection as being lost. If the RTE connection is lost, the Alarm Summary Window will remain open until it is closed by the operator or by the Management GUI.</p>
+<p class="Note">During scanning, the Alarm Summary Display window periodically queries proDAS for the current channel values. If a preset number of consecutive failures is encountered, the Alarm Summary Window checks for the presence of the RTE. If the RTE is not found, the Status bar will show the RTE connection as being lost. If the RTE connection is lost, the Alarm Summary Window will remain open until it is closed by the operator or by the Management GUI.</p>
+<p>The alarm summary is sorted by red Alarms and yellow Warnings and is then sorted chronologically within each group. The user cannot select a specific alarm or alarms from the list and cannot change the sort order of the list.</p>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="2" rowspan="1">Alarm Summary Display Window</th>
+  </tr>
+  <tr>
+    <th>Buttons and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td>Channel Name</td>
+    <td>Displays the name of the channel that triggered the alarm.</td>
+  </tr>
+  <tr>
+    <td>State</td>
+    <td>Displays the alarm state (i.e.: HI, LO, HIHI, LOLO, or DISCALARM)</td>
+  </tr>
+  <tr>
+    <td>Limit</td>
+    <td>Displays the alarm limit as defined in the configuration file.</td>
+  </tr>
+  <tr>
+    <td>Current Value</td>
+    <td>Displays the current value of the channel.</td>
+  </tr>
+  <tr>
+    <td>Max/Min Value</td>
+    <td>The maximum or minimum absolute value reached by the channel.</td>
+  </tr>
+  <tr>
+    <td>Max Deviation</td>
+    <td>The maximum absolute value that the channel value has deviated from the limit value.</td>
+  </tr>
+  <tr>
+    <td><img height="16" src="images/Time.png" alt="Time" width="45" ></td>
+    <td>The TIME indicator, located on the Status Bar, displays the current system time (e.g.: 1:31:35).</td>
+  </tr>
+  <tr>
+    <td><img height="22" src="images/DangerIndicator.png" alt="Danger Indicator" width="42" ><br>
+      <br>
+      Regular Alarm Indicator<br>
+      <br>
+      <img height="42" src="images/DangerIndicatorLarge.png" alt="Danger Indicator Large" width="42" ><br>
+      <br>
+      Large Alarm Indicator</td>
+    <td>The red DANGER indicator is located on the Status Bar.When the cursor is moved over the red danger indicator, a tool tip showing the total number of active alarms and the total number of unacknowledged alarms is displayed.<br>
+      <br>
+      The red DANGER indicator:
+      <ul>
+        <li> appears as a red outline if there are no alarms</li>
+        <li> blinks (i.e.: alternates between solid red and a red outline) if there are unacknowledged alarms</li>
+        <li> is solid red if all alarms have been acknowledged </li>
+      </ul>
+      The size of the DANGER indicator can be configured through the .ini file for the Alarm Summary Display. The size options are regular and large. The default is regular.</td>
+  </tr>
+  <tr>
+    <td><img height="22" src="images/CautionIndicator.png" alt="Caution Indicator" width="42" > <br>
+      <br>
+      Regular Caution Indicator<br>
+      <br>
+      <img height="41" src="images/CautionIndicatorLarge.png" alt="Caution Indicator Large" width="42"><br>
+      <br>
+      Large Caution Indicator</td>
+    <td>The yellow CAUTION indicator is located on the Status Bar. <br>
+      <br>
+      When the cursor is moved over the yellow caution indicator, a tool tip showing the total number of active warnings and the total number of unacknowledged warnings is displayed.<br>
+      <br>
+      The yellow CAUTION indicator:
+      <ul>
+        <li> appears as a yellow outline if there are no alarms</li>
+        <li> blinks (i.e.: alternates between solid yellow and a yellow outline) if there are unacknowledged alarms</li>
+        <li> is solid yellow if all alarms have been acknowledged </li>
+      </ul>
+      The size of the CAUTION indicator can be configured through the .ini file for the Alarm Summary Display. The size options are regular and large. The default is regular.</td>
+  </tr>
+  <tr>
+    <td><img height="24" src="images/RTENoSendNoRcv.png" alt="RTE No Send No Rcv" width="178"><br>
+      <br>
+      <img height="24" src="images/RTESendNoRcv.png" alt="RTE Send No Rcv" width="180"><br>
+      <br>
+      <img height="24" src="images/RTENoSendRcv.png" alt="RTE No Send Rcv" width="180"><br>
+      <br>
+      <img height="24" src="images/RTESendRcvNoScan.png" alt="RTE Send Rcv No Scan" width="197" ><br>
+      <br>
+      <img height="24" src="images/RTESendRcvScan.png" alt="RTE Send Rcv Scan" width="173" ></td>
+    <td>The Connection Status indicator, located on the Status Bar, displays the status of the connection to the Real-time Engine (RTE):
+      <ul>
+        <li>neither the Send [X] nor the Receive [X] connection is established </li>
+        <li>the Send [O] connection is established; the Receive [X] connection is not established</li>
+        <li>the Send [X] connection is not established; the Receive [O] connection is established </li>
+        <li>both the Send and the Receive connections are established, but the RTE is not scanning </li>
+        <li>both the Send and the Receive connections are established and the RTE is scanning </li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td><img height="23" src="images/SaveIcon.png" alt="Save Icon" width="24"></td>
+    <td>Select the <strong>Save</strong> button to save the Alarm Summary to a file.</td>
+  </tr>
+  <tr>
+    <td><img height="23" src="images/PrintIcon.png" alt="Print Icon" width="24" ></td>
+    <td>Select the <strong>Print</strong> button to print the Alarm Summary.</td>
+  </tr>
+  <tr>
+    <td><img height="23" src="images/SingleIcon.png" alt="Single Icon" width="24"></td>
+    <td>Select the <strong>Acknowledge</strong> button to acknowledge the oldest alarm.<br>
+      <p class="Note">The Acknowledge button location and size is configurable.</p></td>
+  </tr>
+  <tr>
+    <td><img height="23" src="images/MultipleIcon.png" alt="Multiple Icon" width="24"></td>
+    <td>Select the <strong>Acknowledge All</strong> button to acknowledge all unacknowledged alarms.
+      <p class="Note">The Acknowledge All button location and size is configurable.</p></td>
+  </tr>
+  <tr>
+    <td><img src="images/FileMenu.gif" alt="File Menu" width="173" height="107"></td>
+    <td>From the <strong>File</strong> menu, the user can:
+      <ul>
+        <li>save the Alarm Summary to a file </li>
+        <li>print the Alarm Summary using the Continuous Print Server </li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td><img height="69" src="images/EditDropMenu.gif" alt="Edit Drop Menu" width="197" ></td>
+    <td>From the <strong>Edit</strong> menu, the user can:
+      <ul>
+        <li>acknowledge the oldest alarm </li>
+        <li>acknowledge all unacknowledged alarms </li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td><img src="images/ViewMenuAlarmSum.gif" alt="View Menu Alarm Sum" width="168" height="99"></td>
+    <td>From the <strong>View</strong> menu, the user can:
+      <ul>
+        <li>set the Alarm Summary window to display always on top</li>
+        <li>set the font that is used to display the Alarm Summary list </li>
+        <li>show or hide the application toolbar (i.e.: select or deselect Toolbar)</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td><img src="images/HelpMenuAlarmSum.gif" width="232" height="99" alt="Help Menu Alarm Summary"></td>
+    <td>From the <strong>Help</strong> menu, the user can:
+      <ul>
+        <li> access the first page of the proDAS Integrated Help <br 
+        >
+          (i.e.: select <strong>Getting Started </strong>) </li>
+        <li> access all specific help topics referring to the Alarm Summary Display<br>
+          (i.e.: select <strong>Topic</strong>)</li>
+        <li> displays the application information,comprising the name, version number, and copyright<br 
+        >
+          (i.e.: select <strong>About Alarm Summary Display</strong>) </li>
+      </ul></td>
+  </tr>
+</table>
+<h3 id="AcknowledgeAlarm">Acknowledging an Alarm</h3>
+<p>When a channel exceeds its limit value, an Alarm is generated by proDAS that must be acknowledged by the operator. Each alarm must be acknowledged, however the audible alarm will stop after the first acknowledgment.</p>
+<p>proDAS indicates which channel has caused the alarm, the subsystem to which the channel belongs and the alarm level. The alarm message and any actions that occur can be used to help track down the source of the alarm so that the problem causing the alarm can be resolved.</p>
+<p>Alarms are acknowledged, in the order in which they occur, from the <strong>Edit</strong> menu of the Alarm Summary Display window or by selecting the applicable icon from the Alarm Summary Display tool bar.</p>
+<p>To acknowledge a specific alarm:</p>
+<ol>
+  <li>Select <strong>Acknowledge</strong> from the <strong>Edit</strong> menu or select <img height="23" src="images/SingleIcon.png" alt="Single Icon" width="24" > from the tool bar.</li>
+  <li>To acknowledge all alarms, select <strong>Acknowledge ALL</strong> from the <strong>Edit</strong> menu or select <img height="23" src="images/MultipleIcon.png" width="24" alt="Multiple Icon"> from the tool bar.</li>
+</ol>
+<h3 id="InfoSummaryDisplay">Info Summary Display Window</h3>
+<p class="Note">The Acknowledge and Acknowledge All buttons are disabled for this window.</p>
+<p>The Info Summary Display window provides a list of the proDAS channels as the channels transition from normal to warning and alarm states. The Info Summary Display window can be moved and resized by dragging the window borders.</p>
+<p>The Info Summary Display window is displayed when Start Scan is selected on the Management GUI Control Panel.</p>
+<div class="Container"><img height="308" src="images/InfoSummaryDisplay.png" width="700" alt="Info Summary Display" ></div>
+<h2 id="OpenTestEngPage" >Opening the Test Page</h2>
+<p>The operator performs most of the data recording activities from the Test Page displayed on the Management Interface Computer.</p>
+<p class="Note">proDAS must be configured and scanning before the operator can access the Test Page.</p>
+<p><strong>To open the Test Page:</strong></p>
+<ol>
+  <li>From the Management GUI Control Panel, select <strong>Test Page</strong>.<br>
+    The Test Page is displayed and the system is now ready to test the engine.</li>
+  <br>
+  <img src="images/TestPage.png" width="700" height="451" alt="Test Page">
+</ol>
+
+<h2 id="SelectRunTestProcedure">Selecting and Running a Test Procedure </h2>
+<p>Engine Test Procedures are used to automate testing sequences for repeatable performance. proDAS offers a proprietary Visual Basic Script language which is easy to learn and use, for defining engine test procedures.</p>
+<p>The available procedures are listed on the Test Page (below).</p>
+<div class="Container"><img src="images/TestPage2.png" width="700" height="451" alt="TestPage2"></div>
+<ol>
+  <li>Select a test procedure from the list of available procedures and click the play button <img src="images/ButtonPlay.png" width="58" height="27" alt="Button Play"> to load the test procedure.<br>
+    The individual test procedures are displayed in the Test Procedure Panel and options are listed in the Test Procedure Execution Panel. For details on the panel functions, see <a href="../MGTGUI/MGTGUI.htm#TestProcedures">Test Procedures Window in the Management GUI</a>.
+    <p class="Note">If a procedure appears greyed in the list of test procedures, some element, either a channel or lookup table, required by the procedure is not currently configured. Modify the configuration or script as needed and reconfigure before proceeding.</p>
+  </li>
+  <li>Click <strong>Play</strong> <img src="images/ButtonPlay.png" width="58" height="27" alt="Button Play"> to start the loaded test procedure. </li>
+  <li>Follow the instructions in the procedural display window or in any dialogue boxes that may be displayed.
+  <li>Once the current step in the test procedure is completed, click <strong>Continue</strong> to move on to the next step. The results from running the Test Procedures may be displayed in the Test Results panel.</li>
+  </li>
+  <li>To abort the current test, click <strong>Stop <img src="images/ButtonStop.png" width="58" height="27" alt="Button Stop"></strong>.</li>
+</ol>
+<h3 id="proDASPropTestProcedLang">proDAS Proprietary Test Procedure Language</h3>
+<p>An engine test procedure consists of a unicode file containing sequential step-by-step commands which are configured to reflect the test sequence as specified by the engine manufacturer. A test procedure script controls the test sequence and how the results are achieved. </p>
+<p>These commands perform local functions in the Management Interface application and interact with the proDAS Real-Time Engine, on the Host Computer, using opcodes. </p>
+<p>The test procedure script is created using the <a href="../../DASConfigTools/ScriptEditor/ScriptEditor.htm">Script Editor</a> and maintains a defined structure. The test procedure scripts should only be written using the proDAS Script Editor.</p>
+<p class="Note">Opening the script in any application other than the Script Editor may result in hazardous side affects.</p>
+<p>For more information on the proDAS Test Procedure Language Command Set, see <a href="../../DASConfigTools/ScriptEditor/ScriptEditor.htm#CommandCode">Command Code Table in the Script Editor</a>.</p>
+<h2 id="RecordHistoryLogs">Recording Transient Logs</h2>
+<p>A transient log is a record of selected channel values over a predetermined period of time. Many different transient logs can be defined, but only four can be recording data simultaneously (not including the critical log or continuous log). More than one instance of the same log can be running at one time. When multiple versions of a log are running, they can be stopped and saved individually. </p>
+<p>Transient Logs can be started: </p>
+<ul>
+  <li>from the Logs Panel on the Test Page </li>
+  <li>automatically, as alarm conditions in response to a limit violation </li>
+</ul>
+<p>A running transient log can be stopped at any time. When a running log is stopped, its contents are saved to a transient log file. If a transient log is not stopped manually, it runs for its defined duration, stops and is saved by proDAS. Two or more instances of the same log can run at the same time and each instance can be stopped (saved) individually.</p>
+<p>Transient logs can be started and stopped automatically when an alarm occurs. Alarm conditions that start and stop transient logs are defined, for a channel, in the configuration for the current test. When a running transient log is stopped by an alarm condition, all instances of the running log are stopped, but only the first instance of the log is saved.</p>
+<p>For detailed information on defining alarm conditions in the test configuration, see the <a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm">Channel Editor</a>.</p>
+<p>For additional information on Transient Logs, see <a href="../../StandardTools/SetupDataRecording/SetupDataRecording.htm">Setup Data Recording</a>.</p>
+<h3 id="StartHistLogFromTestEngScrn">Starting a Transient Log from the Test Page</h3>
+<p><strong>To start a Transient Log from the Test Page:</strong></p>
+<ol>
+  <li>Using the Logs Panel (below) select a log (e.g. VibAccel) from the <strong>Log Definitions</strong> field.<br>
+    <div class="Container"><img src="images/PnlLogs.png" width="628" height="197" alt="Panel Logs"></div>
+  </li>
+  <li>Select the right arrow button or double-click on the log name to start the selected (highlighted) log in the Log Definitions field. The selected log is displayed in the Running Logs field.<br>
+    The transient log begins recording and a message is written to the UEL. The transient log recording continues until the time duration expires or the transient log is stopped manually.<br>
+    A message indicating the start time, and the name of the transient log is displayed in the Unified Event Log.</li>
+  The Comments drop-down menu and panel show any comments relating to the Log Definition. To edit comments or add new comments, see <a href="#InsertOpComments">Inserting Operator Comments</a>.
+</ol>
+<h3 id="StopHistoryLogFromTestEngScrn">Stopping a Transient Log from the Test Page</h3>
+<p><strong>To stop a transient log from the Test Page:</strong></p>
+<ol>
+  <li>Using the Logs Panel (below) select a log (e.g. VibAccel.2) from the <strong>Running Logs</strong> field.
+    <div class="Container"><img src="images/PnlLogs2.png" width="628" height="197" alt="Panel Logs 2"></div>
+  </li>
+  <li>Select the left arrow button or double-click on the log name to stop the selected (highlighted) log in the Running Logs field.<br>
+    The transient log stops recording and is removed from the Running Logs field and displayed in the Log Definitions field. <br>
+    A message indicating the stop time and the name of the transient log is written to the UEL. The contents of the transient log are saved to the hard disk, of the Host Computer, in the file:<br>
+    <br>
+    /users/RTE/logs/&lt;<strong><em>enginename</em></strong>&gt;&lt;<strong><em>testname</em></strong>&gt;/hist_logs/&lt;<strong><em>logname</em></strong>&gt;.x<br>
+    <br>
+    where:
+    <ul>
+      <li>enginename is the name of the engine being tested</li>
+      <li>testname is the name of the test record</li>
+      <li>logname is the name of the transient log</li>
+      <li>x is a number assigned by proDAS each time a particular log is started (sequential integer counter, starting at 1)</li>
+    </ul>
+  </li>
+</ol>
+<h2 id="RecordFullset">Recording a Fullset (Steady State Data)</h2>
+<p>Steady-State fullsets are time averaged data from each of the channels measured by proDAS for the current test (all of the channels in the current configuration). For example, if the time duration of the steady-state fullset is one second, and the channel data is sampled at a 10 hertz scan rate, then the 10 samples taken during the fullset period will be averaged to a single value. The value will be stored in the proDAS database under the current test name as the channel value for the recorded steady-state fullset.</p>
+<p>A steady-state fullset can be recorded at any time during an engine test. The operator can specify:</p>
+<ul>
+  <li>the time period (i.e.: 0 to 300 seconds) over which the data is averaged</li>
+  <li>a Test Step to identify the fullset</li>
+  <li>an additional comment</li>
+</ul>
+<p>For information on retrieving and reviewing fullset data, see <a href="../ViewEngTestData/ViewEngTestData.htm" >Viewing Fullsets and Events using RAVE in Viewing Engine Test Data</a>.</p>
+<p>For additional information on Fullsets, see <a href="../../StandardTools/SetupDataRecording/SetupDataRecording.htm">Setup Data Recording</a>.</p>
+<h3 id="RecordFullset2">Recording a Fullset</h3>
+<p><strong>To record a fullset:</strong></p>
+<ol>
+  <li>Using the Fullset Panel (below) add a predefined comment to the fullset by clicking on the <strong>Comment </strong>drop-down list.<br>
+    A list of predefined comments is displayed.
+    <div class="Container"><img src="images/PnlFullset.gif" width="631" height="204" alt="Panel Fullset"></div>
+  </li>
+  <p class="Note">Adding a comment to the fullset is optional.</p>
+  <li>Select a comment (i.e.: Test 1) from the <strong>Comments</strong> drop-down list.<br>
+    The selected comment is displayed in the Comment field. </li>
+  <li>To add a unique comment, or to add additional text to the preselected comment, click in the <strong>Comments (0/80 characters) </strong> field and enter your comments.</li>
+  <li>If you want to add a predefined test step, click on the <strong>Test Step</strong> drop-down list. <br>
+    A list of predefined test steps are displayed.<br>
+    <br>
+    <p class="Note">For Customer specific requirements, the &quot;Test Step&quot; box is configurable. If required, enter ScanIdentifier = True, (located in the Test Engine section of the Management GUI.ini file), the Fullset Panel Test Step field changes to Scan ID. The Scan ID is comprised of three sub-boxes (alphabetic, numeric, numeric). Each sub-box menu enables the operator to uniquely identify the &quot;test step&quot;, for example &quot;A09&quot;.</p>
+  </li>
+  <li>Select a test step.<br>
+    The selected test step is displayed.</li>
+  <li>Click in the <strong>Duration</strong> box and enter the duration (i.e.: between 0 and 300 seconds) for the fullset.<br>
+    The duration can be increased or decreased with the up and down arrow keys at the right of the Duration field.<br>
+    <br>
+    <div class="Container"><img src="images/PnlFullset.gif" width="631" height="204" alt="Panel Fullset"></div>
+  </li>
+  <li>Select <strong>Start Fullset</strong>.<br>
+    A fullset start message containing the fullset duration, test step and comments is displayed in the Unified Event Log.<br>
+    When the duration has expired, a completion message is also recorded in the Unified Event Log, and the steady-state data is saved to the proDAS database.</li>
+</ol>
+
+<h2 id="RecordCriticalLog">Recording a Critical Log</h2>
+<p>The critical log is a rotating log which is started automatically when Start Scan is selected on the Management GUI Control Panel. The critical log records data continuously from all of the channels defined as critical in the current configuration.</p>
+<p>For additional information, see <a href="../../StandardTools/SetupDataRecording/SetupDataRecording.htm#CriticalLogs">Critical Logs in Setup Data Recording</a>.</p>
+<p><strong>Critical logs can be saved:</strong></p>
+<ul>
+  <li>by selecting <a href="?81#SaveCritLogFmTestEngScrn">Save Critical Log on the Test Page</a> displayed on the Management Interface Computer</li>
+  <li>automatically as an action to an alarm or warning. The alarm conditions and the actions associated with each limit are specified in the individual channel configuration (for detailed information on adding an action to an alarm, see the <a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm">Channel Editor</a>)</li>
+</ul>
+<p>The log is saved to the hard disk, of the Host Computer, in the file:</p>
+<p class="Indented1">/users/RTE/logs/&lt;<strong><em>enginename</em></strong>&gt;&lt;<strong><em>testname</em></strong>&gt;/hist_logs/cr<em><strong>YYMMDDHHmmss</strong></em><strong></strong></p>
+<p>where: </p>
+<ul>
+  <li>enginename is the name of the engine tested </li>
+  <li>testname is the name of the test on the Test Information Page </li>
+  <li>cr identifies the file as a critical log </li>
+  <li>YYMMDD is the current year, month, and day</li>
+  <li>HHmmss is the hour (0-23), minute, and second at which the log was saved</li>
+</ul>
+<p class="Note">If the RTE is configured to save the High Speed Log or the DDS Sentry with the Critical Log, this button will automatically save all relevant logs.</p>
+<p class="Note">If the High Speed Log is in circular mode, there will be a specific button available to save the High Speed Log independently from the Critical Log. It is located under the Critical Log button.</p>
+<h3 id="SaveCritLogFmTestEngScrn">Saving a Critical Log from the Test Page</h3>
+<p>To save a Critical Log from the Test Page:</p>
+<ol>
+  <li>Select <strong>Save Critical Log</strong>.<br>
+    The proDAS critical log is saved and the following two messages are displayed in the Unified Event Log:
+    <ul>
+      <li>Recording critical log in <strong>crt_post_event</strong> seconds </li>
+      <li>Critical log saved </li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="ContinuousLog">Continuous Logging</h2>
+<p>Continuous Logging is the implementation of a continuous recording and playback utility that automatically records  hardware channel data whenever proDAS is scanning. A trigger channel is used to control the starting and stopping of the continuous log. The name of the trigger channel is obtained from the RTE initialisation file. The RTE initialisation file can also be used to exclude specific hardware subsystems from the recorded data. For details, see <a href="../../StandardTools/SetupDataRecording/SetupDataRecording.htm#Inputs">Continuous Log Inputs</a>. </p>
+<p>Up to 20 complete test logs can be written and stored by proDAS. When the number of continuous logs exceeds 20, the Real-Time Engine (RTE) will prompt the user to shutdown and archive; continue and overwrite the oldest log file or continue with the continuous log disabled.</p>
+<p>A new log type is defined for the continuous log, called continuous_log, and is stored in the same format as the existing critical and transient logs in the \users\RTE\logs\continuous_log directory. A link to the log file is also found in the \users\RTE\logs\&lt;engine_name&gt;\&lt;test_name&gt;\hist_logs directory.</p>
+<p>The channels to be recorded in the continuous log are assembled at configuration time from the configuration data.</p>
+<p>If no trigger channel is defined when proDAS stops or starts scanning, the continuous log is automatically stopped and restarted. When restarted, proDAS attempts to append to the already existing continuous log file. When a trigger channel is defined for the continuous log, this channel controls the stopping and starting of the continuous log.</p>
+<p>If proDAS is reconfigured with the same configuration and test name, the logs subsystem will verify whether the already existing continuous log file contains the same channels as the current configuration. If so, it will attempt to append the new data to the existing continuous log file. </p>
+<p>If appending is not possible because of a configuration change or because the log file is already larger than the maximum log size allowed, a new continuous log will be started.</p>
+<p class="Note">Changes to the following channel attributes cause a new continuous log file to be created:<br>
+  <br>
+  &nbsp; &nbsp; &nbsp; &bull; &nbsp; &nbsp; &nbsp;  critical flag<br>
+  &nbsp; &nbsp; &nbsp; &bull; &nbsp; &nbsp; &nbsp;  scan rate<br>
+  &nbsp; &nbsp; &nbsp; &bull; &nbsp; &nbsp; &nbsp;  subsystem type<br>
+  &nbsp; &nbsp; &nbsp; &bull; &nbsp; &nbsp; &nbsp;  discrete test true/false strings (discrete channels only)<br>
+  &nbsp; &nbsp; &nbsp; &bull; &nbsp; &nbsp; &nbsp;  min and max values (float channels only)<br>
+  &nbsp; &nbsp; &nbsp; &bull; &nbsp; &nbsp; &nbsp;  engineering unit (EU) (float channels only)<br>
+  <br>
+  Changes to the following test attributes cause a new continuous log file to be created: <br>
+  <br>
+  &nbsp; &nbsp; &nbsp; &bull; &nbsp; &nbsp; &nbsp;  engine serial number<br>
+  &nbsp; &nbsp; &nbsp; &bull; &nbsp; &nbsp; &nbsp;  build number</p>
+<p>A continuous log event file is used to associate the individual continuous log files for the same test. This file records the start and stop times of each log, and an index into the respective log file for each start or stop occurrence. This information is then used when replaying the log file.</p>
+<p>The continuous log obtains configuration information from the LOG_PLAYBACK section of the RTE initialisation file.</p>
+<p class="Note">There are parameters within the RTE initialisation file that allow the log to continue recording until it reaches the 2 GB maximum size. When this happens, a new log is started with no time delay. These parameters allow a continuous log to not be stopped if it is below the size limit but over the time limit.</p>
+<h2 id="InsertOpComments">Inserting Operator Comments</h2>
+<p>The operator can add predefined event and test comments to the Unified Event Log from the Comments panel of the Test Page. This section includes 
+  procedures for inserting:</p>
+<ul>
+  <li>Predefined Event Comments in the Unified Event Log window</li>
+  <li>Predefined Test Comments in the Test Results and Sensor Calibration Database (TRSCDB) from the Test Page</li>
+</ul>
+<p class="Note">The comments field supports hexadecimal notation.</p>
+<h3 id="InsertPredefinedEventAndTestComments">Inserting Predefined Event and Test Comments</h3>
+<p>To insert predefined event and test comments or to add a comment to the Unified Event Log:</p>
+<ol>
+  <li>If desired, select a category from the <strong>Category Filter</strong> drop-down list.</li>
+  <li>If desired, select a Test Step from the <strong>Test Step</strong> drop-down list.</li>
+  <li>Select a comment from the <strong>Comment</strong> drop-down list on the Comments panel (below), to use an existing or edit a predefined Event comment. The comment is loaded into the comment box.
+    <div class="Container"><img src="images/PnlComments.png" width="443" height="194" alt="Panel Comments"></div>
+  </li>
+  <li>If desired, edit the comment in the lower Comment window.</li>
+  <li>Select <strong>Save</strong>.<br>
+    The comment is displayed in the Unified Event Log window. It may also appear in the Results Window and saved to the TRSCDB if configured.</li>
+  <p class="Note">Adding a comment to the log is optional.</p>
+</ol>
+<h2 id="UseChanRedirect">Using the Channel Redirect Utility</h2>
+<p>The Channel Redirect feature is used to map the value read from one channel to another. This is useful when a physical sensor is no longer responding, but its channel name is referenced in downstream calculations or on the Real-Time Displays. Unlike the Set Channel feature, once redirected, the target channel will continue to be updated with the value of the source channel until such a time as the mapping is broken.</p>
+<p>For details on the Set Channel panel, see <a href="../MGTGUI/MGTGUI.htm#SetChannel">Set Channel Panel in the Management GUI</a>.</p>
+<h3 id="RedirectingAchannel">Redirecting or Setting a Channel</h3>
+<p>To redirect or set a channel:</p>
+<ol>
+  <li>Select <strong>Set Channel</strong> tab on the Test Page.<br>
+    The Set Channel control panel, including the Set Quality and Channel Redirect options, is displayed.
+    <div class="Container"><img src="images/PnlSetChannel.png" width="631" height="201" alt="Panel Set Channel"></div>
+  </li>
+  <li>Select <img src="images/Btndots.gif" width="28" height="27" alt="Button Dots"> to display the Select a Channel window. Choose a channel from the list and click <strong>Select</strong>. The chosen channel is displayed in the Channel Value field, the value for that channel is displayed in the Value field, the quality of the channel is displayed in the Quality field and the ceiling for the channel is displayed in the Ceiling field.
+    <p class="Note">If performing a Channel redirect, the selected channel must not be a zero Hz channel.</p>
+  </li>
+  <li> Select Constant or Channel depending on whether a set channel or redirection is required.<br>
+    If Constant has been selected, enter a value in the Constant field.<br>
+    If Channel has been selected, click <img src="images/Btndots.gif" width="28" height="27" alt="Button Dots"> to display the Select a Channel window and choose a channel.</li>
+  <li>Select <strong>Set Value</strong>. The value is set. If it is a channel, the channel will appear in the field next to the black arrow.<br>
+    A message is written to the UEL.</li>
+</ol>
+<h3 id="ClearChanFmRedirection">Clearing a Channel from Redirection</h3>
+<p><strong>To clear a channel from redirection:</strong></p>
+<ol>
+  <li>Select <strong>Set Channel</strong> on the Test Page.<br>
+    The Set Channel control panel, including the Set Quality and Channel Redirect options, is displayed.
+    <div class="Container"><img src="images/PnlSetChannel.png" width="631" height="201" alt="Panel Set Channel"></div>
+  </li>
+  <li>Select <img src="images/Btndots.gif" width="28" height="27" alt="Button Dots"> to display the Select a Channel window. Select the filter such that redirected channels are displayed. Choose a channel from the list and click <strong>Select</strong>. The chosen channel is displayed in the Channel Value field, the value for that channel is displayed in the Value field, the quality of the channel is displayed in the Quality field and the ceiling for the channel is displayed in the Ceiling field. The <strong>Remove</strong> button is enabled.</li>
+  <li>Select <strong>Remove</strong>. The channel redirection is removed.<br>
+    A message is written to the UEL. </li>
+</ol>
+
+<h2 id="SettingChannelQuality">Setting the Quality of a Channel</h2>
+<p>The channel quality specifies the reliability of that channel and can be set by:</p>
+<ul>
+  <li>the operator from the Test Page, on the Management Interface Computer, while proDAS is running</li>
+  <li>the proDAS application while proDAS is running</li>
+</ul>
+<p>The operator can mark the best quality value, known as the quality ceiling, that a channel may read.</p>
+<p>proDAS sets the quality to GOOD (when the data is sound), SUSPECT (when the data is interpolated or is otherwise suspicious) or BAD (when the value cannot be acquired by the hardware). However, proDAS can never set a better quality than the current quality ceiling for a given channel. For example, if the operator sets the quality for channel A to SUSPECT, proDAS cannot set the quality to GOOD, even if a good value is measured. proDAS can only set the quality flag to BAD or SUSPECT for this channel. The operator can however, modify the quality and set the quality ceiling to GOOD, thus allowing proDAS to set any quality value.</p>
+<p>Once the operator sets the quality of the channel, the data is recorded along with each measurement, for example:</p>
+<ul>
+  <li>setting the quality ceiling to BAD causes proDAS to record a data value of -99999, and set the quality flag to BAD</li>
+  <li>setting the quality ceiling to SUSPECT flags to the end user that there is something suspicious about the data, and causes proDAS to record the actual data value and set the quality flag to SUSPECT</li>
+  <li>setting the quality ceiling to GOOD causes proDAS to record the actual value and set the quality flag to GOOD</li>
+</ul>
+<p>The quality flag is recorded with the data in any transient log or fullset. To set the quality of a channel:</p>
+<ol>
+  <li>Select <strong>Set Channels</strong> from the Test Page.<br>
+    The Set Channel control panel, including the Set Quality Ceiling options, is displayed.
+    <div class="Container"><img src="images/PnlSetChannel.png" width="631" height="201" alt="Panel Set Channel"></div>
+  </li>
+  <li>Select <img src="images/Btndots.gif" width="28" height="27" alt="Button Dots"> to display the Select a Channel window. Choose a channel from the list and click <strong>Select</strong>. The chosen channel is displayed in the Channel Value field, the value for that channel is displayed in the Value field, the quality of the channel is displayed in the Quality field and the ceiling for the channel is displayed in the Ceiling field.</li>
+  <li>From the Quality Ceiling pulldown, select the quality ceiling for the channel.</li>
+  <li>Select <strong>Set</strong> to set the channel.<br>
+    The new value is set, and the changes are displayed in the Event Handler window and recorded in the Unified Event Log.</li>
+</ol>
+
+<h2 id="ModChanLimitsWhileproDASScans">Modifying Channel Limits While proDAS is Scanning</h2>
+<p>Channel limits are thresholds that determine when a warning or alarm is realized by proDAS. The channel limits are established in the engine configuration that is downloaded to proDAS.</p>
+<p>For detailed information on setting limits on channel alarm conditions in the test configuration, see the <a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm">Channel Editor</a>.</p>
+<p>This proDAS feature allows the operator to make marginal changes to the channel limits while proDAS is scanning. The changes are controlled and are kept within an allowable &plusmn; tolerance band of the original limit value. The new limit values remain valid until proDAS is reconfigured.</p>
+<p>The operator can use this feature when a known channel is very close to the alarm threshold and is cycling in and out of alarm many times per minute.</p>
+<p class="Note">Only an authorised user may set channel limits.</p>
+<p>For details on the Set Channel Limit panel, see <a href="../MGTGUI/MGTGUI.htm#SetChannelLimits">Set Channel Limit Panel in the Management GUI</a>.</p>
+<p>To change the limits of a channel:</p>
+<ol>
+  <li>Select <strong>Set Channel Limit</strong> tab on the Test Page.<br>
+    The Set Limits control panel is displayed listing only channels that have an associated limit.
+    <div class="Container"><img src="images/PnlSetChannelLimit.gif" width="630" height="200" alt="Panel Set Channel Limit"></div>
+  </li>
+  <li>Select <img src="images/Btndots.gif" width="28" height="27" alt="Button Dots"> to display the Select a Channel window. This window is automatically filtered to display only channels with limits associated to them. Choose a channel and click <strong>Select</strong>.</li>
+  <li>Select the limit from the Limit drop-down list.
+    <p class="Note">Only limits defined for that channel are contained within the drop-down list.</p>
+    Once selected, the Current Setting, Original Settings, Range High and Range Low fields are automatically filled in.</li>
+  <li>Enter a new value between the Range High and Range Low values in the New Value field field.
+    <p class="Note">Whan a valid entry is made, the Set button becomes enabled.</p>
+  </li>
+  <li>Click <strong>Set </strong> to apply the new limit value.<br>
+    The new limit value and username are displayed in the  Unified Event Log window.</li>
+</ol>
+<h2 id="RTReports">Real-Time Reports</h2>
+<p>proDAS offers several status reports which are available during an engine run. The Real-Time Reports are:</p>
+<ul>
+  <li>the Snapshot Report - provides the current value of every configured channel</li>
+  <li>the Channel Limits Report - provides the current value of all limits defined for all configured channels</li>
+  <li>the Master Channel List Report - describes the current configuration of all channels</li>
+  <li>the Log Quality Summary Report (derived from RAVE) - indicates the quality of data in a specific log</li>
+</ul>
+<p>The Real-Time Reports are accessed from the RTReports GUI (below) which is launched when the Reports button is selected from the Management GUI Control Panel or Test Page.</p>
+<div class="Container"><img height="145" src="images/RTReports.png" width="253" alt="RT Reports"></div>
+<table class="Table-Grey">
+  <tr>
+    <th colSpan="2" rowSpan="1">RTReports GUI</th>
+  </tr>
+  <tr>
+    <th>Buttons Panels and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td><img height="113" src="images/RTRFileMenu.gif" width="130" alt="RTR File Menu"></td>
+    <td>From the <strong>File</strong> menu, the user can:
+      <ul>
+        <li>save the selected report to a file</li>
+        <li>print the selected document</li>
+        <li>close the selected document</li>
+        <li>exit from the RTReports application </li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td><img src="images/RTReportsMenu.gif" width="245" height="135" alt="RT Reports Menu"></td>
+    <td>From the <strong>Reports</strong> menu, the user can:
+      <ul>
+        <li>request the Snapshot report</li>
+        <li>request the Channel Limits report</li>
+        <li>request the Master Channel List (MCL) report</li>
+        <li>launch RAVE</li>
+      </ul>
+      Selecting a report from the Reports menu launches a read-only document viewer.</td>
+  </tr>
+  <tr>
+    <td><img src="images/RTHelpMenu.gif" width="275" height="99" alt="RT Help Menu"></td>
+    <td>From the <strong>Help</strong> menu, the user can:
+      <ul>
+        <li> access the first page of the proDAS Integrated Help <br 
+        >
+          (i.e.: select <strong>Getting Started </strong>)</li>
+        <li> access all specific help topics referring to the ARINC Display<br>
+          (i.e.: select <strong>Topic</strong>)</li>
+        <li> displays the application information,comprising the name, version number, and copyright<br 
+        >
+          (i.e.: select <strong>About RTReports...</strong>)</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td><img height="39" src="images/RTRbtnRave.gif" width="43" alt="RTR Button Rave"></td>
+    <td>Select the RAVE button to launch the <a href="../../StandardTools/RAVE/RAVE.htm">RAVE</a> application.</td>
+  </tr>
+  <tr>
+    <td><img height="39" src="images/RTRbtnMCL.gif" width="43" alt="RTR Button MCL" ></td>
+    <td>Select Master Channel List button to request the Master Channel List report.</td>
+  </tr>
+  <tr>
+    <td><img height="39" src="images/RTRbtnSnapshot.gif" width="43" alt="RTR Button Snapshot"></td>
+    <td>Select the Snapshot button to request a Snapshot.</td>
+  </tr>
+  <tr>
+    <td><img height="39" src="images/RTRbtnReport.gif" width="43" alt="RTR Button Report"></td>
+    <td>Select the Channel Limits button to request the Channel Limits report.</td>
+  </tr>
+  <tr>
+    <td><img src="images/RTRbtnChanQuality.gif" width="43" height="39" alt="RTR Button ChanQuality"></td>
+    <td>Select the Channel Quality button to request the Channel Quality report.</td>
+  </tr>
+  <tr>
+    <td>Ready</td>
+    <td>Indicates when the RTReports is ready.</td>
+  </tr>
+</table>
+<h3 id="PrintRealTimeReport">Printing a Real-Time Report</h3>
+<p>The following procedure can be used to print any one of the following Real-Time reports:</p>
+<ul>
+  <li>Snapshot - lists the configured channels and their current values</li>
+  <li>Channel Limits - lists all channels that have limits associated with them</li>
+  <li>Master Channel List (MCL) - displays information about all of the channels in the current configuration</li>
+</ul>
+<p><strong>To print a Real-Time report:</strong></p>
+<ol>
+  <li>From the Management GUI Control Panel Tools menu, select <strong>Reports</strong>.<br>
+    The RTReports window is displayed.</li>
+  <li>Select the report to be printed from the RTReports tool bar (e.g.: Master Channel List).<br>
+    A typical Master Channel List Report is displayed.
+    <div class="Container"><img height="565" src="images/RTReportsMC.png" width="700" alt="RT Reports MC" ></div>
+  </li>
+  <li>Select <strong>File / Print</strong> from the File menu on the RTReports window.</li>
+</ol>
+<h2 id="UsingStopWatchFeature">Using the Timer Feature</h2>
+<p>The Timer panel, used for independent timing, is displayed on the Test Page.</p>
+<div class="Container"><img src="images/PnlTimer.png" width="180" height="195" alt="PnlTimer"></div>
+<h3 id="SelectTimerType">Selecting the Timer Type </h3>
+<p>To select the timer type:</p>
+<ol>
+  <li>Use the up <img src="images/ButtonUp.png" width="38" height="28" alt="Button Up"> or down <img src="images/ButtonDown.png" width="38" height="28" alt="Button Down"> arrows to indicate if the timer will count down from a given value or count up until the user stops it.</li>
+</ol>
+<h3 id="SetCountdownCountup">Setting the Countdown Time</h3>
+<p>To set the countdown time:</p>
+<ol>
+  <li>Click in the Seconds window on the Timer panel and enter the countdown time in seconds.<br>
+    <strong>OR</strong><br>
+    Use the up and down arrows, at the right of the Seconds window, to increment or decrement the time (in seconds). </li>
+</ol>
+<h3 id="StartStopWatch">Starting the Timer</h3>
+<p><strong>To start the timer:</strong></p>
+<ol>
+  <li>Select the <strong>Play</strong> button on the Timer panel.<br>
+    The Start button changes to Reset and the timer starts to count (in seconds).<br>
+    The incrementing/decrementing time, in seconds, is displayed in the elapsed time field.</li>
+</ol>
+<h3 id="PauseStopWatch">Pausing the Timer</h3>
+<p><strong>To pause the timer:</strong></p>
+<ol>
+  <li>Select <strong>Pause</strong> on the Timer panel.<br>
+    The countdown (or count-up) is halted and the Pause button changes to Resume.<br>
+    The remaining decrement/increment, in seconds, is displayed in the lapsed time field.</li>
+</ol>
+<h3 id="RestartStopWatch">Restarting the Timer</h3>
+<p><strong>To restart the timer:</strong></p>
+<ol>
+  <li>Select <strong>Resume</strong> on the Timer panel.<br>
+    The countdown (or count-up) resumes and the Resume button changes to Pause.<br>
+    The increment/decrement, in seconds, is displayed in the elapsed time field.</li>
+</ol>
+<h3 id="StopStopWatch">Stopping the Timer</h3>
+<p><strong>To stop the timer:</strong></p>
+<ol>
+  <li>Select <strong>Stop</strong> on the Timer panel.<br>
+    The countdown (or count-up) is halted and an audible chime is sounded.<br>
+    The remaining decrement/increment, in seconds, is displayed in the elapsed time field.
+    <p class="Note">Stop can be selected only if the timer is running.</p>
+  </li>
+</ol>
+<h3 id="ResettingStopWatch">Resetting the Timer</h3>
+<p><strong>To reset the timer:</strong></p>
+<ol>
+  <li>Select <strong>Reset</strong> on the Timer panel.<br>
+    The countdown (or count-up) time, displayed in the elapsed time field, is set to zero.<br>
+    The remaining decrement/increment, in seconds, is displayed in the elapsed time field.
+    <p class="Note">Reset can not be selected when the timer is paused.</p>
+  </li>
+</ol>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

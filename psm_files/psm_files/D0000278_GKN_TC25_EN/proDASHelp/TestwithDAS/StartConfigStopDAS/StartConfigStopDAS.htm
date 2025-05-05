@@ -1,0 +1,183 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Starting, Configuring &amp; Stopping proDAS</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="SCSproDAS">Starting, Configuring and Stopping proDAS<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" >
+</a><div float:right></div></h1></div>
+
+<h2 id="OverviewStartConfigStopEDAS">Overview</h2>
+<p>The proDAS system must be started in a specific order. The proDAS Real-Time Engine (RTE), executing on the Host Computer, must be started first and is normally always running on the Real-Time monitors. The proDAS Management GUI is then started and establishes a connection to the RTE once the user has logged in. </p>
+<p> The RTE starts automatically when the user logs in. During the Host Computer login process a program on the Host Computer called <strong>prodassession</strong> is started in the background. This process is transparent to the user. The <strong>prodassession</strong> program detects whether the RTE is running or not. If the user selects the <strong>Exit proDAS</strong> button on the Management  GUI Control Panel and exits the RTE, the <strong>prodassession</strong> program detects the exit event and restarts the RTE within 15-20 seconds.</p>
+<p> A complete power-up of the proDAS hardware equipment may be required upon completion of maintenance activities. For a complete hardware power-up and proDAS startup sequence, from a complete power off condition, refer to the instructions in the Docstation.</p>
+<p class="Note">The hardware must be powered up in a specific order prior to starting and configuring proDAS.</p>
+<p>The proDAS hardware equipment should be left on at all times. A complete powerdown of proDAS should only be implemented for maintenance activities, anticipated power outages, or if a power failure occurs. For a complete powerdown sequence of proDAS, refer to the instructions in the Docstation.</p>
+<p>For information regarding proDAS usernames and passwords, see <a href="../../StandardTools/USS/USS.htm">User Accounts and Passwords</a>.</p>
+<h2 id="StartproDAS">Starting proDAS </h2>
+<p>As mentioned in the overview, the proDAS system must be started in a specific order. The RTE, 
+  which normally runs on the Real-Time monitors, is started first. Once an engine test has been completed and the user exits the RTE (by selecting the <strong>Exit proDAS</strong> button on the Management  GUI Control Panel), the RTE application will restart automatically within 15-20 seconds.</p>
+<p>Before the RTE can enter the scan mode and monitor engine parameters, the RTE must be configured by:</p>
+<ul>
+  <li><a href="?2#StartproDASManagementComputer">Starting proDAS on the Management Interface Computer</a></li>
+  <li><a href="#ConfigproDAS">Configuring proDAS</a>
+    <ul>
+      <li><a href="StartConfigStopDAS.htm?4#ConfigforEngineTest">Configuring proDAS for an Engine Test</a></li>
+    </ul>
+  </li>
+</ul>
+<h3 id="StartproDASManagementComputer">Starting proDAS on the Management Interface Computer</h3>
+<p>Check that the Management Interface Computer is connected to a power source and that the keyboard, mouse and monitor cables are properly connected.</p>
+<ol>
+  <li>Power-up the Management Interface Computer and monitor.</li>
+  <li>Double-click the Management GUI icon.<br>
+    The proDAS login window is displayed.
+    <div class="Container"><img src="images/Login.gif" alt="Login" width="404" height="276"></div>
+  </li>
+  <li> Enter the user name in the <strong>Username:</strong> field.</li>
+  <li>Enter the user password in the <strong>Password:</strong> field and select <strong>Login</strong>.
+    <p class="Note">The password is case sensitive.</p>
+    The Management GUI is started and the Management GUI Control Panel is displayed. The Unified Event Log (UEL) is also started on the Real-Time Display Computer.
+    <div class="Container"><img src="images/MGTControlPanel.gif" alt="MGT Control Panel" width="744" height="395"></div>
+    For detailed information on the Management GUI Control Panel, see <a href="../MGTGUI/MGTGUI.htm#ControlPanel">Management GUI Control Panel</a>.</li>
+</ol>
+<h2 id="ConfigproDAS">Configuring proDAS</h2>
+<p>The user must download a master configuration to the RTE before the RTE can enter the scan mode and monitor the engine parameters. The master configuration defines the data that the RTE receives or transmits during an engine test. The master configuration consists of a collection of the following:</p>
+<ul>
+  <li>break point tables</li>
+  <li>channels</li>
+  <li>engineering units</li>
+  <li>macros</li>
+  <li>polynomials</li>
+  <li>subsystems</li>
+  <li>text output pages</li>
+  <li>transient logs</li>
+  <li>user functions</li>
+</ul>
+<p>Each master configuration is assigned a unique number when it is created. This number does not change, although the user may update the master configuration by adding or deleting configuration information which belong to the master configuration. In addition, the comment describing the master configuration can be edited.</p>
+<p>The elements that comprise the master configuration (i.e.: channels and logs) can be modified using an editor or utility designed for this specific purpose. The following editors and utilities are available from the Tools menu of the Management GUI Control Panel:</p>
+<p class="Note">The Tools menu list is based on customer requirements and may not contain all of the editors and utilities listed below.</p>
+<ul>
+  <li><a href="../../DASSubSysConfig/ConfigAdmin/ConfigAdmin.htm">Config Admin (Configuration Administration)</a></li>
+  <li><a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm#ChannelEditor">Channel Editor</a></li>
+  <li><a href="../../DASSubSysConfig/SubsystemEditor/SubsystemEditor.htm#SubsystemEditor">HW Subsys Editor (Hardware Subsystem Editor)</a></li>
+  <li><a href="../../DASConfigTools/EUEditor/EUEditor.htm">EU Editor (Engineering Unit Editor)</a></li>
+  <li><a href="../../DASConfigTools/BPTableEditor/BPTableEditor.htm#BreakpointTableEditor">BPT Editor (Breakpoint Table Editor)</a></li>
+  <li><a href="../../DASConfigTools/PolyEditor/PolyEditor.htm#PolynomialEditor">Polynomial Editor</a></li>
+  <li><a href="../../DASConfigTools/TransLogDefnEditor/TransLogDefnEditor.htm#TransientLogDefnEditor">Transient Log Editor</a></li>
+  <li><a href="../../DASConfigTools/MacroEditor/MacroEditor.htm#MacroEditor">Macro Editor</a></li>
+  <li><a href="../../DASConfigTools/TextOutputPages/TextOutputPages.htm">TOP Editor (Text Output Pages)</a></li>
+  <li><a href="../../DASConfigTools/UserFunctions/UserFunctions.htm">User Functions</a></li>
+  <li><a href="../../DASConfigTools/DisplayPages/DisplayPages.htm">RTD Editor (Real-Time Display Editor)</a></li>
+  <li><a href="../../CustomApps/ExtHookFramework/ExtHookFramework.htm#ExtHookRecalc">Recalculation</a></li>
+  <li><a href="../../DASConfigTools/ScriptEditor/ScriptEditor.htm">Script Editor</a></li>
+  <li><a href="../../DASConfigTools/SensorEditor/SensorEditor.htm">Sensor Editor</a></li>
+  <li><a href="../../StandardTools/TAU/TAU.htm">TAU (Test Archive Utility)</a></li>
+</ul>
+<h3 id="ConfigforEngineTest">Configuring proDAS for an Engine Test</h3>
+<p>proDAS can be configured in the following two ways:</p>
+<ul>
+  <li>starting with the Test Name</li>
+  <li>starting with the Configuration </li>
+</ul>
+<p>To configure proDAS for an engine test:</p>
+<ol>
+  <li>Start the Management GUI. The Management GUI Control Panel is displayed.
+    <div class="Container"><img src="images/MGTControlPanel.gif" alt="MGT GUI Control Panel" width="744" height="395"></div>
+    <p class="Note">When started, the Management GUI Control Panel defaults to displaying the most recent test and configuration data.</p>
+  </li>
+  <li id="Step2">Select either the <strong>Replay</strong> or <strong>Acquisition</strong> operating mode.</li>
+  <li>Select either:
+    <ul>
+      <li>the pin (toggle button) next to the <strong>Test Name</strong> drop-down list and select the desired test name or <strong>New Test</strong></li>
+      <li>the pin (toggle button) next to the Configuration drop-down list and select the desired configuration</li>
+    </ul>
+  </li>
+  <li>Fill in the remaining fields.
+    <p class="Note">As each field is selected, the fields below will be filtered based on the previous selection (i.e.: when a test cell is selected in the Test Cell drop-down list, only the engine types associated with that test cell are available in the Engine Type drop-down list).</p>
+    <p class="Note">If there is only one valid option for the field, the Management GUI will automatically fill it in.</p>
+  </li>
+  <li>Click <strong>Apply</strong>.<br>
+    If <strong>New Test</strong> was selected the New Test box is displayed.
+    <div class="Container"><img src="images/NewTestInfo.gif" alt="New Test Info" width="343" height="276"></div>
+    <p class="Note">Only letters a to z (lower and upper case), numbers 0 to 9, underscores, and periods can be used in these fields (e.g.: Tb_G.5).</p>
+  </li>
+  <li>Fill in the Test Name, Engine Serial Number and Engine Build Number.
+    <p class="Note">A unique test name must be entered. It cannot be the same as an existing test name.</p>
+  </li>
+  <li>Click <strong>Apply</strong>. The Test Information Page is displayed and proDAS begins the configuration process.
+    <p class="Note">This is a default Test Information Page. Customer specific pages may appear different.</p>
+    <div class="Container"><img src="images/TestInfoPage.gif" alt="Test Info Page" width="700" height="488"></div>
+    <p class="Note">To de-configure the RTE and return back to the Management GUI Control Panel, select Abort.</p>
+  </li>
+  <li> Fill out any required fields and do one of the following:
+    <ul>
+      <li>To apply any changes, click <strong>Apply</strong>.</li>
+      <li>To undo any changes, click <strong>Reset</strong>.</li>
+    </ul>
+  </li>
+  <li>If <strong>Apply</strong> is selected, the Test Information Page is closed, the engine configuration is downloaded and the Management GUI Control Panel (below) is displayed.
+    <p class="Note">If Acquisition was selected, the RTE will automatically begin scanning and if Replay was selected, the Replay Control GUI will be displayed.</p>
+    <div class="Container"><img src="images/MGTGUIscanning.gif" alt="MGT GUI Scanning" width="734" height="385"></div>
+  </li>
+  <li>Check the messages displayed in the UEL Display to ensure that the download was successful.
+    <div class="Container"><img src="images/UELDisplay.png" alt="UE LDisplay" width="700" height="476"></div>
+  </li>
+  <li> Assuming a successful download, proDAS is now ready for engine testing.<br>
+    If the Acquisition operating mode was selected, see <a href="../RunEngineTest/RunEngineTest.htm">Running an Engine Test</a>.<br>
+    If the Replay operating mode was selected, see <a href="../../StandardTools/Replay/Replay.html">Replay Control</a>.</li>
+</ol>
+<h2 id="StoppingproDAS">Stopping proDAS</h2>
+<p>proDAS can be stopped in the following three different ways:</p>
+<ul>
+  <li><a href="?6#Deconfig">de-configuring proDAS</a></li>
+  <li><a href="?7#ExitMGTGUI">exiting the Management GUI</a></li>
+  <li><a href="?8#ExitproDAS">exiting proDAS</a></li>
+</ul>
+<h3 id="Deconfig">De-configuring proDAS</h3>
+<p>De-configuring proDAS will stop the current test and allow the user to re-configure by exiting the RTE. To de-configure proDAS:</p>
+<ol>
+  <li>From the Management GUI Control Panel File menu, select <strong>De-configure proDAS</strong>. A confirmation window is displayed.
+    <div class="Container"><img src="images/Deconfigure.gif" alt="Deconfigure" width="347" height="171"></div>
+  </li>
+  <li>Select <strong>Yes</strong> to de-configure or <strong>No</strong> to cancel and return to the Management GUI Control Panel.<br>
+    If <strong>Yes</strong> is selected and proDAS is scanning, a stop scan script will be launched shutting down utilities such as the Alarm Summary Display and Real-Time Displays. Once stop scan is complete, the RTE will exit and a stop script will be launched shutting down the Unified Event Log (UEL). The RTE is restarted automatically (see <a href="StartConfigStopDAS.htm">Overview</a>) and the Management GUI is reset so a new configuration may be selected.</li>
+</ol>
+<h3 id="ExitMGTGUI">Exiting the Management GUI</h3>
+<p>Exiting the Management GUI will exit the Management GUI Control Panel but it will not affect the state of the RTE (i.e. if the RTE was scanning data, it will continue to scan data). </p>
+<p><strong>To exit the Management GUI</strong>:</p>
+<ol>
+  <li>From the Management GUI Control Panel File menu, select <strong>Close Management GUI</strong>. The Management GUI Control Panel is closed.
+    <p class="Note">The RTE will continue to gather data.</p>
+  </li>
+</ol>
+<h3 id="ExitproDAS">Exiting proDAS</h3>
+<p>Exiting proDAS will perform the function of de-configuring proDAS and stopping the Management GUI. To exit proDAS:</p>
+<ol>
+  <li>From the Management GUI Control Panel, select <strong>Exit proDAS</strong> or from the File menu, select <strong>Exit proDAS</strong>.<br>
+    A confirmation window is displayed.
+    <div class="Container"><img src="images/Deconfigure.gif" alt="Deconfigure" width="347" height="171"></div>
+  </li>
+  <li>Select <strong>Yes</strong> to exit proDAS or select <strong>No</strong> to cancel and return to the Management GUI Control Panel.</li>
+</ol>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

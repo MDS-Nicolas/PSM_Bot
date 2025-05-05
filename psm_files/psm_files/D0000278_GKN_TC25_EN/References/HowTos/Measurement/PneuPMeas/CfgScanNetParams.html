@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>How To &ndash; Configure Network Parameters on a Scanner</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left>
+  <h1>How To &ndash; Configure Network Parameters on a Scanner<a href="#" onClick="window.print(); return false;"><img src="../../../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<p>This <strong>How To</strong> provides the steps required to configure network parameters on a scanner.</p>
+<h2>To Configure Network Parameters on a Scanner</h2>
+<p class="Note">Network parameter configuration may be required for a new scanner, or a scanner that has returned from off-site calibration or repair.</p>
+<h3 id="SubnetSystemCheck">Scanner Address Check</h3>
+<p class="Caution">NUSS is an administrative tool that can modify critical settings on the scanner. If the configuration procedure is not followed correctly, the scanner firmware may be corrupted and the scanner must be returned to the manufacturer for repair. Consult the vendor documentation for further information.</p>
+<ol>
+  <li>From a computer on the real-time network, connect to the scanner via Ethernet and start the NetScanner Unified Startup Software (NUSS).</li>
+  <li>Turn on the scanner on the real-time network.</li>
+  <li>Note the scanner serial number.</li>
+  <li>Locate the scanner serial number in the directory and verify the IP address. If the address is correct, the scanner is ready for operation. If the address is incorrect, proceed with the next step.</li>
+  <li>If the address is in the same sub-net as the computer, and the first three IP address numbers are correct, go to step 3 of <a href="#ScannerConfiguration">Scanner Network Configuration</a> section of this procedure, and skip steps 1 to 10 of <a href="#RestoreSystemConfiguration">Restore System Configuration</a> section. If the address is not in the same sub-net, record the scanner IP address and proceed to step 1 of <a href="#ConfigSystemForScanner">Configure Computer to Communicate with Scanner</a>.</li>
+</ol>
+<h3 id="ConfigSystemForScanner">Configure Computer to Communicate with Scanner</h3>
+<ol>
+  <li>From the desktop, right click the <strong>My Network Places</strong> icon and select <strong>Properties</strong>.</li>
+  <li>Double-click the <strong>Local Area Connection</strong> icon.</li>
+  <li>Select <strong>Properties</strong>.</li>
+  <li>Select <strong>Internet Protocol (TCP/IP)</strong>.</li>
+  <li>Select <strong>Properties</strong>.</li>
+  <li>Change the IP address to the same first 3 numbers from step 5 in <a href="#SubnetSystemCheck">Scanner Address Check</a>. The last number can be from 1 to 254, but cannot be the same as any other device on the network.</li>
+  <li>Select <strong>OK</strong> on the Internet Protocol (TCP/IP) Properties window.</li>
+  <li>Select <strong>OK</strong> on the Local Area Connection Properties window.</li>
+  <li>Select <strong>Close</strong> on the Local Area Connection Status window.</li>
+  <li>Select <strong>File</strong> and <strong>Close</strong> on the Network and Dial-Up Connections window.</li>
+  <li>Select <strong>File</strong> and <strong>Exit</strong> in the NUSS window.</li>
+</ol>
+<h3 id="ScannerConfiguration">Scanner Network Configuration</h3>
+<ol>
+  <li>Start NUSS.</li>
+  <li>Open the scanner directory in the NUSS Network Status window.</li>
+  <li>Locate the scanner serial number.
+    <div class="container"><img border="0" width="546" height="329" src="NetworkStatus.jpg" alt="Opening Screen"></div></li>
+  <li>Right click on the scanner serial number and select <strong>Connect</strong>. The Connect Status field in the Network Status window displays &quot;Connected&quot;.</li>
+  <li>Right click on the scanner serial number and move the mouse pointer to <strong>Configure</strong>. A new window opens.</li>
+  <li>Select <strong>Network Options</strong>.</li>
+  <li>In the Network Options window, enter subnet mask in the <strong>Subnet Mask</strong> field, such as 255.255.0.0, which is dependent on the Real-Time network configured on the RTE System.
+    <div class="container"><img border="0" width="316" height="336" src="NetworkOptions.png" alt="Network Option"></div></li>
+  <li>For the 9216 pressure scanners, the IP address is provided by the DHCP Server.<p class="Note">For pressure scanner models 9116 or older, the IP address is provided by the RARP Server.</p></li>
+  <li>Ensure the following status in the Network Options window:</li>
+  <ol>
+    <li>the <u>U</u>DP-Br@Reset Option is <u>E</u>nabled</li>
+    <li>the IP Adrs. <u>R</u>esol. Option is <u>D</u>ynamic</li>
+    <li>the Resp.<u>P</u>refix Option is <u>E</u>nabled</li>
+    <li>the Non-Volatile Option is checked</li>
+  </ol>
+  <li>Select <strong>Save</strong>.</li>
+  <li>Select <strong>Exit</strong>.</li>
+  <li>Right-click on the scanner icon that is already selected in the NUSS Network Status window and select <strong>Disconnect</strong>. The Connect Status field in the window displays &quot;Disconnected&quot;.</li>
+  <li>Turn off the scanner.</li>
+  <li>Turn on the scanner.</li>
+</ol>
+<h3 id="RestoreSystemConfiguration">Restore System Configuration</h3>
+<ol>
+  <li>From the desktop, right click on the <strong>My Network Places</strong> icon and select <strong>Properties</strong>.</li>
+  <li>Double click the <strong>Local Area Connection</strong> icon.</li>
+  <li>Select <strong>Properties</strong>.</li>
+  <li>Select <strong>Internet Protocol (TCP/IP)</strong>.</li>
+  <li>Select <strong>Properties</strong>.</li>
+  <li>Change the IP address and the subnet mask back to the original values.</li>
+  <li>Select <strong>OK.</strong></li>
+  <li>Select <strong>OK</strong> on the Local Area Connection Properties window.</li>
+  <li>Select <strong>Close</strong> on the Local Area Connection Status window.</li>
+  <li>Select <strong>File</strong> and <strong>Close</strong> on the Network and Dial-Up Connections window.</li>
+  <li>Select <strong>File</strong> and <strong>Exit</strong> on the NUSS window.</li>
+  <li>Start NUSS.</li>
+  <li>Open the scanner directory in the NUSS Network Status window.</li>
+  <li>Locate the scanner serial number and verify that the scanner has an updated IP address.</li>
+</ol>
+<h3 id="PressureScanChannelConfig">Pneumatic Pressure Measurement System Channel Configuration</h3>
+<p>Pneumatic Pressure  Measurement System channels are defined in the <a href="../../../../proDASHelp/DASSubSysConfig/PressureBricks/PressureBricks.htm">Pressure Brick Subsystem (PBS)</a> and are configured with the <a href="../../../../proDASHelp/DASSubSysConfig/SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a> and <a href="../../../../proDASHelp/DASSubSysConfig/ChannelEditor/ChannelEditor.htm"> Channel Editor</a>.</p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

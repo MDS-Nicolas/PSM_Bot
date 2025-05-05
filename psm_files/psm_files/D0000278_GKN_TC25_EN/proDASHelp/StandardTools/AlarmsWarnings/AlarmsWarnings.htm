@@ -1,0 +1,144 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Alarms and Warnings</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1>Alarms and Warnings<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+
+<h2 id="Overview">Overview</h2>
+<p>During an engine test, the operator is notified, by an Alarm or Warning, when the value of a channel being scanned is beyond the safe operating threshold. The operating threshold is determined by the limit value assigned to the channel(s) in the master configuration. proDAS indicates the channel that caused the alarm or warning, the initiating subsystem, and the type of alarm or warning. A warning or an alarm can trigger a subsequent defined action, such as changing the value of a discrete channel, changing a view, or starting a transient log.</p>
+<p>Warnings indicate when a channel is exceeding its defined normal operating range. Warnings do not trigger an audible alarm and may or may not  require acknowledgment by the operator. A warning is indicated by:</p>
+<ul>
+  <li>displaying a message in yellow in the Event Handler window and in the Alarm Summary window</li>
+  <li>recording the warning message in the Unified Event Log (UEL)</li>
+  <li>by changing the operator page objects that represents the channel change to yellow</li>
+</ul>
+
+<p>Alarms indicate when a channel has surpassed its defined extreme value and operator intervention is required to correct the problem.</p>
+<p> An alarm is indicated by:</p>
+<ul>
+  <li>displaying a message in red in the Unified Event Log window indicating subsystem name, channel name and alarm type (HIHI, LOLO, or DISCALARM)</li>
+  <li>displaying the channel in the Alarm Summary window with its limit value and current recorded value</li>
+  <li>a message recorded in the Unified Event Log</li>
+  <li>the colour of any display object showing that channel will change to red</li>
+  <li>an immediate audible alarm (buzzer) is sounded</li>
+</ul>
+
+<p>All alarms must be acknowledged by the user. If the audible alarm is triggered by more than one alarm, then each alarm must be acknowledged. However, the audible alarm is turned off after the first acknowledgment.</p>
+<p>Warning and alarm types that are processed by proDAS are:</p>
+<ul>
+  <li>high alarm (HIHI) - red</li>
+  <li>high warning (HI) - yellow</li>
+  <li>low warning (LO) - yellow</li>
+  <li>low alarm (LOLO) - red</li>
+  <li>read rate of change (ROC)</li>
+  <p class="Note">This is based on the rate of change over one second.</p>
+  <li>blue discrete info message (DISCINFO)</li>
+  <li>red discrete alarm (DISCALARM)</li>
+  <li>invisible discrete alarm (DISQUIET) provides no audible or visible signal that the limit has been violated</li>
+</ul>
+<p>A channel that has one or more sliding limits can have limits that contradict each other. For example, if channel B has a LO limit defined by channel C as well as a fixed HI limit of 150, it is possible for the LO limit to be greater than the HI limit. These contradictions are resolved according to the following rules of precedence:</p>
+<ul>
+  <li>LO limits can be overridden by any other limit </li>
+  <li>HI limits can be overridden by LOLO or HIHI limits </li>
+  <li>LOLO limits can be overridden by HIHI limits </li>
+  <li>HIHI limits can never be overridden </li>
+</ul>
+<h3 id="EnableAlarms">Enable Alarms</h3>
+<p>ENABLE_ALARMS is a discrete channel that can be set to either TRUE or FALSE. If the channel is set to TRUE, then proDAS registers warnings and alarms. If FALSE, then warnings and alarms are not registered, and there is no action if a limit is exceeded. If ENABLE_ALARMS is not defined in the current configuration, then the alarms are enabled by default.</p>
+<p>This channel can be defined to logically toggle from FALSE to TRUE when an engine starts running, and back to FALSE once the engine rotors have come to a stop by basing the value of ENABLE_ALARMS on ENGINE SPEED (e.g. ENABLE_ALARMS = (N1&gt;50)). This logical statement would start alarm monitoring when the engine speed becomes greater than 50 rpm and stop alarm monitoring if engine speed drops below 50 rpm.</p>
+<p>This feature stops nuisance alarms from filling the Unified Event Log, on proDAS, when there is no engine on test, or when an engine is being 
+installed and calibrations are taking place.</p>
+<h2 id="RTEinitialisationFile">RTE Initialisation File</h2>
+<p>The Alarms Summary Window (Limit Action) is configured by the RTE, along with all the other subsystems, as a request from the Management Interface GUI. For legacy purposes, the configuration request can also be specified in the command line of the RTE.</p>
+<p>A typical RTE initialisation file would include the following Limit Action information:</p>
+<table>
+  <tr>
+    <td colspan="2">#--------------------------------------------------------------------------<br>
+      # <br>
+      #--------------------------------------------------------------------------</td>
+  </tr>
+  <tr>
+    <td>SS LIMIT_ACTION</td>
+    <td>TRUE</td>
+  </tr>
+  <tr>
+    <td>CI la_rate_hz</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>CI la_alsum_cli_host</td>
+    <td>ramsYYYY</td>
+  </tr>
+  <tr>
+    <td>CI la_alsum_cli_service</td>
+    <td>alsum_srv</td>
+  </tr>
+  <tr>
+    <td>CI la_alsum_srv_service</td>
+    <td>laas_srv</td>
+  </tr>
+  <tr>
+    <td>CI la_alsum_timeout</td>
+    <td>5000</td>
+  </tr>
+  <tr>
+    <td>CI la_alsum_max_retry</td>
+    <td>3</td>
+  </tr>
+  <tr>
+    <td>CI la_alsum_sleep_ms</td>
+    <td>200</td>
+  </tr>
+  <tr>
+    <td>CI la_yellow_alarm</td>
+    <td>FALSE</td>
+  </tr>
+  <tr>
+    <td>CI     la_default_hostname</td>
+    <td>prodasmgt </td>
+  </tr>
+  <tr>
+    <td>CI     la_event_comment_to_db</td>
+    <td>FALSE </td>
+  </tr>
+  <tr>
+    <td>CI     la_enable_alarms_ch</td>
+    <td>ENABLE_ALARMS </td>
+  </tr>
+  <tr>
+    <td>CI     la_ch_ack_one</td>
+    <td>CH_ACK_ONE</td>
+  </tr>
+  <tr>
+    <td>CI     la_ch_ack_all</td>
+    <td>CH_ACK_ALL </td>
+  </tr>
+  <tr>
+    <td>CI     la_remote_shell</td>
+    <td>/usr/bin/ssh</td>
+  </tr>
+</table>
+<br>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click here to see the RTE Initialisation file.</a></p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

@@ -1,0 +1,270 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Allen Bradley PLC Subsystem</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="AllenBradleyPLC">Allen Bradley PLC Subsystem (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+
+<h2 id="Overview">Overview</h2>
+<p>The Programmable Logic Controller (PLC), Allen Bradley PLC-5/40E Series, with discrete and analogue input/output modules, controls and monitors the engine test facility, engine support systems and some engine controls. The PLC is a stand alone system used to run the ladder logic code to control the Engine Control System (ECS) and Facility Control System (FCS). The PLC utilises an Ethernet interface module allowing TCP/IP communication. Integrating the PLC subsystem, via TCP/IP, into proDAS allows all engine controls to be managed from the main console.</p>
+<h2 id="ConfigPLCChannel">Configuring a PLC Channel</h2>
+<p>To configure an Allen Bradley PLC Channel:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</li>
+  <li>Select the name of the Allen Bradley PLC Subsystem from the list of available subsystems.
+    <div class="Container"><img src="Images/SelectSubsystemName.PNG" alt="SelectSubsystemName" width="387" height="317"></div>
+  </li>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a>.</li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.</li>
+  <li>Set the <em><strong>Address</strong></em> column.</li>
+  <li>And if the channel data type is Boolean, set the <em><strong>Bit</strong></em> column.
+    <div class="Container"><img src="Images/ChannelEditor.PNG" alt="Channel Editor" width="700" height="424"></div>
+  </li>
+</ol>
+<h2 id="ConfigFileStructure">Configuration File Structure</h2>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu">Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import a <strong>PLCAB</strong> channel, see <a href="?10#XMLFileStructure"> XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import a <strong>PLCAB</strong> channel, see <a href="?11#TabDelimitFileStructure"> Tab-Delimited File Structure</a>.</p>
+<h3 id="XMLFileStructure">XML File Structure</h3>
+<h4 id="ChannelsXML">Channels</h4>
+<p>The channels are stored in files Channels.xml in the configuration directories.</p>
+<p>A PLCAB Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor 
+- Generic Channel Parameters - XML File Structure</a>, and the specific attributes <em>Address</em> and <em>Bit</em>. These attributes are explained in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Address</td>
+    <td>Address</td>
+    <td>ADDRESS</td>
+    <td>The physical memory address of the data item on the PLC</td>
+    <td>Integer</td>
+    <td>An Integer between 0 and the maximum address defined in the PLCAB subsystem</td>
+  </tr>
+  <tr>
+    <td>Bit</td>
+    <td>Bit</td>
+    <td>BIT</td>
+    <td>The bit position of the data in the 16 bit word. Only applicable for Boolean channels.</td>
+    <td>Integer</td>
+    <td>An Integer between 0 and 15</td>
+  </tr>
+</table>
+<p>The structure of an Allen Bradley PLC Channel complies with the following example:</p>
+<blockquote>
+  <pre>
+&lt;Channels LastModificationDate=&quot;<strong>2015-06-10</strong> <strong>14:03:56</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Channel Name=&quot;ZZPLCAB1&quot; 
+Description=&quot;&quot; 
+Enabled=&quot;true&quot; 
+LastModificationDate=&quot;2015-06-10 14:03:56&quot; 
+SubsystemName=&quot;ZZPLCAB&quot;
+SubsystemType=&quot;PLCAB&quot;
+AlternateName=&quot;&quot;
+DataType=&quot;Float&quot;
+InitialValue=&quot;-999999&quot;
+Format=&quot;4.2f&quot;
+UpdateRate=&quot;1&quot;
+QualityCeiling=&quot;GOOD&quot;
+Critical=&quot;false&quot;
+EngineeringUnit=&quot;-&quot;
+DisplayMin=&quot;0&quot;
+DisplayMax=&quot;100&quot;
+DeadBand=&quot;0&quot;
+Output=&quot;false&quot;
+ReferenceChannel=&quot;&quot;
+Group=&quot;&quot;
+SignalId=&quot;&quot;
+CalSensor=&quot;&quot;
+CalGroup=&quot;&quot;
+FixedSensor=&quot;&quot;
+CustomerSensor=&quot;&quot;
+FullsetStability=&quot;false&quot;
+ContinuousLog=&quot;true&quot;
+Address=&quot;1&quot;
+Bit=&quot;-1&quot;/&gt;
+&lt;/Channels&gt;
+</pre>
+</blockquote>
+<h4 id="SubsystemsXML">Subsystems</h4>
+<p>The subsystems are stored in files Subsystems.xml in the configuration directories.</p>
+<p>An Allen Bradley PLC Subsystem contains generic information, described in <a href="../SubsystemEditor/SubsystemEditor.htm#XMLFileStructure">Subsystem Editor - Generic Subsystem Parameters - XML File Structure</a>, and the specific attributes:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Max Float Input Address</td>
+    <td>MaxFloatInAddress</td>
+    <td>FLOAT_IN_ADD</td>
+    <td>Maximum address available for the float data travelling from the PLC to the RTE</td>
+    <td>Integer</td>
+    <td>positive</td>
+  </tr>
+  <tr>
+    <td>Max Float Output Address</td>
+    <td>MaxFloatOutAddress</td>
+    <td>FLOAT_OUT_ADD</td>
+    <td>Maximum address available for the float data travelling from the RTE to the PLC</td>
+    <td>Integer</td>
+    <td>positive</td>
+  </tr>
+  <tr>
+    <td>Max Boolean Input Address</td>
+    <td>MaxBooleanInAddress</td>
+    <td>DISC_IN_ADD</td>
+    <td>Maximum address available for the Boolean data travelling from the PLC to the RTE</td>
+    <td>Integer</td>
+    <td>positive</td>
+  </tr>
+  <tr>
+    <td>Max Boolean Output Address</td>
+    <td>MaxBooleanOutAddress</td>
+    <td>DISC_OUT_ADD</td>
+    <td>Maximum address available for the float data travelling from the RTE to the PLC</td>
+    <td>Integer</td>
+    <td>positive</td>
+  </tr>
+</table>
+<p>The structure of a PLCAB Subsystem is shown in the following example: </p>
+<blockquote>
+  <pre>&lt;Subsystems   LastModificationDate=&quot;<strong>2008-09-04   14:13:03</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Subsystem Name=&quot;ZZPLCAB&quot;
+Description=&quot;&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2008-04-28 11:23:34&quot;
+Id=&quot;0&quot;
+Type=&quot;PLCAB&quot;
+CreationDate=&quot;2008-04-28 11:18:27&quot;
+MaxFloatInAddress=&quot;10&quot;
+MaxBooleanInAddress=&quot;1000&quot;
+MaxFloatOutAddress=&quot;100&quot;
+MaxBooleanOutAddress=&quot;10000&quot; /&gt;
+&lt;/Subsystems&gt;</pre>
+</blockquote>
+<h3 id="TabDelimitFileStructure">Tab-Delimited File Structure</h3>
+<p>The PLC (Allan Bradley) subsystem refers only to those channels that are to be transferred to the RTE for display, monitoring, logging, etc. The PLC ladder logic and displays are downloaded directly to the PLC and PLC PC.</p>
+<p>The PLC (Allan Bradley) channel configuration contains both the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic channel definition columns</a> and the specific PLC (Allan Bradley) input parameters defined in the tab-delimited configuration  file.</p>
+<p>The rules, syntax and guidelines for creating PLC Allan Bradley channels are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>ADDRESS</td>
+    <td>Specifies the physical memory address of the data item on the PLC.</td>
+    <td>Number 0 - 999</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>BIT</td>
+    <td>Required for DISCRETE channels. Specifies the bit position of the data in the 16-bit word at the specified ADDRESS.<br>
+      <br>
+      Ignored for FLOAT type channels.</td>
+    <td>Number 0 - 15</td>
+    <td>No</td>
+    <td>See Description.</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. 
+      Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single line of the spread sheet.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is always optional.</p></td>
+  </tr>
+</table>
+<h2 id="SubsystemEditorPLC">Subsystem Editor for PLC Channels</h2>
+<p>To edit the Allen Bradley PLC Subsystem, the Subsystem Editor must be selected from within the Configuration Administrator.</p>
+<p>The tool bar in the Configuration Administrator allows the various configuration editors available for proDAS to be selected.</p>
+<p>The Subsystem Editor allows new subsystems to be added to the current configuration.</p>
+<div class="Container"><img src="Images/SubsystemEditor.png" alt="SubsystemEditor" width="700" height="423"></div>
+<p>To add a new subsystem:</p>
+<ol>
+  <li>From the Edit menu, select <strong>Append Data Record</strong> or, in the left pane of the splitter window, click the right mouse button and select <strong>Append Data Record</strong> from the context sensitive menu.</li>
+  <li> Select <strong>PLCAB</strong> in the dialogue box to select the type of subsystem.<br>
+    A new line in the Subsystem Editor is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to <em><strong>PLCAB</strong></em>. The user must then assign a name and description to the subsystem.</li>
+</ol>
+<h3 id="SetMaximumAddress">Setting the Maximum Addresses</h3>
+<p>The maximum addresses for the <a href="?2#SubsystemsXML">Subsystem</a> can be edited in the right pane of the splitter window of the Subsystem Editor screen.</p>
+<p>Since these addresses are defined using textbox dialogues, the EditSpecific menu item is greyed out and the text boxes are edited directly.</p>
+<h2 id="RTEInitialiseFile">RTE Initialisation File</h2>
+<p>The PLC (Allan Bradley) subsystem is configured by the RTE, along with all the other subsystems, as a request from the Management Interface GUI. For legacy purposes, the configuration request can also be specified in the command line of the RTE.</p>
+<p>A typical RTE initialisation file would include the following PLC subsystem information:</p>
+<table width="95%" border="0" cellspacing="1" cellpadding="2">
+  <tr>
+    <td colspan="2">#--------------------------------------------------------------------------<br>
+      # PLC Subsystem<br>
+      #--------------------------------------------------------------------------</td>
+  </tr>
+  <tr>
+    <td width="19%">SS PLC</td>
+    <td width="81%">TRUE</td>
+  </tr>
+  <tr>
+    <td width="19%">CI host_name</td>
+    <td width="81%">plc1</td>
+  </tr>
+  <tr>
+    <td width="19%">CI service</td>
+    <td width="81%">plc_tcp</td>
+  </tr>
+  <tr>
+    <td width="19%">CI float_in</td>
+    <td width="81%">F36</td>
+  </tr>
+  <tr>
+    <td width="19%">CI float_out</td>
+    <td width="81%">F26</td>
+  </tr>
+  <tr>
+    <td width="19%">CI disc_in</td>
+    <td width="81%">B35</td>
+  </tr>
+  <tr>
+    <td width="19%">CI disc_out</td>
+    <td width="81%">B25</td>
+  </tr>
+</table>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click here to see the RTE Initialisation file.</a></p>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

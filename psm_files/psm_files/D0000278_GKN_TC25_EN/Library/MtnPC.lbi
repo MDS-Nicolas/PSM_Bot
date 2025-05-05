@@ -1,0 +1,18 @@
+﻿<table class="Table-Grey">
+  <tr>
+    <th class="row-Topic" rowspan="2">Topic</th>
+    <th>Maintenance</th>
+  </tr>
+  <tr>
+    <th class="row-AsReq">Annual</th>
+  </tr>
+  <tr>
+    <td><a href="../References/HowTos/CompCfgHT/GenInfo/ScanHDPC.html">Scan the Hard Drive for Errors</a></td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+  <tr>
+    <td><a href="../References/HowTos/CompCfgHT/GenInfo/DustInspectPC.html">Dust and Inspect the Internal Components on a Computer</a><br>
+    (Includes checking the cooling fans.)</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+</table>

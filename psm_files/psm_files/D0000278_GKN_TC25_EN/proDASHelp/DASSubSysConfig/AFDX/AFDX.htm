@@ -1,0 +1,923 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>AFDX Subsystem Driver (Option*)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="AFDXSubsystem">AFDX Subsystem Driver (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p class="Note">Avionics Full Duplex Switched Ethernet (ARINC 664 Part 7), or AFDX<sup>TM</sup> (AFDX<sup>TM</sup> is a trademark of Airbus), is an industry-wide hardware and software standard data network used in safety critical aircraft applications such as collecting engine data.</p>
+<p>The AFDX Subsystem Driver is a set of subsystem specific functions used by proDAS to control the GE AFDX interface card via the PCI bus. The driver is used by proDAS to handle the frames sent and received on an AFDX  (Avionics Full-Duplex Switched Ethernet) network. Multiple AFDX subsystems can be defined in proDAS in order to control multiple GE AFDX interface cards.</p>
+<p>The AFDX Subsystem Driver allows the channel scan rate to be set at the RTE's base frequency. The AFDX Subsystem Driver always configures the GE AFDX card with both adapters for redundancy. The physical Ethernet link speed of both 10 Mbps and 100 Mbps is supported.</p>
+<p>The AFDX Subsystem Driver is configurable to:</p>
+<ul>
+  <li>act as one or more End Systems (ES)</li>
+  <li>support multiple Virtual Links (VL) per ES</li>
+  <li>support multiple ports per VL</li>
+  <li>support one frame per port</li>
+  <li>support multiple datum per frame</li>
+  <li>support both explicit (user defined) and implicit (use of functional data set) data formats for a frame</li>
+</ul>
+<p>The AFDX Subsystem Driver is able to define the following data field interpreters in order to decode and encode the AFDX frames:</p>
+<ul>
+  <li>Signed Integer (32 bit and 64 bit)</li>
+  <li>Unsigned Integer (16 bit)</li>
+  <li>Discrete (Boolean)</li>
+  <li>Floating point (32 bit and 64 bit)</li>
+</ul>
+<p class="Note">64 bit data is decoded into a 32 bit CVT channel value.</p>
+<p>The AFDX Subsystem Driver stores the decoded channel values in the proDAS CVT and retrieves the channel values from the proDAS CVT for frame encoding purposes.</p>
+<p>The AFDX Subsystem Driver defines the following data field interpreter in order to decode the AFDX frame:</p>
+<ul>
+  <li>ASCII - A seven-bit binary code representing alpha and numeric characters</li>
+</ul>
+<p>The decoded ASCII data is displayed in the UEL and is not saved in the proDAS CVT.</p>
+<p>The AFDX Subsystem Driver:</p>
+<ul>
+  <li>only implements the multicast transmission method and does not support frame fragmentation</li>
+  <li>allows the enabling or disabling of the EDE protocol at the VL level</li>
+  <li>does not support SAP ports for transmitting or receiving data</li>
+  <li>supports a periodic frame scheduling scheme for output frames. This is done by associating the frame with a frequency no faster than 1000 Hz. This is the frequency at which the frame is sent by the interface card and this is independent of the proDAS channel scan rate.</li>
+  <p class="Note">For input channels, the channel rate must be lower than the scan rate of the associated frame by a factor of 1.5. A warning message informs the user if this condition is not met.</p>
+  <li>implements an aperiodic scheduling scheme. This is done by associating the frame with a 0Hz frequency. An AFDX frame associated with 0Hz frequency is only  transmitted at the start scan of the RTE and on request through the RTE&rsquo;s opcode service.</li>
+  <li> verifies the successful configuration of the hardware interface</li>
+  <li> displays an error message if one of the redundant network connections is broken. The handling of the redundant network does not require operator intervention.</li>
+</ul>
+<p>The AFDX SS channel quality is set to:</p>
+<ul>
+  <li>GOOD if the input frame is received within the specified frequency and if the FS status flag is set to &quot;Normal Operation&quot; for frames having implicit data format</li>
+  <li>SUSPECT if the frame is received outside of the specified frequency but within the specified tolerance, or if the FS status flag is not set to &quot;Normal Operation&quot; for frames having implicit data format</li>
+  <li>BAD if the frame fails to send or receive</li>
+</ul>
+<h2 id="ConfigAFDXChannel">Configuring an AFDX Channel</h2>
+          <p>To configure an AFDX Channel:</p>
+          <p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+          <ol>
+            <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a><a href="../ConfigEditors/ConfigEditors.htm#MenuEdit"></a>.</li>
+            <li>Select the name of the AFDX Subsystem from the list of available subsystems.
+              <div class="Container"><img src="images/SelectSubsystemName.png" alt="SelectSubsystemName" width="387" height="317"></div>
+            </li>
+            <br>
+            <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a><a href="../ConfigEditors/ConfigEditors.htm#GenCol"></a><a href="../ConfigEditors/ConfigEditors.htm#GenCol"></a>.</li>
+            <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.</li>
+            <li>Set the <strong>ES</strong> (End System) column.</li>
+            <p class="Note">The End System (ES) must be defined when adding a new AFDX subsystem. If the ES is not defined, a warning message appears when the system is saved informing the user the ES must be defined.</p>
+            <li>Set the <strong>VL</strong> (Virtual Link) column.</li>
+            <li>Set the <strong>Frame</strong> column.</li>
+            <li>Set the <strong>Datum Identifier</strong> column.</li>
+            <li>Set the <strong>Bit</strong> column (this is only available when the discrete channel is selected).
+              <div class="Container"><img src="images/ChannelEditor.png" alt="ChannelEditor" width="700" height="269"></div>
+            </li>
+          </ol>
+          <h4>Channel Editor Field Descriptions</h4>
+          <table class="Table-Grey">
+            <tr>
+              <th>Field</th>
+              <th>Description</th>
+            </tr>
+            <tr>
+              <td>ES</td>
+              <td>End System</td>
+            </tr>
+            <tr>
+              <td>VL</td>
+              <td>Virtual Link. A virtual or logical communication channel.</td>
+            </tr>
+            <tr>
+              <td>Frame</td>
+              <td>The Frame defines the payload structure.</td>
+            </tr>
+            <tr>
+              <td>DatumIdentifier</td>
+              <td>Type of data: Signed Integer, Boolean/Discrete, Floating Point</td>
+            </tr>
+            <tr>
+              <td>Bit</td>
+              <td>Bit only applies to a discrete channel.</td>
+            </tr>
+          </table>
+          <h2 id="ConfigFileStructure">Configuration File Structure</h2>
+          <p>Channel configuration information (e.g. hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+          <p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu"> Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import an <strong>AFDX channel</strong>, see <a href="?10#XMLFileStructure">XML File Structure</a>.</p>
+          <p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB"> Extras -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import an <strong>AFDX</strong> channel, see <a href="?11#TabDelimitFileStructure"> Tab-Delimited File Structure</a>.</p>
+          <p>Configuration information for the AFDX Subsystem Driver is read from and stored in the configuration file on the RTE machine (.config). The configuration file on the RTE machine (.config) includes the following fields:</p>
+          <table class="Table-Grey">
+            <tr>
+              <th>Field</th>
+              <th>Description</th>
+            </tr>
+            <tr>
+              <td>card_num</td>
+              <td>The card number of the GE specific card that is installed on the RTE host machine. The default value is 0.</td>
+            </tr>
+          </table>
+          <h3 id="XMLFileStructure">XML File Structure</h3>
+          <h4 id="ChannelsXML">Channels</h4>
+          <p>The channels are stored in files Channels.xml in the configuration directories.</p>
+          <p>An AFDX Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor 
+            - Generic Channel Parameters - XML File Structure</a>, and the specific attributes <strong>ES</strong>, <strong>VL</strong>, <strong>Frame</strong>, <strong>DatumIdentifier</strong>, and <strong>Bit</strong>. These specific attributes are explained in the table below.</p>
+          <table class="Table-Grey">
+            <tr>
+              <th>Column Name</th>
+              <th>XML Attribute Name</th>
+              <th>Tab-Delimited Attribute Name</th>
+              <th>Description</th>
+              <th>Type</th>
+              <th>Acceptable Values</th>
+            </tr>
+            <tr>
+              <td>ES</td>
+              <td>ESName</td>
+              <td>AfdxESName</td>
+              <td>The name of the EndSystem defined in the Subsystem Editor</td>
+              <td>String</td>
+              <td>One of the EndSystems defined at Subsystem level</td>
+            </tr>
+            <tr>
+              <td>VL</td>
+              <td>VLid</td>
+              <td>AfdxVLid</td>
+              <td>Numerical VirtualLink ID defined in the Subsystem Editor</td>
+              <td>Integer</td>
+              <td>One of the VLid's defined at the Subsystem level</td>
+            </tr>
+            <tr>
+              <td>Frame</td>
+              <td>UDPPort</td>
+              <td>AfdxUDPPort</td>
+              <td>The UDB Port number of the Frame/Port defined in the Subsystem Editor</td>
+              <td>Integer</td>
+              <td>One of the UDP Ports defined at the Subsystem level</td>
+            </tr>
+            <tr>
+              <td>DatumIdentifier</td>
+              <td>DatumIdentifier</td>
+              <td>AfdxDatumIdentifier</td>
+              <td>Combined FDS number, DS number and Datum name defined in the Subsystem Editor (e.g. &quot;2_3_EGTS1&quot; for FDS2, DS3 and Datum name &quot;EGTS1&quot;)</td>
+              <td>String</td>
+              <td>One of the DatumIdentifiers defined at the Subsystem level</td>
+            </tr>
+            <tr>
+              <td>Bit</td>
+              <td>Bit</td>
+              <td>AfdxBit</td>
+              <td>The position of the bit in the discrete Datum channel</td>
+              <td>Integer</td>
+              <td>0 to the corresponding Datum size defined at the Subsystem level</td>
+            </tr>
+          </table>
+          <p>The structure of an AFDX Channel complies with the following example:</p>
+          <pre>
+	&lt;Channels LastModificationDate=&quot;<strong>2013-02-05 11:56:18</strong>&quot; Version=<strong>&quot;1.1&quot;</strong>&gt;
+	&lt;Channel Name=&quot;afdx1&quot;
+	Description=&quot;&quot;
+	Enabled=&quot;true&quot;
+	LastModificationDate=&quot;2013-02-04 09:28:46&quot;
+	SubsystemName=&quot;AFDX&quot;
+	SubsystemType=&quot;Afdx&quot;
+	AlternateName=&quot;&quot;
+	DataType=&quot;Boolean&quot;
+	InitialValue=&quot;-99999&quot;
+	Format=&quot;False/True&quot;
+	UpdateRate=&quot;1&quot;
+	QualityCeiling=&quot;GOOD&quot;
+	Critical=&quot;false&quot;
+	EngineeringUnit=&quot;-&quot;
+	DisplayMin=&quot;0&quot;
+	DisplayMax=&quot;100&quot;
+	DeadBand=&quot;0&quot;
+	Output=&quot;false&quot;
+	ReferenceChannel=&quot;&quot;
+	Group=&quot;&quot;
+	SignalId=&quot;&quot;
+	CalSensor=&quot;&quot;
+	CalGroup=&quot;&quot;
+	FixedSensor=&quot;&quot;
+	CustomerSensor=&quot;&quot;
+	FullsetStability=&quot;false&quot;
+	ESName=&quot;EndSystem1&quot;
+	VLId=&quot;3&quot;
+	UDPPort=&quot;7&quot;
+	DatumIdentifier=&quot;datum1&quot;
+	Bit=&quot;0&quot;  /&gt;
+	&lt;/Channels&gt;
+          </pre>
+          <h4 id="SubsystemsXML">Subsystems</h4>
+          <p>The subsystems are stored in files Subsystems.xml in the configuration directories.</p>
+          <p>An AFDX Subsystem contains generic information, described in <a href="../SubsystemEditor/SubsystemEditor.htm#XMLFileStructure">Subsystem Editor - Generic Subsystem Parameters - XML File Structure</a>, and the specific attributes:</p>
+          <ul>
+            <li>EndSystem (ES)</li>
+            <li>VirtualLinks</li>
+            <li>Frames/Ports</li>
+            <li>FDS</li>
+            <li>DS</li>
+            <li>Datum</li>
+          </ul>
+          <p>For each <strong>EndSystem</strong>, the following subsystem configuration data is defined.</p>
+          <table class="Table-Grey">
+            <tr>
+              <th>Column Name</th>
+              <th>XML Attribute Name</th>
+              <th>Description</th>
+              <th>Type</th>
+              <th>Acceptable Values</th>
+            </tr>
+            <tr>
+              <td>Name</td>
+              <td>Name</td>
+              <td>A descriptive name assigned by the user</td>
+              <td>String</td>
+              <td>One of the EndSystems defined at Subsystem level<br>
+                <br>
+                Alpha numeric, and the characters "#" and "_" - maximum of 19 characters</td>
+            </tr>
+            <tr>
+              <td>SourceIP</td>
+              <td>SourceIP</td>
+              <td>4 byte ES identifier in AFDX network. First byte with constant value, second byte as user defined Network ID, third byte as user defined Equipment ID, and fourth byte as Partition.</td>
+              <td>Integer</td>
+              <td>Acceptable range of 10.0.0.0 to 10.127.255.255<br>
+                <br>
+                Default value:<strong> 10.1.1.1</strong></td>
+            </tr>
+            <tr>
+              <td>LinkSpeed</td>
+              <td>LinkSpeed</td>
+              <td>Ethernet data transmission</td>
+              <td>Integer</td>
+              <td>10 Mbps or 100 Mbps</td>
+            </tr>
+            <tr>
+              <td>EDE_enabled</td>
+              <td>EDE_enabled</td>
+              <td>Enable or Disable EDE protocol at ES level</td>
+              <td>Boolean</td>
+              <td>On/Off</td>
+            </tr>
+            <tr>
+              <td>RM_Invalid_SN_Window</td>
+              <td>RM_Invalid_Sn_Window</td>
+              <td>&nbsp;</td>
+              <td>Integer</td>
+              <td>0 to 65535</td>
+            </tr>
+            <tr>
+              <td>IC_Valid_SN_Window</td>
+              <td>IC_Valid_SN_Window</td>
+              <td>Sequence number window for EDE integrity checking</td>
+              <td>Integer</td>
+              <td>0 to 63</td>
+            </tr>
+            <tr>
+              <td>EDE_Subscriber_Index</td>
+              <td>EDE_Subscriber_Index</td>
+              <td>EDE Subscriber for this ES</td>
+              <td>Integer</td>
+              <td>0 to 2147483647</td>
+            </tr>
+          </table>
+          <p>For each <strong>VirtualLinks</strong> of an AFDX EndSystem, the following subsystem configuration data is defined.</p>
+          <table class="Table-Grey">
+            <tr>
+              <th>Column Name</th>
+              <th>XML Attribute Name</th>
+              <th>Description</th>
+              <th>Type</th>
+              <th>Acceptable Values</th>
+            </tr>
+            <tr>
+              <td>ID</td>
+              <td>ID</td>
+              <td>Numerical VL Identifier</td>
+              <td>Integer</td>
+              <td>Unique within the AFDX Subsystem<br>
+                1 to 65535<br>
+                Auto Incremented by the ConfigServer</td>
+            </tr>
+            <tr>
+              <td>Name</td>
+              <td>Name</td>
+              <td>A descriptive name assigned by the user</td>
+              <td>String</td>
+              <td>One of the VirtualLink's defined at Subsystem level<br>
+                <br>
+                Alpha numeric, and the characters "#" and "_" - maximum of 19 characters</td>
+            </tr>
+            <tr>
+              <td>Type</td>
+              <td>Type</td>
+              <td>Transmission type</td>
+              <td>Boolean</td>
+              <td>0=Rx (Receive)<br>
+                1=Tx (Transmit)</td>
+            </tr>
+            <tr>
+              <td>Max_Frame_Size</td>
+              <td>MaxFrameSize</td>
+              <td>Maximum VL's frame size in bytes excuding 47 bytes of header/trailer</td>
+              <td>Integer</td>
+              <td>17 to 1471</td>
+            </tr>
+            <tr>
+              <td>BAG</td>
+              <td>BAG</td>
+              <td>Ranges from 1000 to 128,000 microseconds in increments of 1000 microseconds</td>
+              <td>Integer</td>
+              <td>Only for Tx<br>
+                <br>
+                1000 to 128000 in increments of 1000</td>
+            </tr>
+            <tr>
+              <td>EDE_enabled</td>
+              <td>EDE_enabled</td>
+              <td>Enable or disable EDE protocol at VL level</td>
+              <td>Boolean</td>
+              <td>Only for enabled EDE at the ES level; on/off
+                <p class="Note">For a Rx VL with EDE Enabled (On), three additional parameters must be defined at the VL level (EDE_Subscriber ID, EDE_Skew_max, and EDE_Age_max_). At the Frames/Port level, an additional parameter must be defined for the EDE_Age_Validation_Enabled.</p>
+                <p class="Note">Regardless of Rx or Tx type, an additional parameter at the Frames/Port level must be defined for the EDE_Source_ID.</p></td>
+            </tr>
+            <tr>
+              <td>EDE_Subscriber ID</td>
+              <td>&nbsp;</td>
+              <td>ID number of EDE subscriber used in EDE Timestamp protocol</td>
+              <td>Integer</td>
+              <td>Rx and EDE enabled only<br>
+                <br>
+                0 to 2147483647</td>
+            </tr>
+            <tr>
+              <td>EDE_Skew_Max</td>
+              <td>&nbsp;</td>
+              <td>Maximum allowed skew value in microseconds used in EDE RM</td>
+              <td>Integer</td>
+              <td>Rx and EDE enabled only<br>
+                <br>
+                1 to 1,044,480 in multiples of 4096</td>
+            </tr>
+            <tr>
+              <td>EDE_Age_Max</td>
+              <td>&nbsp;</td>
+              <td>Maximum allowed age value (Rx only) used in EDE IC</td>
+              <td>Integer</td>
+              <td>Rx and EDE enabled only<br>
+                <br>
+                0 to 67,000,000 in multiples of 4</td>
+            </tr>
+          </table>
+          <p>For each <strong>Frames </strong>of an AFDX VirtualLink, the following subsystem configuration data is defined.</p>
+          <table class="Table-Grey">
+            <tr>
+              <th>Column Name</th>
+              <th>XML Attribute Name</th>
+              <th>Description</th>
+              <th>Type</th>
+              <th>Acceptable Values</th>
+            </tr>
+            <tr>
+              <td>UDPPort</td>
+              <td>UDPPort</td>
+              <td>Assigned destination of UDP Port number</td>
+              <td>Integer</td>
+              <td>Unique within the VL<br>
+                <br>
+                1 to 65535</td>
+            </tr>
+            <tr>
+              <td>Name</td>
+              <td>Name</td>
+              <td>A descriptive name assigned by the user</td>
+              <td>String</td>
+              <td>1 to 10000, and the characters "#" and "_"</td>
+            </tr>
+            <tr>
+              <td>Period</td>
+              <td>Period</td>
+              <td>Transmit or Receive rate in milliseconds</td>
+              <td>Integer</td>
+              <td>1 to 10000</td>
+            </tr>
+            <tr>
+              <td>MessageSize</td>
+              <td>MessageSize</td>
+              <td>AFDX message size in bytes</td>
+              <td>Integer</td>
+              <td>Integer from 4 to Max_Frame_Size (defined at VL level) (maximum 1471)</td>
+            </tr>
+            <tr>
+              <td>EDE_Source_Id</td>
+              <td>EDE_Source_Id</td>
+              <td>Unique source identifier for EDE CRC processing</td>
+              <td>Integer</td>
+              <td>EDE enabled VL only<br>
+                <br>
+                Unique within the VL<br>
+                <br>
+                0 to 2147483647</td>
+            </tr>
+            <tr>
+              <td>EDE_Age_Validation_Enabled</td>
+              <td>EDE_Age_Validation_Enabled</td>
+              <td>To enable the EDE age validation protocol</td>
+              <td>Boolean</td>
+              <td>Rx and EDE enabled VL only</td>
+            </tr>
+            <tr>
+              <td>FDSFormat</td>
+              <td>FDSFormat</td>
+              <td>To select user defined message format (explicit) or FDS (message format (implicit)</td>
+              <td>Boolean</td>
+              <td>On/Off<br>
+                <br>
+                True: FDS format (implicit, default)<br>
+                <br>
+                False: User define format (explicit)</td>
+            </tr>
+          </table>
+          <p>For each <strong>FDS</strong> of an AFDX Frame, which uses implicit FDS messages, the following subsystem configuration data is defined.</p>
+          <table class="Table-Grey">
+            <tr>
+              <th>Column Name</th>
+              <th>XML Attribute Name</th>
+              <th>Description</th>
+              <th>Type</th>
+              <th>Acceptable Values</th>
+            </tr>
+            <tr>
+              <td>Number</td>
+              <td>Number</td>
+              <td>Sequence number of the FDS  in the frame</td>
+              <td>Integer</td>
+              <td>Contiguous value auto-incremented by the ConfigServer, starting at 1</td>
+            </tr>
+            <tr>
+              <td>StartByte</td>
+              <td>StartByte</td>
+              <td>The byte number from the  beginning of the frame payload where the FDS is located</td>
+              <td>Integer</td>
+              <td>4 to Frame MessageSize</td>
+            </tr>
+            <tr>
+              <td>Size</td>
+              <td>Size</td>
+              <td>FDS size in bytes</td>
+              <td>Integer</td>
+              <td>4 to Frame MessageSize (maximum 1471)</td>
+            </tr>
+          </table>
+          <p>For each <strong>DS</strong> (up to 4) of an AFDX FDS, the following subsystem configuration data is defined.</p>
+          <table class="Table-Grey">
+            <tr>
+              <th>Column Name</th>
+              <th>XML Attribute Name</th>
+              <th>Description</th>
+              <th>Type</th>
+              <th>Acceptable Values</th>
+            </tr>
+            <tr>
+              <td>Number</td>
+              <td>Number</td>
+              <td>Sequence number of the DS in the FDS group</td>
+              <td>Integer</td>
+              <td>1 to 4</td>
+            </tr>
+            <tr>
+              <td>Name</td>
+              <td>Name</td>
+              <td>A descriptive name assigned by the user</td>
+              <td>String</td>
+              <td>One of the DS's defined at SubSystem level<br>
+                <br>
+                Alpha numeric, and the characters "#" and "_" - maximum of 19 characters</td>
+            </tr>
+            <tr>
+              <td>StartByte</td>
+              <td>StartByte</td>
+              <td>The byte number from the beginning of the frame payload where the DS is located</td>
+              <td>Integer</td>
+              <td>The integer must be greater than or equal to the corresponding FDS StartByte + 4 bytes<br>
+                <br>
+                Default value is automatically calculated based on the previous DS</td>
+            </tr>
+            <tr>
+              <td>Size</td>
+              <td>Size</td>
+              <td>DS size in bytes</td>
+              <td>Integer</td>
+              <td>1 to (FDS size &ndash; 4) (maximum 1471)</td>
+            </tr>
+          </table>
+          <p>For each <strong>Datum</strong> of an AFDS DS (when using implicit format) or of an AFDX Frame/Port (when using explicit format), the following subsystem configuration is defined.</p>
+          <table class="Table-Grey">
+            <tr>
+              <th>Column Name</th>
+              <th>XML Attribute Name</th>
+              <th>Description</th>
+              <th>Type</th>
+              <th>Acceptable Values</th>
+            </tr>
+            <tr>
+              <td>Name</td>
+              <td>Name</td>
+              <td>Parameter name</td>
+              <td>String</td>
+              <td>An  arbitrary string, with no space and permitted characters of underscore, or #; the maximum length is 59 characters<br>
+                <br>
+                Implicit Format:<br>
+                The name of the corresponding DS <br>
+                <br>
+                Explicit Format:<br>
+                Unique within the frame</td>
+            </tr>
+            <tr>
+              <td>StartByte</td>
+              <td>StartByte</td>
+              <td>The byte number which the Datum starts at in the frame payload</td>
+              <td>Integer</td>
+              <td>Implicit format:
+                The integer must be greater than or equal to  the corresponding DS StartByte and smaller than the corresponding DS Size<br>
+                <br>
+                Explicit format:
+                Integer starting at 0 to Frame/Port MessageSize. <br>
+                <br>
+                Default: Automatically calculated based  on&nbsp;the previous Datum when a new Datum  is created</td>
+            </tr>
+            <tr>
+              <td>Size</td>
+              <td>Size</td>
+              <td>Parameter size in bytes</td>
+              <td>Integer</td>
+              <td>Only applicable for Datums with data type  &ldquo;String&rdquo;; otherwise the Configuration Server sets the size property depending  on the data type automatically.<br>
+                <br>
+                Implicit format:
+                Integer from 1 to DS Size (maximum 1471)<br>
+                <br>
+                Explicit format: Integer  from 1 to Frame/Port MessageSize (maximum 1471)</td>
+            </tr>
+            <tr>
+              <td>Type</td>
+              <td>Type</td>
+              <td>Data type of the Datum</td>
+              <td>String</td>
+              <td>INT16<br>
+                INT32<br>
+                INT64<br>
+                FLT32<br>
+                FLT64<br>
+                BOOLEAN<br>
+                STRING</td>
+            </tr>
+            <tr>
+              <td>Slope</td>
+              <td>Slope</td>
+              <td>&nbsp;</td>
+              <td>Float</td>
+              <td>Only for Integer and Float data type</td>
+            </tr>
+            <tr>
+              <td>Offset</td>
+              <td>Offset</td>
+              <td>&nbsp;</td>
+              <td>Float</td>
+              <td>Only for Integer and Float data type</td>
+            </tr>
+          </table>
+          <p>The structure of an AFDX subsystem is shown in the following example:</p>
+          <blockquote><code>&lt;Subsystems LastModificationDate=&quot;<strong>2013-02-05 15:34:08</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;<br>
+  &lt;Subsystem Name=&quot;AFDX&quot;
+            Description=&quot;&quot;
+            Enabled=&quot;true&quot;
+            LastModificationDate=&quot;2013-02-05 15:34:08&quot;
+            Id=&quot;0&quot;
+            Type=&quot;Afdx&quot;
+            CreationDate=&quot;2012-10-08 11:37:11&quot;&gt; <br>
+  &lt;EndSystems&gt;<br>
+  &lt;EndSystem Name=&quot;EndSystem1&quot; SourceIP=&quot;192.168.1.1&quot; LinkSpeed=&quot;10&quot; EDE_Enabled=&quot;false&quot; RM_Invalid_SN_Window=&quot;0&quot; IC_Valid_SN_Window=&quot;0&quot; EDE_Subscriber_Index=&quot;0&quot;&gt;
+            &lt;VirtualLinks&gt;<br>
+  &lt;VirtualLink Name=&quot;virtualLink1&quot; ID=&quot;1&quot; MaxFrameSize=&quot;68&quot; Type=&quot;1&quot; BAG=&quot;1000&quot; EDE_Enabled=&quot;false&quot;&gt;<br>
+  &lt;Frames&gt;<br>
+  &lt;Frame Name=&quot;frame1&quot; UDPPort=&quot;1&quot; MessageSize=&quot;68&quot; Period=&quot;10000&quot; EDE_Source_Id=&quot;0&quot;  EDE_Age_Validation_Enabled=&quot;false&quot; FDSFormat=&quot;true&quot;&gt;<br>
+  &lt;FDSs&gt;<br>
+  &lt;FDS Number=&quot;1&quot; StartByte=&quot;64&quot; Size=&quot;64&quot;&gt;<br>
+  &lt;DSs&gt;<br>
+  &lt;DS Number=&quot;2&quot; Name=&quot;dsName1&quot; StartByte=&quot;68&quot; Size=&quot;8&quot;&gt;<br>
+  &lt;Datums&gt;<br>
+  &lt;Datum Name=&quot;datum4&quot; StartByte=&quot;68&quot; Size=&quot;4&quot; Type=&quot;0&quot; Slope=&quot;1&quot; Offset=&quot;0&quot; /&gt;<br>
+  &lt;Datum Name=&quot;datum2&quot; StartByte=&quot;72&quot; Size=&quot;4&quot; Type=&quot;0&quot; Slope=&quot;1&quot; Offset=&quot;0&quot; /&gt;<br>
+  &lt;/Datums&gt;<br>
+  &lt;/DS&gt;<br>
+  &lt;/DSs&gt;<br>
+  &lt;/FDS&gt;<br>
+  &lt;/FDSs&gt;<br>
+  &lt;/Frame&gt;<br>
+  &lt;/Frames&gt;<br>
+  &lt;/VirtualLink&gt;<br>
+  &lt;/VirtualLinks&gt;<br>
+  &lt;/EndSystem&gt;<br>
+  &lt;/EndSystems&gt;<br>
+  &lt;/Subsystem&gt;<br>
+  &lt;/Subsystems&gt;</code></blockquote>
+          <h3 id="TabDelimitFileStructure">Tab-Delimited File Structure</h3>
+          <p>The AFDX Subsystem Driver channel definition includes all <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic 
+            channel definition columns</a> and the specific AFDX input parameters defined in the tab-delimited configuration file.</p>
+          <p>The rules, syntax and guidelines for creating AFDX channels are described in the following table:</p>
+          <table class="Table-Grey">
+            <tr>
+              <th>Column Name</th>
+              <th>Description</th>
+              <th>Syntax (data type expected in the column)</th>
+              <th>Multiple Values Allowed</th>
+              <th>Data Required</th>
+            </tr>
+            <tr>
+              <td>AfdxESName</td>
+              <td>The name of the EndSystem defined in the Subsystem Editor</td>
+              <td>String, one of the EndSystems defined at Subsystem level</td>
+              <td>No</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>AfdxVLid</td>
+              <td>Numerical VirtualLink ID defined in the Subsystem Editor<br>
+                <br>
+                The UPD Port number of the Frame/Port defined in the Subsystem Editor</td>
+              <td>Integer, one of the VLid's defined at Subsystem level</td>
+              <td>No</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>AfdxUDPPort</td>
+              <td>The UPD number of the Frame/Port defined in the Subsystem Editor</td>
+              <td>Integer, one of the UPDPorts defined at Subsystem level</td>
+              <td>No </td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>AfdxDatumIdentifier</td>
+              <td>Combined FDS number, DS number and Datum name defined in the Subsystem Editor (e.g. &quot;2_3_EGTS1&quot; for FDS2, DS3 and Datum name &quot;EGTS1&quot;)</td>
+              <td>String, one of the DatumIdentifiers defined at Subsystem level</td>
+              <td>No</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td>AfdxBit</td>
+              <td>The position of the bit in the discrete Datum channel</td>
+              <td>Integer, 0 to the corresponding Datum size defined at the Subsystem level</td>
+              <td>No</td>
+              <td>Yes</td>
+            </tr>
+            <tr>
+              <td colspan="5"><p class="Note">In the Multiple Values Allowed column:<br>
+                &quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+                An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel to be defined on more than one line (e.g. LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field (e.g. VALUE) are not qualified as multi-line<br>
+                &quot;No&quot; means that the channel is restricted to a single value.</p>
+                <p class="Note">In the Data Acquired column:<br>
+                  &quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk.<br>
+                  &quot;No&quot; indicates that the field is optional.</p></td>
+            </tr>
+          </table>
+          <h2 id="SubsysEditor">Subsystem Editor for AFDX Channels</h2>
+          <p>The Subsystem Editor implements an AFDX specific panel which supports the following views:</p>
+          <ul>
+            <li>table view of configured parameters</li>
+            <li>tree view visualisation of configured parameters</li>
+          </ul>
+          <h5>Table View</h5>
+          <div class="Container"><img src="images/AFDXTable.png" width="700" height="509" alt=""/></div>
+          <br>
+          <p>To add an Endsystem, Virtual Link, Frame/Port, FDS, DS, or Datum configuration, right click in the appropriate box and select <strong>Add</strong>.</p>
+          <p class="Note">When adding new Frame definitions, a dialogue box opens to give the option between Implicit Format or Explicit Format. When Implicit Format is activated, the Subsystem Editor displays the ES, VL, Frame/Port, FDS, and Datum sections in 6 panes. When Explicit Format is activated, the Subsystem Editor displays the ES, VL, Frame/Port and Datum sections in 4 pains.</p>
+          <h5>Tree View</h5>
+          <div class="Container"><img src="images/AFDXTree.png" width="700" height="509" alt=""/></div>
+          <br>
+          <h5>SSEditor Field Descriptions</h5>
+          <table class="Table-Grey">
+            <tr>
+              <th>Field</th>
+              <th>Description</th>
+            </tr>
+            <tr>
+              <td colspan="3"><strong>End System (ES) Panel</strong></td>
+            </tr>
+            <tr>
+              <td>ES Name</td>
+              <td>A descriptive name assigned by the user.</td>
+            </tr>
+            <tr>
+              <td>Source IP</td>
+              <td>IP address of the source.</td>
+            </tr>
+            <tr>
+              <td>Link Speed</td>
+              <td>Ethernet data transmission rate. (10 or 100 Mbps)</td>
+            </tr>
+            <tr>
+              <td>EDE enabled</td>
+              <td>Enable or disable EDE protocol at Virtual Link level.</td>
+            </tr>
+            <tr>
+              <td>RM Invalid SN Window</td>
+              <td>Sequence Number Range for EDE Redundancy Management validation (0-65535)</td>
+            </tr>
+            <tr>
+              <td>IC Valid SN Window</td>
+              <td>Sequence Number Range for EDE Integrity Checking (0-63)</td>
+            </tr>
+            <tr>
+              <td>EDE Subscriber Index</td>
+              <td>EDE Subscriber Index</td>
+            </tr>
+            <tr>
+              <td colspan="3"><strong>Virtual Link (VL) Panel</strong></td>
+            </tr>
+            <tr>
+              <td>ID</td>
+              <td>Numerical VL Identifier (1-65535)</td>
+            </tr>
+            <tr>
+              <td>Name</td>
+              <td>A descriptive name assigned by the user.</td>
+            </tr>
+            <tr>
+              <td>Type</td>
+              <td>Data type (Coding format)</td>
+            </tr>
+            <tr>
+              <td>Max Frame Size</td>
+              <td>Maximum VL's frame size in bytes excluding 47 bytes of header/trailer. (17-1471)</td>
+            </tr>
+            <tr>
+              <td>BAG</td>
+              <td>Bandwidth Allocation Gap. (Tx VL only)</td>
+            </tr>
+            <tr>
+              <td>EDE enabled</td>
+              <td>Enable or disable EDE protocol at VL level.</td>
+            </tr>
+            <tr>
+              <td>EDE Subscriber ID</td>
+              <td>ID number of EDE subscriber used in EDE Timestamp protocol. (Rx only)</td>
+            </tr>
+            <tr>
+              <td>EDE Skew Max</td>
+              <td>Maximum allowed skew value used in EDE RMM (Rx only) (1-1044480 in multiples of 4096)</td>
+            </tr>
+            <tr>
+              <td>EDE Age Max</td>
+              <td>Maximum allowed age value used in EDE IC (Rx only)</td>
+            </tr>
+            <tr>
+              <td colspan="3"><strong>Frame/Port Panel</strong></td>
+            </tr>
+            <tr>
+              <td>UDP Port</td>
+              <td>UDP port number</td>
+            </tr>
+            <tr>
+              <td>Name</td>
+              <td>A descriptive name assigned by the user.</td>
+            </tr>
+            <tr>
+              <td>Period</td>
+              <td>Transmit or receive rate in ms (0-10000)</td>
+            </tr>
+            <tr>
+              <td>Message Size</td>
+              <td>AFDX frame size in bytes (bounded by Max Frame Size)</td>
+            </tr>
+            <tr>
+              <td>EDE Source Id</td>
+              <td>Unique source identifier for EDE CRC processing.</td>
+            </tr>
+            <tr>
+              <td>EDE Age Validation Enabled</td>
+              <td>To enable the EDE age validation protocol (Rx VL only)</td>
+            </tr>
+            <tr>
+              <td>FDS Format</td>
+              <td>TRUE if implicit data format (FDS) is used</td>
+            </tr>
+            <tr>
+              <td colspan="3"><strong>FDS Panel</strong></td>
+            </tr>
+            <tr>
+              <td>Number</td>
+              <td>(Implicit format) Sequence number of the FDS in the frame.</td>
+            </tr>
+            <tr>
+              <td>StartByte</td>
+              <td>(Implicit format) The start byte of the FDS in the payload.</td>
+            </tr>
+            <tr>
+              <td>Size</td>
+              <td>(Implicit format) FDS size in bytes.</td>
+            </tr>
+            <tr>
+              <td>FS</td>
+              <td>Configurable Functional Status. Drop-down menu provides the following options:
+                <ul>
+                  <li>ND (no data) - 0 decimal</li>
+                  <li>NO (normal operation) - 3 decimal (default value)</li>
+                  <li>FT (functional test) - 12 decimal</li>
+                  <li>NCD (no computed data) - 48 decimal</li>
+                </ul></td>
+            </tr>
+            <tr>
+              <td colspan="3"><strong>DS Panel</strong></td>
+            </tr>
+            <tr>
+              <td>Number</td>
+              <td>(Implicit format) Number of DS</td>
+            </tr>
+            <tr>
+              <td>Name</td>
+              <td>A descriptive name assigned by the user.</td>
+            </tr>
+            <tr>
+              <td>StartByte</td>
+              <td> (Implicit format) The start byte of the DS in the payload.</td>
+            </tr>
+            <tr>
+              <td>Size</td>
+              <td>Data size in bytes.</td>
+            </tr>
+            <tr>
+              <td colspan="3"><strong>Datum Panel</strong></td>
+            </tr>
+            <tr>
+              <td>Name</td>
+              <td>A descriptive name assigned by the user.</td>
+            </tr>
+            <tr>
+              <td>StartByte</td>
+              <td>The start byte of the channel in the payload.</td>
+            </tr>
+            <tr>
+              <td>Type</td>
+              <td>Data type (Coding format)</td>
+            </tr>
+            <tr>
+              <td>Size</td>
+              <td>Data size in bytes.</td>
+            </tr>
+            <tr>
+              <td>Slope</td>
+              <td>Slope only applied to channels of type float.</td>
+            </tr>
+            <tr>
+              <td>Offset</td>
+              <td>Offset only applied to channels of type float.</td>
+            </tr>
+          </table>
+          <h3>Editing the AFDX Subsystem</h3>
+          <p>To edit the AFDX Subsystem, the Subsystem Editor must be selected from within the Configuration Administrator.</p>
+          <p>The tool bar in the Configuration Administrator allows the various configuration editors available for proDAS to be selected. </p>
+          <p>The Subsystem Editor allows new subsystems to be added to the current configuration.</p>
+          <p><strong>To add a new subsystem</strong>: </p>
+          <ol>
+            <li>From the Edit menu, select <strong>Append Data Record</strong> or, in the left pane of the splitter window, click the right mouse button and select <strong>Append Data Record</strong> from the context sensitive menu.</li>
+            <li> Select <strong>AFDX</strong> in the dialogue box to select the type of subsystem.<br>
+              A new line in Subsystem Editor is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to <strong>AFDX</strong>. The user must then assign a name and description to the subsystem.<br>
+            </li>
+          </ol>
+          <p><strong>To view the Frame Definition Window</strong>:</p>
+          <ol>
+            <li>Select a frame.</li>
+            <li>Click the <strong>ShowFrameDefinitionWindow</strong> button located in  the Subsystem Editor. The Frame Definition Window is displayed.
+              <div class="Container"><img src="images/FrameDefn.png" alt="FrameDefn" width="700" height="201"></div>
+              <br>
+              If a frame is not selected, the Error window is displayed.
+              <div class="Container"><img src="images/ErrorMsg.png" alt="ErrorMsg" width="312" height="161"></div>
+            </li>
+          </ol>
+          <h2 id="RTEInitialiseFile">RTE Initialisation File</h2>
+          <p>The RTE Initialisation File must, as a minimum, include the card number (<strong>card_num #</strong>). The AFDX card number is an integer (starting at zero) and it uniquely identifies the AFDX card installed in the system.</p>
+          <p>A typical RTE initialisation file would include the following AFDX Subsystem information:</p>
+          <p># ========================================<br>
+            # AFDX subsystem<br>
+            # ----------------------------------------<br>
+            SS&nbsp;  AFDX&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  TRUE<br>
+            CI&nbsp;  card_number&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; 0<br>
+            CI&nbsp;  skew_max&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;  400<br>
+          </p>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click here to see the RTE Initialisation file.</a></p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

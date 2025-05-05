@@ -1,0 +1,741 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Thrust Calibration Application (TCA)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="ThrustCalApp">Thrust Calibration Application (TCA) (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+
+<h2 id="Overview">Overview</h2>
+<p>The Thrust Calibration Application (TCA) is a component of the Thrust Calibration and Thrust Measurement System. The Thrust Calibration System applies variable force to the thrust frame. The Thrust Measurement System acquires data from the force measurement instrumentation on the thrust frame and transmits the data through proDAS to the TCA. Load data may be acquired automatically or manually through preset thrust load points.</p>
+<p class="Note">A manual audit has a greater flexibility to acquire additional data around specific thrust points.</p>
+<p>The Thrust Calibration PLC receives target load commands from the TCA. The PLC transmits control signals to the hydraulic components (valves, 
+  hydraulic cylinders and the Servo Control Module) in the test bed, and receives feedback data from measurement components (load cells and associated signal 
+conditioners).</p>
+<p>Thrust Measurement Hydraulics apply increasing and then decreasing loads to the live (movable) portion of the thrust frame with hydraulic cylinders. 
+The PLC maintains the target load and transmits feedback data to the TCA.</p>
+<p>The TCA performs the following specific functions:</p>
+<ul>
+  <li>user log on</li>
+  <li>start-up verification </li>
+  <li>zeroing thrust measurement equipment</li>
+  <li>exercise the thrust frame</li>
+  <li>verify load cell preloads</li>
+  <li>manual auditing</li>
+  <li>automatic auditing</li>
+  <li>viewing previous audit reports</li>
+  <li>creating new thrust audit and master calibration reports</li>
+</ul>
+<p>The interface to the TCA consists of the Audit/Master Calibration Page and Pre-Audit Page GUIs.</p>
+<p>The TCA may be launched:</p>
+<ul>
+  <li>as a stand-alone application where the username and password are not automatically passed</li>
+  <li>from proDAS through the Management GUI Control Panel, where the username and password are automatically passed</li>
+</ul>
+<p>There are five security levels associated to each user. Access to the TCA functions is limited by the security level (functions that are not listed in the table have no security level):</p>
+<table class="Table-Grey">
+<tr>
+    <th>TCA Function</th>
+  </tr>
+  <tr>
+    <td>modify target tolerance and signal definition limits</td>
+  </tr>
+  <tr>
+    <td>zero working thrust measurement</td>
+  </tr>
+  <tr>
+    <td>accept single point master calibration</td>
+  </tr>
+  <tr>
+    <td>exercise thrust frame</td>
+  </tr>
+  <tr>
+    <td>perform automatic audit or master calibration</td>
+  </tr>
+  <tr>
+    <td>perform manual audit or master calibration</td>
+  </tr>
+</table>
+<p>A level five user may execute any function and modify the security level associated to each TCA function above.</p>
+<p class="Note">The displayed date format (dd/mm/yy or yy/mm/dd) in the application is  based upon the regional settings of the Management Interface Computer.</p>
+<h2 id="StartTCA">Starting the TCA</h2>
+<p>The TCA can be started either as a stand-alone application or from the Management GUI Control Panel.</p>
+<h4>To start the TCA as a stand-alone application:</h4>
+<ol>
+  <li>Double-click the TCA executable file from the Management Interface Computer directory structure.<br>
+    The Login window is displayed.
+    <div class="Container"><img src="images/Login.png" alt="Login" width="407" height="272"></div>
+  </li>
+  <li> Enter a username in the Username field.</li>
+  <li>Enter a password in the Password field.</li>
+  <li>Select <strong>Login</strong>.</li>
+  <li>If the Test Bed is configured for both forward and reverse thrust calibration, the Calibration Direction Prompt is displayed.</li>
+</ol>
+<h4>To start the TCA from the Management GUI Control Panel:</h4>
+<ol>
+  <li>From the Management GUI Control Panel (below), select <strong>Tools / Pre-Test Function / Thrust Calibration</strong>.
+    <div class="Container"><img src="images/MGTGUIstart.gif" alt="MGT GUI start" width="700" height="370"></div>
+    The Calibration Direction Prompt is displayed.
+    <div class="Container"><img src="images/PromptDirection.gif" alt="Prompt Direction" width="592" height="160"></div>
+  </li>
+  <li>Select <strong>Forward</strong> or <strong>Reverse</strong>. The Calibration Mode Prompt is displayed.
+    <div class="Container"><img src="images/PromptManAuto.gif" alt="Prompt Man Auto" width="592" height="160"></div>
+  </li>
+  <li>Select <strong>Manual</strong> or <strong>Automatic</strong>. If <strong>Manual</strong> is selected, the Pre-Audit Page is displayed. If <strong>Automatic</strong> is selected, the Start or Quit HPU Prompt (below) is displayed.
+    <div class="Container"><img src="images/PromptStartHPU.gif" alt="Prompt Start HPU" width="560" height="160"></div>
+  </li>
+  <li>Select <strong>Start HPU</strong> to continue or <strong>Quit</strong> to exit TCA. If <strong>Start HPU</strong> is selected, the <strong>Start HPU</strong> prompt is displayed.
+    <div class="Container"><img src="images/PromptHPhydraulic.gif" alt="Prompt HP hydraulic" width="560" height="160"></div>
+  </li>
+  <li>Select <strong>Yes</strong> to start the Hydraulic Power Unit (HPU) or <strong>No</strong> to exit TCA. If <strong>Yes</strong> is selected, the HPU is started and the  Exercise Thrust Frame Prompt is displayed.
+    <div class="Container"><img src="images/PromptExerciseThrustFrame.gif" alt="Prompt Exercise Thrust Frame" width="560" height="160"></div>
+  </li>
+  <li>Select <strong>Yes</strong> to exercise the thrust frame or <strong>No</strong> to skip the exercise. The  Select Configuration Information window is displayed.
+    <div class="Container"><img src="images/SelectConfigInfo.gif" alt="Select Config Info" width="334" height="232"></div>
+  </li>
+  <li>Select the required Engine Type, Intake Type and Shutter Position from the drop-down lists on the Select Configuration Information window. Select <strong>OK</strong>. The <a href="?2#AuditMasterCalPage">Audit/Master Calibration Page</a> is displayed.</li>
+</ol>
+<h2 id="PreAuditPage">Pre-Audit Page</h2>
+<p>The Pre-Audit Page is a GUI of optional functions that are executed before an audit.</p>
+<div align="center"><img src="images/PreAuditPage.gif" alt="PreAudit Page" width="500" height="527"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Button or Field</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Manual</td>
+    <td>Manual/Automatic audit field. Displays user - selected manual or automatic audit mode.</td>
+  </tr>
+  <tr>
+    <td>Forward</td>
+    <td>Forward/Reverse Thrust field. Displays user - selected forward or reverse thrust calibration mode.</td>
+  </tr>
+  <tr>
+    <td>Measured Thrust (lbf)<br>
+      Corrected Thrust (lbf)</td>
+    <td>Force Measurement field. Displays force measurement data from two channels. The left field displays temperature corrected measured thrust and the right field displays calibration corrected measured thrust.</td>
+  </tr>
+  <tr>
+    <td>Channel</td>
+    <td>Calibration Channel List column. Lists channels associated with the Transfer Standard load cells and the total measured thrust.</td>
+  </tr>
+  <tr>
+    <td>Sensor</td>
+    <td>Load Cell Sensor name column. Lists sensors associated with the Transfer Standard load cells and measured thrust for the test bed.</td>
+  </tr>
+  <tr>
+    <td>Cal Due Date</td>
+    <td>Load Cell Sensor calibration due date column. Lists calibration due dates for sensors associated with the Transfer Standard load cells and measured thrust.</td>
+  </tr>
+  <tr>
+    <td>Cal Date</td>
+    <td>Load Cell calibration date column. Lists calibration dates for sensors associated with the Transfer Standard load cells and measured thrust.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnReviewCalHist.gif" alt="Btn Review Cal Hist" width="150" height="22"></td>
+    <td>Review Load Cell Calibration Histories button. Displays a folder that contains Thrust Calibration Reports in .xls (spreadsheet) form.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnStartStop.gif" alt="Btn Start Stop" width="134" height="31"></td>
+    <td>Start/Stop Hydraulic Power Unit button. Starts or stops the test cell Hydraulic Power Unit.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnExercise.gif" alt="Btn Exercise" width="136" height="32"></td>
+    <td>Exercise Thrust Frame button. Initiates an exercise session for the live portion of the thrust frame. A pre-determined load is applied to the frame three times during an exercise. The frame may be exercised in a forward or reverse motion.
+      <p class="Note">The Exercise button is assigned with a configurable security level. This button will only be enabled for users that are assigned a suitably high security level for running the TCA.</p></td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnBeginAudit.gif" alt="Btn Begin Audit" width="136" height="32"></td>
+    <td>Begin Audit button. Displays the Audit/Master Calibration Page.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnZeroWorking.gif" alt="Btn Zero Working" width="136" height="32"></td>
+    <td>Zero Working Load Cells button. Initiates zero of the test bed working load cell sum before an Audit, i.e., with no applied thrust load. The current zero offset value is recorded in the calibration report. A Zero History trace file is updated to record the time, date and offset value.
+      <p class="Note">The Zero Working button is assigned with a configurable security level. This button will only be enabled for users that are assigned a suitably high security level for running the TCA.</p></td>
+  </tr>
+  <tr>
+    <td>Status</td>
+    <td>Thrust Calibration Status field. Displays an event history since the user logged on.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnAbout.gif" alt="Btn About" width="136" height="32"></td>
+    <td>Displays information about the Thrust Calibration Application (TCA), comprising the name, version number and copyright.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnExit.gif" alt="Btn Exit" width="136" height="32"></td>
+    <td>Exit button. Turns off the power to the HPU and exits the TCA.</td>
+  </tr>
+</table>
+<h2 id="AuditMasterCalPage">Audit/Master Calibration Page</h2>
+<p>The Audit/Master Calibration Page is the primary GUI for performing audits and displaying measurement data. Audit/Master Calibration Page functions include:</p>
+<ul>
+  <li>transmitting target loads to test bed hydraulic equipment through the Thrust Calibration PLC</li>
+  <li>displaying thrust measurements from test bed load cells</li>
+  <li>displaying target load/load measurement error</li>
+  <li>displaying audit data in numerical or graphical form</li>
+  <li>displaying audit data reports</li>
+</ul>
+<div align="center"><img src="images/AuditMasterCalManGood.gif" alt="Audit Master Cal Manual Good" width="700" height="511"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Button or Field</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Manual</td>
+    <td>Manual/Automatic audit field. Displays user - selected manual or automatic audit mode.</td>
+  </tr>
+  <tr>
+    <td>Forward</td>
+    <td>Forward/Reverse Thrust field. Displays user - selected forward or reverse thrust calibration mode.</td>
+  </tr>
+  <tr>
+    <td colspan="2"><strong>Applied Loads Fields</strong></td>
+  </tr>
+  <tr>
+    <td>Transfer standard channel value readings</td>
+    <td>Channel Data display field. Displays transfer standard data measurements from up to three channels during the audit. Data is sourced from the Transfer Standard load cells.</td>
+  </tr>
+  <tr>
+    <td>Target Load (lbf) </td>
+    <td>Target Load field. Sets the required load for the audit point. only modifiable in manual audit mode.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnApplyLoad.gif" alt="Btn Apply Load" width="135" height="29"></td>
+    <td>Apply Target Load button. Transmits the target load value to the Thrust Calibration PLC. Only enabled in manual audit mode.</td>
+  </tr>
+  <tr>
+    <td>Target Tol (lbf)</td>
+    <td>Target Tolerance Field. Sets the tolerance for data collection during an audit. If the Transfer Standard Thrust reading is outside the tolerance from the target load, the background colour of the transfer standard channel reading field will to turn red.
+      <p class="Note">If the target tolerance is modified during an audit, the action is recorded into the thrust_trace file and audit report.</p>
+      <p class="Note">The target load tolerance is preset, and can only be modified at a higher user security level while in manual audit mode. Target loads are modified only under special circumstances, such as troubleshooting.</p></td>
+  </tr>
+  <tr>
+    <td colspan="2"><strong>Error Fields</strong></td>
+  </tr>
+  <tr>
+    <td>Error</td>
+    <td>Target Error fields. Displays the difference in engineering units and  % between the measured load from working load cells and the Transfer Standard load cells.</td>
+  </tr>
+  <tr>
+    <td colspan="2"><strong>Measured Loads Fields</strong></td>
+  </tr>
+  <tr>
+    <td>FnMeasTC (lbf)<br>
+      FnCorrTC (lbf)</td>
+    <td>Force Measurement field. Displays force measurement data from two channels. The left field displays temperature corrected measured thrust and the right field displays calibration corrected measured thrust.</td>
+  </tr>
+  <tr>
+    <td>Standard Dev. Limit</td>
+    <td>Standard Deviation Limit field. Sets a limit on the Standard Deviation (fluctuation) of the working thrust once the target has been achieved.</td>
+  </tr>
+  <tr>
+    <td>Standard Deviation (SD)</td>
+    <td>Standard Deviation field. Displays the SD from the measured calibration audit data. The background colour changes to red if the data exceeds the limit that is entered in the Standard Deviation Limit field.
+      <p class="Note">The standard deviation limit is preset, and can only be modified at a higher user security level while in manual audit mode.</p></td>
+  </tr>
+  <tr>
+    <td colspan="2"><strong>Main Fields</strong></td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnAccept.gif" alt="Btn Accept" width="135" height="29"></td>
+    <td>Accept Point button. Records audit data to the Current data bank from a thrust point during a manual audit. The button is enabled when the Transfer Standard thrust is within the tolerance of the Target and the Working Thrust standard deviation is within the standard deviation limit.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnUndo.gif" alt="Btn Undo" width="135" height="29"></td>
+    <td>Deletes most recent set of audit data for a thrust point, if the data is within the target tolerance setting to allow for recording of new data. The button is disabled if the data is outside of the tolerance.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnDoNextAudit.gif" alt="Btn Do Next Audit" width="135" height="29"></td>
+    <td>Do Next Audit button. Starts a new audit.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnGraph.gif" alt="Btn Graph" width="135" height="29"></td>
+    <td>Displays banked audit data in graphical form.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnCurrentBanked.gif" alt="Btn Current Banked" width="151" height="31"></td>
+    <td>Data Bank field. Displays incrementing and decrementing  audit data under the following headers:
+      <ul>
+        <li>Target (lbf)</li>
+        <li>FnTS (lbf), FnMeas (lbf), FnCorr (lbf)</li>
+        <li>Error (lbf)</li>
+        <li>Error (%)</li>
+        <li>Temp (C)</li>
+        <li>Hysteresis (decrement data measurement only)</li>
+      </ul>
+      <p class="Note">Up to four sets of audit data may be viewed.</p></td>
+  </tr>
+  <tr>
+    <td>No. Banked Audits</td>
+    <td>Banked Audits field. Displays the total number of banked audit data sets.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnStartDecrement.gif" alt="Btn Start Decrement" width="159" height="29"></td>
+    <td>Start Decrementing button. Begins decrementing the target load when performing a manual  audit.</td>
+  </tr>
+  <tr>
+    <td>Audit Pass/Fail </td>
+    <td>Audit Pass/Fail field. Indicates  the success or failure of the data in the current  audit, or whether it is in progress. </td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnAcceptAuditNew.gif" alt="Btn Accept Audit New" width="200" height="23"></td>
+    <td>Update Calibration Due Date button. Updates the calibration due date to normally 30 days from current date. The button is selected after a successful  audit.</td>
+  </tr>
+  <tr>
+    <td>Master Calibration Consistency Pass/Fail</td>
+    <td>Master Calibration Consistency field. Indicates that the previous three consecutive banked audits are consistent within a predefined tolerance (Pass), or have exceeded the tolerance (Failed).</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnUpdateMasterCal.gif" alt="Btn Update Master Cal" width="200" height="27"></td>
+    <td>Update Master Calibration button. Creates a new Master Calibration, and updates the calibration due date. The button is enabled after three banked audits have been deemed consistent, and new Master Calibration data falls within a predefined tolerance of the Bed Characteristic Line.
+      <p class="Note">A single bank of Failed calibration data can be used to create a Master Calibration at a higher security level.</p>
+      <p class="Note">The View Report and Print Report buttons are disabled until the Update Master Calibration button is selected.</p></td>
+  </tr>
+  <tr>
+    <td>Comments</td>
+    <td>Comments field. Comments for an Audit may be entered into this field.</td>
+  </tr>
+  <tr>
+    <td>Status</td>
+    <td>Status Field. Displays a history of actions that have been executed during the audit.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnPrintReport.gif" alt="Btn Print Report" width="135" height="29"></td>
+    <td>Print Report button. Prints the Audit or Master Calibration report.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnViewReport.gif" alt="Btn View Report" width="135" height="29"></td>
+    <td>View Report button. Displays the Audit or Master Calibration report.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnSaveComment.gif" alt="Btn Sav Comment" width="135" height="29"></td>
+    <td>Save Comment button. Saves user comments with in the audit report. </td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnCancel.gif" alt="Btn Cancel" width="135" height="29"></td>
+    <td>Cancel Button. Aborts the current manual or automatic audit and commands a target load of zero. The button is disabled if there is no audit in progress. </td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnExit.gif" alt="Btn Exit" width="135" height="29"></td>
+    <td>Exit button. After a confirmation window (below) is displayed, the button turns off power to the HPU and exits the TCA.<br>
+      <div class="Container"><img src="images/PromptExit.gif" alt="Prompt Exit" width="592" height="160"></div></td>
+  </tr>
+</table>
+<h2 id="ManualAudit">Manual Audit</h2>
+<h3 id="StartManualAudit">Starting a Manual Audit </h3>
+<p>The Pre-Audit Page is displayed before the manual audit is started to allow previous calibration reports to be reviewed, the thrust frame to be exercised, and the offset on the test bed load cells to be calibrated or &quot;zeroed&quot;.</p>
+<ol>
+  <li>Select <strong>Manual</strong> from the Calibration Mode Prompt during TCA log on:
+    <div class="Container"><img src="images/PromptManAuto.gif" alt="Prompt Man Auto" width="592" height="160"></div>
+    The Pre-Audit Page is displayed. Manual Audit and Thrust mode (Forward or Reverse) which are selected during TCA log on are displayed in fields at the top of the screen. Manual Audit mode is also indicated in the Status field. The <strong>Review Calibration Histories</strong>, <strong>Start HPU</strong> and <strong>Exit</strong> buttons are enabled.
+    <div class="Container"><img src="images/PreAuditPage.gif" alt="Pre-Audit Page" width="500" height="527"></div>
+  </li>
+  <li>Select <strong>Start HPU</strong> to start the Hydraulic Power Unit (HPU). A Warning Prompt is displayed.
+    <div class="Container"><img src="images/PromptHPhydraulic.gif" alt="Prompt HP hydraulic" width="560" height="160"></div>
+  </li>
+  <li>Select <strong>Yes</strong> to start the HPU or <strong>No</strong> to abort HPU startup. If <strong>Yes</strong> is selected, the <strong>Exercise</strong>, <strong>Begin Audit</strong> and <strong>Zero Working</strong> buttons are enabled.</li>
+</ol>
+<h4 id="ReviewCalibrationHistory">Review Calibration Histories</h4>
+<ol>
+  <li>Select <strong>Review Calibration Histories</strong>. The TCA\Reports folder is displayed in a window.</li>
+  <li>Select an audit report .xls (spreadsheet) file for review if required.</li>
+</ol>
+<h4 id="ExcerciseThrustFrame">Exercise the Thrust Frame</h4>
+<ol>
+  <li>Select <strong>Exercise</strong>. The Exercise Prompt is displayed.
+    <div class="Container"><img src="images/PromptExerciseThrustFrame.gif" alt="Prompt Exercise Thrust Frame" width="560" height="160"></div>
+  </li>
+  <li>Select <strong>Yes</strong> to exercise the thrust frame or <strong>No</strong> to abort the exercise. If <strong>Yes</strong> is selected, the live portion of the thrust frame is moved to a peak value and back to zero three times by the Thrust Hydraulics.
+    <p class="Note">The Exercise button is enabled at a higher user security level.</p>
+  </li>
+</ol>
+<h4 id="ZeroLoadCells">Zero Working Load Cells</h4>
+<p>Select <strong>Zero Working</strong>. The offsets on the working load cells in the test bed are &quot;zeroed&quot;.</p>
+<p class="Note">The Zero Working button is enabled at a higher user security level.</p>
+<h3 id="PerformManualAudit">Performing a Manual Audit</h3>
+<ol>
+  <li>Select <strong>Begin Audit</strong>. The Begin Prompt is displayed.
+    <div class="Container"><img src="images/PromptBeginAudit.gif" alt="PromptBeginAudit" width="560" height="160"></div>
+  </li>
+  <li>Select <strong>Yes</strong> to begin the audit or <strong>No</strong> to abort the audit. If <strong>Yes</strong> is selected, the Select Configuration window is displayed.
+    <div class="Container"><img src="images/SelectConfigInfo.gif" alt="Select Config Info" width="334" height="232"></div>
+  </li>
+  <li>Select the appropriate Engine Type, Intake Type and Shutter Position data from the drop-down lists in the window.</li>
+  <li>Select <strong>OK</strong>.
+    The offsets in the Transfer Standard load cells are automatically &quot;zeroed&quot; during the transition from the Pre-Audit Page to the Audit/Master Calibration Page. An Error Prompt is displayed if the resulting calibration value FnTS (Force - Transfer Standard) exceeds an allowable limit.
+    <div class="Container"><img src="images/PromptExceedsValue.gif" alt="Prompt Exceeds Value" width="592" height="160"></div>
+    Select <strong>Yes</strong> to abort the calibration audit. The Pre-Audit Page is displayed.<br>
+    Select <strong>No</strong> to continue the calibration audit. The Audit/Master Calibration Page is displayed. The <strong>Accept</strong>, <strong>Save Comment</strong> and <strong>Cancel</strong> buttons are enabled.
+    If the thrust frame is preloaded, the working Load Cell preloads are also checked and a warning prompt is displayed if preloads are not within limits.
+    <div class="Container"><img src="images/AuditMasterCalManBad.gif" alt="Audit Master Cal Manual Bad" width="700" height="560"></div>
+    <p class="Note">Select Cancel to abort the audit and return to the Pre-Audit Page anytime.</p>
+    <p class="Note">The standard deviation limit is preset, and can only be modified at a higher user security level.</p>
+    <p class="Note">The target load tolerance is preset, and can only be modified at a higher user security level. Target loads are modified only under special circumstances, such as troubleshooting.</p>
+    <p class="Note">The target load automatically changes to the next default level (10,000, 20,000, 40,000 etc.).</p>
+  </li>
+  <li>Select <strong>Apply Load</strong>. The Thrust Hydraulics apply the target load to the thrust frame.  
+    The Status field displays a &quot;Driving to target value&quot; message until the target load has been applied to the frame. The <strong>Accept</strong> and <strong>Apply Load</strong> buttons are disabled during this time. 
+    The Status field displays a &quot;PLC is at target&quot; message and <strong>Accept</strong> is enabled when the transfer standard is within the tolerance of the target load and the working reading is within standard deviation limits.</li>
+  <li>Select <strong>Accept</strong> to record the thrust data in the Current Data Bank. The acquired data (target (lbf), FnTS (lbf), FnMeas (lbf), FnCorr, error and temperature) is displayed in the Incrementing column of the Current Data Bank field. The background colour of the row is red if the Error has exceeded the allowable maximum. Select <strong>Undo</strong> to delete the recorded data from the last target point.<br>
+    <br>
+    The <strong>Start Decrementing</strong> button is enabled after a single non-zero load point has been recorded. If <strong>Start Decrementing</strong> is selected, a Start Decrementing Prompt is displayed (see Step 8.)<br>
+    <br>
+    A Time Out Prompt is displayed if the duration for acquiring the target load data is exceeded.
+    <div class="Container"><img src="images/PromptTimeout.gif" alt="Prompt Timeout" width="560" height="160"></div>
+    Select <strong>Continue</strong> to proceed with the &quot;wait operation&quot; or <strong>Cancel</strong> to abort the calibration and display the Pre-Audit Page. </li>
+  <li>Repeat Steps 5 - 6 for the required incrementing target loads. Additional target load data may be acquired beyond the maximum default point. If <strong>Apply Load</strong> is selected for target loads beyond the maximum default level, a Start Decrementing Prompt is displayed.
+    <div class="Container"><img src="images/StartDecrementing.gif" alt="Start Decrementing" width="560" height="160"></div>
+  </li>
+  <li>Select <strong>Yes</strong> to  decrement the target load. Select <strong>No</strong> to abort decrementing the target load.</li>
+  <li>If <strong>Yes</strong> is selected, the decrementing targets are set to the same level as the incrementing targets. The targets cannot be altered.</li>
+  <li>Select <strong>Apply Load</strong>. The Thrust Hydraulics apply the target load to the thrust frame.  
+    The Status field displays a &quot;Driving to target value&quot; message until the target load has been applied to the frame. The <strong>Accept</strong> and <strong>Apply Load</strong> buttons are disabled during this time. 
+    The Status field displays a &quot;PLC is at target&quot; message and <strong>Accept</strong> is enabled when the transfer standard is within the tolerance of the target load and the working reading is within standard deviation limits.<br>
+  </li>
+  <li>Select <strong>Accept</strong> to record measured load data in the Current Data Bank. The acquired data (target (lbf), FnTS (lbf), FnMeas (lbf), FnCorr, error and temperature) is displayed in the Decrementing column of the Current Data Bank field. The hysteresis between the incrementing reading and the decrementing reading is calculated an displayed. The background colour of the row is red if the Error has exceeded the allowable maximum. Select <strong>Undo</strong> to delete the recorded data from the last target point.<br>
+    <br>
+    A Time Out Prompt is displayed if the duration for acquiring the target load data is exceeded.
+    <div class="Container"><img src="images/PromptTimeout.gif" alt="Prompt Timeout" width="560" height="160"></div>
+    Select <strong>Continue</strong> to proceed with the &quot;wait&quot; or <strong>Cancel</strong> to abort the calibration and display the Pre-Audit Page.</li>
+  <br>
+  <li>Repeat Steps 9 - 12 for the required decrementing target loads. A Graph Prompt is displayed at the minimum default target load level.
+    <div class="Container"><img src="images/PromptGraphAudit.gif" alt="Prompt Graph Audit" width="560" height="160"></div>
+  </li>
+  <li>Select <strong>Yes</strong> to display the Current Data Bank in graphical form; proceed to Step 16. Select <strong>No</strong> to bypass graphing and continue. </li>
+  <li>If <strong>No</strong> is selected and the audit failed, a Bank Data Prompt is displayed. If the audit passed, there is no option to bank the audit.
+    <p class="Note">The TCA does not offer the option to bank an audit towards the next calibration if the audit passed. If the audit is successful, there will be an option to save the audit and extend the calibration due date.<br>
+    </p>
+    <div class="Container"><img src="images/PromptBankAudit.gif" alt="Prompt Bank Audit" width="560" height="160"></div>
+    If <strong>No</strong> is selected, a Rejected Audit report is generated and the Audit/Master Calibration Page is displayed. If <strong>Yes</strong> is selected, the calibration audit data is entered into the Banked 1 field and a Warning Prompt is displayed.
+    <div class="Container"><img src="images/EnterFinalComments.gif" alt="Enter Final Comments" width="560" height="160"></div>
+    Enter comments into the Comments field.</li>
+  <br>
+  <li>Select <strong>OK</strong>. A graph of the current data bank is displayed. The Audit Pass/Fail field indicates a Pass or Fail condition for the audit.
+    <div class="Container"><img src="images/Graph.gif" alt="Graph" width="700" height="460"></div>
+  </li>
+  <ul>
+    <li>select <strong>Current</strong>, <strong>Banked 1</strong>, <strong>Banked 2</strong> or <strong>Banked 3</strong> to display banked data in graphical form</li>
+    <li>select <strong>Wrk vs. App</strong> (working thrust vs. applied thrust) or <strong>Error vs. App</strong> (measurement error vs. applied thrust) to change the type of graph to display ( <strong>Wrk vs. App</strong> is shown above)</li>
+    <li>select <strong>Show Labels</strong> to display the thrust measurements values above the thrust points (above, in illustration)</li>
+    <li>the area of the graph may be increased (&quot;zoomed&quot;) by defining a zoom area with the cursor</li>
+    <li>select <strong>Zoom Out</strong> to return the graph to its original resolution</li>
+    <br>
+  </ul>
+  <li>Enter comments into the Comments field and select <strong>Save Comment</strong>.</li>
+  <li>Select <strong>X</strong> to exit the graphical display. A Bank Data Prompt is displayed.
+    <div class="Container"><img src="images/PromptBankAudit.gif" alt="Prompt Bank Audit" width="560" height="160"></div>
+  </li>
+  <li>Select <strong>Yes</strong> to store the current data under the Banked 1 tab. The No. Banked Audits field is incremented to 1.<br>
+    Select <strong>No</strong> to delete the data and display the Audit/Master Calibration Page. <strong>Do Next Audit</strong>, <strong>Update Master Calibration Data</strong> and <strong>Accept Audit New Cal Due Date</strong> are enabled.</li>
+  <li>Select <strong>Do Next Audit</strong> to record another set of audit data. Select <strong>Update Master Calibration Data</strong> to create a new Master Calibration. Select <strong>Accept Audit New Cal Due Date</strong> to update the calibration due date(if the audit was successful).</li>
+</ol>
+<h3 id="AcceptAuditNewCalDueDate">Accept Audit New Calibration Due Date</h3>
+<p>The Working Thrust Calibration Due Date may be updated (moved forward 30 days) after a successful audit, i.e., every data point of the audit has error and hysteresis below the configurable maximum, and <strong> Pass</strong> is displayed in the Audit Pass/Fail field. However, a bank of failed data may be used to update the Calibration Due Date at a higher user security level.</p>
+<ol>
+  <li>After banking audit data, select <strong>Accept Audit New Cal Due Date</strong>. The Update Due Date calendar is displayed.
+    <div class="Container"><img src="images/Calandar.gif" alt="Calendar" width="296" height="296"></div>
+  </li>
+  <li>Select the calibration day with the mouse cursor and button</li>
+  <li>Select the calibration month with the arrow buttons on the calendar</li>
+  <li>Select <strong>Update</strong>. The calibration due date is updated.</li>
+</ol>
+<h3 id="CreateNewMasterCalibration">Creating a New Master Calibration</h3>
+<p>A new Master Calibration can be created (updated) if three consecutive sets of banked data pass the consistency check, and the new calibration BPT is within the configurable tolerance of the Bed Characteristic. The Master Calibration Consistency Pass/Fail field displays <strong>Pass</strong> to indicate three sets of good data. However, even a single set of audit data banked may be used to update the Master Calibration data at a higher user security level. If a user has logged at an authorization level that is lower, a prompt for a higher user level is displayed.</p>
+<p class="Note">A comment is added to the Master Calibration report which states that a single point Master Calibration has been authorized.</p>
+<p>A new Master Calibration cannot be created that contains data which falls outside the tolerance for the Bed Characteristic Line. The line represents the original Master Calibration BPT for the bed.</p>
+<ol>
+  <li>Select <strong>Update Master Calibration Data</strong> to create a new Master Calibration. A Confirmation Prompt is displayed.
+    <div class="Container"><img src="images/PromptUpdateMasterCal.gif" alt="Prompt Update MasterCal" width="560" height="160"></div>
+  </li>
+  <li>Select <strong>Yes</strong> to create a new Master Calibration. Select <strong>No</strong> to return to the Audit/Master Calibration Page. If <strong>Yes</strong> is selected, an Update Due Date calendar is displayed.
+    <div class="Container"><img src="images/Calandar.gif" alt="Calandar" width="296" height="296"></div>
+    <ul>
+      <li>select the calibration day with the mouse cursor and button</li>
+      <li>select the calibration month with the arrow buttons on the calendar</li>
+    </ul>
+  </li>
+  <br>
+  <li>Select <strong>Update</strong>. A new Master Calibration is created and the calibration due date is updated.</li>
+</ol>
+<p class="Note">The View Report and Print Report buttons are disabled until the Update Master Calibration button is selected.</p>
+<h2 id="AutomaticCalibrationAudit">Automatic Calibration Audit</h2>
+<h3 id="StartingAutomaticAudit">Starting an Automatic Audit</h3>
+<p>An automatic calibration audit is performed with a preset schedule of events and target loads. The audit:</p>
+<ul>
+  <li>exercises the thrust frame</li>
+  <li>zeros the load cells</li>
+  <li>applies a load by ramping thrust up and down through preset target points</li>
+  <li>creates a Master Calibration if required</li>
+  <li>generates an  audit report</li>
+</ul>
+<ol>
+  <li>Select <strong>Automatic</strong> from the Calibration Mode Prompt during TCA log on.
+    <div class="Container"><img src="images/PromptManAuto.gif" alt="Prompt ManAuto" width="592" height="160"></div>
+    A Start or Quit HPU Prompt is displayed.
+    <div class="Container"><img src="images/PromptStartHPU.gif" alt="Prompt Start HPU" width="560" height="160"></div>
+    Select <strong>Start HPU</strong> to start the Hydraulic Power Unit. Select <strong>Quit</strong> to exit TCA.</li>
+  <br>
+  <li>Select <strong>Start HPU</strong> to start the Hydraulic Power Unit (HPU). A Warning Prompt is displayed.
+    <div class="Container"><img src="images/PromptHPhydraulic.gif" alt="Prompt HP hydraulic" width="560" height="160"></div>
+  </li>
+  <li>Select <strong>Yes</strong> to start the HPU or <strong>No</strong> to abort HPU startup. If <strong>Yes</strong> is selected, the Pre-Audit Page and the Exercise Prompt is displayed.
+    <div class="Container"><img src="images/PreAuditAuto.gif" alt="PreAudit Auto" width="500" height="527"></div>
+    <div class="Container"><img src="images/PromptExerciseThrustFrame.gif" alt="Prompt Exercise Thrust Frame" width="560" height="160"></div>
+  </li>
+  <li>Select <strong>Yes</strong> to exercise the thrust frame or <strong>No</strong> to abort the exercise. If <strong>Yes</strong> is selected, the live portion of the thrust frame is moved forward and backward by the Thrust Hydraulics. The  Select Configuration window is displayed.
+    <div class="Container"><img src="images/SelectConfigInfo.gif" alt="Select Config Info" width="334" height="232"></div>
+  </li>
+  <li>Select the appropriate Engine Type, Intake Type and Shutter Position data from the drop-down lists in the window.</li>
+  <li>Select <strong>OK</strong>. The offsets in the Transfer Standard load cells are automatically calibrated or &quot;zeroed&quot;. An Error Prompt is displayed if the calibration value exceeds an allowable limit.
+    <div class="Container"><img src="images/PromptExceedsValue.gif" alt="Prompt Exceeds Value" width="592" height="160"></div>
+    If the thrust frame is pre-loaded, the working Load Cell preloads are also checked and a warning prompt is displayed if preloads are not within limits. </li>
+  <br>
+  <li>Select <strong>Yes</strong> to abort the calibration audit and display the Pre-Audit Page. Select <strong>No</strong> to continue the calibration audit and display the Audit/Master Calibration Page.
+    The Status field displays &quot;Start Automatically Recording Data&quot;. The audit  automatically acquires target load point data.
+    <p class="Note">Select Cancel to abort the audit and return to the Pre-Audit Page anytime.</p>
+    <div class="Container"><img src="images/AuditMasterCalAutoGood.gif" alt="Audit Master Cal Auto Good" width="700" height="511"></div>
+  </li>
+  <li>The Current data bank of the Audit Master Calibration Page is populated with data during the audit.
+    <div class="Container"><img src="images/AuditMasterCalManGoodData.gif" alt="Audi Master Cal Man Good Data" width="700" height="511"></div>
+    The <strong>Graph</strong>, <strong>View Report</strong> and <strong>Print Report</strong> buttons are enabled when the audit is completed. If the audit data is within target load tolerance when the audit is completed:
+    <ul>
+      <li>A Pass Prompt is displayed</li>
+      <li>the <strong>Accept Audit New Cal Due Date</strong> button is enabled</li>
+      <li><strong>Pass</strong> is displayed in the Audit Pass/Fail field</li>
+    </ul>
+    <div class="Container"><img src="images/PromptPassed.gif" alt="Prompt Passed" width="560" height="160"></div>
+    If the audit data is outside of target load tolerance when the audit is completed:<br>
+    <ul>
+      <li><strong>Fail</strong> is displayed in the Audit Pass/Fail field</li>
+      <li>no Pass Prompt is displayed</li>
+      <li>the <strong>Do Next Audit</strong> button is enabled </li>
+      <li>the <strong>Accept Audit New Cal Due Date</strong> button is not enabled</li>
+      <li>the <strong>Update Master Calibration</strong> button is enabled </li>
+      <li>a Graph Prompt is displayed</li>
+    </ul>
+  </li>
+  <br>
+  <li>Select <strong>OK</strong> if the Pass Prompt is displayed. A Graph Prompt is displayed.
+    <div class="Container"><img src="images/PromptGraphAudit.gif" alt="Prompt Graph Audit" width="560" height="160"></div>
+  </li>
+  <li>Select <strong>Yes</strong> to display the Current Data Bank in graphical form. Select <strong>No</strong> to bank the calibration audit data and enable <strong>Do Next Audit </strong>(this option is only available if the audit failed). If <strong>No</strong> is selected, a Bank Data Prompt is displayed.
+    <p class="Note">The TCA does not offer the option to bank an audit towards the next calibration if the audit passed. If the audit is successful, there will be an option to save the audit and extend the calibration due date.</p>
+    <div class="Container"><img src="images/PromptBankAudit.gif" alt="Prompt Bank Audit" width="560" height="160"></div>
+    If <strong>No</strong> is selected, the Audit/Master Calibration Page is displayed. If <strong>Yes</strong> is selected, the calibration audit data is entered into the Banked 1 field.</li>
+  <br>
+  <li>If <strong>Yes</strong> is selected from the Graph Prompt, a warning Prompt is displayed.
+    <div class="Container"><img src="images/EnterFinalComments.gif" alt="Enter Final Comments" width="560" height="160"></div>
+  </li>
+  <li>Select <strong>OK</strong>. A graph of the current data bank is displayed.
+    <div class="Container"><img src="images/Graph.gif" alt="Graph" width="700" height="460"></div>
+  </li>
+  <ul>
+    <li>select <strong>Current</strong>, <strong>Banked 1</strong>, <strong>Banked 2</strong> or <strong>Banked 3</strong> to display banked data in graphical form</li>
+    <li>select <strong>Wrk vs. App</strong> (working thrust vs. applied thrust) or <strong>Error vs. App</strong> (measurement error vs. applied thrust) to change the type of graph to display ( <strong>Wrk vs. App</strong> is shown above)</li>
+    <li>select <strong>Show Labels</strong> to display the thrust measurement values above the thrust points (above, in illustration)</li>
+    <li>the area of the graph may be increased (&quot;zoomed&quot;) by defining a zoom area with the cursor </li>
+    <li>select <strong>Zoom Out</strong> to return the graph to its original resolution<br>
+      Enter comments into the Comments field and select <strong>Save Comment</strong>.</li>
+  </ul>
+  <br>
+  <li> Select <strong>X</strong> to exit the graphical display. A Bank Data Prompt is displayed.
+    <div class="Container"><img src="images/PromptBankAudit.gif" alt="Prompt Bank Audit" width="560" height="160"></div>
+  </li>
+  <li>Select <strong>Yes</strong> to store the current data under the Banked 1 tab. The No. Banked Audits field is incremented to 1.<br>
+    Select <strong>No</strong> to delete the data and display the Audit/Master Calibration Page.</li>
+  <li>Select <strong>Do Next Audit</strong> to record another set of audit data. Repeat steps 8 - 12.</li>
+  <li>Select <strong>Update Master Calibration Data</strong> to <a href="?4#CreateNewMasterCalibration">create a new Master Calibration</a>.</li>
+  <li> Select <strong>Accept Audit New Cal Due Date</strong> to <a href="?5#AcceptAuditNewCalDueDate">update the calibration due date</a>.</li>
+</ol>
+<h2 id="ViewAuditReport">View Audit Reports</h2>
+<p>An audit report is generated after current audit data is banked, when an automatic or manual audit is completed and the <strong>View Report</strong> button is enabled. The report is generated in .xls (spreadsheet) form and consists of four sections:</p>
+<ul>
+  <li><a href="AuditReport.pdf">Audit Report</a></li>
+  <li><a href="CurrentData.pdf">Current  Data</a></li>
+  <li><a href="Datasheet.pdf"> Banked Data</a></li>
+  <li><a href="MasterReport.pdf">Master Calibration Data</a></li>
+</ul>
+
+<h2 id="ThrustConfigFile">Thrust Configuration File</h2>
+<p>The settings for the Thrust Calibration Application are contained in a configuration file called thrust.ini located in proDAS\ini\thrust.ini.</p>
+<p class="Note">This file should only be modified by trained personnel.</p>
+<blockquote>
+  <p>[STARTUP]<br>
+    AcquisitionRate = 11<br>
+    DisplayRate = 10<br>
+    BufferSize = 150<br>
+    AverageBufferSize = 80<br>
+    DefaultDueDate = 30<br>
+    DirectionAllowed = True<br>
+    RTEHost = rtehost<br>
+    RTEService = ui_serv<br>
+    RTEDPService = ds_serv<br>
+    ZeroHistoryTraceFile = \\stn1-rte\logs\tCA\ZeroHistoryTraceFile.txt<br>
+    TargetFontName=Courier New<br>
+    TargetFontSize=8<br>
+    Buffered=True<br>
+    NumberofAudits=1</p>
+  <p>[TRACE]<br>
+    FileName = C:\proDAS\Data\trace\TCA_trace.txt<br>
+    Level = 5<br>
+    Tag = TCA<br>
+    BufferTrace = True</p>
+  <p>[CONFIG]<br>
+    EngineTypes = ATP_Calibration,MDS_Calibration,ENGINE1,ENGINE2,ENGINE3,ENGINE4,ENGINE5<br>
+    IntakeTypes = TCS,None<br>
+    ShutterPositions = None</p>
+  <p>[CHANNEL]</p>
+  <p>CalEnable = Cal_Enable<br>
+    CalReady = Cal_Ready<br>
+    CalRamAlarm = Cal_Ram_Alarm<br>
+    Exercise = Exercise<br>
+    ExercisePeek = Exercise_Peak_PLC<br>
+    ExerciseDone = Exercise_Done<br>
+    PLCFloat = Float_Channel_PLC<br>
+    PLCStart = Start_Channel<br>
+    PLCStop = Stop_Channel<br>
+    MaximumLoad = Maximum_Load_PLC<br>
+    HPUNotOK = HPU_Not_OK<br>
+    Preload = Preload<br>
+    TempC = TempC<br>
+    Temp1 = M1900CSR<br>
+    Temp2 = M1900LSR<br>
+    Temp3 = M1900SSF<br>
+    Temp4 = M1900CSF<br>
+    Temp5 = M1900CPR<br>
+    Temp6 = M1900LPR<br>
+    Temp7 = M1900SPF<br>
+    Temp8 = M1900CPF</p>
+  <p>[PRELOAD]<br>
+    Enabled = False<br>
+    WRK1 = PortFwd<br>
+    WRK2 = PortRev<br>
+    WRK3 = StbdFwd<br>
+    WRK4 = StbdRev</p>
+  <p>[SIMULATION]<br>
+    Enabled = False<br>
+    BedNo = 1<br>
+    EngineType = MDS_Calibration<br>
+    ConfigurationID = 2<br>
+    TestCellID = 1<br>
+    TestID = 123<br>
+    Operator = Tom Joad</p>
+  <p>[DISPLAY]<br>
+    Name = facility<br>
+    Page = Thrust_Calibration.0<br>
+    Script = C:\proDAS\Data\MgtGUI\StartThrustCalDisp.vbs</p>
+  <p>[DATABASE]<br>
+    DSN = proDAS<br>
+    DBMSVer = Oracle10g<br>
+    DSNConStr = User Id=engineer;Password=thehelp<br>
+    Timeout = 60</p>
+  <p>[REPORT]<br>
+    AuditDirectory = C:\proDAS\Data\TCA\<br>
+    TemplateFile = C:\proDAS\Data\TCA\Thrust Report Template.xls</p>
+  <p>[TIMEOUT]<br>
+    Exercise = 150<br>
+    PLCInitalize = 20<br>
+    PLCStop = 90<br>
+    Stability = 50</p>
+  <p>[UNIT]<br>
+    FnTS = lbf<br>
+    FnMeas = lbf<br>
+    FnCorr = lbf<br>
+    Temp = DegC<br>
+    Error = lbf<br>
+    Target = lbf<br>
+    Hysteresis = lbf</p>
+  <p>[TOLERANCE]<br>
+    ExerPeekForw = 110000 <br>
+    ExerPeekRev = -160000<br>
+    Target = 200<br>
+    StandardDeviationLimit = 15<br>
+    MasterCalError = 30<br>
+    Hysteresis = 40<br>
+    BedCharacteristic = 250<br>
+    MaxLoadForw = 120000 <br>
+    MaxLoadRev = -40000<br>
+    RecordedError = 60<br>
+    RecordedPct = 0.06<br>
+    FnTSZeroLimit = 2700<br>
+    MaxForw_Extension=0.1<br>
+    MaxRev_Extension=0.1 </p>
+  <p>[TEST_MODE]<br>
+    Enabled = False<br>
+    CalEnable = Cal_Enable<br>
+    CalReady = Cal_Ready<br>
+    CalRamAlarm = Cal_Ram_Alarm<br>
+    TAD = MSTF1T<br>
+    Exercise = Exercise<br>
+    ExercisePeek = Exercise_Peak_PLC<br>
+    ExerciseDone = Exercise_Done<br>
+    PLCFloat = Float_Channel_PLC<br>
+    PLCStart = Start_Channel<br>
+    PLCStop = Stop_Channel<br>
+    MaximumLoad = Maximum_Load_PLC<br>
+    HPUNotOK = HPU_Not_OK<br>
+    TempC = TempC<br>
+    Temp1 = Temp1<br>
+    Temp2 = Temp2<br>
+    Temp3 = Temp3<br>
+    Temp4 = Temp4<br>
+    Temp5 = Temp5<br>
+    Temp6 = Temp6<br>
+    Temp7 = Temp7<br>
+    Temp8 = Temp8<br>
+    Preload = Preload<br>
+    WRK1 = WRK1T<br>
+    WRK2 = WRK2T<br>
+    WRK3 = WRK3T<br>
+    WRK4 = WRK4T<br>
+    WRK_MEAS = FnMeasT<br>
+    WRK_MEAS_TC = FnMeasTCT<br>
+    WRK_CORR = FnCorrTCT<br>
+    WRK_CORR_AVG = FnAvgTCT<br>
+    MSTF1 = MSTF1T<br>
+    MSTF2 = MSTF2T<br>
+    MST_FORW = FnTSFwdT<br>
+    MSTR1 = MSTR1T<br>
+    MSTR2 = MSTR2T<br>
+    MST_REV = FnTSRevT<br>
+    MSTF1Sensor = TAD1.NA<br>
+    MSTF2Sensor = TAD3.NA<br>
+    MSTR1Sensor = TAD2.NA<br>
+    MSTR2Sensor = TAD4.NA<br>
+    BedSensor=FnCorrTC.NA<br>
+    ZeroSensor=FnCorrTC.Zero</p>
+  <p>[THRUST_GROUP_1]<br>
+    EngineTypes = MDSCalibration,ENGINE1,ENGINE2,ENGINE3,ENGINE4,ENGINE5<br>
+    ForwardTargets = 0,10000,20000,30000,40000,55000,70000,85000,100000<br>
+    ReverseTargets = 0,-5000,-10000,-15000,-20000,-25000,-30000</p>
+  <p>[THRUST_GROUP_2]<br>
+    EngineTypes = ATP_Calibration,<br>
+    ForwardTargets = 0,10000,20000,40000,60000,80000,100000,110000<br>
+    ReverseTargets = 0,-20000,-40000</p>
+</blockquote>
+<br>
+<br>
+
+
+
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

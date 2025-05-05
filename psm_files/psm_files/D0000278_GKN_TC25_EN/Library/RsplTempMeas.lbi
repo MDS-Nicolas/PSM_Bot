@@ -1,0 +1,16 @@
+<table class="Table-Grey">
+  <tr> 
+    <th class="row-RSPLManufacturer">Manufacturer</th>
+    <th class="row-RSPLQty">Quantity</th>
+    <th class="row-RSPLPartNumber">Part Number</th>
+    <th class="row-RSPLDescription">Description</th>
+    <th class="row-RSPLLeadTime">Lead Time</th>
+  </tr>
+  <tr> 
+    <td>VTI Instruments</td>
+    <td>1</td>
+    <td>EX1048A</td>
+    <td>48-Channel Thermocouple Scanner</td>
+    <td>8 Weeks</td>
+  </tr>
+</table>

@@ -1,0 +1,333 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" -->
+<title>Text Output Pages</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="TextOutputPagesEditor">Text Output Pages<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" >
+</a><div float:right></div></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The Text Output Pages is a specialised reporting system within proDAS consisting of pages of preformatted text which contain placeholders for 
+channel values. They allow a client to:</p> 
+<ul>
+  <li>print the pages and write them to file, with inserted values</li> 
+  <li>display dialogues for user input of values</li>
+</ul>
+<p>The Text Output Pages includes two components:</p> 
+<ul>
+  <li><a href="?2#TOPEditor">Text Output Page Editor</a> (used to define the layout of the printed pages)</li> 
+  <li><a href="?3#TOPServer">Text Output Page Server</a> (used to populate the pages dynamically at run-time)</li>
+</ul>
+<h2 id="TOPEditor">Text Output Page Editor</h2>
+<p>The Text Output Page Editor uses the <a href="../../TestwithDAS/IntrotoproDAS/IntrotoproDAS.htm#ConfigDatabase" >Configuration 
+  Database</a> to retrieve and save the configuration information required to perform an Engine Test. The Text Output Page Editor allows the user to define and manipulate Text Output Pages.</p>
+<div class="Container"><img src="images/MainWindow.png" alt="Main Window" width="700" height="424"></div>
+<p>The Text Output Page Editor provides the following menu bar to help the user configure the Text Output Pages. In the page view, there is also 
+  a <a href="?4#ContextMenu">context menu</a> available which provides commands for editing.</p>
+<div class="Container"><img src="images/MainMenu.png" alt="Main Menu" width="346" height="48"></div>
+<ul>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuFile">File</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuEdit">Edit</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuView">View</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuConfiguration">Configuration</a></li>
+  <li><a href="?5#MenuEditSpecific" >TextOutputPage</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuHelp">Help</a></li>
+</ul>
+<h4 id="MenuEditSpecific">TextOutputPage</h4>
+<p>The TextOutputPage menu assists the user when specifically configuring a text Output Page in the right pane of the Text Output Page Editor.</p>
+<div class="Container"><img alt="Menu Edit Specific" src="images/MenuEditSpecific.PNG" width="365" height="151" ></div>
+<ul>
+  <li> <a href="?6#MenuSimulation" >Simulation</a>
+    <ul>
+      <li> <a href="?7#MenuSimulationOutput" >Text Output</a></li>
+      <li> <a href="?8#MenuSimulationPrintout" >Text Printout</a></li>
+      <li> <a href="?9#MenuSimulationDialogue" >Text Dialog</a></li>
+    </ul>
+  </li>
+  <li> <a href="?10#MenuZoom" >Zoom Out</a></li>
+  <li> <a href="?11#MenuZoom" >Zoom In</a></li>
+  <li> <a href="?12#MenuZoom" >Zoom Normal</a></li>
+  <li> <a href="?13#MenuReloadChannels" >Reload Channels</a></li>
+</ul>
+<h4 id="MenuSimulation">Simulation</h4>
+<p>The Simulation menu allows the user to verify the layout of the currently edited page using the Text Output Page Server.</p>
+<h4 id="MenuSimulationOutput">Text Output</h4>
+<p>This operation uses the Text Output Page Server to generate a formatted string of the edited page. The resulting text is displayed by the 
+  Editor in a dialogue window using a fixed font.</p>
+<div class="Container"><img src="images/SimulationOutput.png" alt="Simulation Output" width="681" height="425" ></div>
+<h4 id="MenuSimulationPrintout">Text Printout</h4>
+<p>This operation uses the Text Output Page Server to generate a formatted string of the edited page. The resulting text is sent to the Print 
+  Server. A Print Options dialogue box is displayed.</p>
+<div class="Container"><img src="images/PrintOptions.png" alt="Print Options" width="285" height="122"></div>
+<h4 id="MenuSimulationDialogue">Text Dialog</h4>
+<p>This operation uses the Text Output Page Server to generate a dialogue window showing the edited page. Entries that are marked as editable 
+  are shown as controls which allow the user to modify the values.</p>
+<div class="Container"><img src="images/SimulationDialogue.png" alt="Simulation Dialogue" width="500" height="500" ></div>
+<p class="Note">The three buttons at the bottom of the above screen are programmatically defined.</p>
+<h4 id="MenuZoom">Zoom - In, Out, Normal</h4>
+<p>The zoom operations allows the user to view the page with more or less details. The following figures illustrate how the Editor shows zoomed 
+  pages.</p>
+<p class="Note">To use the zoom operations the user must click in the right-hand pane.</p>
+<div class="Container"><img src="images/ZoomIn.png" alt="" width="700" height="424" ></div>
+<div class="Container"><img src="images/ZoomOut.png" alt="Zoom Out" width="700" height="424" ></div>
+<h4 id="MenuReloadChannels">Reload Channels</h4>
+<p>This operations allows the user to reload the channel definition 
+  from the Configuration Server. This can be useful if the channel&nbsp;definition 
+  changes while the Text Output Page Editor is running.</p>
+<h3 id="ContextMenu">Context Menu</h3>
+<p>The specific Text Output Page View provides a context menu with 
+  all the editing functions for creating and editing entries.</p>
+<div class="Container"><img src="images/ContextMenu.png" alt="" width="447" height="258" ></div>
+<ul>
+  <li> <a href="?14#ContextProperties" >Properties...</a></li>
+  <li><a href="?15#NewEntry" >NewEntry</a>
+    <ul>
+      <li><a href="?16#NewFixedTextEntry" >Fixed Text Entry...</a></li>
+      <li><a href="?17#NewVariableTextEntry" >Variable Text Entry...</a></li>
+      <li><a href="?18#NewChannelEntry" >Channel Entry...</a></li>
+      <li><a href="?19#NewGroupOfChannelEntries" >Group of Channel Entries...</a> </li>
+    </ul>
+  </li>
+  <li><a href="?20#DeleteEntry" >Delete Entry</a></li>
+  <li><a href="?21#AddFormFeed" >Add Form Feed</a></li>
+  <li><a href="?22#DeleteFormFeed" >Delete Form Feed</a></li>
+  <li><a href="?23#CutCopyPaste" >Cut</a></li>
+  <li><a href="?24#CutCopyPaste" >Copy</a></li>
+  <li><a href="?25#CutCopyPaste" >Paste</a></li>
+  <li><a href="?26#AddColumnRow" >Add</a>
+    <ul>
+      <li><a href="?27#AddColumnBefore" >Column before</a></li>
+      <li><a href="?28#AddColumnAfter" >Column after</a></li>
+      <li><a href="?29#AddRowBefore" >Row before</a></li>
+      <li><a href="?30#AddRowAfter" >Row after</a></li>
+    </ul>
+  </li>
+  <li><a href="?31#RemoveColumnRow" >Remove</a>
+    <ul>
+      <li><a href="?32#RemoveColumn" >Empty Columns</a></li>
+      <li><a href="?33#RemoveRow" >Rows</a> </li>
+    </ul>
+  </li>
+</ul>
+<h4 id="ContextProperties">Properties...</h4>
+<p>If the user right-clicks an existing entry and selects the <strong>Properties<em>...</em></strong> item, then the specific properties dialogue for the entry type is opened where the user can edit the settings (see <a href="?40#TextOutputPageEntryTypes">Text Output Page Entry Types</a>).</p>
+<h4 id="NewEntry">New Entry</h4>
+<p>This command allows the creation of a new entry type. This can 
+  be any of the four types listed below. A properties dialogue is opened which 
+  has initial settings that the user can modify.</p>
+<h4 id="NewFixedTextEntry">Fixed Text Entry...</h4>
+<p>This creates a new Fixed Text Entry at the specified position, 
+  see <a href="?35#FixedTextEntry" >Fixed Text Entry</a>.</p>
+<h4 id="NewVariableTextEntry">Variable Text Entry...</h4>
+<p>This creates a new Variable Text Entry at the specified position, 
+  see <a href="?36#VariableTextEntry" >Variable Text Entry</a>.</p>
+<h4 id="NewChannelEntry">Channel Entry...</h4>
+<p>This creates a new Channel Entry at the specified position, see <a href="?37#ChannelEntry" >Channel Entry</a>.</p>
+<h4 id="NewGroupOfChannelEntries">Group of Channel Entries...</h4>
+<p>This allows the creation of multiple channel values at the same time. The dialogue has most of the controls that are also in the <a href="?38#ChannelEntry" >Channel Entry</a> properties dialogue.</p>
+<div class="Container"> <img src="images/PropertiesChannelGroup.png" alt="Properties Channel Group" width="582" height="538"></div>
+<p>The Available Channels window shows the channels that have been defined for the configuration. The user may select and add them to 
+  the Selected Channels. The Selected Channels are the channels for which entries are created using the settings.</p>
+<p>All settings for the group are the same, except the position.</p>
+<p>The position of the entries is calculated automatically, either Vertical or Horizontal.</p>
+<p>For Vertical positioning, the entries are ordered one below the other until the page border is reached. Then the next column is created.</p>
+<p>For Horizontal positioning, the entries are placed in line one after the other until the page border is reached. Then the next line is 
+  used.</p>
+<h4 id="DeleteEntry">Delete Entry</h4>
+<p>This command deletes the selected entry.</p>
+<h4 id="AddFormFeed">Add Form Feed</h4>
+<p>This command creates a new Form Feed Entry, see <a href="?39#FormFeedEntry" >Form Feed Entry</a>.</p>
+<h4 id="DeleteFormFeed">Delete Form Feed</h4>
+<p>This deletes a Form Feed Entry.</p>
+<h4 id="CutCopyPaste">Cut, Copy, and Paste</h4>
+<p>The Cut command copies the selected entry into the clipboard of the Text Output Page Editor and deletes it from the page.</p>
+<p>The Copy command copies the selected entry into the clipboard of the text Output Page Editor without deleting it from the page.</p>
+<p>The Paste command creates a copy of the entry from the clipboard at the current position on the page. The entry remains in the clipboard until the editor is closed or another entry overwrites it.</p>
+<h4 id="AddColumnRow">Add</h4>
+<p>The Add command allows rows and columns to be added to the Text Output Page in the following manner:</p>
+<h4 id="AddColumnBefore">Column before</h4>
+<p>This command allows the user to add a new column to the left-hand side of the current selected cell. This command increases the overall size of   the page and entries to the right-hand side of the new column are moved accordingly.</p>
+<h4 id="AddColumnAfter">Column after</h4>
+<p>This command allows the user to add a new column to the right-hand side of the current selected cell. This command increases the overall size of 
+  the page and entries to the right-hand side of the new column are moved accordingly.</p>
+<h4 id="AddRowBefore">Row before</h4>
+<p>This command allows the user to add a new row above the selected cell. This command increases the overall size of the page. Entries below the 
+  new row are moved accordingly.</p>
+<h4 id="AddRowAfter">Row after</h4>
+<p>This command allows the user to add a new row below the selected cell. This command increases the overall size of the page. Entries below the new row are moved accordingly.</p>
+<h4 id="RemoveColumnRow">Remove</h4>
+<p>The Remove command allows rows and columns to be removed from Text Output Pages in the following manner:</p>
+<h4 id="RemoveColumn">Empty Columns</h4>
+<p>This command allows the user to delete a number of contiguous empty columns. This decreases the overall size of the page.</p>
+<h4 id="RemoveRow">Rows</h4>
+<p>This command allows the user to delete a number of rows. This decreases the overall size of the page. Entries within the deleted columns are 
+  deleted.</p>
+<h2 id="CreateTOP">Creating a Text Output Page</h2>
+<p>The Text Output Page Editor allows the user to predefine the elements of the printed page, by placing both text and specialised place holders onto the page. The specialised place holders are known as Text Output Page Entries.<br>
+  <br>
+  <strong>To create a text output page</strong>:</p>
+<ol>
+  <li>From the Configuration Administrator, select the desired configuration and click on the Text Output Page Editor icon.</li>
+  <li>In the left hand pane, right click and select <strong>Append Data Record</strong> from the context menu.</li>
+  <li>Enter a name and description of the new page.</li>
+  <li>If desired, adjust the Cols and Rows to reflect the desired page dimensions.</li>
+  <li>Add the desired entries to the Text Output Page by right-clicking on the right-hand pane and selecting <strong>Add Entry</strong> from the context menu.<br>
+    For a description of the types of entries that can be placed in a Text Output Page, see the <a href="?40#TextOutputPageEntryTypes">Text Output Page Entry Types</a>.</li>
+  <li>When the page is laid out as desired, select <strong>File Save</strong> to save the formatted page.</li>
+</ol>
+<h2 id="TextOutputPageEntryTypes">Text Output Page Entry Types</h2>
+<p>A Text Output Page may contain four different types of entries:</p>
+<ul>
+  <li><a href="?41#FixedTextEntry" >Fixed Text Entry</a></li>
+  <li><a href="?42#VariableTextEntry" >Variable Text Entry</a></li>
+  <li><a href="?43#ChannelEntry" >Channel Entry</a></li>
+  <li><a href="?44#FormFeedEntry" >Form Feed Entry</a></li>
+</ul>
+<h3 id="FixedTextEntry">Fixed Text Entry</h3>
+<p>A Fixed Text Entry allows the user to enter an arbitrary fixed string of characters onto a Text Output Page. These entries are not editable 
+  in a dialogue nor updated dynamically. Such text appears on the page as it will appear in the output.</p>
+<p>This entry type is defined by:</p>
+<ul>
+  <li>a column and row position in the page</li>
+  <li>simple text (i.e.: text which does not contain control characters)</li>
+</ul>
+<p><strong>To add a Fixed Text Entry field to a Text Output Page</strong>:</p>
+<ol>
+  <li>Click on the cell in the right hand grid which represents the location where the field is to be placed.</li>
+  <li>Right-click and select <strong>New Entry-&gt;Fixed Text Entry</strong> from the context menu that is displayed.<br>
+    The Fixed Text Entry Properties dialogue box is displayed.
+    <div class="Container"><img src="images/PropertiesFixedTextEntry.png" alt="Properties Fixed Text Entry" width="305" height="178"></div>
+  </li>
+  <li>Enter the desired text in the Fixed Text field.</li>
+  <li>If desired, the Column and Row position can be adjusted by entering a new number in the Column or Row fields.
+    <p class="Note">These fields default to the cell from which the dialogue box was opened.</p>
+  </li>
+</ol>
+<h3 id="VariableTextEntry">Variable Text Entry</h3>
+<p>A Variable Text Entry field represents a placeholder for test information. At run-time, the Text Output Page Server reads the test information 
+  from the Test Info or Customer Specific tables in the Test Results and Sensor Calibration Database and populates the field.</p>
+<p>The Variable Text Entry is defined by:</p>
+<ul>
+  <li>a column and row position on the page</li>
+  <li>a name corresponding to a field in the Test Results and Sensor Calibration Database</li>
+  <li>a format which can be either a string format or an enumeration format</li>
+  <li>a flag indicating whether the entry is editable in a dialogue </li>
+  <li>a flag indicating whether it is possible to enter variable text for enumeration formats in a dialogue</li>
+</ul>
+<p>The Variable Text Entry appears on the page view of the editor as a contiguous set of grey cells in one row (i.e.: <img alt="Variable Text Entry In Editor" src="images/VariableTextEntryInEditor.png">). It shows the name of the database field within &lt;&gt;-brackets. The length of the entry is calculated from the format settings.</p>
+<p><strong>To add a Variable Text Entry field to a Text Output Page</strong>:</p>
+<ol>
+  <li>Click on the cell in the right-hand grid which represents the location where the field is to be placed.</li>
+  <li>Right click and select <strong>New Entry-&gt;Variable Text Entry</strong> from the context menu that is displayed.<br>
+    The Variable Text Entry Properties dialogue box is displayed.
+    <div class="Container"><img src="images/PropertiesVariableTextEntries.png" alt="Properties Variable Text Entries" width="315" height="486"></div>
+  </li>
+  <li>If the desired field is contained in the Test Info table, select the field name from the drop-down list provided.<br>
+    If the desired field is contained in the Customer Specific table, click on the <strong>Customer Specific</strong> radio-button and manually enter the desired field name.</li>
+  <li>If desired, the Column and Row position can be adjusted by entering a new number in the Column or Row fields.
+    <p class="Note">These fields default to the cell from which the dialogue box was opened.</p>
+  </li>
+  <li>Format the string as desired by selecting the <strong>Edit Field</strong> or <strong>Enumeration Format</strong> radio button.<br>
+    For more information on the string formats, see <a href="../../StandardTools/FormatControl/FormatControl.htm">Format Controls</a>.</li>
+  <li>If desired, set the <strong>Read-Only</strong> flag to ensure that the entry cannot be modified by the user.<br>
+    If not set as Read-only, the value can be dynamically changed at run-time.</li>
+  <li>If desired, select the <strong>Enter New</strong> flag to specify that the entry allows the user to enter variable values for enumeration formats which do not already exist.<br>
+    If Enter New flag is not selected, then only the values listed in the enumeration are allowed.</li>
+</ol>
+<h3 id="ChannelEntry">Channel Entry</h3>
+<p>A Channel Entry is a placeholder for values which can be read from the Current Value Table of the Real-Time Engine (RTE) or from the Test 
+  Results and Sensor Calibration Database (TRSCDB). A channel can represent a physical measured value at the device-under-test or a calculated value.</p>
+<p>The Text Output Page Server populates a Channel Entry with the value read from the specified data source, either the RTE or the TRSCDB, using 
+  the specified format.</p>
+<p>The Channel Entry is defined by:</p>
+<ul>
+  <li> a column and row position on the page</li>
+  <li>a name of the channel which is to be read</li>
+  <li>a value that specifies the space to be reserved for the channel name</li>
+  <li>a value for the space to be reserved for the alternate channel name</li>
+  <li>a value for the space to be reserved for the engineering unit</li>
+  <li>a value for the space to be reserved for the channel description</li>
+  <li>a format for the channel value which may be one of the following:
+    <ul>
+      <li>a floating point number format either scientific or fixed point</li>
+      <li>a boolean format which displays two different strings for the values TRUE and FALSE</li>
+      <li>an integer number format which can be either a number or an enumeration as well as a format for date and time values</li>
+    </ul>
+  </li>
+  <li>a flag which indicates whether the entry is displayed in a dialogue output</li>
+  <li>a flag which indicates whether the entry is read-only</li>
+  <li>optionally minimum and maximum values which can be entered by the user for float and integer values in a dialogue output if the entry is editable </li>
+</ul>
+<p>A channel entry is formatted in the following way:</p>
+<blockquote>
+  <pre>[Channel Name] + [Alternate Name] + Channel Value + [Engineering Unit] + [Channel description]
+</pre>
+</blockquote>
+<p>where a parameter (specifier) in [] denotes that the parameter is optional.</p>
+<p>For example: </p>
+<div class="Container"><img alt="Channel Entry In Editor" src="images/ChannelEntryInEditor.png"></div>
+<h4>To add a Channel Entry field to a Text Output Page:</h4>
+<ol>
+  <li>Click on the cell in the right hand grid which represents the location where the field is to be placed.</li>
+  <li>Right-click and select <strong>New Entry-&gt;Channel Entry</strong> from the context menu that is displayed.<br>
+    The Channel Entry Properties dialogue box is displayed.
+    <div class="Container"><img src="images/PropertiesChannelEntry.png" alt="Properties Channel Entry" width="582" height="555"></div>
+  </li>
+  <li>Select the desired Channel Name from the list of channel names displayed.</li>
+  <li>If desired, the Column and Row position can be adjusted by entering a new number in the Column or Row fields.
+    <p class="Note">These fields default to the cell from which the dialogue box was opened.</p>
+  </li>
+  <li>Enter the desired length of the string for output of the Channel Name, 
+    Alternate Name, Engineering Unit, and Channel Description.<br>
+    A value of 0 (zero) suppresses the display of the specific field.</li>
+  <li> Select the desired display format. <br>
+    It is possible to define seven kinds of formats for channel entries, but not 
+    all of them can be applied to a single channel. The format that is used, depends 
+    on the datatype of the channel which was defined in the <a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm">Channel 
+      Editor</a>. For more information on the formats, see <a href="../../StandardTools/FormatControl/FormatControl.htm">Format 
+        Controls</a>.</li>
+  <li> If desired, select the <strong>Display Value in Dialogue</strong> flag to 
+    specify that the entry is to be displayed in a dialogue.</li>
+  <li> If desired, select the <strong>Read-only</strong> flag to ensure that the value cannot 
+    be edited.</li>
+  <li> Set the desired <strong>Input Range</strong> to specify the range of valid values. <br>
+    The entry must be within the Input Range to be editable.<br>
+  </li>
+</ol>
+<h3 id="FormFeedEntry">Form Feed Entry</h3>
+<p>A Form Feed Entry allows the user to control the printout of a Text Output Page definition. After a form feed, the printer starts a new 
+  page. In the Text Output Page Editor, a Form Feed Entry is displayed as a red line which separates the pages to be printed.</p>
+<p>The Form Feed Entry is defined by:</p>
+<ul>
+  <li> a row position</li>
+</ul>
+<h4>To add a Form Feed Entry field to a Text Output Page:</h4>
+<ol>
+  <li>Click on the row in the right-hand grid which represents the location where the Form Feed is to be placed.
+    <p class="Note">The column position has no influence on the behavior or appearance of a Form Feed Entry.</p>
+  </li>
+  <li>Right-click and select <strong>Add Form Feed</strong> from the context menu that is displayed.</li>
+</ol>
+<h2 id="TOPServer">Text Output Page Server</h2>
+<p>The Text Output Page Server is a COM server.</p>
+<br>
+	<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

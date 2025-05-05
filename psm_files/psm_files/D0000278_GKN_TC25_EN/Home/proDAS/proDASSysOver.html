@@ -1,0 +1,247 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Your proDAS - System Overview</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left><h1>Your proDAS<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<h2>Overview</h2>
+<p>The proDAS documentation is presented in a generic manner to encompass all aspects of the software. Sections within the proDAS documentation that are marked as <strong>*Option</strong> are not part of a standard installation.</p>
+<p class="Note">proDAS is configured based upon customer requirements. For this reason modules located in the proDAS Subsystem Configuration and Custom Applications sections of the proDAS Integrated Help are classified as optional.</p>
+<h2>Your proDAS System</h2>
+<p>The following  systems are available for your facility:</p>
+<ul>
+  <li><a href="proDASHwSystem.html">Hardware Systems</a></li>
+  <li><a href="proDASHwSubSys.html">Hardware Subsystems</a></li>
+  <li><a href="proDASCfgTools.html">Configuration Tools</a></li>
+  <li><a href="proDASCustomApps.html">Custom Applications</a></li>
+  <li><a href="proDASInstPreT.html">Pre Test Functions</a></li>
+  <li><a href="proDASInstPostT.html">Post Test Functions</a></li>
+</ul>
+<p class="Note">The default <a href="#TestInfoPage">Test Information Page</a> is displayed if an engine-specific page is unavailable.</p>
+<h2 id="TestInfoPage">Test Information Page</h2>
+<p align="left">The default Test Information Page is displayed by the <a href="../../CompCfg/MgmtPC/MgmtPCOverview.html">Management GUI Computer</a> if an engine-specific page is unavailable, or if the engine-specific Test Information Page returns an error. The page displays any available data for the current test and contains fields for entering specific information such as:</p>
+<ul>
+  <li>engine serial number</li>
+  <li>build number</li>
+  <li>engine type</li>
+  <li>engine standard</li>
+  <li>test cell</li>
+  <li>configuration</li>
+  <li>test name</li>
+  <li>description</li>
+</ul>
+<p align="left"> Page functions include:</p>
+<ul>
+  <li>updating test information that is contained in the Test Header table of the <a href="../../proDASHelp/StandardTools/TRSCDB/TRSCDB.htm">Test Results and Sensor Calibration Database (TRSCDB)</a></li>
+  <li>resetting all fields to the original data which existed for the current test</li>
+  <li>reconfiguring the Real-Time Engine (RTE)</li>
+</ul>
+<p class="Note">The default Test Information page cannot set channels in the Current Value Table (CVT) nor update the Customer Specific Table. </p>
+<p>The Customer Test Information Pages are displayed below and can set channels in the CVT as well as update the Customer Specific Table.</p>
+<h5>RM12 Test Information Page</h5>
+	<div class="Container"><img src="images/RM12.PNG" width="700" height="516" alt=""/></div>
+<p class="Note">Fields that are marked with an asterisk (*) must be populated with data.</p>
+<table class="Table-Grey">
+  <tr>
+    <th class="row-Component">Field or Button</th>
+    <th class="row-CompDescription">Description</th>
+  </tr>
+  <tr>
+    <td>Test Cell Name</td>
+    <td>Displays the test cell name.</td>
+  </tr>
+  <tr>
+    <td>Engine Type</td>
+    <td>Displays the engine type.</td>
+  </tr>
+  <tr>
+    <td>Test Name</td>
+    <td>Displays the test name.</td>
+  </tr>
+  <tr>
+    <td>* Test Part Number</td>
+    <td>Displays the test part number.</td>
+  </tr>
+  <tr>
+    <td>* Test Number</td>
+    <td>Displays the test number.</td>
+  </tr>
+  <tr>
+    <td>* Engine Build Number</td>
+    <td>Displays the engine build number.</td>
+  </tr>
+  <tr>
+    <td>Engine Number</td>
+    <td>Displays the engine number.</td>
+  </tr>
+  <tr>
+    <td>Test Cell Number</td>
+    <td>Displays the test cell number.</td>
+  </tr>
+  <tr>
+    <td>* Project Number</td>
+    <td>Displays the project number.</td>
+  </tr>
+  <tr>
+    <td>* MFC Number</td>
+    <td>Displays the MFC number.</td>
+  </tr>
+  <tr>
+    <td>* ABC Number</td>
+    <td>Displays the ABC number.</td>
+  </tr>
+  <tr>
+    <td>* FADEC Edition Number</td>
+    <td>Displays the FADEC edition number.</td>
+  </tr>
+  <tr>
+    <td>* FADEC Number</td>
+    <td>Displays the FADEC number.</td>
+  </tr>
+  <tr>
+    <td>* HPT Nozzle Area</td>
+    <td>Displays the HPT Nozzle area in in&sup2;.</td>
+  </tr>
+  <tr>
+    <td>* LPT Nozzle Area</td>
+    <td>Displays the LPT Nozzle area in in&sup2;.</td>
+  </tr>
+  <tr>
+    <td>* Fuel Density</td>
+    <td>Displays the fuel density in kg/m&sup3;.</td>
+  </tr>
+  <tr>
+    <td>* LHV</td>
+    <td>Displays the LHV in kj/kg.</td>
+  </tr>
+  <tr>
+    <td>* ATS</td>
+    <td>Displays the selected ATS.</td>
+  </tr>
+  <tr>
+    <td>* PTO</td>
+    <td>Displays the selected PTO.</td>
+  </tr>
+  <tr>
+    <td>* Engine Adapter</td>
+    <td>Displays the starter type.</td>
+  </tr>
+  <tr>
+    <td>Operator Name</td>
+    <td>Displays the operator's name.</td>
+  </tr>
+  <tr>
+    <td>Engineer Name</td>
+    <td>Displays the engineer's name.</td>
+  </tr>
+  <tr>
+    <td>Test Start Date</td>
+    <td>Displays the test start date.</td>
+  </tr>
+  <tr>
+    <td>Test End Date</td>
+    <td>Displays the test date.</td>
+  </tr>
+  <tr>
+    <td>Test Completed</td>
+    <td>Displays a check to indicate the test has been completed.</td>
+  </tr>
+  <tr>
+    <td>Apply</td>
+    <td>Enters data from the fields into the Test Results and Sensor Calibration Database (TRSCDB).</td>
+  </tr>
+  <tr>
+    <td>Reset</td>
+    <td>Resets all fields.</td>
+  </tr>
+</table>
+<h5>ATP Calibration Test Information Page</h5>
+<div class="Container"><img src="images/ATP_Calibration.PNG" width="700" height="515" alt=""/></div>
+<p class="Note">Fields that are marked with an asterisk (*) must be populated with data.</p>
+<table class="Table-Grey">
+  <tr>
+    <th class="row-Component">Field or Button</th>
+    <th class="row-CompDescription">Description</th>
+  </tr>
+  <tr>
+    <td>Test Cell Name</td>
+    <td>Displays the Test Cell name.</td>
+  </tr>
+  <tr>
+    <td>Engine Type</td>
+    <td>Displays the engine type.</td>
+  </tr>
+  <tr>
+    <td>Test Name</td>
+    <td>Displays the test name.</td>
+  </tr>
+  <tr>
+    <td>* Test Part Number</td>
+    <td>Displays the test part number.</td>
+  </tr>
+  <tr>
+    <td>* Test Number</td>
+    <td>Displays the test number.</td>
+  </tr>
+  <tr>
+    <td>Engine No.</td>
+    <td>Displays the engine number.</td>
+  </tr>
+  <tr>
+    <td>Test Cell Number</td>
+    <td>Displays the test cell number.</td>
+  </tr>
+  <tr>
+    <td>* Project Number</td>
+    <td>Displays the selected project number.</td>
+  </tr>
+  <tr>
+    <td>Operator Name</td>
+    <td>Displays the operator's name.</td>
+  </tr>
+  <tr>
+    <td>Engineer Name</td>
+    <td>Displays the engineer's name.</td>
+  </tr>
+  <tr>
+    <td>Test Start Date</td>
+    <td>Displays the test start date.</td>
+  </tr>
+  <tr>
+    <td>Test End Date</td>
+    <td>Displays the test date.</td>
+  </tr>
+  <tr>
+    <td>Test Completed</td>
+    <td>Displays a check to indicate the test has been completed.</td>
+  </tr>
+  <tr>
+    <td>Apply</td>
+    <td>Enters data from the fields into the Test Results and Sensor Calibration Database (TRSCDB).</td>
+  </tr>
+  <tr>
+    <td>Reset</td>
+    <td>Resets all fields.</td>
+  </tr>
+</table>
+<p><br>
+</p>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

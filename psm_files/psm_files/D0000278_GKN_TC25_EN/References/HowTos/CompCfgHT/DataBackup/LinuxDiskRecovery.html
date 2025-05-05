@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>How To &ndash; Restore an Entire Disk Partition</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left><h1>How To &ndash; Restore an Entire Disk Partition That Does Not Contain the Operating System<a href="#" onClick="window.print(); return false;"><img src="../../../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<p>This <strong>How To</strong> provides the steps required to restore an entire disk partition on the Linux Host Computer.</p>
+<h2>Restore an Entire Disk Partition That Does Not Contain the Operating System</h2>
+<p>In the event that the user is able to start up the Linux Host Computer but the proDAS data contained on the non-system disk has been lost or corrupted, it is possible to restore an entire disk partition.</p>
+<ol>
+  <li>Log in as the <strong>root</strong> user on the Linux Host Computer.</li>
+  <li>Start <strong>Acronis True Image Echo Server for Linux</strong> by one of the following methods:
+    <ul>
+      <li>click the  Acronis icon on the Linux Host Computer </li>
+      <li> from the command prompt, type <strong>trueimage<br></strong></li>
+    </ul>
+  </li>
+  <p>The Acronis GUI starts.</p>
+  <li>Click the <strong>Recovery</strong> task from the Acronis main window.<br>
+  This launches the <em>Acronis Restore Data Wizard</em>.</li>
+  <li>Select the <strong>Sunday</strong> full backup archive file from where the data files need to be restored.<br>
+    The <em>Acronis Restore Data Wizard</em> permits full backup, or any of the associated incremental backup archives from which to restore the data.</li>
+  <li>Select  <strong>Restore Disk</strong> <strong>or</strong> <strong>Partitions</strong>.</li>
+  <li>Select the <strong>partition</strong> to be restored.</li>
+  <li>Select a <strong>target partition</strong> for the restore.</li>
+  <li>Select <strong>Logical</strong> for the restored partition type.</li>
+  <li>Select <strong>Linux Ext 3</strong> as the restored partition file  system.</li>
+  <li>Specify the <strong>size</strong> and <strong>location</strong> of the restored partition.</li>
+  <li>Select the option <strong>No, I do not</strong> to restore the selected partition only.</li>
+  <li>Choose the restore options to either <strong>Use default options</strong> or <strong>Set the options manually</strong>.</li>
+  <li>Click <strong>Proceed</strong > to start the restore job.<br>
+  The data is restored.</li>
+</ol>
+<p>For more information see, the <a href="../../../../CompCfg/HostPC/HostPCVDocs.html">Acronis  True Image Echo Server for Linux User Guide</a>.</p>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

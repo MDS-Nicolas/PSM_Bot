@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>How To &ndash; Recover Data on a Windows Computer</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left><h1>How To &ndash; Recover Data on a Windows based Computer by Mounting an Image<a href="#" onClick="window.print(); return false;"><img src="../../../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<p>This <strong>How To</strong> provides the steps required to perform  data recovery on a Windows based computer by mounting an image of the hard drive and copying the required files to the local hard drive.</p>
+<h2>To Recover Data by Mounting an Image</h2>
+<ol>
+  <li>Log into the <a href="../../../../CompCfg/MgmtPC/MgmtPCOverview.html">Management GUI Computer</a> as <strong>Administrator</strong>. See <a href="../../../../CompCfg/DataBR/DataBRVDocs.html">Starting Acronis Backup and Recovery Advanced Workstation with Universal Restore from  Windows</a>.</li>
+  <li>Using Windows Explorer, browse the available Acronis Backup images located at <strong>\\Network\Computer1_NAS</strong></li>
+  <li>Select a backup image and right click on the selection.</li>
+  <li>Select <strong>Mount</strong> from the context menu, as shown in the image below.<br>
+    <br>
+    <div class="Container"><img border="0" width="563" height="414" src="images/WindowsDataRMnt.png" alt="DataRecovery"></div>
+  <br>The Access Credentials window is displayed.</li> 
+  <li>In the <strong>Access Credentials</strong> window, login as <strong>engineer</strong>, enter a password for the engineer's account and select <strong>OK</strong>.<br>
+    <br>
+  <div class="Container"><img border="0" width="304" height="251" src="images/WindowsDataRACred.png" alt="AccessCredentialsBackup"></div> </li>
+ <br>The Acronis Backup &amp; Recovery application opens and the <strong>Mount image</strong> panel is displayed.<br>
+ <li>In the <strong>Mount image</strong> panel, select <strong>Source backup</strong>.<br>
+   <br>
+   <div class="Container"><img border="0" width="700" height="394" src="images/WindowsDataRMntImage.png" alt="http://filesvr/GKNWEB/ComputerConfig/DataBackup/images/MountImage.png"></div></li>
+  <br>The Backup Selection window is displayed.<br>
+  <li>In the <strong>Backup selection</strong> window, select a backup.</li>
+  <p class="Note">If the file to be recovered was deleted between Saturday and Sunday, select the Saturday backup. Otherwise, select the Sunday full backup to obtain the list of available files.</p>
+  <div class="Container"><img border="0" width="654" height="518" src="images/WindowsDataRBUSel.png" alt="BackupSect"></div>
+  <br>
+  <li>Click <strong>OK</strong> to close the Backup Selection window and return to the <strong>Mount image</strong> panel.<br>
+    <br>
+  <div class="Container"><img border="0" width="700" height="509" src="images/WindowsDataRBUSel2.png" alt="ChangeBackup"></div>
+  <br>
+  </li>
+  <li>In the <strong>Settings</strong> section of the <strong>Mount image</strong> panel, select <strong>Change</strong>.<br>
+    The <strong>Volume Selection</strong> window is displayed.<br>
+    <br>
+    <div class="Container"><img border="0" width="654" height="518" src="images/WindowsDataRMntVol.png" alt="VolumeSelect"></div>
+    <br>
+  </li>
+  <li>Select the checkbox of the drive partition (in this example, NTFS(C:)).</li>
+  <li>In the Mount parameters panel, use the drop-down menu to assign a letter to the new virtual drive.</li>
+  <li>Click&nbsp;<strong>OK</strong>&nbsp;to  close the Volume Selection window and to return to the <strong>Mount image</strong> panel.</li>
+  <li>Click <strong>OK</strong>.<br>
+    The <strong>Manage mounted images</strong> panel is displayed.<br>
+    <br>
+    <img border="0" width="700" height="374" src="images/WindowsDataRMngMnt.png" alt="MngMtdImage"><br>
+    <br>
+  </li>
+  <li>In the <strong>Manage mounted images</strong> panel, select&nbsp;<strong>Explore</strong>.<br>
+    The virtual drive containing the mounted files is displayed.<br>
+    <br>
+    <div class="Container"><img border="0" width="700" height="398" src="images/WindowsDataRMntExp.png" alt="LocalDrE"></div><br>
+    <br>
+  </li>
+  <li>Select and copy the desired files from the virtual drive (in this example, drive E:) to the desired target folder.</li>
+  <li>Unmount the virtual drive <strong>E:</strong> by selecting the virtual drive letter and clicking <strong>Unmount</strong> in the <strong>Manage mounted images</strong> panel.</li>
+</ol>
+<p class="Note">To restore a file from an incremental backup, the referenced full backup is also required.</p>
+<p>For more information see, the <a href="../../../../CompCfg/DataBR/DataBRVDocs.html">Acronis Backup and Recovery Advanced Workstation with Universal Restore User Guide</a>.</p>
+
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

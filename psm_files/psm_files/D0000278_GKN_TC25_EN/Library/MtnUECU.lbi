@@ -1,0 +1,70 @@
+﻿<table class="Table-Grey">
+  <tr>
+    <th class="row-Topic" rowspan="2">Topic</th>
+    <th colspan="2">Maintenance</th>
+  </tr>
+  <tr>
+    <th class="row-AsReq">As Required</th>
+    <th class="row-Annual">Annual</th>
+  </tr>
+  <tr>
+    <td><a href="../References/HowTos/ControlMon/UECU/CheckThrottleWiring.html">Check the Throttle Quadrant Wiring</a></td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><a href="../References/HowTos/ControlMon/UECU/SetupLeverPot.html">Set Up the Lever Potentiometer</a></td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><a href="../References/HowTos/ControlMon/UECU/AdjustOverride.html">Adjust the Actuator Override Stop Position</a></td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><a href="../References/HowTos/ControlMon/UECU/InspectBrushes.html">Inspect the Brushes on the Throttle Lever</a></td>
+    <td>&nbsp;</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+  <tr>
+    <td><a href="../References/HowTos/ControlMon/UECU/CleanThrottleQuad.html">Clean the Throttle Quadrant</a></td>
+    <td>&nbsp;</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+  <tr>
+    <td><a href="../References/HowTos/ControlMon/UECU/CalibrateLever.html">Calibrate the Throttle Lever</a></td>
+    <td>&nbsp;</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+  <tr>
+    <td><a href="../References/HowTos/ControlMon/UECU/ThrottleControllerWiring.html">Check the Wiring in the Throttle Controller Enclosure Assembly</a></td>
+    <td>&nbsp;</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+  <tr>
+    <td><a href="../References/HowTos/ControlMon/UECU/CalibrateActuator.html">Calibrate the Actuator</a></td>
+    <td>&nbsp;</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+  <tr>
+    <td><a href="../References/HowTos/ControlMon/UECU/VerifyOverride.html">Verify the Actuator Override System Operation</a></td>
+    <td>&nbsp;</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+  <tr>
+    <td><a href="../References/HowTos/ControlMon/UECU/AirMotor.html">Lubricate the Air Motor</a></td>
+    <td>&nbsp;</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+  <tr>
+    <td><a href="../References/HowTos/ControlMon/UECU/SpurBacklashGear.html">Check the Actuator Spur and Anti-Backlash Gears</a></td>
+    <td>&nbsp;</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+  <tr>
+    <td><a href="../References/HowTos/ControlMon/UECU/ActuatorWiring.html">Check the Actuator Enclosure Assembly (Screws,Wires, Fasteners)</a></td>
+    <td>&nbsp;</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+</table>

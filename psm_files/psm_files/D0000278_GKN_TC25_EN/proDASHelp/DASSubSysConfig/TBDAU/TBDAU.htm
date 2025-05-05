@@ -1,0 +1,330 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Test Bed Data Acquistion Unit (TBDAU) Subsystem</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="TBDAU">Test Bed Data Acquisition Unit (TBDAU) Subsystem (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+
+<h2 id="Overview">Overview</h2>
+<p>The Test Bed Data Acquisition Unit (TBDAU) Subsystem is an interface between the Real-Time Engine (RTE) and the TBDAU hardware. The TBDAU Subsystem  allows the RTE to communicate, through an RS232 link, with the TBDAU hardware and to obtain data from the TBDAU hardware. The TBDAU can handle up to 203 channels at a scan rate of 2 Hertz.</p>
+<p>The TBDAU Subsystem is configured by the RTE, along with all the other subsystems, as a request from the Management Interface GUI. For legacy purposes, the configuration request can also be specified on the command line of the RTE. The TBDAU subsystem is functional only if both the TBDAU hardware and the RTE are running.</p>
+<p>The RTE retrieves the TBDAU Subsystem configuration data from the Configuration Server via the Configuration Retriever. The TBDAU Subsystem then sends the setup trigger to the TBDAU. A list of channel indexes is received and compared to the channel indexes for the configuration data. If a matching index for a channel is not found, the channel is flagged as &quot;bad value&quot; and the channel name and index are logged to the Unified Event Log (UEL). The TBDAU subsystem records, with trace messages, any indexes that do not have a corresponding index in the configuration file. If all of the channels fail to configure, the TBDAU subsystem will fail.</p>
+<p>The data received by the TBDAU Subsystem is interpreted and written to the Current Value Table (CVT) where it is available for retrieval and display (e.g.: on the Facility and Primary screens of the RTD Computer).</p>
+<p>When the data is retrieved, the TBDAU Subsystem applies the slope and offset to the raw value for each channel. If, after applying the slope and offset, the corrected engineering unit (EU) value for a channel is outside the EU minimum/maximum range for that channel, the channel quality is set to BAD and the channel value is set to BAD_VALUE (i.e.: BAD_VALUE is -99999.000).</p>
+<h2 id="ConfigTBDAUChannel">Configuring a TBDAU Channel</h2>
+<p>To configure a Test Bed Data Acquisition Channel the user has to perform to following actions:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</li>
+  <li>Select the name of the Test Bed Data Acquisition Subsystem from the list of available subsystems.
+    <div class="Container"><img src="images/SelectSubsystemName.PNG" alt="SelectSubsystemName" width="387" height="317"></div>
+  </li>
+  <br>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a><a href="../ConfigEditors/ConfigEditors.htm#GenCol"></a>.</li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.</li>
+  <li>Set the <strong>Index</strong> column.</li>
+  <li>If the channel data type is a Boolean, set the <strong>Bit</strong> column.</li>
+  <li>And if the channel data type is a Float, set the <strong>Slope</strong>, <strong>Offset</strong>, <strong>Min</strong> and <strong>Max</strong> columns.
+    <div class="Container"><img src="images/ChannelEditor.png" alt="ChannelEditor" width="700" height="424"></div>
+    <br>
+    The minimum and maximum range values are used to set the quality flag on a TBDAU channel, i.e. if, after applying the slope and offset, the Engineering Units corrected value is below the minimum range value or above the maximum range value, the channel quality is set to <em>BAD</em>. </li>
+</ol>
+<h2 id="ConfigFileStructure">Configuration File Structure</h2>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu"> Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import a <strong>TBDAU</strong> channel, see <a href="#XMLFileStructure"> XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import a <strong>TBDAU</strong> channel, see <a href="?11#TabDelimitFileStructure"> Tab-Delimited File Structure</a>.</p>
+<h3 id="XMLFileStructure">XML File Structure</h3>
+<h4 id="ChannelsXML">Channels</h4>
+<p>The channels are stored in files Channels.xml in the configuration directories.</p>
+<p>A TBDAU Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor - Generic Channel Parameters - XML File Structure</a>, and the specific attributes <strong>Index</strong>, <strong>BitPosition</strong>, <strong>Slope</strong>, <strong>Offset</strong>, <strong>Min</strong> and <strong>Max</strong>. These attributes are explained in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Index</td>
+    <td>Index</td>
+    <td>INDEX</td>
+    <td>The index of the channel in the master list.</td>
+    <td>Integer</td>
+    <td>An Integer between 1 and 203</td>
+  </tr>
+  <tr>
+    <td>Bit Position (Boolean)</td>
+    <td>BitPosition</td>
+    <td>BIT</td>
+    <td>The bit position of the data in a 16 bit word.</td>
+    <td>Integer</td>
+    <td>An Integer between 1 and 16</td>
+  </tr>
+  <tr>
+    <td>Slope (Float)</td>
+    <td>Slope</td>
+    <td>SLOPE</td>
+    <td>The slope used to convert the input value to Engineering Units.</td>
+    <td>Float</td>
+    <td>A Float</td>
+  </tr>
+  <tr>
+    <td>Offset (Float)</td>
+    <td>Offset</td>
+    <td>OFFSET</td>
+    <td>The offset used to convert the input value to Engineering Units</td>
+    <td>Float</td>
+    <td>A Float</td>
+  </tr>
+  <tr>
+    <td>Min (Float)</td>
+    <td>Min</td>
+    <td>MIN_RANGE</td>
+    <td>The minimum Engineering Units converted value that is accepted as a valid value.</td>
+    <td>Float</td>
+    <td>A Float</td>
+  </tr>
+  <tr>
+    <td>Max (Float)</td>
+    <td>Max</td>
+    <td>MAX_RANGE</td>
+    <td>The maximum Engineering Units converted value that is accepted as a valid value.</td>
+    <td>Float</td>
+    <td>A Float</td>
+  </tr>
+</table>
+<p> The structure of a Test Bed Data Acquisition Channel complies with the following example:</p>
+<blockquote><code>&lt;Channels LastModificationDate=&quot;<strong>2015-06-11 11:08:47</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;<br>
+  &lt;Channel Name=&quot;TBdau1&quot; <br>
+  Description=&quot;&quot; <br>
+  Enabled=&quot;true&quot; <br>
+  LastModificationDate=&quot;2015-06-11 11:08:47&quot; <br>
+  SubsystemName=&quot;ZZTBDAU&quot; <br>
+  SubsystemType=&quot;TBDAU&quot; <br>
+  AlternateName=&quot;&quot; <br>
+  DataType=&quot;Float&quot; <br>
+  InitialValue=&quot;-999999&quot; <br>
+  Format=&quot;4.2f&quot; <br>
+  UpdateRate=&quot;1&quot; <br>
+  QualityCeiling=&quot;GOOD&quot; <br>
+  Critical=&quot;false&quot; <br>
+  EngineeringUnit=&quot;-&quot; <br>
+  DisplayMin=&quot;0&quot; <br>
+  DisplayMax=&quot;100&quot; <br>
+  DeadBand=&quot;0&quot; <br>
+  Output=&quot;false&quot; <br>
+  ReferenceChannel=&quot;&quot; <br>
+  Group=&quot;&quot; SignalId=&quot;&quot; <br>
+  CalSensor=&quot;&quot; <br>
+  CalGroup=&quot;&quot; <br>
+  FixedSensor=&quot;&quot; <br>
+  CustomerSensor=&quot;&quot; <br>
+  FullsetStability=&quot;false&quot; <br>
+  ContinuousLog=&quot;true&quot; <br>
+  Index=&quot;1&quot; <br>
+  BitPosition=&quot;0&quot; <br>
+  Slope=&quot;1&quot; <br>
+  Offset=&quot;2&quot; <br>
+  Min=&quot;0&quot; <br>
+  Max=&quot;5&quot;/&gt;<br>
+  &lt;/Channels&gt;<br>
+</code></blockquote>
+<h4 id="SubsystemsXML">Subsystems</h4>
+<p>The subsystems are stored in files Subsystems.xml in the configuration directories.</p>
+<p>A TBDAU Subsystem contains generic information, described in <a href="../SubsystemEditor/SubsystemEditor.htm#XMLFileStructure"> Subsystem Editor - Generic Subsystem Parameters - XML File Structure</a>, and the specific attribute <strong>MaxChannels</strong>.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>MaxChannels</td>
+    <td>MaxChannels</td>
+    <td>MAX_CHANNEL_NO</td>
+    <td>Displays the maximum number of channels allowed for the interface</td>
+    <td>Integer</td>
+    <td>An integer between 1 and 203</td>
+  </tr>
+</table>
+<p>The structure of a TBDAU Subsystem complies with the following example:</p>
+<blockquote>
+  <pre>&lt;Subsystems   LastModificationDate=&quot;<strong>2008-09-04   14:13:03</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Subsystem Name=&quot;ZZTBDAU&quot;
+Description=&quot;&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2008-04-28 11:23:34&quot;
+Id=&quot;0&quot;
+Type=&quot;TBDAU&quot;
+CreationDate=&quot;2008-04-28 11:22:58&quot;
+MaxChannels=&quot;203&quot; /&gt;
+&lt;/Subsystems&gt;</pre>
+</blockquote>
+<h3 id="TabDelimitFileStructure">Tab-Delimited File Structure</h3>
+<p>The Test Bed Data Acquisition Unit (TBDAU) subsystem channel definition includes all <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic channel definition columns</a> and the specific TBDAU input parameters defined in the tab-delimited configuration file.</p>
+<p>The rules, syntax and guidelines for creating TBDAU channels are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>INDEX</td>
+    <td>Specifies the index of the channel in the Master List</td>
+    <td>Number 1 to 203</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>BIT</td>
+    <td>Required for DISCRETE channels, this field specifies the bit position of the data in the 16-bit word at the specified INDEX.<br>
+      <br>
+      Ignored for FLOAT type channels.</td>
+    <td>Number 1 to 16</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>SLOPE</td>
+    <td>Specifies the slope used to convert the input value to Engineering Units. <br>
+      <br>
+      Only applies to FLOAT channels.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>OFFSET</td>
+    <td>Specifies the linear offset used to convert the input value to Engineering Units.<br>
+      <br>
+      Only applies to FLOAT channels.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>MIN_RANGE</td>
+    <td>Specifies the minimum EU converted value that will be accepted as a valid value. If, after applying the slope and offset, the EU corrected value is below the Min Range value, the channel quality will be set to BAD. <br>
+      <br>
+      Only applies to FLOAT channels.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>MAX_RANGE</td>
+    <td>Specifies the maximum EU converted value that will be accepted as a valid value. If, after applying the slope and offset, the EU corrected value is above the Max Range value, the channel quality will be set to BAD. <br>
+      <br>
+      Only applies to FLOAT channels.</td>
+    <td>Number</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single line of the spread sheet.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is always optional.</p></td>
+  </tr>
+</table>
+<h2 id="SubSysEditorTBDAU">Subsystem Editor for TBDAU</h2>
+<p>To edit the TBDAU Subsystem, the Subsystem Editor must be selected from within the Configuration Administrator.</p>
+<p>The tool bar in the Configuration Administrator allows the various configuration editors available for proDAS to be selected.</p>
+<p>The Subsystem Editor allows new subsystems to be added to the current configuration.</p>
+<div class="Container"><img src="images/SubsystemEditor.png" alt="SubsystemEditor" width="700" height="423"></div>
+<br>
+<p><strong>To add a new subsystem:</strong></p>
+<ol>
+  <li>From the Edit menu, select <strong>Append Data Record</strong> or, in the left pane of the splitter window, click the right mouse button and select <strong>Append Data Record</strong> from the context sensitive menu.</li>
+  <li>Select <strong>TBDAU</strong> in the dialogue box to select the type of subsystem.<br>
+    A new line in the Subsystem Editor is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to <strong>TBDAU</strong>. The user must then assign a name and description to the subsystem.</li>
+</ol>
+<h3 id="SetMaxNmbrChan">Setting the Maximum Number of Channels for the TBDAU</h3>
+<p>The maximum number of channels available for the <a href="?6#SubsystemsXML">Subsystem</a> can be edited in the right pane of the splitter window of the Subsystem Editor screen.</p>
+<p>Since this input is defined using a textbox dialogue, the EditSpecific menu item is greyed out and the text box is edited directly.</p>
+<h2 id="RTEInitialiseFile">RTE Initialisation File</h2>
+<p>The TBDAU subsystem is configured by the RTE, along with all the other subsystems, as a request from the Management Interface GUI. For legacy purposes, the configuration request can also be specified in the command line of the RTE.</p>
+<p>The .config file must, as a minimum, include the following information:</p>
+<ul>
+  <li>device (serial port #)</li>
+  <li>baudrate (default: 9600)</li>
+  <li>databit (default: 8)</li>
+  <li>stop bit (default: 1)</li>
+  <li>parity (default: even)</li>
+  <li>timeout (default: 1000 ms)</li>
+</ul>
+<p>A typical RTE initialisation file would include the following TBDAU Subsystem information:</p>
+<table width="95%" border="0" cellspacing="1" cellpadding="2">
+  <tr>
+    <td colspan="2">#--------------------------------------------------------------------------<br>
+      # TBDAU Subsystem<br>
+      #--------------------------------------------------------------------------</td>
+  </tr>
+  <tr>
+    <td width="19%">SS TBDAU</td>
+    <td width="81%">FALSE</td>
+  </tr>
+  <tr>
+    <td width="19%">CI tbdau_dev_name</td>
+    <td width="81%">/dev/ttydn004</td>
+  </tr>
+  <tr>
+    <td width="19%">CI tbdau_baud_rate</td>
+    <td width="81%">9600</td>
+  </tr>
+  <tr>
+    <td width="19%">CI tbdau_stop_bits</td>
+    <td width="81%">1</td>
+  </tr>
+  <tr>
+    <td width="19%">CI tbdau_parity</td>
+    <td width="81%">2</td>
+  </tr>
+  <tr>
+    <td width="19%">CI tbdau_data_bits</td>
+    <td width="81%">8</td>
+  </tr>
+  <tr>
+    <td width="19%">CI tbdau_timeout</td>
+    <td width="81%">300</td>
+  </tr>
+  <tr>
+    <td width="19%">CI tbdau_max_attempts</td>
+    <td width="81%">3</td>
+  </tr>
+</table>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click here to see the RTE Initialisation file.</a></p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

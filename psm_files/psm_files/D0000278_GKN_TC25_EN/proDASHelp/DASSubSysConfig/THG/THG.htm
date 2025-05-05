@@ -1,0 +1,429 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Thrust Generic (THG) Subsystem (Option*)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="THG">Thrust Generic (THG) Subsystem (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+
+<h2 id="Overview">Overview</h2>
+<p>The Thrust Generic (THG) Subsystem is a set of functions used by proDAS to perform thrust  measurement and calibration over serial RS-232/RS-485 interfaces.</p>
+<p>The Thrust Generic Subsystem measures, in one axis, the force exerted on the thrust frame during an engine test. The force (i.e.: thrust) is measured by full-bridge strain-gauge load cells mounted on the thrust frame. The load cells generate an electrical signal (i.e.: voltage) that is proportional to the load (i.e.: thrust force) applied by the engine-under-test. The thrust signal conditioner digitises the output from the load cells.</p>
+<p>The Thrust Generic Driver obtains readings from up to eight load cell signal conditioners through the RS-232/RS-485 interface; signal conditioners are connected to working load cells and master calibration (transfer standard) load cells. Working load cell readings are provided by AST-3 signal conditioners through a serial Modbus Remote Terminal Unit (RTU) protocol communicating via RS-485.</p>
+<p>A two-dimensional (2D) break point table (BPT) that represents the factory calibration of the working signal conditioner and associated load cell is applied to the individual working load cell readings. The value that is returned from the signal conditioner is stored as the <strong>WRKx</strong> channel raw value, and the Engineering Unit (EU) converted value is stored as the channel value.</p>
+<p>The individual working load cell readings are summed and stored in the <strong>WRK_MEAS</strong> channel.</p>
+<p>The <strong>TCorrChan</strong> .config parameter specifies the name of a calculated channel that contains the temperature-corrected value. The driver adds the value of <strong>TCorrChan</strong> to the <strong>WRK_MEAS</strong> channel, and stores the result as the <strong>WRK_MEAS_TC</strong> channel value.</p>
+<p>The driver applies the 2D BPT of the <strong>WRK_CORR</strong> channel to the <strong>WRK_MEAS_TC</strong> channel and stores the converted value to the <strong>WRK_CORR</strong> channel. This 2D BPT represents the corrected thrust reading and is calibrated on-line using the <a href="../../CustomApps/TCA/TCA.htm">Thrust Calibration Application</a>.</p>
+<p>A rolling average is applied to the <strong>WRK_CORR</strong> channel value to yield the <strong>WRK_CORR_AVG</strong> channel value. The number of values that are averaged is set within the .config file.</p>
+<p>Master load cell readings are provided to the driver by E-2-TAD or TAD-3 signal conditioners through serial TAD protocol communicating via RS-232. A 2D BPT that represents the factory calibration of the master signal conditioner and load cell is applied to the individual master load cell readings. The value that is returned from the signal conditioners is stored as the <strong>MSTxy</strong> channel raw value, and the EU converted value is stored as the channel value.</p>
+<p class="Note">When the proDAS Thrust Generic Driver loses communication with an AST-3 or TAD signal conditioner, channel value and quality are set to BAD.<br>
+  <br>A UEL message reports Yellow Box communication errors with the AST-3 signal conditioners after two consecutive timeouts.</p>
+<p>Individual master load cell readings are summed and stored in the <strong>MST_FORW</strong> or <strong>MST_REV</strong> channel.</p>
+<h2 id="ConfigTHG">Configuring a Thrust Generic Channel</h2>
+<p>To configure a Thrust Generic Channel:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</li>
+  <li>Select the name of the Thrust Generic Subsystem from the list of available subsystems.
+    <div class="Container"><img src="images/SelectSubsystemName.png" alt="SelectSubsystemName" width="387" height="317"></div>
+  </li>
+  <br>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a>.</li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.</li>
+  <li>Set the <strong>Measurement Type</strong> column.</li>
+  <li>For a channel with a Measurement Type of WRK_CORR, both a Calibration Sensor and a Fixed Sensor need to be defined. The Calibration Sensor must contain the calibration 2D breakpoint table for the corrected thrust reading, and the Fixed Sensor must contain the polynomial zero offset coefficient for the correct thrust reading.<br>
+    For a channel with a Measurement Type of WRK1, WRK2, WRK4, MSTF1, MSTF2, MSTR1 and MSTR2, a Fixed Sensor needs to be defined. The Fixed Sensor must contain the factory calibration 2D breakpoint table for the working load cell signal conditioners and master transfer standard load cell signal conditioners.
+    <div class="Container"><img src="images/ChannelEditor.png" alt="ChannelEditor" width="700" height="424"></div>
+  </li>
+</ol>
+<h2 id="ConfigFileStructure">Configuration File Structure</h2>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu">Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import a <strong>THG</strong> channel, see <a href="?10#XMLFileStructure">XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">see Extras -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import a <strong>THG</strong> channel, see <a href="?11#TabDelimitFileStructure">Tab-Delimited File Structure</a>.</p>
+<h3 id="XMLFileStructure">XML File Structure</h3>
+<h4 id="ChannelsXML">Channels</h4>
+<p>The channels are stored in files Channels.xml in the configuration directories.</p>
+<p>A THG Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor - Generic Channel Parameters - XML File Structure</a>, and the specific attribute <strong>SignalConditionerName</strong>. These attributes are explained in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Measurement Type</td>
+    <td>SignalConditionerName</td>
+    <td>TYPE</td>
+    <td>Specifies the type of channel being used, where WRK channel types  represent readings associated with a working load cell signal conditioner, and  MST channel types represent readings associated with a master load cell signal  conditioner.<br>
+      <br>
+      Data being read directly from a signal conditioner includes a 1 or 2-character  designation after the WRK or MST. For working load cell signal conditioners,  there is a 1-character number that represents the instance of the signal  conditioner.<br>
+      <br>
+      For master load cell signal conditioners, there is a 2-character designation.  The first character designates the thrust direction of the signal  conditioner/load cell: F for forward, and R for reverse. The second character  is a number that represents the instance of the signal conditioner.<br>
+      <br>
+      The working load cell readings are optionally temperature corrected using the correction  stored in the corresponding WRKx_TC channels, and these readings are then summed  and saved against a WRK_MEAS channel type. The temperature corrected working  load cell summation is stored against a WRK_MEAS_TC channel type. The  calibration corrected working load cell summation is stored against a WRK_CORR  channel type. An average calibration corrected working load cell summation is  stored against a WRK_CORR_AVG channel type. The master load cell readings are  summed and saved against a MST_FORW channel type for forward thrust, and  against a MST_REV channel type for reverse thrust.<br>
+      <br>
+      A configuration will always require the WRKx, WRK_MEAS, WRK_CORR, MSTFx and  MST_FORW channel types to be defined.<br>
+      <br>
+      Fixed sensors are  used to store the conversion required for the WRKx, WRKx_TC, MSTFx, MSTRx  channel types. Calibration and Fixed sensors are used to store the correction  curve and zero offset respectively for the WRK_CORR channel type.</td>
+    <td>String</td>
+    <td>WRK1, WRK2, WRK3, WRK4, WRK1_TC, WRK2_TC, WRK3_TC, WRK4_TC, MSTF1, MSTF2, MSTR1, MSTR2, WRK_MEAS, WRK_MEAS_TC, WRK_CORR, WRK_CORR_AVG, MST_FORW, MST_REV as configured in the Thrust Generic Subsystem. Only one of each type will be allowed at any point in time.</td>
+  </tr>
+</table>
+<p>The structure of a Thrust Generic Channel complies with the following example:</p>
+<blockquote><code>&lt;Channels LastModificationDate=&quot;<strong>2015-06-11 11:09:59</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;<br>
+  &lt;Channel Name=&quot;THG1&quot; <br>
+  Description=&quot;&quot; <br>
+  Enabled=&quot;true&quot; <br>
+  LastModificationDate=&quot;2015-06-11 11:09:59&quot; <br>
+  SubsystemName=&quot;ZZTHG&quot; <br>
+  SubsystemType=&quot;THG&quot; <br>
+  AlternateName=&quot;&quot; <br>
+  DataType=&quot;Float&quot; <br>
+  InitialValue=&quot;-999999&quot; <br>
+  Format=&quot;4.2f&quot; <br>
+  UpdateRate=&quot;1&quot; <br>
+  QualityCeiling=&quot;GOOD&quot; <br>
+  Critical=&quot;false&quot; <br>
+  EngineeringUnit=&quot;-&quot; <br>
+  DisplayMin=&quot;0&quot; <br>
+  DisplayMax=&quot;100&quot; <br>
+  DeadBand=&quot;0&quot; <br>
+  Output=&quot;false&quot; <br>
+  ReferenceChannel=&quot;&quot; <br>
+  Group=&quot;&quot; <br>
+  SignalId=&quot;&quot; <br>
+  CalSensor=&quot;&quot; <br>
+  CalGroup=&quot;Thrust&quot; <br>
+  FixedSensor=&quot;WRK1.NA&quot; <br>
+  CustomerSensor=&quot;&quot; <br>
+  FullsetStability=&quot;false&quot; <br>
+  ContinuousLog=&quot;true&quot; <br>
+  SignalConditionerName=&quot;WRK1&quot;/&gt;<br>
+  &lt;/Channels&gt;<br>
+</code></blockquote>
+<h4>Subsystems</h4>
+<p>The subsystems are stored in files Subsystems.xml in the configuration directories.</p>
+<p>A Thrust Generic Subsystem (THG) contains generic information, described in <a href="../SubsystemEditor/SubsystemEditor.htm#XMLFileStructure">Subsystem Editor - Generic Subsystem Parameters - XML File Structure</a>, and the specific attributes:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Working Cells</td>
+    <td>NumberOfWorkingCells</td>
+    <td>NO_WORKING_CELLS</td>
+    <td>Defines the number of working load cells configured for the THG Subsystem</td>
+    <td>Integer</td>
+    <td>1, 2, 3 or 4 </td>
+  </tr>
+  <tr>
+    <td>Master Cells Forward</td>
+    <td>NumberofMasterCellsForward</td>
+    <td>NO_MASTER_CELLS_FWD</td>
+    <td>Defines the number of forward master load cells configured for the THG Subsystem</td>
+    <td>Integer</td>
+    <td>1 or 2</td>
+  </tr>
+  <tr>
+    <td>Master Cells Reverse</td>
+    <td>NumberOfMasterCellsReverse</td>
+    <td>NO_MASTER_CELLS_REV</td>
+    <td>Defines the number of reverse master load cells configured for the THG Subsystem</td>
+    <td>Integer</td>
+    <td>0, 1 or 2</td>
+  </tr>
+  <tr>
+    <td>Thrust Temparature Channel</td>
+    <td>Thrust Temperature Channel</td>
+    <td>N/A</td>
+    <td>The channel name used for the temperature correction of the summed thrust working load cell reading</td>
+    <td>String</td>
+    <td>An arbitrary case sensitive String</td>
+  </tr>
+  <tr>
+    <td>Working Temperature Channel1</td>
+    <td>Working Temperature Channelx</td>
+    <td>N/A</td>
+    <td>The temperature channel name used for the temperature correction of the respective working load cell &lsquo;x&rsquo; reading</td>
+    <td>String</td>
+    <td>An arbitrary case sensitive String</td>
+  </tr>
+</table>
+<p>The structure of a Thrust Generic Subsystem is shown in the following example:</p>
+<blockquote>
+  <pre>
+&lt;Subsystem LastModificationDate=&quot;<strong>2014-07-09 14:19:48</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;
+TemperatureChannelNameOfSummedThrustWorkingCell=&quot;&quot;
+TemperatureChannelNameOfWorkingCell4=&quot;&quot;
+TemperatureChannelNameOfWorkingCell3=&quot;&quot;
+TemperatureChannelNameOfWorkingCell2=&quot;&quot;
+TemperatureChannelNameOfWorkingCell1=&quot;&quot;
+NumberOfMasterCellsReverse=&quot;0&quot;
+NumberOfMasterCellsForward=&quot;2&quot;
+NumberOfWorkingCells=&quot;1&quot;
+CreationDate=&quot;2014-07-09 10:15:34&quot;
+Type=&quot;THG&quot;
+Id=&quot;0&quot;
+Enabled=&quot;true&quot;
+Description=&quot;&quot;
+Name=&quot;THG&quot;/&gt;
+&lt;/Subsystems&gt;</pre>
+</blockquote>
+<h3 id="TabDelimitFileStructure">Tab-Delimited File Structure</h3>
+<p>The Thrust Generic Subsystem channel definition includes all <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic channel definition columns</a> and the specific Thrust Generic input parameters defined in the tab-delimited configuration file.</p>
+<p>The rules, syntax and guidelines for creating THG channels are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th> Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>CHAN_TYPE</td>
+    <td>Specifies the type of channel being used, where WRK channel types represent readings associated with a working load cell signal conditioner, and MST channel types represent readings associated with a master load cell signal conditioner.<br>
+      <br>
+      Data being read directly from a signal conditioner includes a 1 or 2-character designation after the WRK or MST. For working load cell signal conditioners, there is a 1-character number that represents the instance of the signal conditioner.<br>
+      <br>
+      For master load cell signal conditioners, there is a 2-character designation. The first character designates the thrust direction of the signal conditioner/load cell: F for forward, and R for reverse. The second character is a number that represents the instance of the signal conditioner.<br>
+      <br>
+      The working load cell readings are summed and saved against a WRK_MEAS channel type. The temperature corrected working load cell summation is stored against a WRK_MEAS_TC channel type. The calibration corrected working load cell summation is stored against a WRK_CORR channel type. An average calibration corrected working load cell summation is stored against a WRK_CORR_AVG channel type. The master load cell readings are summed and saved against a MST_FORW channel type for forward thrust, and against a MST_REV channel type for reverse thrust.<br>
+      <br>
+      A configuration will always require the WRKx, WRK_MEAS, WRK_CORR, MSTFx and MST_FORW channel types to be defined.<br>
+      <br></td>
+    <td>WRK1, WRK2,<br>
+      WRK3, WRK4,<br>
+      MSTF1, MSTF2,<br>
+      MSTR1, MSTR2,<br>
+      WRK_MEAS,<br>
+      WRK_MEAS_TC,<br>
+      WRK_CORR,<br>
+      WRK_CORR_AVG,<br>
+      MST_FORW,<br>
+      MST_REV</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>CAL_SENSOR</td>
+    <td>A sensor name/auxiliary address pair, of the form &ldquo;SensorName.AuxiliaryAddress&rdquo; (dot separated), normally representing a 2D BPT. The sensor must exist in the calibration database, and is used to store the most recent calibration for the corresponding signal conditioner. This field is mandatory for any WRKx, MSTFx and MSTRx channel types, and for the WRK_CORR channel type.</td>
+    <td>40 character alphanumeric (case sensitive)</td>
+    <td>No</td>
+    <td>See Description </td>
+  </tr>
+  <tr>
+    <td>ZERO_SENSOR</td>
+    <td>A sensor name/auxiliary address pair, of the form &ldquo;SensorName.AuxiliaryAddress&rdquo; (dot separated), normally representing a first order polynomial. The sensor must exist in the calibration database, and is used to store the zero offset for the calibration corrected working load cell summation WRK_CORR channel type. This field is mandatory for the WRK_CORR channel type, and not required for any other channel type.</td>
+    <td>40 character alphanumeric (case sensitive)</td>
+    <td>No</td>
+    <td>See Description </td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow 
+      the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<h2 id="SSEditorTHGChannels">Subsystem Editor for THG Channels</h2>
+<p>To edit a Thrust Generic Subsystem, the Subsystem Editor must be selected from within the Configuration Administrator.</p>
+<p>The tool bar in the Configuration Administrator allows the various configuration editors available for proDAS to be selected.</p>
+<p>The Subsystem Editor allows new subsystems to be added to the current configuration <a href="../SubsystemEditor/SubsystemEditor.htm#MenuEdit">Subsystem Editor - Menu Edit</a>.</p>
+<div class="Container"><img src="images/SubsystemEditor.png" alt="SubsystemEditor" width="700" height="454"></div>
+<br>
+<p><strong>To add a new subsystem:</strong></p>
+<ol>
+  <li>Select the menu item <strong>Edit - Append Data Record</strong> in the menu bar or click in the left pane of the splitter window and then click the right mouse button and select <strong>Append Data Record</strong> from the context sensitive menu.<br>
+  </li>
+  <li>Select THG Subsystem in the dialogue box to select the type of subsystem.<br>
+    A new line is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to the type just selected (as shown in the typical Subsystem Editor screenshot above).<br>
+    The user must then assign a name and description to the subsystem.</li>
+</ol>
+<p class="Note">Working Cells, Master Cells Forward and Master Cells Reverse have to be defined for the THG Subsystem.</p>
+<h3>Load Cells</h3>
+<p>The thrust frame is equipped with working load cells and transfer standard load cells. The load cells generate an electrical signal (i.e. voltage) that is proportional to the load (i.e. thrust force) applied by the engine-under-test. Variations in the voltage levels provide a measurement of the thrust being generated by the engine being tested.</p>
+<h3>Adding New Load Cells</h3>
+<p>The THG has to be configured with Load Cells. The number of Working Cells, Forward Master Cells and Reverse Master Cells configured for the <a href="?5#XMLFileStructure">Subsystem</a> can be edited in the right pane of the splitter window of the Subsystem Editor screen.</p>
+<p>Once the number of Load Cells is known, the Load Cells are named as follows:</p>
+<ul>
+  <li>If the selected Working Cells is 2, the first and second Working Load Cells are called WRK1 and WRK2.</li>
+  <li>If the selected Forward Master Cells is 2, the first and second Forward Master Load Cells are called MSTF1 and MSTF2.</li>
+  <li>If the selected Reverse Master Cells is 1, the Reverse first Master Load Cell is called MSTR1.</li>
+</ul>
+<h2 id="proDASThrustDriver">proDAS Thrust Generic Driver</h2>
+<p>The driver reads the following specific data from the proDAS <strong>.config</strong> file:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Channel Name</th>
+    <th>Data Description</th>
+  </tr>
+  <tr>
+    <td>WRKx_DEVICE</td>
+    <td>Serial port name.</td>
+  </tr>
+  <tr>
+    <td>WRKx_PORT</td>
+    <td>Baud rate, data bits, stop bits, parity.</td>
+  </tr>
+  <tr>
+    <td>WRKx_INSTR_ADDR</td>
+    <td>Instrument address.</td>
+  </tr>
+  <tr>
+    <td>WRKx_SIGN</td>
+    <td>Sign of the load cell reading to use in the sum.</td>
+  </tr>
+  <tr>
+    <td>WRKx_send_delay</td>
+    <td>Delay before sending data request in milliseconds.</td>
+  </tr>
+  <tr>
+    <td>WRKx_receive_delay</td>
+    <td>Delay before reading response in milliseconds.</td>
+  </tr>
+  <tr>
+    <td>MSTxy_DEVICE</td>
+    <td>Serial port name.</td>
+  </tr>
+  <tr>
+    <td>MSTxy_PORT</td>
+    <td>Baud rate, data bits, stop bits, parity.</td>
+  </tr>
+  <tr>
+    <td>MSTxy_INSTR_ADDR</td>
+    <td>Instrument address.</td>
+  </tr>
+  <tr>
+    <td>MSTxy_SIGN</td>
+    <td>Sign of the load cell reading to use in the sum.</td>
+  </tr>
+  <tr>
+    <td>MSTxy_send_delay</td>
+    <td>Delay before sending data request in milliseconds.</td>
+  </tr>
+  <tr>
+    <td>MSTxy_receive_delay</td>
+    <td>Delay before reading response in milliseconds.</td>
+  </tr>
+  <tr>
+    <td>WRK_TIMEOUT</td>
+    <td>Time out for working load cell signal conditioner communication.</td>
+  </tr>
+  <tr>
+    <td>MST_TIMEOUT</td>
+    <td>Time out for master load cell signal conditioner communication.</td>
+  </tr>
+  <tr>
+    <td>AVERAGE</td>
+    <td>Number of corrected readings that should be averaged.</td>
+  </tr>
+  <tr>
+    <td>TCORRCHAN</td>
+    <td>The name of the temperature correction channel.</td>
+  </tr>
+</table>
+<h2 id="RTEiniFile">RTE Initialisation File </h2>
+<p>The Thrust Generic Subsystem is configured by the RTE, along with all the other subsystems, as a request form the Management Interface GUI. For legacy purposes, the configuration request can also be specified in the command line of the RTE.</p>
+<p>A typical RTE initialisation file would include the following Thrust Generic (THG) Subsystem information:</p>
+<blockquote>
+  <p>#--------------------------------------------------------------------------<br>
+    #   THG (Thrust generic ) subsystem<br>
+    #--------------------------------------------------------------------------</p>
+  <p>SS     Thrust               TRUE</p>
+  <p>#serial port<br>
+    CI     WRK1_device       /dev/ttyM8<br>
+    #communication parameter, including buadrate data bits stop bits parity<br>
+    CI     WRK1_port         38400 8 1 N<br>
+    #instrument address<br>
+    CI     WRK1_instr_addr   01<br>
+    #sign, could be + or -<br>
+    CI     WRK1_sign         +<br>
+    #delay before send request<br>
+    CI     WRK1_send_delay     0<br>
+    #delay before read response<br>
+    CI     WRK1_receive_delay  5 </p>
+  <p>#serial port<br>
+    CI     WRK2_device       /dev/ttyM10<br>
+    #communication parameter, including buadrate data bits stop bits parity<br>
+    CI     WRK2_port         38400 8 1 N<br>
+    #instrument address<br>
+    CI     WRK2_instr_addr   01<br>
+    #sign, could be + or -<br>
+    CI     WRK2_sign         +</p>
+  <p>#delay before send request<br>
+    CI     WRK2_send_delay     0<br>
+    #delay before read response<br>
+    CI     WRK2_receive_delay  5 </p>
+  <p># device type, either E-2-TAD or AST3<br>
+    CI     MSTF1_device_type AST3<br>
+    #serial port<br>
+    CI     MSTF1_device      /dev/ttyM9<br>
+    #communication parameter, including buadrate data bits stop bits parity<br>
+    CI     MSTF1_port        38400 8 1 N<br>
+    #instrument address <br>
+    CI     MSTF1_instr_addr  01<br>
+    #sign, could be + or - <br>
+    CI     MSTF1_sign         +<br>
+    #delay before send request<br>
+    CI     MSTF1_send_delay    0<br>
+    #delay before read response<br>
+    CI     MSTF1_receive_delay 5 </p>
+  <p># device type, either E-2-TAD or AST3<br>
+    CI     MSTF2_device_type AST3<br>
+    #serial port<br>
+    CI     MSTF2_device      /dev/ttyM11<br>
+    #communication parameter, including buadrate data bits stop bits parity<br>
+    CI     MSTF2_port        38400 8 1 N<br>
+    #instrument address <br>
+    CI     MSTF2_instr_addr  01<br>
+    #sign, could be + or - <br>
+    CI     MSTF2_sign         +<br>
+    #delay before send request<br>
+    CI     MSTF2_send_delay    0<br>
+    #delay before read response<br>
+    CI     MSTF2_receive_delay 5 </p>
+  <p>#working load cell device timeout in ms<br>
+    CI     WRK_timeout       500<br>
+    #master load cell device timeout in ms<br>
+    CI     MST_timeout       500<br>
+    #average <br>
+    CI     AverageReadings   2<br>
+    #temperature compensation channel name<br>
+    CI     TCorrChan         FnTCFactor</p>
+</blockquote>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click here to see the RTE Initialisation file</a>.</p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>How To &ndash; Power Down the Instrumentation System</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left><h1>How To &ndash; Power Down the Instrumentation System<a href="#" onClick="window.print(); return false;"><img src="../../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<p>This <strong>How To</strong> provides the steps required to perform a complete power down of the instrumentation.</p>
+<p class="Note">The proDAS hardware equipment should be left <strong>ON</strong> at all times. The system is only powered down for maintenance activities, anticipated power outages, or if a power failure occurs.</p>
+<h2>To Power Down the Instrumentation</h2>
+<p>There are two main steps in an instrumentation power down:</p>
+<ol>
+  <li><a href="#PowerDownproDAS">Power Down proDAS</a>.</li>
+  <li><a href="#PowerDownUPS">Power Down the Uninterruptible Power Supply (UPS)</a>.</li>
+</ol>
+<h3 id="PowerDownproDAS">Power Down proDAS</h3>
+<p>To perform a complete power down of the system:</p>
+<h4><strong>In the Control Room</strong></h4>
+<ol>
+  <li>On the Console, stop the proDAS software per the procedure <a href="../../../proDASHelp/TestwithDAS/StartConfigStopDAS/StartConfigStopDAS.htm#StoppingproDAS">Stopping proDAS</a> in proDAS Integrated Help.</li>
+  <li>On the Console, log off and power down the <a href="../../../CompCfg/RTDPC/RTDPCOverview.html">Real-Time Display computers (RTD1 - RTD4)</a> using the standard Windows Shut Down procedure.</li>
+  <li>On the UECU 500 Mark III Throttle Quadrant, power down the display PC by clicking on the MDS Aero Support logo in the top left-hand corner of the screen.</li>
+  <li>Select <strong>Exit</strong>. The Shutdown window is displayed.</li>
+  <li>Select <strong>Shutdown</strong>.</li>
+  <li>On the Console, log off and power down the <a href="../../../CompCfg/MgmtPC/MgmtPCOverview.html">Management Graphic User Interface (GUI) computer</a> using the standard <a href="../CompCfgHT/GenInfo/TurnOffPC.html">Windows Shut Down procedure</a>.</li>
+  <li>On the PAK MKII Server PC, stop all active scanning and close the PAK MKII software.</li>
+  <li>Power down the PAK MKII Mainframe according to the <a href="../../VendorDocs/MBBM/PAKMKIIG2UM1309.pdf">PAK MKII G2 User Manual</a>.</li>
+  <li>Power down the PAK MKII Server PC using the standard <a href="../CompCfgHT/GenInfo/TurnOffPC.html">Windows Shutdown Procedure</a>.</li>
+  <li>Power down the EX1048A Temperature Scanners.</li>
+</ol>
+<h4><strong>In the Computer Room</strong></h4>
+<ol start="11">
+  <li>Use the keyboard to acess the <a href="../../../CompCfg/HostPC/HostPCOverview.html">Linux Host Computer</a> in Equipment Rack CM1, and from the login screen, select <strong>Shutdown</strong>.</li>
+  <br><div class="Container"><img src="images/ShutDown.png" width="369" height="260" alt="Red Hat Logo"></div><br> 
+  <li>Power down the NAS equipment in equipment rack CM1.</li>
+  <li>Power down the UECU-500 Mark III Throttle Actuator Chassis in equipment rack CM4 using the power switch on the back of the chassis.</li>
+  <li>Power down the UECU-500 Mark III Throttle RVDT Chassis in equipment rack CM4 using the power switch on the back of the chassis.</li>
+  <li>Power down the UECU-500 Mark III Throttle Controller Chassis in equipment rack CM4 using the power switch on the back of the chassis.</li>
+  <li>Power down the <a href="../../../proDASHwCfg/VXI/VXIOverview.html">VXI Chassis</a> in Equipment Rack CM2.</li> 
+  <li>Power down the PCI Expansion Chassis in Equipment Rack CM1.</li>
+  <li>Power down the TDK-Lambda power supply in equipment rack CM3.</li>
+  <li>Power down the power bars in equipment racks CM1 to CM4.</li>
+  <li>Power down the 5V and 12V power supplies in the scanner interface panel in equipment rack CM4.</li>
+</ol>
+<h3 id="PowerDownUPS">Power Down the Uninterruptible Power Supply (UPS)</h3>
+<p>There is one UPS at the Trollhattan facility.</p>
+<p class="Note">Ensure that the AC input is turned off before powering down a UPS. If the AC input is not turned off, systems connected to the UPS could still be receiving power.</p>
+<p>For information on how to power down the UPS, see the <a href="../../VendorDocs/UPSTeknik/UMKR11KR316.pdf">OEM Operating Manual</a>.</p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

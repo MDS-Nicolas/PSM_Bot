@@ -1,0 +1,156 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Engineering Unit Editor</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="CreateModifyDisplayPages">Engineering Unit Editor<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" >
+</a><div float:right></div></h1></div>
+
+<h2 id="Overview">Overview</h2>
+<p>The Engineering Unit Editor is used to create and edit the engineering 
+  units. The engineering units are not configuration specific, which allows all 
+  configurations to use a common EngineeringUnit.xml file stored in the proDAS\Data\Configuration 
+  directory. An engineering unit can be assigned to a channel using the <a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm">Channel Editor</a>.</p>
+<p class="Note">Engineering units that are added and deleted are automatically synced in the .xml file, regardless of whether they are disabled or not.</p>
+<div class="Container"><img src="images/EngineeringUnitEditor.png" alt="EngineeringUnitEditor" width="700" height="448"></div>
+<br>
+<p>The Engineering Unit Editor supplies the following functionality:</p> 
+<ul>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuFile">File</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuEdit">Edit</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuView">View</a></li>
+  <li><a href="#Tools">Tools</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuHelp">Help</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#GenCol">Index, 
+    Enabled, Active, LastModDate, Name, and Description</a></li>
+  <li><a href="#SpecificProperties">Specific Properties of an Engineering Unit</a></li>
+  <li><a href="#UnitCat">Unit Category</a></li>
+  <li><a href="#Transformation">Linear Transformation</a></li>
+</ul>
+<h2 id="Tools">Tools Menu</h2>
+<p>The Tools menu provides the following functionalities:</p>
+<ul>
+  <li>Convert</li>
+  <li>Invert</li>
+</ul>
+<h3>Convert</h3>
+<p>The Convert function is used to calculate the relationship between two units of the same category. Once a category is selected, the list of units in the sections &quot;From&quot;  and &quot;To&quot; are displayed. The user can enter the &quot;Input Quantity&quot;  value. &quot;Reverse&quot; is used to calculate the opposite relationship.</p>
+<div class="Container"><img src="images/UnitConversion.png" alt="Unit Conversion" width="422" height="415"></div>
+<h3>Invert</h3>
+<p>The Invert function inverts (calculates the offset and factor) the relationship between the current unit and the primary unit of the same category. This can be used to rectify a relationship entered in the wrong direction.</p>
+<p>Wrong relationship between F and K (displayed below).</p>
+<div class="Container"><img src="images/Wrong.png" alt="wrong" width="700" height="16"></div>
+<br>
+<p>Correct relationship between F and K (following the inversion) where new values for Factor and Offset are calculated (displayed below).</p>
+<div class="Container"><img src="images/Correct.png" alt="Correct" width="700" height="15"></div>
+
+<h2 id="SpecificProperties">Specific Properties of an Engineering Unit</h2>
+<p>The specific properties of an engineering unit are displayed in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Category</td>
+    <td>Category</td>
+    <td>Category to which it belongs</td>
+    <td>String</td>
+    <td>arbitrary</td>
+  </tr>
+  <tr>
+    <td>IsPrimary</td>
+    <td>Primary</td>
+    <td>Flag indicating whether the unit is the primary unit of its category<br>
+      <br>
+      <p class="Caution">The primary unit has a direct impact on the factors and offsets. If the primary unit is changed, all factors and offsets must also be changed accordingly. Failure to do this will result in incorrect data.</p></td>
+    <td>Boolean</td>
+    <td><em>true</em> or <em>false</em></td>
+  </tr>
+  <tr>
+    <td>Factor</td>
+    <td>Gain</td>
+    <td>The factor and offset are used to convert the current EU into the primary EU. Factors are stored in an xml file.<br>
+      For two quantities which differ by one in the current unit, the factor is the equivalent difference value given in the primary unit.<br>
+      <p class="Note">It is important to ensure factors are setup correctly.</p></td>
+    <td>Float</td>
+    <td>not equal to 0</td>
+  </tr>
+  <tr>
+    <td>Offset</td>
+    <td>Offset</td>
+    <td>The factor and offset are used to convert the current EU into the primary EU.<br>
+      For a quantity with zero value in the current unit, the offset is the equivalent value given in the primary unit.<br></td>
+    <td>Float</td>
+    <td>arbitrary</td>
+  </tr>
+  <tr>
+    <td>Primary</td>
+    <td>n/a</td>
+    <td>Primary unit of its category</td>
+    <td>String</td>
+    <td>read-only</td>
+  </tr>
+  <tr>
+    <td>Example</td>
+    <td>n/a</td>
+    <td>Illustrates how the factor and offset are used to convert the current EU into the primary EU.<br>
+      Samples are given for one current unit if there is no offset and for zero current unit if an offset is defined.</td>
+    <td>Float</td>
+    <td>read-only</td>
+  </tr>
+  <tr>
+    <td>Relation to Primary Unit</td>
+    <td>n/a</td>
+    <td>Illustrates how the factor and offset are used to convert the current EU into the primary EU.<br>
+      When a quantity is given in the current unit, the relation indicates how the equivalent value in the primary unit can be calculated.</td>
+    <td>String</td>
+    <td>read-only</td>
+  </tr>
+</table>
+<br>
+<p class="Note">Tooltips are provided for the Factor, Offset, Example and Relation to Primary Unit columns when the mouse is hovered over the column.</p>
+<h2 id="UnitCat">Unit Category</h2>
+<p>A unit category (e.g.: temperature, pressure) can be assigned to every engineering unit by using the Category column. To add a unit category 
+  that is not available in the drop-down list, type the name in the category field. The name entered in the category field is automatically added to the drop-down list.</p>
+<p>The checkbox in the IsPrimary column can be used to set one engineering unit as primary unit for the category to which it belongs. Selecting more than one engineering unit as primary unit for a category is not possible. The Primary column displays the current primary unit of every engineering unit. Selecting another primary unit for a given category, the Factor and Offset are instantaneously calculated; the respectively columns and the relationship in the &quot;Example&quot; and &quot;Relation to Primary Unit&quot; columns are updated.</p>
+<h2 id="Transformation">Linear Transformation</h2>
+<p>Engineering units for the same physical dimension can be converted into each other by linear transformations. These transformations are defined 
+  by the Factor and Offset columns. For instance, to define the linear transformation 1 &deg;F = 1.8 * &deg;C + 32, enter 1.8 in the Factor column and 32 in the Offset column. The measured values are converted without entering the specific formula.</p>
+<p class="Note">The value of the Factor and Offset does not affect the channel value.</p>
+<h3>Examples</h3>
+<h4>Temperature:</h4>
+<p>Primary unit: K</p>
+<p>Current Unit: &deg;C: Factor: 1, Offset: 273.15, Sample: 0 &deg;C = 273.15 K, Relation: [K] = [&deg;C] +  273.15</p>
+<p>Current Unit: &deg;F: Factor: 0.5555, Offset: 255.37, Sample: 0 &deg;F = 255.37 K, Relation: [K] =  0.555*[&deg;F] + 255.372</p>
+<h4>Time:</h4>
+<br>
+<p>Primary unit: s [second]</p>
+<p>Current Unit: m [minute]: Factor: 60, Offset: 0, Sample: 1 m = 60 s, Relation: [s] = 60*[m]</p>
+<p>Explanation: A time interval of 1 minute takes 60 seconds, i.e. we must multiply the 1 by 60  to convert the minutes value into the seconds value.</p>
+<br>
+
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

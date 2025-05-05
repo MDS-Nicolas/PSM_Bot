@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" -->
+<title>Macro Editor</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="MacroEditor">Macro Editor<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" >
+</a><div float:right></div></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The Macro Editor is used to edit macros that have a Visual Basic   Script (VBS) file extension (.vbs).  The macros can be executed from the command line. These macros are used by the Recalculation GUI for the recalculation of fullset data, and by the Management GUI as Test Procedures.</p>
+<p class="Note">The Macro Editor can only edit macros with a .vbs file extension. It will check the format of the file and prevent the user from editing files that do not meet the requirements. The Script Editor should be used to edit test procedure script files (.tps).</p>
+<div class="Container"><img src="images/MacroEditor.png" alt="MacroEditor" width="700" height="423"></div>
+<p>The Macro Editor provides the following functionality:</p> 
+<ul>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuFile">File</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuEdit">Edit</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuView">View</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuConfiguration">Configuration</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuHelp">Help</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#GenCol">columns: Index, Level, Enabled, Active, Last Mod Date, Name, Description, File Name</a></li>
+  <li><a href="#MacroProperties">Specific Macro Properties</a></li>
+  <li><a href="#EdText">Editing Macro Text</a></li>
+  <li><a href="#Refresh">Refresh Macro Text</a></li>
+  <li><a href="#ListCat">List of Categories</a></li>
+</ul>
+<h2 id="MacroProperties">Specific Macro Properties</h2>
+<p>The following macro specific properties are displayed in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>File Name</td>
+    <td>FileName</td>
+    <td>Full path of the macro</td>
+    <td>String</td>
+    <td>Name of an existing VBS file</td>
+  </tr>
+</table>
+<h4>To browse for a macro:</h4>
+<ol>
+  <li>Double-click on a cell of the <strong>Filename</strong> column or select <strong>File Selection</strong> from the Edit menu.<br>
+    A Windows Explorer Dialogue is opened, allowing the user to browse for a macro.
+    <p class="Note">A cell of the File Name column must be selected before the user can double-click in the cell or select File Selection from the Edit menu.</p>
+  </li>
+</ol>
+<h2 id="EdText">Editing Macro Text</h2>
+<p>The Macro Editor provides the user with two methods of editing the text of a macro. The first method utilises a context menu, with the entries Undo, Cut, Copy, Paste, Delete, and Select All, in the edit field of the right pane of the Macro Editor.</p>
+<p>The second method utilises an external editor to edit the text of a macro. The external editor is selected by selecting <strong>Select External Editor</strong> from the <strong>Macro</strong> menu. The external editor is then started by selecting <strong>Call External Editor</strong> from the <strong>Macro</strong> menu. The text of the currently selected macro is displayed when the external editor is started.</p>
+<h2 id="Refresh">Refresh Macro Text</h2>
+<p>Once the macro text has been edited and the external editor has been closed, the macro text can be reloaded by selecting <strong>Refresh Macro Text</strong> or by selecting <strong>Refresh Macro Text</strong> from the <strong>Edit Specific</strong> menu.</p>
+<h2 id="ListCat">List of Categories</h2>
+<p>The right pane displays two lists of categories. One is a list of available categories, as determined by the initialisation file and the categories of all macros. The other is a list of all the selected categories which belong to the currently selected macro.</p>
+<p>A new category can be added by entering the name in the edit field next to the Add button and then selecting the Add button.</p>
+<p>The Recalculation GUI selects all macros, with a category of Recalculation, as valid recalculation scripts. The Management GUI selects macros, with a configurable category name, as valid Test Procedures. This category name is defined using the MacroCategory keyword in the Management GUI initialisation file.</p>
+<br>
+
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

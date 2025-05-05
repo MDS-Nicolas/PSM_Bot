@@ -1,0 +1,253 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Telemetry Data Monitoring (TDM) Subsystem</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="TDM">Time Division Multiplexing (TDM) Subsystem (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The Time Division Multiplexing (TDM) Subsystem acquires, processes, stores and distributes temperature data from the Powered INcreased CApacity (PINCA) telemetry units and the DIGital Battery Energised Radio Telemetry (DIGBERT) unit. The TDM also provides status information for the PINCA and DIGBERT units. </p>
+<h2 id="ConfigTDMChannel">Configuring a TDM Channel</h2>
+<p>To configure a Time Division Multiplexing (TDM) Channel:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</li>
+  <li>Select the name of the Time Division Multiplexing Subsystem from the list of available subsystems.
+    <div class="Container"><img src="images/SelectSubsystemName.PNG" alt="SelectSubsystemName" width="387" height="317"></div>
+  </li>
+  <br>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a><a href="../ConfigEditors/ConfigEditors.htm#GenCol"></a>.</li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.</li>
+  <li>Set the <strong>Device Name</strong>. The name selected must exist as a sensor in the Test Results and Sensor Calibration Database (TRSCDB).</li>
+  <li>Set the <strong>Device Type</strong> as DIGBERT, PINCAHP or PINCAIP.</li>
+  <li>Select a <strong>Measurement Type</strong> from the drop-down list of available types.</li>
+  <li>Set the <strong>Channel Number</strong> to a number between 1 and 128.</li>
+  <li>For a channel with a Measurement Type of Thermocouple, a Fixed Sensor needs to be defined. The Fixed Sensor identifies the 2D breakpoint table in the <a href="../../StandardTools/TRSCDB/TRSCDB.htm">Test Results and Sensor Calibration Database (TRSCDB)</a> used for engineering unit conversion.
+    <div class="Container"><img src="images/ChannelEditor.PNG" alt="ChannelEditor" width="700" height="424"></div>
+  </li>
+</ol>
+<h2 id="ConfigFileStructure">Configuration File Structure</h2>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu"> Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import a <strong>TDM</strong> channel, see <a href="?10#XMLFileStructure"> XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import a <strong>TDM</strong> channel, see <a href="?11#TabDelimitFileStructure"> Tab-Delimited File Structure</a>.</p>
+<h3 id="XMLFileStructure">XML File Structure</h3>
+<h4 id="ChannelsXML">Channels</h4>
+<p>The channels are stored in files Channels.xml in the configuration directories.</p>
+<p>A TDM Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor - Generic Channel Parameters - XML File Structure</a>, and the specific attributes <strong>DeviceName</strong>, <strong>DeviceType</strong>, <strong>Type</strong>, and <strong>Channel Number</strong>. These attributes are explained in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Device Name</td>
+    <td>DeviceName</td>
+    <td>UNIT_ID</td>
+    <td>The TDM device identifier</td>
+    <td>String</td>
+    <td>A Sensor Name defined in the Calibration Database</td>
+  </tr>
+  <tr>
+    <td>Device Type</td>
+    <td>DeviceType</td>
+    <td>DEV_TYPE</td>
+    <td>The type of the TDM device</td>
+    <td>String</td>
+    <td>DIGBERT, PINCAHP or PINCAIP</td>
+  </tr>
+  <tr>
+    <td>Measurement Type</td>
+    <td>Type</td>
+    <td>CHAN_TYPE</td>
+    <td>The TDM channel type</td>
+    <td>String</td>
+    <td><em>TC </em>=  Thermocouple<br>
+      <em>TC_RAW </em>=  Thermocouple Raw<br>
+      <em>RTD </em>=  RTD<br>
+      <em>PWRHI</em> = Power High<br>
+      <em>PWRLO</em> = Power Low<br>
+      <em>PWROK</em> = Power OK<br>
+      <em>SYNC_LOCK</em> = Synchronisation locked</td>
+  </tr>
+  <tr>
+    <td>Channel Number</td>
+    <td>Number</td>
+    <td>CHANNEL_NUM</td>
+    <td>The channel number in the range:
+      <ul>
+        <li>1-104 for TC  channels </li>
+        <li>1-128 for TC_RAW  channels</li>
+        <li>1-8 for RTD channels</li>
+        <li>1 for PWRHI, PWRLO,  PWROK and SYNC_LOCK channels</li>
+      </ul></td>
+    <td>Integer</td>
+    <td>An Integer between 1 and 128</td>
+  </tr>
+</table>
+<p>The structure of a Time Division Multiplexing Channel complies with the following example:</p>
+<blockquote><code>&lt;Channels LastModificationDate=&quot;<strong>2015-06-11 11:11:06</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;<br>
+  &lt;Channel Name=&quot;TDM1&quot; <br>
+  Description=&quot;&quot; <br>
+  Enabled=&quot;true&quot; <br>
+  LastModificationDate=&quot;2015-06-11 11:11:06&quot; <br>
+  SubsystemName=&quot;ZZTDM&quot; <br>
+  SubsystemType=&quot;TDM&quot; <br>
+  AlternateName=&quot;&quot; <br>
+  DataType=&quot;Float&quot; <br>
+  InitialValue=&quot;-999999&quot; <br>
+  Format=&quot;4.2f&quot; <br>
+  UpdateRate=&quot;1&quot; <br>
+  QualityCeiling=&quot;GOOD&quot; <br>
+  Critical=&quot;false&quot; <br>
+  EngineeringUnit=&quot;-&quot; <br>
+  DisplayMin=&quot;0&quot; <br>
+  DisplayMax=&quot;100&quot; <br>
+  DeadBand=&quot;0&quot; <br>
+  Output=&quot;false&quot; <br>
+  ReferenceChannel=&quot;&quot; <br>
+  Group=&quot;&quot; <br>
+  SignalId=&quot;&quot; <br>
+  CalSensor=&quot;&quot; <br>
+  CalGroup=&quot;&quot; <br>
+  FixedSensor=&quot;&quot; <br>
+  CustomerSensor=&quot;&quot; <br>
+  FullsetStability=&quot;false&quot; <br>
+  ContinuousLog=&quot;true&quot; <br>
+  DeviceType=&quot;PINCAHP&quot; <br>
+  DeviceName=&quot;Test&quot; <br>
+  Number=&quot;1&quot; <br>
+  Type=&quot;TC&quot;/&gt;<br>
+  &lt;/Channels&gt;<br>
+</code></blockquote>
+<h3 id="TabDelimitFileStructure">Tab-Delimited File Structure</h3>
+<p>The Time Division Multiplexing (TDM) Subsystem channel definition includes all <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic channel definition columns</a> and the specific TDM input parameters defined in the tab-delimited configuration file.</p>
+<p>The rules, syntax and guidelines for creating TDM channels are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>DEV_TYPE</td>
+    <td>Specifies the type of the TDM device.</td>
+    <td>One of DIGBERT, PINCAHP or PINCAIP.</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>UNIT_ID</td>
+    <td>The TDM device identifier as found in the calibration database.</td>
+    <td>40 character alphanumeric, (case sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>CHANNEL_NUM</td>
+    <td>The channel number of the thermocouple within the device or RTD number, in the range:
+      <ul>
+        <li>1-104 for TC channels</li>
+        <li>1-128 for TC_RAW channels</li>
+        <li>1-8 for RTD channels</li>
+        <li>1 for PWRHI, PWRLO, PWROK and SYNC_LOCK channels</li>
+      </ul></td>
+    <td>Number 1 - 128</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>BATCH_WIRE</td>
+    <td>Specifies the batch wire calibration identifier of the thermocouple. This is used to lookup a breakpoint table in the calibration database to use for engineering unit conversion. Required for TC CHAN_TYPE only.</td>
+    <td>40 character alphanumeric, (case sensitive)</td>
+    <td>No</td>
+    <td>See Description.</td>
+  </tr>
+  <tr>
+    <td>CHAN_TYPE</td>
+    <td>Specifies the channel type as one of TC (thermocouple), TC_RAW, RTD, PWRHI, PWRLO, PWROK or SYNC_LOCK.</td>
+    <td>TC, RTD, TC_RAW, PWRHI, PWRLO, PWROK, SYNC_LOCK</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<h2 id="SubsysEditor">Subsystem Editor for TDM Channels</h2>
+<p>To edit the TDM Subsystem, the Subsystem Editor must be selected from within the Configuration Administrator.</p>
+<p>The tool bar in the Configuration Administrator allows the various configuration editors available for proDAS to be selected.</p>
+<p>The Subsystem Editor allows new subsystems to be added to the current configuration.</p>
+<div class="Container"><img src="images/SubsystemEditor.png" alt="SubsystemEditor" width="700" height="423"></div>
+<br>
+<p><strong>To add a new subsystem:</strong></p>
+<ol>
+  <li>From the Edit menu, select <strong>Append Data Record</strong> or, in the left pane of the splitter window, click the right mouse button and select <strong>Append Data Record</strong> from the context sensitive menu.</li>
+  <li>Select <strong>TDM</strong> in the dialogue box to select the type of subsystem.<br>
+    A new line in Subsystem Editor is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to <strong>TDM</strong>. The user must then assign a name and description to the subsystem.</li>
+</ol>
+<h2 id="RTEInitialiseFile">RTE Initialisation File</h2>
+<p>The TDM Subsystem is configured by the RTE, along with all the other subsystems, as a request from the Management Interface GUI.</p>
+<p>The RTE Initialisation File must, as a minimum, include the following information:</p>
+<ul>
+  <li>device (serial port #)</li>
+  <li>baudrate (default: 9600)</li>
+  <li>databit (default: 8)</li>
+  <li>stop bit (default: 1)</li>
+  <li>parity (default: none)</li>
+  <li>timeout (default: 10 seconds before reporting communication failure with the port)</li>
+</ul>
+<p>In proDAS, the communication with each telemetry unit is handled in a different TDM Subsystem. A typical RTE initialisation file would include the following information for the three TDM Subsystems, (TDM_HP, TDM_IP, TDM_LP):</p>
+<blockquote>
+  <p>#-------SS-----------------------------------------------------------------------------<br>
+    SS	TDM_HP					FALSE<br>
+    CI	dev_incahp				/dev/ttydn002<br>
+    CI	port_incahp				9600 8 1 N<br>
+    CI 
+    port_time_out 10<br>
+    #-------SS-----------------------------------------------------------------------------<br>
+    SS	TDM_IP					FALSE<br>
+    CI	dev_incaip				/dev/ttydn001<br>
+    CI	port_incaip				9600 8 1 N<br>
+    CI
+    port_time_out 10<br>
+    #-------SS-----------------------------------------------------------------------------<br>
+    SS	TDM_LP					FALSE<br>
+    CI	dev_digbert				/dev/ttydn000<br>
+    CI	port_digbert				9600 8 1 N<br>
+    CI  port_time_out 10</p>
+</blockquote>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click here to see the RTE Initialisation file.</a></p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

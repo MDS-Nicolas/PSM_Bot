@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>DDS - Components - Modbus2PAK Software</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left>
+  <h1>Dynamic Data System (DDS) - Muller-BBM PAK MKII<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<h2>ModBus2PAK Software</h2>
+<p>The Modbus2PAK software is the main communication interface between the proDAS software and the PAK 5.8 software. The communication is sent using the protocol Modbus over Ethernet. The communication interface between proDAS and the PAK Embedded Analyzer is located in the <a href="PAKAnalyzer.html">PAK Embedded Analyzer</a>.</p>
+<p>When the Modbus2PAK application is running, the Modbus communication is active between proDAS and the PAK software. &ldquo;Start Server&rdquo; must be pressed to enable the server and allow proDAS to control the PAK software. When the server is active and the PAK software is accepting commands from proDAS, a heartbeat signal is visible on proDAS. While the server is active, most features of the PAK software are unavailable. </p>
+<p class="Note">To use the PAK software manually to take measurements or modify its configuration, the server must be stopped using the &quot;Stop Server&quot; command. For more information, see <a href="DDSVDocs.html">Vendor Documentation</a>.</p>
+<p>proDAS sends the following commands to the PAK software:</p>
+<table width="200" class="Table-Grey">
+  <tbody>
+    <tr>
+      <th scope="col">Command</th>
+      <th scope="col">Description</th>
+    </tr>
+    <tr>
+      <td>Start Scanning</td>
+      <td>The Modbus2PAK software starts scanning. This requires the Modbus2PAK software to be running and the server enabled. The system must not be scanning.</td>
+    </tr>
+    <tr>
+      <td>Stop Scanning</td>
+      <td>The Modbus2PAK software stops scanning. This requires no recording in progress.
+        <p class="Note">Any recordings in progress will be discarded.</p></td>
+    </tr>
+    <tr>
+      <td>Start Recording</td>
+      <td>The Modbus2PAK software starts recording. This requires the system to be scanning.</td>
+    </tr>
+    <tr>
+      <td>Stop Recording</td>
+      <td>The Modbus2PAK software stops recording. This requires the system to be recording.</td>
+    </tr>
+  </tbody>
+</table>
+<p>For more details on the Modbus2PAK commands, refer to the <a href="../../References/VendorDocs/MBBM/modbusCommands.pdf">Modbus Actions and Status Channels</a> document.</p>
+<p>The software also sends the project number and test number which are used by the PAK software for the D-Rec naming. The PAK software provides proDAS the number of the recording, the duration of the recording and the remaining disk space available for recording.</p>
+<p>proDAS sends the commands to the PAK software multiple times to allow the test number and project number data to be available.</p>
+<p class="Note">Care should be given to how the commands are being sent from proDAS to the PAK Software to prevent duplicate commands.</p>
+<p class="Note">Care should be given to the start and stop order of the embedded analyzer system and the PAK software system. The PAK software cannot receive data from the embedded analyzer unless it is scanning.</p>
+<p>Return to <a href="DDSComp.html">Dynamic Data System (DDS) - Components</a>.</p>
+<br>
+<br>
+<!-- #EndEditable -->
+<br>
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

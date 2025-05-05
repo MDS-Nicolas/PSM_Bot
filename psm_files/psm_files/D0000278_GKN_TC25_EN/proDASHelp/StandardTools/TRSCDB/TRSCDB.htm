@@ -1,0 +1,603 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Test Results and Sensor Calibration Database (TRSCDB)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="TRSC">Test Results and Sensor Calibration Database (TRSCDB)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The Test Results and Sensor Calibration Database (TRSCDB) contains configuration information for initializing proDAS and storing test data during engine testing. The TRSCDB is an ORACLE&#153; database installed on the Host Computer. The tools and utilities used to maintain the TRSCDB are also installed on the Host Computer.</p>
+<p>The TRSCDB is composed of the following two sections:</p>
+<ul>
+  <li>Test Results Database (TRDB) - refers to the tables used to store test result data </li>
+  <li>Sensor Calibration Database (SCDB) - refers to the tables used to store sensor calibration data</li>
+</ul>
+<p>For specific information on the TRSCDB, select one of the following links:</p>
+<ul>
+  <li><a href="#FileSysOrganisation">file system organization</a></li>
+  <li><a href="#UNIXDatabaseServer">LINUX database server</a></li>
+  <li><a href="?4#DBServerlLogFile">pDB_server.log file</a></li>
+  <li><a href="?5#DBServerConfigFile">proDAS Database Server pDB_config file</a></li>
+  <li><a href="#WindowsDatabaseServer">Windows database server</a></li>
+  <li><a href="#StartStopDatabase">starting and stopping the TRSCDB</a> (manually starting, manually, stopping)</li>
+  <li><a href="?8#CheckStatusDBserver">checking the status of the TRSCDB</a></li>
+  <li><a href="#DatabaseMaintenance">TRSCDB maintenance</a> (checking the tablespace size, checking the tablespace usage, extracting data from the database, backing up the TRSCDB)</li>
+</ul>
+<h2 id="FileSysOrganisation">File System Organisation</h2>
+<p> The figure below illustrates the location of the primary database files on the Host Computer.</p>
+<div class="Container"><img src="images/FileLocation01.gif" alt="File Location 01" width="420" height="318"></div>
+<p> The figure below illustrates the location of some of the database files on the Host Computer.</p>
+<div class="Container"><img src="images/FileLocation02.gif" alt="File Location 02" width="540" height="510"></div>
+<br>
+<h2 id="UNIXDatabaseServer">LINUX Database Server</h2>
+<p>The /users/RTE/bin/exe directory contains the Database Server utility that allows the RTE on the Host Computer to communicate with the TRSCDB. The utility known as pDB_server, is transparent to the end user and services the requests of the RTE. pDB_server is started automatically when the Host Computer is booted. If necessary, pDB_server may also be started manually by the system administrator. The table below lists the utilities and their functions.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Utility</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>pDB_server</td>
+    <td>The communication interface utility between the proDAS application on the Host Computer and the proDAS database.</td>
+  </tr>
+  <tr>
+    <td>proDAS_db_check</td>
+    <td>Checks the status of the <strong>pDB_server</strong> (running &amp; idle, running &amp; busy, not running) utility.</td>
+  </tr>
+  <tr>
+    <td>proDAS_db_start</td>
+    <td>Manually starts the <strong>pDB_server</strong> utility.</td>
+  </tr>
+  <tr>
+    <td>proDAS_db_stop</td>
+    <td>Manually stops the <strong>pDB_server</strong> utility.</td>
+  </tr>
+</table>
+<h3 id="DBServerlLogFile">pDB_server.log File</h3>
+<p>pDB_server records transaction messages and information about the tasks it is performing in the &quot;pDB_server.log&quot; file. The &quot;pDB_server.log&quot; file is stored in the &quot;/users/RTE/bin/tmp&quot; directory and accumulates trace messages as it is passing data from the TRSCDB to the RTE or from the RTE to the TRSCDB. Trace messages include commands, basic messages and error messages. This accumulated information is helpful in diagnosing and troubleshooting a problem associated with the database server or the TRSCDB.</p>
+<h3 id="DBServerConfigFile">pDB_config File</h3>
+<p>The pDB_server utility can be configured with a variety of operating parameters. The definable parameters are contained in the &quot;pDB_config&quot; file located in the &quot;/users/RTE/bin/exe&quot; directory on the Host Computer. MDS, as a part of building proDAS, establishes each parameter so that pDB_server will operate properly. For more information on the configuration parameters of pDB_server, see the <a href="?10#StartStopDatabase">pDB_config file</a>.</p>
+<h2 id="WindowsDatabaseServer">Windows Database Server</h2>
+<p>The Windows Database Server is a server program for the interface between the TRSCDB and the applications running in the Windows environment. The TRSCDB stores the data related to Test Results and Sensor Calibration.</p>
+<p>The Windows Database Server supplies the following functionality:</p>
+<ul>
+  <li>Access Test Result</li>
+  <li>Access Sensor Calibration</li>
+</ul>
+<p>The client accesses the data via a COM interface (i.e.: the Windows Database Server is a COM server). It communicates with the TRSCDB using an ODBC interface and runs under Microsoft Windows.</p>
+<h3 id="AccessWindowsDBServer">Accessing the Windows Database Server</h3>
+<p>The Windows Database Server is not directly accessed by the User, but other proDAS components are using it. <br>
+  The full functionality of the Windows Database Server is available via its automation <a href="?11#CSInterfaces">interfaces</a> (i.e. is accessible from VBS macros). For information on the Windows Database Server interfaces, refer to <a href="../../References/ICDs/ICD2665WindowsDB.pdf">ICD 78031.2665 Interface Control Document for Windows DB Server</a>.</p>
+<h2 id="StartStopDatabase">Starting and Stopping the TRSCDB</h2>
+<p>When the Host Computer is booted, the TRSCDB, pDB_server and the Oracle Server (orasrv) process &quot;tnslsnr&quot; start automatically (&quot;tnslsnr&quot; allows communication between the ORACLE database and the other proDAS computers). This startup sequence is controlled by the /etc/init.d file. If the TRSCDB is shut down, it can be restarted manually.</p>
+<h3 id="OpenUnixShell">Opening a LINUX Command Shell on the Host Computer</h3>
+<p>A LINUX Command Shell can be accessed in the following two ways:</p>
+<ol>
+  <li>Using the Host Computer terminal directly or</li>
+  <li>Using Telnet to access the Host Computer from a PC on the same network (ie.: the Management Interface Computer).</li>
+</ol>
+<p>To Telnet into the Host Computer:</p>
+<ol>
+  <li>Open a command prompt from the Start/Programs menu on the desired PC.</li>
+  <li>Type &quot;telnet <strong>host name</strong>&quot;.
+    <p class="Note">The host name is the name assigned to the Host Computer. It will be unique to each system.</p>
+    A login prompt is displayed.<br>
+  </li>
+  <li>Enter the login name &quot;<strong>engineer</strong>&quot;. A password prompt is displayed.</li>
+  <li>Enter the correct password. A LINUX prompt is displayed.</li>
+  <li>Click the <strong>Enter</strong> button.</li>
+</ol>
+<h3 id="ManuallyStartDatabase">Manually Starting the TRSCDB</h3>
+<h4 id="StartOracle">Starting Oracle</h4>
+<ol>
+  <li>Open a LINUX command shell on the Host Computer and login as username <strong>oracle</strong> (a password is required).</li>
+  <li>At the LINUX prompt, type <strong>cd /etc/init.d</strong>.</li>
+  <li>At the LINUX prompt, type <strong>./oracle start</strong> (a password is required).</li>
+  <li>At the LINUX prompt, type <strong>ps -ef | grep ora</strong> to verify that the database has started.<br>
+    View the output and ensure that entries for pmon, dbwo, lgwr, smon, reco and tnslsnr are present (see the following example).<br>
+    <br>
+    <strong>oracle 1100 1 0 Jan 31 ? 0:16<br>
+      ora_pmon_trsc<br>
+      oracle 1102 1 0 Jan 31 ? 0:33 ora_dbwo_proDAS<br>
+      oracle 1104 1 0 Jan 31 ? 0:17 ora_lgwr_proDAS<br>
+      oracle 1106 1 0 Jan 31 ? 0:02 ora_smon_proDAS<br>
+      oracle 1108 1 0 Jan 31 ? 0:00 ora_reco_proDAS<br>
+      oracle 1113 1 0 Jan 31 ? 0:00 /disk2/app/oracle/product/oraclelog/bin/tnslsnr 
+      LISTENER -inherit<br>
+      oracle 1129 1121 0 Jan 31 ? 0:18 oracleproDAS (DESCRIPTION=(LOCAL=YES)(ADDRESS=(PROTOCOL=beq)))<br>
+      <br>
+    </strong></li>
+  <li>If the listener has not been started (i.e.: <strong>tnslsnr</strong> is not found in the list of processes), type <strong>lsnrctl start</strong> at the LINUX prompt. <br>
+  </li>
+</ol>
+<h4 id="StartDBserver">Starting the DB Server</h4>
+<ol>
+  <li>Make sure proDAS is not configured and that the Management Interface program has been exited.</li>
+  <li>Log into a Real-Time Display Computer as <strong>engineer</strong> (a password is required).</li>
+  <li>At the LINUX prompt, type <strong>exe</strong> (alias for <strong>cd</strong> /users/RTE/bin/exe).</li>
+  <li>At the LINUX prompt, type <strong>proDAS_db_start</strong>.</li>
+</ol>
+<h3 id="ManuallyStopDatabase">Manually Stopping the TRSCDB</h3>
+<h4 id="StopDBserver">Stopping the dB Server</h4>
+<ol>
+  <li>Make sure proDAS is not configured and that the Management Interface program has been exited.</li>
+  <li>Log into a Real-Time Display Computer as <strong>engineer</strong> (a password is required).</li>
+  <li>At the LINUX prompt, type <strong>exe</strong> (alias for <strong>CD</strong> /users/RTE/bin/exe).</li>
+  <li>At the LINUX prompt, type <strong>proDAS_db_stop</strong>.</li>
+</ol>
+<h4 id="StopOracle">Stopping Oracle</h4>
+<ol>
+  <li>At the LINUX prompt, type <strong>su oracle</strong> (a password is required).</li>
+  <li>At the LINUX prompt, type <strong>cd /etc/init.d</strong>.</li>
+  <li>At the LINUX prompt, type <strong>./oracle stop</strong> (a password is required).</li>
+</ol>
+<h3 id="CheckStatusDBserver">Checking the Status of pDB_server</h3>
+<p>The status of the database server (pDB_server) is checked to ensure that pDB_server is running.</p>
+<p>To check the status of the pDB_server:</p>
+<ol>
+  <li>Open a LINUX command shell on the Host Computer (see <a href="?12#OpenUnixShell">Opening a LINUX Command Shell on the Host Computer</a>).</li>
+  <li>At the LINUX prompt, type <strong>exe</strong> (alias for <strong>CD /users/RTE/bin/exe</strong>).</li>
+  <li>Type <strong>proDAS_db_check</strong> to check the status of pDB_server.</li>
+</ol>
+<p>A message is displayed that describes the status of pDB_server. The status can be:</p>
+<ul>
+  <li>running &amp; idle</li>
+  <li>running &amp; busy</li>
+  <li>not running</li>
+</ul>
+<h2 id="DatabaseMaintenance">TRSCDB Maintenance</h2>
+<p class="Caution">Only an experienced database administrator should make changes to the database.</p>
+<p> Maintaining the TRSCDB involves:</p>
+<ul>
+  <li><a href="?13#CheckTableSpaceSize">checking the table space size</a></li>
+  <li><a href="?14#ExtractData">extracting data from the database</a></li>
+  <li><a href="?15#BackupDatabase">backing up the TRSCDB</a></li>
+</ul>
+<p>For information about starting and stopping the TRSCDB, see <a href="?16#StartStopDatabase">Starting and Stopping the TRSCDB.</a></p>
+<h3 id="CheckTableSpaceSize">Checking the Tablespace Size</h3>
+<p>Each tablespace should be no more than 90 percent full.</p>
+<h4 id="CheckPercentSpace">Checking the Percentage of the Database Space Used by Each Tablespace</h4>
+<p>At the Host Computer:</p>
+<ol>
+  <li>Open a LINUX command shell (see <a href="?18#OpenUnixShell">Opening a LINUX Command Shell on the Host Computer</a>).</li>
+  <li>At the LINUX command line, enter <strong>sqlplus</strong>.</li>
+  <li>When prompted, login as <strong>engineer</strong> (a password is required).</li>
+  <li>Type:
+    <p><strong>select ue.tablespace_name, sum(ue.bytes) USED_SPACE, sum(fs.bytes) FREE_SPACE, 
+      sum(ue.bytes)/(sum(fs.bytes) + sum(ue.bytes))*100 PERCENT_FULL from user_extents 
+      ue, user_free_space Fs<br>
+      <br>
+    </strong>where <strong> ue.tablespace_name = fs.tablespace_name group by ue.tablespace_name order by ue.tablespace_name;</strong> </p>
+    The percentage of the database space used by each tablespace is displayed in the following format:
+    <table class="Table-Grey">
+      <tr>
+        <th>TABLESPACE_NAME</th>
+        <th>PERCENT_FULL</th>
+      </tr>
+      <tr>
+        <td>CALIBTBLS</td>
+        <td>10.7732937</td>
+      </tr>
+      <tr>
+        <td>CALIBIDX</td>
+        <td>45.2042886</td>
+      </tr>
+      <tr>
+        <td>FULLTBLS</td>
+        <td>6.72420857</td>
+      </tr>
+      <tr>
+        <td>EVENTTBLS</td>
+        <td>5.71272384</td>
+      </tr>
+    </table>
+    <p class="Note">This is an example.</p>
+  </li>
+  <li>Type <strong>exit</strong>.</li>
+</ol>
+<h4 id="CheckDatabaseSpaceBytes">Checking the Database Space Used by Each Tablespace</h4>
+<p>At the Host Computer:</p>
+<ol>
+  <li>Open a LINUX command shell (see <a href="?19#OpenUnixShell">Opening a LINUX Command Shell on the Host Computer</a>).</li>
+  <li>At the LINUX command line, enter <strong>sqlplus</strong>.</li>
+  <li>When prompted, login as <strong>engineer</strong> (a password is required).</li>
+  <li>Type: <br>
+    <strong>select tablespace_name, sum(bytes) &quot;USED_SPACE(bytes)&quot; from user_extents group by tablespace_name order by tablespace_name;</strong><br>
+    <br>
+    The database space used by each table space is displayed in the following format:
+    <table class="Table-Grey">
+      <tr>
+        <th>TABLESPACE_NAME</th>
+        <th>USED_SPACE (BYTES)</th>
+      </tr>
+      <tr>
+        <td>CALIBTBLS</td>
+        <td>7389184</td>
+      </tr>
+      <tr>
+        <td>CALIBIDX</td>
+        <td>1064960</td>
+      </tr>
+      <tr>
+        <td>FULLTBLS</td>
+        <td>35794944</td>
+      </tr>
+      <tr>
+        <td>EVENTTBLS</td>
+        <td>35313664</td>
+      </tr>
+    </table>
+    <p class="Note">This is an example.</p>
+  </li>
+  <li>Type <strong>exit</strong>.</li>
+</ol>
+<h4 id="CheckDatabaseSpaceAvail">Checking the Database Space Available in Each Tablespace</h4>
+<p>At the Host Computer:</p>
+<ol>
+  <li>Open a LINUX command shell (see <a href="?20#OpenUnixShell">Opening a LINUX Command Shell on the Host Computer</a>)..</li>
+  <li>At the LINUX command line, enter <strong>sqlplus</strong>.</li>
+  <li>When prompted, login as <strong>engineer</strong> (a password is required).</li>
+  <li>Type:
+    <p><strong>select tablespace_name, sum(bytes) &quot;Free Space (bytes)&quot; from user_free_space</strong><br>
+      <br>
+      where <strong>tablespace_name in (select distinct tablespace_name from user_extents) group by tablespace_name order by tablespace_name;</strong><br>
+    </p>
+    The database space available in each table space is displayed in the following format:<br>
+    <table class="Table-Grey">
+      <tr>
+        <th>TABLESPACE_NAME</th>
+        <th>FREE SPACE (BYTES)</th>
+      </tr>
+      <tr>
+        <td>CALIBTBLS</td>
+        <td>27539456</td>
+      </tr>
+      <tr>
+        <td>CALIBIDX</td>
+        <td>11618304</td>
+      </tr>
+      <tr>
+        <td>EVENTTBLS</td>
+        <td>48570368</td>
+      </tr>
+    </table>
+    <p class="Note">This is an example.</p>
+  </li>
+  <li>Type <strong>exit</strong>.</li>
+</ol>
+<h3 id="ExtractData">Extracting Data from the Database</h3>
+<p>Extracting data from the database requires a knowledge of ORACLE, Structured Query Language (SQL), and the database table structure.</p>
+<p>The SQL query must be structured for the specific information to be extracted. The following examples are based on the TRSCDB table structure illustrated below:</p>
+<ul>
+  <li><a href="?21#LogintoSQLPLUS">logging into SQL*PLUS</a></li>
+  <li><a href="?22#ColumnNameQuery">querying the list of column names in a database table</a></li>
+  <li><a href="?23#FilteredQuery">querying specific information by filtering data</a></li>
+  <li><a href="?24#WildCardQuery">querying data using wild cards</a></li>
+  <li><a href="?25#DifferentTableQuery">querying data from different tables</a></li>
+</ul>
+<h4 id="SampleDatabaseTableStructure">Sample Database Table Structure</h4>
+<p>The database table structure (below) represents a small portion of the database. Each block describes a table in a database and contains the table title and the column names in the table.</p>
+<div class="Container"><img src="images/DBtableStructureA.gif" alt="DB table Structure A" width="636" height="378"></div>
+<h3 id="LogintoSQLPLUS">Logging into SQL*PLUS</h3>
+<p> To log into the TRSCDB and start an SQL query:</p>
+<ol>
+  <li>Open a LINUX command shell on the Host Computer (see <a href="?26#OpenUnixShell">Opening a LINUX Command Shell on the Host Computer</a>).</li>
+  <li>At the LINUX command line, type <strong>sqlplus</strong> to run the SQL*PLUS program.</li>
+  <li>Log into SQL*PLUS as <strong>engineer</strong> (a password is required).<br>
+    The SQL&gt; prompt is displayed.</li>
+  <li>Type an SQL query.</li>
+</ol>
+<h4 id="ColumnNameQuery">Querying the List of Column Names in a Database Table </h4>
+<p>The structure of a table can be determined from the column headers (names).</p>
+<p>For example, to extract the column name from the test_header table that is part of the sample TRSCDB table structure (see <a href="?27#SampleDatabaseTableStructure">Sample TRSCDB Table Structure</a>):</p>
+<ol>
+  <li>At the SQL&gt; prompt, type <strong>desc test_header</strong>.<br>
+    The following information is displayed:
+    <table class="Table-Grey">
+      <tr>
+        <th>Name</th>
+        <th>Null?</th>
+        <th>Type</th>
+      </tr>
+      <tr>
+        <td>TEST_CELL_ID</td>
+        <td>NOT NULL</td>
+        <td>NUMBER(2)</td>
+      </tr>
+      <tr>
+        <td>TEST_ID</td>
+        <td>NOT NULL</td>
+        <td>NUMBER(3)</td>
+      </tr>
+      <tr>
+        <td>TEST_NAME</td>
+        <td>NOT NULL</td>
+        <td>VARCHAR2(20)</td>
+      </tr>
+      <tr>
+        <td>TEST_DATE</td>
+        <td >&nbsp;</td>
+        <td>DATE</td>
+      </tr>
+      <tr>
+        <td>TEST_DESC</td>
+        <td>NOT NULL</td>
+        <td>VARCHAR2(250)</td>
+      </tr>
+      <tr>
+        <td>ENGINE_SERIAL_NO</td>
+        <td>NOT NULL</td>
+        <td>VARCHAR2(15)</td>
+      </tr>
+      <tr>
+        <td>TEST_OPER1</td>
+        <td>NOT NULL</td>
+        <td>VARCHAR2(40)</td>
+      </tr>
+      <tr>
+        <td>TEST_OPER2</td>
+        <td>NOT NULL</td>
+        <td>VARCHAR2(40)</td>
+      </tr>
+      <tr>
+        <td>TEST_ENG</td>
+        <td>NOT NULL</td>
+        <td>VARCHAR2(40)</td>
+      </tr>
+      <tr>
+        <td>ENGINE_NAME</td>
+        <td>&nbsp;</td>
+        <td>NUMBER(2)</td>
+      </tr>
+      <tr>
+        <td>ARCH_SET_ID</td>
+        <td>&nbsp;</td>
+        <td>NUMBER(4)</td>
+      </tr>
+      <tr>
+        <td>CLEANED</td>
+        <td>&nbsp;</td>
+        <td>VARCHAR2(1)</td>
+      </tr>
+      <tr>
+        <td>ARCH_DATE</td>
+        <td>&nbsp;</td>
+        <td>DATE</td>
+      </tr>
+      <tr>
+        <td>CUSTOMER</td>
+        <td>&nbsp;</td>
+        <td>VARCHAR2(30)</td>
+      </tr>
+      <tr>
+        <td>ENGINE_STANDARD</td>
+        <td>&nbsp;</td>
+        <td>VARCHAR2(20)</td>
+      </tr>
+    </table>
+    <p class="Note">This is an example.</p>
+  </li>
+</ol>
+<h4 id="FilteredQuery">Querying Specific Information by Filtering Data</h4>
+<p>Table data can be filtered to extract specific information.</p>
+<p>For example: for the sample TRSCDB Table Structure above, to extract the test_id from the test_header table, specifically for the test_name Sep19,</p>
+<ol>
+  <li>At the SQL&gt; prompt, type:<br>
+    <br>
+    <strong>select test_id from test_header where test_name='Sep19';</strong><br>
+    <br>
+    The following information is displayed, if a test named 'Sep19' exists in the database:<br>
+    TEST_ID<br>
+    110<br>
+    1 row selected</li>
+</ol>
+<h4 id="WildCardQuery">Query Data Using Wildcards</h4>
+<p>Queries can extract a range of data using &quot;wildcard&quot; characters. A commonly used wild card character is * (the asterisk symbol) which represents &quot;everything&quot;.</p>
+<p>For example: for the sample TRSCDB Table Structure above, to select and view all the information from the &quot;test_header&quot; table for a test named &quot;Sep19&quot;,</p>
+<ol>
+  <li> At the SQL&gt; prompt, type:<br>
+    <br>
+    <strong>select * from test_header where test_name='Sep19';</strong><br>
+    <br>
+    The following information is displayed (only the first six columns of the table are shown):
+    <table class="Table-Grey">
+      <tr>
+        <th>TEST_CELL_ID</th>
+        <th>TEST_ID</th>
+        <th>TEST_NAME</th>
+        <th>TEST_DATE</th>
+        <th>TEST_DESC</th>
+        <th>ENGINE_<br>
+          SERIAL_NO</th>
+      </tr>
+      <tr>
+        <td>0</td>
+        <td>110</td>
+        <td>Sep19</td>
+        <td>19-Sep-01</td>
+        <td>Test of Performance Sheet</td>
+        <td>51</td>
+      </tr>
+      <tr>
+        <td>1 row selected</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+  </li>
+</ol>
+<h4 id="DifferentTableQuery">Querying Data from Different Tables </h4>
+<p>Queries can extract specific data from different tables.</p>
+<p>For example: for the sample TRSCDB Table Structure above, to extract all the data from the customer_specific table relating to test 110:</p>
+<ol>
+  <li> At the SQL&gt; prompt, type:<br>
+    <br>
+    <strong>select test_cell_id, test_id, test_name, test_date, engine_serial_no from test_header</strong><br>
+    where <strong>test_id=100</strong><br>
+    <br>
+    This selects the columns in the test_header table (test_cell_id, test_id, etc.) that are listed for test_id 100 (if a column in a table is not listed in the SQL statement, it will not be displayed):
+    <table class="Table-Grey">
+      <tr>
+        <th>TEST_CELL_ID</th>
+        <th>TEST_ID</th>
+        <th>TEST_NAME</th>
+        <th>TEST_DATE</th>
+        <th>ENGINE_SERIAL_No</th>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>100</td>
+        <td>Calibration_Testing</td>
+        <td>22-JUL-02</td>
+        <td>456</td>
+      </tr>
+    </table>
+  </li>
+</ol>
+<h4 id="ComplexQuery">Querying Data from Different Tables using Complex Queries</h4>
+<p>A complex query extracts specific information from different tables using Boolean operators and links.</p>
+<p>For example: to extract all fullset values for channel 'NH', with the corresponding time stamps for test name 'Sep19', for the sample TRSCDB Table Structure above, &quot;and&quot; is used as a Boolean search operator, and a &quot;period&quot; links a table column to a specific table.</p>
+<ol>
+  <li>At the SQL&gt; prompt, type:<br>
+    <br>
+    <strong>select event_date, value from fullsets, events, test_header<br>
+      where fullsets.test_id = test_header.test_id<br>
+      and events.test_id=test_header.test_id<br>
+      and fullsets.event_id=events.event_id <br>
+      and channel_name='NH'<br>
+      and test_name='Sep19';</strong><br>
+    <br>
+    The following information is displayed:
+    <table class="Table-Grey">
+      <tr>
+        <th>EVENT_DATE</th>
+        <th>VALUE</th>
+      </tr>
+      <tr>
+        <td>19-SEP-01</td>
+        <td>1444.77</td>
+      </tr>
+      <tr>
+        <td>19-SEP-01</td>
+        <td>1460.32</td>
+      </tr>
+      <tr>
+        <td>19-SEP-01</td>
+        <td>1500.65</td>
+      </tr>
+    </table>
+    <p class="Note">This is an example.</p>
+  </li>
+</ol>
+<h3 id="BackupDatabase">Backing up the TRSCDB</h3>
+<p>Backing up the TRSCDB involves creating a database export file, and then copying this export file to a backup tape. All, or part, of the database can be exported. To export data from the TRSCDB:</p>
+<ol>
+  <li>Open a LINUX command shell on the Host Computer (see <a href="?28#OpenUnixShell">Opening a LINUX Command Shell on the Host Computer</a>).. </li>
+  <li>At the LINUX prompt, type <strong>oracle</strong> to change to the <strong>/users/oracle</strong> directory.</li>
+  <li>Type <strong>exp</strong>.</li>
+  <li>Type <strong>engineer</strong> as the user name.</li>
+  <li>Enter the password at the prompt.</li>
+  <li>Specify the name of the export file.</li>
+  <li>Specify whether to export the entire database, the user tables in the database or selected tables.</li>
+  <li>Continue to answer the questions that are displayed until the export runs. The export file is created in the &quot;/users/oracle&quot; directory.</li>
+  <li>Copy the export file to a backup tape.
+    <p class="Note">Exports are performed automatically as part of the TRSCDB backup strategies/scripts.</p>
+  </li>
+  <li>An example of a database export is listed below.<br>
+    The operator input is in <strong>bold</strong> type.
+    <p class="Note">If there is no operator input and a &lt;return&gt; is entered, then the default value is accepted.</p>
+    <br>
+    Export: Release 10.2.0.1.0 - Production on Wed Apr 5 19:42:33 2006<br>
+    <br>
+    Copyright (c) 1982, 2005, Oracle.  All rights reserved.<br>
+    <br>
+    Username: <strong>engineer &lt;return&gt;</strong><br>
+    <br>
+    Password: <strong>XXXXXXX &lt;return&gt;</strong><br>
+    <br>
+    Connected to: Oracle Database 10g Release 10.2.0.1.0 - Production<br>
+    <br>
+    Enter array fetch buffer size: 4096 &gt; <strong>&lt;return&gt;</strong><br>
+    <br>
+    Export file: expdat.dmp &gt; <strong>DBBU.dmp &lt;return&gt;</strong><br>
+    <br>
+    (2)U(sers), or (3)T(ables): (2)U &gt; <strong>&lt;return&gt;</strong><br>
+    <br>
+    Export grants (yes/no): yes &gt; <strong>&lt;return&gt;</strong><br>
+    <br>
+    Export table data (yes/no): yes &gt; <strong>&lt;return&gt;</strong><br>
+    <br>
+    Compress extents (yes/no): yes &gt; <strong>&lt;return&gt;</strong><br>
+    <br>
+    . exporting pre-schema procedural objects and actions<br>
+    . exporting foreign function library names for user ENGINEER <br>
+    . exporting PUBLIC type synonyms<br>
+    . exporting private type synonyms<br>
+    . exporting object type definitions for user ENGINEER<br>
+    About to export ENGINEER's objects ...<br>
+    . exporting database links<br>
+    . exporting sequence numbers<br>
+    . exporting cluster definitions<br>
+    . about to export ENGINEER's tables via Conventional Path ...<br>
+    . . exporting table ARCHIVE_SETS 0 rows exported<br>
+    . . exporting table FULLSETS 264951 rows exported<br>
+    . . exporting table POLY_BPTABLE 6761 rows exported<br>
+    . . exporting table SENSOR_CALIBRATION 266 rows exported<br>
+    . . exporting table TEST_HEADER 24 rows exported<br>
+    . exporting synonyms<br>
+    . exporting views<br>
+    . exporting stored procedures<br>
+    . exporting operators<br>
+    . exporting referential integrity constraints<br>
+    . exporting triggers<br>
+    . exporting indextypes<br>
+    . exporting bitmap, functional and extensible indexes<br>
+    . exporting posttables actions<br>
+    . exporting materialized views<br>
+    . exporting snapshot logs<br>
+    . exporting job queues<br>
+    . exporting refresh groups and children<br>
+    . exporting dimensions<br>
+    . exporting post-schema procedural objects and actions<br>
+    . exporting statistics<br>
+    <br>
+    Export terminated successfully without warnings.</li>
+</ol>
+<h2 id="ConfigServer">Configuration Server</h2>
+<p>The Configuration Server allows other proDAS applications to access the configuration data in the configuration database.</p>
+<p>The Configuration Server is the only component of the system that handles the input and output of configuration files. It maintains the integrity of the configuration data and assigns data to their respective scope (i.e. engine type, engine standard, customer, test cell, and test configuration). It offers its services via an automation interface.</p>
+<p>The Configuration Server restricts access to the configuration based on the user security levels from the user security system. Level 0 indicates an unidentified user without write privileges. A user can add, modify or delete data of a category and configuration if:</p>
+<ul>
+  <li>a sufficient user level with write privileges is available</li>
+  <li>the configuration is a test configuration</li>
+  <li>write privileges are available to one of the parent configurations of the configuration to which the data belongs</li>
+</ul>
+<h3 id="CSInterfaces">Interfaces</h3>
+<p>The automation interface of the configuration server allows programs to access the configuration data.</p>
+<p>For information on the Configuration Server interfaces, refer to <a href="../../References/ICDs/ICD2661ConfigServer.PDF">ICD 78031.2661 for Configuration Server</a>.</p>
+<p>For information on the Subsystem Interface of the Configuration Server, refer to <a href="../../References/ICDs/ICD2801ConfigSvrSubsystem.pdf">ICD 78031.2801 for Configuration Server - Subsystems</a>.</p>
+<p>For information on the Channels Interface of the Configuration Server, refer to <a href="../../References/ICDs/ICD2782ConfigSvrChannels.pdf">ICD 78031.2782 for Configuration Server - Channels</a>.</p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

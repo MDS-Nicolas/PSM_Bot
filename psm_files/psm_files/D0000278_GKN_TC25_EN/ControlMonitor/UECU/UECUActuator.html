@@ -1,0 +1,86 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Throttle - Actuator</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left>
+  <h1>Throttle<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<h2><a name="Actuator"></a>Actuator</h2>
+<p>An actuator is typically included with systems that have engines that require electromechanical fuel control. The actuator consists of:</p>
+<ul>
+  <li><a href="#ActuatorChassis">Actuator Chassis</a></li>
+  <li><a href="#MechlActuator">Mechanical Actuator</a></li>
+  <li><a href="#Override">Override System</a></li>
+  <li><a href="#OverrideControlSystem">Pneumatic Control Junction Box</a></li>
+</ul>
+<h3><a name="ActuatorChassis"></a>Actuator Chassis</h3>
+<p>The actuator chassis is a 19" rack mount unit. The unit is universal and can operate at 85 VAC to 264 VAC at a frequency of 45 Hz to 65 Hz.</p>
+<p>The chassis contains either one or two independent motor amplifiers. These motor amplifiers receive &plusmn;10 VDC command signal from the PLC in the controller chassis. The amplifier provides the proper pulse width modulated (PWM) signal to the motor required to drive it at the requested speed.</p>
+<p>The motor amplifiers are powered by a 24 VDC power supply. The 24 VDC power supply also powers the signal conditioners located inside the chassis. An LED on the back of the actuator chassis turns green when the chassis main power is on. This LED provides status of the 24 VDC power supply inside the chassis.</p>
+<p>Back to <a href="#Actuator">Actuator</a>.</p>
+<h3><a name="MechlActuator" id="MechlActuator"></a>Mechanical Actuator</h3>
+<p>The  rotary actuator (shown below) is a brushless servomotor with an optical encoder for velocity feedback. Position feedback is derived from a precision rotary potentiometer coupled directly to the output shaft of the reducer. The motor and electronics are mounted in an enclosed box.</p>
+<p>The standard actuator has a running torque of up to 1000 ounce-inches (72,080 gram-centimetres) and a maximum velocity of 360 angular degrees per second with no load. The actuator has physical travel stops at 180 degrees.</p>
+<p>The UECU-500 Mark III Throttle System uses an air activated fail safe device to return the actuator to a known safe position. For details, see <a href="#Override">Override System</a>.</p>
+<p>Acceleration, deceleration and other parameters used for tuning the controller are programmable, and are dependent on the inertia and friction in the linkages to the engine.</p>
+<p class="Note">The actuator may not be exactly as shown. For custom torque requirements, contact MDS Aero Support Corporation.</p>
+<div class="Container"><img src="images/Actuator02.gif" alt="Actuator 02" width="350" height="291"></div>
+<p>Back to <a href="#Actuator">Actuator</a>.</p>
+<h3><a name="Override"></a>Manual Override System</h3>
+<p>The UECU-500 Mark III Throttle actuator is equipped with a manual override system. The override system is used to bring the Throttle to a pre-set position (typically idle) in the case of a failure that prevents the actuator drive system from operating.</p>
+<p>The override system may be activated at any time by pressing a THROTTLE TRIP pushbutton mounted on the Manual Override Panel in a client - selected location(s). Once activated, the throttle actuator returns to the pre-set throttle stop position (typically idle) and remain there until the override system is re-set. The engine should then be shut off when it is convenient.</p>
+<div class="container"><img src="../../References/HowTos/ControlMon/UECU/images/OverridePanel.gif" alt="Override Panel" width="500" height="137"></div>
+<p>The override system is powered pneumatically (air pressure) so that it can operate during a power outage.</p>
+<p class="Note">To operate during a power outage, the Override system requires at least 2 seconds of air at 40 psi, and 10 SCFM. The client should ensure that this amount of air is available in the case of a power outage.</p>
+<p class="Note">60 psi is the maximum pressure.</p>
+<p>The air quality requirements are:</p>
+<ul>
+  <li>filtered to remove particles above 1 microns</li> 
+  <li>filtered to remove 99.9% of oil mist above 0.1 microns</li> 
+  <li>dew point below -30 &deg;C</li>
+</ul>
+<p>The override system consists of three assemblies:</p>
+<ul>
+  <li>the manual override panel located in the operator console</li>
+  <li>the Throttle <a href="#OverrideControlSystem">override pneumatic control junction box</a> that is located in a service or control room near the test cell</li>
+  <li>the drive system that is contained in the actuator</li>
+</ul>
+<h4><a name="OverrideControlSystem"></a>Override Pneumatic Control Junction Box</h4>
+<p>The override system is controlled by the override pneumatic control junction box. The junction box contains the valves and regulator required to control the air motor in the  actuator. Two 3/8" diameter air lines with Swagelok fittings connect the Throttle override pneumatic control junction box to the actuator.</p>
+<p>The Throttle override pneumatic control junction box is designed to trigger the override system automatically in the case of a power outage. For further details, see <a href="../../References/MDSDrawings/13991xx.pdf">GA-900-01-13991 Outline and Installation, Junction Box Assembly, Pneumatic Control</a>.</p>
+<div class= "Container"><img src="images/OverrideBox.gif" alt="Override Box" width="450" height="464"></div>
+<h4><a name="DriveSystem"></a>Override Drive System</h4>
+<p>The override drive system located in the actuator consists of:</p>
+<ul>
+  <li>torque limiter</li>
+  <li>override Throttle stop</li>
+  <li>air motor Throttle</li>
+</ul>
+<p>The torque limiter is a ball-detent type with single-position engagement. The torque limiter couples the servo motor output shaft to the actuator output shaft. The torque limiter de-couples the servo drive from the actuator output shaft when the pre-set disengagement torque is exceeded. Once disengaged, the torque limiter transmits minimal torque until re-engaged. A proximity switch is triggered when the torque limiter disengages.</p>
+<div class="container"><img src="images/Actuator.gif" alt="Actuator" width="483" height="254"></div>
+<p>The override Throttle stop is used to set the position of the Throttle when the override system is triggered. The override Throttle stop position is adjustable (at the actuator) throughout the Throttle range from full Throttle to cut-off. During normal Throttle actuator operation, the override Throttle stop has no effect on the actuator travel.</p>
+<p>The air motor is a vane type with a reduction gear-head. The air motor remains inactive and depressurized until the control system is triggered. Once triggered, the air motor rotates and engages the actuator output shaft until it rests on the override Throttle stop.</p>
+<p>See <a href="UECUOper.html">Operation</a> for instructions on how to use the Override system.</p>
+<p>Back to <a href="#Actuator">Actuator</a>.</p>
+<p>Back to <a href="UECUComp.html">Throttle System Components</a>.</p>
+
+
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

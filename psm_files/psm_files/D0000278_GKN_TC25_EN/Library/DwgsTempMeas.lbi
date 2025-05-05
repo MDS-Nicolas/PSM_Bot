@@ -1,0 +1,23 @@
+<table class="Table-Grey">
+  <tr>
+ <th class="row-DwgNumber">Drawing Number</th>
+ <th class="row-DwgTitle">Drawing Title</th>
+  </tr>
+  <tr>
+    <td><a href="../References/MDSDrawings/A0000232.pdf">A-0000232</a></td>
+    <td>Assembly, Wiring, GKN, Test Cell 25, Temperature</td>
+  </tr>
+  <tr>
+   <td><a href="../References/MDSDrawings/A0000277.pdf">A-0000277</a></td>
+   <td>Assembly, Wiring, GKN, Test Cell 25, Scanner Interfaces</td>
+  </tr>
+  <tr>
+   <td><a href="../References/MDSDrawings/D0000505.pdf">D-0000505</a></td>
+   <td>Block Diagram, GKN, Test Cell 25, Thermocouple Scanners</td>
+  </tr>
+  <tr>
+   <td><a href="../References/MDSDrawings/10134xx.pdf">CA-900-01-10134</a></td>
+   <td>Cable Assembly, Scanivalve, Scanner Patch</td>
+  </tr>
+ 
+</table>

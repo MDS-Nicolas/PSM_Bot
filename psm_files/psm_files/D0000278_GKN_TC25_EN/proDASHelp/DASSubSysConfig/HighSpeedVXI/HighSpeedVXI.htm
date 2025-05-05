@@ -1,0 +1,732 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" -->
+<title>High Speed VXI (HSV) Subsystem</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="HighSpeedVXI">High Speed VXI (HSV) Subsystem (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The High Speed VXI (HSV) Subsystem enables the acquisition and storage of high-speed data (up to 5000 Hz) by proDAS. The HSV Subsystem has the ability to apply two different scan rates and includes an online memory buffer that is independent of the RTE Current Value Table (CVT). Channels that are configured within the HSV Subsystem are also maintained in  the RTE CVT at a lower scan rate.</p>
+<p>High speed acquisition is performed by VT1413C cards, with a VT1510A  Four-Channel Sample and Hold Signal Conditioning Plug-on (SCP) card. The sample-and-hold capability allows the measurements to be correctly time-synchronised and eliminates skewing.</p>
+<p>The configurable channel parameters of the HSV Subsystem are similar to other analogue input subsystems. The HSV Subsystem maintains all configured channels in both the HSV buffer and the RTE CVT. The HSV Subsystem can configure, calibrate and scan the HSV hardware. The HSV Subsystem performs the Auto Zero  command automatically at the time of configuration.</p>
+<p>If the Open Transducer Detection (OTD) is on, an over-voltage signal or open transducer will result in the channel being registered with a bad quality.</p>
+<h3 id="CardandSCPsupport">Card and SCP Support</h3>
+<p>The HSV Subsystem supports only the VT1413C Scanning A/D Converter Card, but can simultaneously support one or more VT1413C cards, provided that they are contained in the same VXI chassis. Up to eight SCP modules may be attached to the Converter Card. Each SCP contains eight channels. Channels are numbered from 0 to 63, with channels 0 to 7 on one SCP, channels 8 to 15 on the next SCP, etc.</p>
+<p>The HSV Subsystem supports the following SCPs:</p>
+<ul>
+ <li>VXI Technologies VT1501A Eight-Channel Direct Input SCP</li>
+ <li>VXI Technologies VT1502A Fixed-Gain Low-Pass Filter SCP</li>
+ <li>VXI Technologies VT1503A Eight-Channel Programmable Filter Input SCP</li>
+ <li>VXI Technologies VT1508A Eight-Channel Fixed Filter and Amplifier SCP</li>
+ <li>VXI Technologies VT1509A Eight-Channel Fixed Filter and Amplifier SCP</li>
+ <li>VXI Technologies VT1510A Four-Channel Sample and Hold SCP</li>
+ <li>VXI Technologies VT1512A Eight-Channel Low Pass Filter SCP</li>
+</ul>
+<p class="Note">The VT1510A sample and hold channels are only available on the first four channels on each SCP.</p>
+<h3 id="Scan2RTEcvt">Scanning to the RTE CVT</h3>
+<p>A component of the HSV Subsystem maintains all of the channel values of the subsystem in the RTE CVT. The scan rate, at which the RTE CVT is updated, is specified by the configuration data received and is not to exceed  the current maximum proDAS scan rate of 200 Hertz.</p>
+<p>The values stored to the RTE CVT are EU converted. Display, storage, alarm monitoring, logging and limit checking of the RTE CVT values for the channels is done in the same way as for other proDAS channels.</p>
+<h3 id="Scan2HSVbuffer">Scanning to the HSV Buffer</h3>
+<p>A scanning trigger is required to trigger cards to store a value for each channel into the on-card FIFO buffer. The HSV Subsystem only supports an internal trigger. The speed of the scanning trigger is specified in the Subsystem Editor. One card is marked as the master card, and all other cards act as slaves and receive their trigger from the master card. The HSV Subsystem transfers the data from the FIFO buffer to the HSV buffer.</p>
+<h4 id="HSVbufferCharacter">HSV Buffer Characteristics</h4>
+<p>The HSV buffer includes an absolute time reference. The online HSV buffer maintains raw proDAS data. The data in the buffer can be either EU converted or raw data values. Whether the values are EU converted or not will be specified in the RTE initialisation file. The raw data and EU converted data values will not be stored simultaneously because of space considerations within the log. The HSV buffer stores the over-voltage signal passed by the card as the only means of tracking the quality of the channel. If a change to the user-entered quality ceiling is registered, it only affects the parameter in the RTE CVT, and not the HSV buffer.</p>
+<p>The HSV buffer operates in one of two modes:</p>
+<ul>
+  <li> Circular</li>
+  <li> Continuous</li>
+</ul>
+<p>In Circular mode, a circular buffer of the high speed data is maintained to track history data, similar to the RTE critical log. The time length of the HSV buffer is determined from the pre-event and post-event log time in the RTE initialisation file. The maximum length of the HSV buffer is set to accommodate a 30 minute log file. The minimum length of the HSV buffer is three seconds.</p>
+<p>In  Continuous mode, no history is maintained. Instead, the user must indicate both when to start and when to stop recording data. In this mode, the buffer length is not limited to 30 minutes. The disk space available when saving the log is the only restriction to the log size.</p>
+<h3 id="Triggers2Save">Saving the HSV Buffer to Disk</h3>
+<p>The HSV Subsystem stores channel data at the following rates (in  hertz):</p>
+<ul>
+  <li>250</li>
+  <li>500</li>
+  <li>625</li>
+  <li>1000</li>
+  <li>1250</li>
+  <li>2000</li>
+  <li>2500</li>
+  <li>5000</li>
+</ul>
+<p>Due to the limitations of the FIFO buffer on the VT1413C card, the maximum number of channels which may be configured on a single VT1413C card in the HSV Subsystem is dependent on the maximum scan rate. The High Speed VXI Driver will fail to configure any card that includes more than the maximum number of channels on the card for the specified card scan rate. The scan rates are displayed in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Scan Rate</th>
+    <th>Max Number of Channels</th>
+  </tr>
+  <tr>
+    <td>5000</td>
+    <td>12</td>
+  </tr>
+  <tr>
+    <td>2500</td>
+    <td>32</td>
+  </tr>
+  <tr>
+    <td>2000 or 1250</td>
+    <td>40</td>
+  </tr>
+  <tr>
+    <td>1000 or lower</td>
+    <td>64</td>
+  </tr>
+</table>
+<p>The HSV Subsystem saves the high-speed buffer to disk with a filename in the following format:</p>
+<blockquote>  <p>HSVyymmddhhMMss</p>
+</blockquote>
+<p class="Indented1" align="left"> where:</p>
+<ul>
+  <li>HSV identifies the log as a HSV log</li>
+  <li>yy is the year (e.g.:03)</li>
+  <li>mm is the month of the year (e.g.: 04)</li>
+  <li>dd is the day of the month (e.g.: 20)</li>
+  <li>hh is the time in hours - 24-hour clock (e.g.: 15) </li>
+  <li>MM is the time in minutes (e.g.: 24)</li>
+  <li>ss is the time in seconds (e.g.: 10)</li>
+</ul>
+<p>Whenever the HSV buffer is saved to disk, an event record is recorded in the test results database, allowing the saving of the log to be reflected in printed reports. If the maximum number of channels for the defined scan rate is exceeded, a message will be written to the User Event Log (UEL).</p>
+<p>If multiple cards are used, the resulting buffers from each card are merged to store a single log file for all of the VT1413C cards in use.</p>
+<p>When saved to file, the HSV buffer is converted to proDAS RTE log file format, ensuring that post-processing utilities such as RAVE can handlethe stored data.</p>
+<p>Values stored as an over-voltage signal from the card are converted  to a bad value before being saved.</p>
+<p class="Note">The HSV log has a limit of 2GB. If the log's size reaches the limit the following message will be written to the User Event Log (UEL):<br>
+    <br>&quot;HSVlog file about to exceed maximum file size, HSVyymmddhhMMss will be closed!!&quot;.</p>
+<h3 id="TriggersToSave">Test Procedure Commands to Save the HSV Buffer to Disk</h3>
+<p>There are three test procedure commands that signal the driver when it is time to save the HSV buffer to disk. The triggers are:</p>
+<ul>
+  <li>START_HSV_LOG</li>
+  <li>STOP_HSV_LOG</li>
+  <li>SAVE_HSV_LOG</li>
+</ul>
+<h4 id="StartHSVlog">START_HSV_LOG</h4>
+<p>Only available in Continuous mode, the START_HSV_LOG command triggers theHSV system to start saving the HSV log to disk.</p>
+<h4 id="StopHSVlog">STOP_HSV_LOG</h4>
+<p>Available only in Continuous mode, the STOP_HSV_LOG command requests the HSV log to stop writing to disk.</p>
+<h4 id="SaveLog">SAVE_HSV_LOG</h4>
+<p>Only available in Circular mode, the SAVE_HSV_LOG command can be used to save the HSV log.</p>
+<p>If a second save request is received while the buffer is being saved, the request is ignored and the user is notified of such action.</p>
+<p>When a SAVE_HSV_LOG request is received before the pre-event time has elapsed to fill the pre-buffer, the buffer is saved with only the data available to the buffer and the post-event saved data.</p>
+<p>In Circular mode, the Management GUI displays a Save HSV Log button beside the Save Critical Log button. The saving of the memory buffer is initiated by pressing the Save HSV Log button. When this request is made, the pre-event data is saved, and the log file is continued to be written to for the post_event_time. The overall size of the HSV log is based on the combined pre and post event times. In addition, if the RTE is configured to save the HSV log when the critical log is being saved, then the HSV log is automatically saved if the user requests that the critical log be saved.</p>
+<p>In Continuous mode, the Management GUI displays one additional log file name in the list of available logs. The log file name is hardcoded to be HSV. If this log is selected by the user, then the HSV log is started. The user needs to manually stop this log in order to stop recording. The log will record indefinitely until stopped or until it reaches the maximum of 2 GB file size limit.</p>
+<h3 id="EUConversion">EU Conversion</h3>
+<p>Two forms of engineering unit (EU) conversion are available:</p>
+<ul>
+  <li>Regular Analogue</li>
+  <li>Thermocouple (TC)</li>
+</ul>
+<p>The Regular Analogue EU conversion supports both a pinout calibration and an external sensor calibration, which may be either a  polynomial or a two-dimensional breakpoint table.</p>
+<p>Thermocouple EU conversion supports thermocouple compensation for both UTR and UTR Half Box processing as follows:</p>
+<ul>
+  <li>the Facility EU conversion is applied to the raw voltage signal from the channel, changing the reading from volts to millivolts and compensating the channel for both line losses and OTD drift</li>
+  <li> the indicated reference channel is converted into an appropriate thermocouple millivolt equivalent by passing the RTD reading from the CVT backwards through the TC Sensor table</li>
+  <li>the millivolt value of the thermocouple is then added to the millivolt equivalent of the corresponding RTD channel</li>
+  <li>the sum is passed through the TC Sensor table to bring the channel from millivolts to the desired EU</li>
+</ul>
+<h2 id="ConfigHSVchannel">Configuring an HSV Channel</h2>
+<p>To configure an HSV Channel:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</li>
+  <li>Select the name of the HSV Subsystem from the list of available subsystems.
+    <div class="Container"><img src="images/SelectSubsystemName.PNG" alt="SelectSubsystemName" width="387" height="317"></div>
+  </li>
+  <br>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a>.</li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.</li>
+  <li>Fill the HSV Channel Specific Columns.</li>
+  <li>The Facility Calibration sensor must be defined in the Calibration Sensor field of the Channel Specific columns.</li>
+  <li>If an additional sensor is defined to perform an EU conversion, this must be entered in the Fixed Sensor field of the Channel Specific columns.
+    <div class="Container"><img src="images/ChannelEditor.png" alt="ChannelEditor" width="700" height="424"></div>
+  </li>
+</ol>
+<h2 id="ConfigFileStructure">Configuration File Structure</h2>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from an XML file or a tab-delimited text file (currently not available).</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu"> Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import a <strong>HSV </strong>channel, see <a href="?10#XMLFileStructure"> XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras  -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information that is required to import a <strong>HSV</strong> channel, see <a href="?11#TabDelimitFileStructure">Tab-Delimited File  Structure</a>.</p>
+<h3 id="XMLFileStructure">XML File Structure</h3>
+<h4 id="ChannelsXML">Channels</h4>
+<p>The channels are stored in files Channels.xml in the configuration directories.</p>
+<p>A HSV Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure" >Channel Editor - Generic Channel Parameters - XML File Structure</a>, and the specific attributes <strong>Chassis</strong>, <strong>Slot</strong>, <strong>ChannelNumber</strong>, <strong>Gain</strong>, <strong>Range</strong>, <strong>IsOTDOn</strong>, <strong>InputFreq</strong> and <strong>ReferenceRTD</strong>. These attributes are explained in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Chassis</td>
+    <td>Chassis</td>
+    <td>CHASSIS</td>
+    <td>The VXI Chassis number. All cards must be defined in the same chassis.</td>
+    <td>Integer</td>
+    <td>1, 2 or 3</td>
+  </tr>
+  <tr>
+    <td>Slot</td>
+    <td>Slot</td>
+    <td>SLOT</td>
+    <td>The slot in the chassis.</td>
+    <td>Integer</td>
+    <td>An Integer between 1 and 12</td>
+  </tr>
+  <tr>
+    <td>Channel Number</td>
+    <td>ChannelNumber</td>
+    <td>CARD_CHAN_NO</td>
+    <td>The Channel number on the card.</td>
+    <td>Integer</td>
+    <td>An Integer between 0 and 63</td>
+  </tr>
+  <tr>
+    <td>Gain</td>
+    <td>Gain</td>
+    <td>GAIN</td>
+    <td>Specifies the amplifier gain for the channel. A smaller input range requires a higher gain to optimize the resolution for the A/D converter. Acceptable values may be applied to the 1501, 1502, 1503, 1508, 1509, 1510 and 1512 SCPs.</td>
+    <td>Float</td>
+    <td>Valid gain settings for the 1503 SCP are 1, 8 and 64.<br>
+      <br>
+      Valid gain settings for the first four channels of the 1510 SCP are 0.5, 8, 64 or 512. The gain setting is ignored for all other SCPs.</td>
+  </tr>
+  <tr>
+    <td>Range</td>
+    <td>Range</td>
+    <td>RANGE</td>
+    <td>Sets the voltage range of the A/D converter for the channel. Range is in volts.</td>
+    <td>Float</td>
+    <td>The valid ranges in volts are 0.0625, 0.25, 1, 4 and 16. A combination of gain 64 and a range of 0.0625 is not permissible for the 1503 SCP</td>
+  </tr>
+  <tr>
+    <td>OTD On</td>
+    <td>isOTDOn</td>
+    <td>OTD_ON</td>
+    <td>Determines if the 'open transducer' feature is turned on or off. The value must be the same for all channels on the same SCP.</td>
+    <td>String</td>
+    <td>true or false</td>
+  </tr>
+  <tr>
+    <td>Input Frequency</td>
+    <td>InputFreq</td>
+    <td>INPUT</td>
+    <td> Input Cutoff frequency in Hertz. Applicable to 1503 and 1510 SCPs only.</td>
+    <td>Integer</td>
+    <td>For the 1503 SCP, values of 0, 2, 10 and 100 are allowed.<br>
+      <br>
+      For the 1510 SCP, values of 0, 15, 100, 250, 500, and 1000 are valid. A value of 0 bypasses the filter. The input frequency is ignored for other SCPs.</td>
+  </tr>
+  <tr>
+    <td>Reference RTD</td>
+    <td>ReferenceRTD</td>
+    <td>TC_REF</td>
+    <td>The name of the UTR channel used for  thermocouple compensation. If populated, this channel is EU corrected as a  thermocouple channel. If null, regular analogue EU conversion is performed.</td>
+    <td>String</td>
+    <td>The name of a channel defined in the Channel  Collection that also belongs to the &quot;Temperature&quot; EU group.</td>
+  </tr>
+</table>
+<p>The structure of a HSV Channel complies with the following example:</p>
+<blockquote><code>&lt;Channels LastModificationDate=&quot;<strong>2015-06-11 08:47:13</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;<br>
+  &lt;Channel Name=&quot;ZZHSV1&quot; <br>
+  Description=&quot;&quot; <br>
+  Enabled=&quot;true&quot; <br>
+  LastModificationDate=&quot;2015-06-11 08:47:13&quot; <br>
+  SubsystemName=&quot;HSV&quot; <br>
+  SubsystemType=&quot;HSV&quot; <br>
+  AlternateName=&quot;&quot; <br>
+  DataType=&quot;Float&quot; <br>
+  InitialValue=&quot;-999999&quot; <br>
+  Format=&quot;4.2f&quot; <br>
+  UpdateRate=&quot;1&quot; <br>
+  QualityCeiling=&quot;GOOD&quot; <br>
+  Critical=&quot;false&quot; <br>
+  EngineeringUnit=&quot;-&quot; <br>
+  DisplayMin=&quot;0&quot; <br>
+  DisplayMax=&quot;100&quot; <br>
+  DeadBand=&quot;0&quot; <br>
+  Output=&quot;false&quot; <br>
+  ReferenceChannel=&quot;&quot; <br>
+  Group=&quot;&quot; <br>
+  SignalId=&quot;&quot; <br>
+  CalSensor=&quot;&quot; <br>
+  CalGroup=&quot;&quot; <br>
+  FixedSensor=&quot;&quot; <br>
+  CustomerSensor=&quot;&quot; <br>
+  FullsetStability=&quot;false&quot; <br>
+  ContinuousLog=&quot;true&quot; <br>
+  Chassis=&quot;1&quot; <br>
+  Slot=&quot;1&quot; <br>
+  ChannelNumber=&quot;9&quot; <br>
+  Gain=&quot;1&quot; <br>
+  Range=&quot;16&quot; <br>
+  IsOTDOn=&quot;false&quot; <br>
+  InputFreq=&quot;2&quot; <br>
+  ReferenceRTD=&quot;&quot;/&gt;<br>
+  &lt;/Channels&gt;<br>
+</code></blockquote>
+<h4 id="SubsystemsXML">Subsystems</h4>
+<p>The subsystem definitions are stored in files Subsystems.xml in the configuration directories.</p>
+<p>A HSV Subsystem contains generic information, described in <a href="../SubsystemEditor/SubsystemEditor.htm#XMLFileStructure" >Subsystem  Editor - Generic Subsystem Parameters - XML File Structure</a>, and the specific attributes:</p>
+<ul>
+  <li><strong>Cards</strong></li>
+  <li><strong>SCPs</strong></li>
+  <li><strong>Pinouts</strong></li>
+</ul>
+<p>In addition the HSV Subsystem comprises the HSV specific parameter <strong>BufferStorageRate</strong>.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>HSV Specific</td>
+    <td>BufferStorageRate</td>
+    <td>--</td>
+    <td>The data acquisition frequency for the HSV Subsystem.</td>
+    <td>Integer</td>
+    <td>250, 500, 625, 1000, 1250, 2000, 2500, 5000 </td>
+  </tr>
+</table>
+<p>The specific attribute <strong>Cards</strong> defines a collection of the GASS cards implemented in the subsystem.<br>
+  Each Card has the following properties:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Chassis</td>
+    <td>Chassis</td>
+    <td>CHASSIS</td>
+    <td>The VXI chassis number </td>
+    <td>Integer</td>
+    <td>1, 2 or 3</td>
+  </tr>
+  <tr>
+    <td>Slot</td>
+    <td>Slot</td>
+    <td>SLOT</td>
+    <td>the VXI slot number in the chassis</td>
+    <td>Integer</td>
+    <td>1 to 12 </td>
+  </tr>
+  <tr>
+    <td>Card type</td>
+    <td>Type</td>
+    <td>CARD_TYPE</td>
+    <td>The GASS card type implemented</td>
+    <td>String</td>
+    <td>1413</td>
+  </tr>
+  <tr>
+    <td>Factor</td>
+    <td>ScanRate Factor</td>
+    <td>FACTOR</td>
+    <td>The scan rate factor for the card compared to the data acquisition frequency</td>
+    <td>Integer</td>
+    <td>Values are dependant on the data acquisition frequency</td>
+  </tr>
+</table>
+<p>The specific attribute <strong>SCPs</strong> defines a collection of SCPs, implemented on the card currently selected in the subsystem.   Each SCP has the following properties:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Location</td>
+    <td>Location</td>
+    <td>SCP LOCATION</td>
+    <td>The location of the SCP on the card which implicitly defines the channels configured by the SCP</td>
+    <td>Integer</td>
+    <td>0 to 7</td>
+  </tr>
+  <tr>
+    <td>SCP type</td>
+    <td>Type</td>
+    <td>SCP TYPE</td>
+    <td>The SCP type implemented</td>
+    <td>String</td>
+    <td>1501, 1502, 1503, 1508, 1509, 1510 or 1512</td>
+  </tr>
+</table>
+<p>Since the SCPs that are configured are the SCPs configured for the Card currently selected in the Subsystem, it follows that each Card  has its own collection of SCPs.</p>
+<p>The specific attribute <strong>Pinouts</strong> defines a collection of the physical channels i.e. pinouts, for the card currently selected in the Subsystem. Each Pinout has the following properties:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Name</td>
+    <td>Name</td>
+    <td>PINOUT</td>
+    <td>The pinout name associated with the hardware channel being defined</td>
+    <td>String</td>
+    <td>Unique, non-empty</td>
+  </tr>
+  <tr>
+    <td>Channel</td>
+    <td>ChannelNumber</td>
+    <td>CARD_CHANNEL_NO</td>
+    <td>The physical channel number on the card</td>
+    <td>Integer</td>
+    <td>0 to 63</td>
+  </tr>
+  <tr>
+    <td>Description</td>
+    <td>Description</td>
+    <td>n/a</td>
+    <td>Specifies the description of the pinout</td>
+    <td>String</td>
+    <td>Any String</td>
+  </tr>
+</table>
+<p>The structure of a HSV Subsystem is shown in the following example:</p>
+<blockquote>
+  <pre>&lt;Subsystems   LastModificationDate=&quot;<strong>2008-09-04   14:13:03</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Subsystem Name=&quot;ZZHSV&quot;
+Description=&quot;&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2008-04-25 16:28:32&quot;
+Id=&quot;0&quot;
+Type=&quot;HSV&quot;
+CreationDate=&quot;2008-04-25 16:24:49&quot;
+BufferStorageRate=&quot;2000&quot;&gt;
+&lt;Cards&gt;
+&lt;Card Chassis=&quot;1&quot;
+Slot=&quot;2&quot;
+Type=&quot;1413&quot;
+ScanRateFactor=&quot;1&quot;&gt;
+&lt;Pinouts&gt;
+&lt;Pinout ChannelNumber=&quot;0&quot;
+Name=&quot;pin_1_02_00&quot;
+Description=&quot;&quot; /&gt;
+&lt;Pinout ChannelNumber=&quot;1&quot;
+Name=&quot;pin_1_02_01&quot;
+Description=&quot;&quot; /&gt;
+&lt;Pinout ChannelNumber=&quot;2&quot;
+Name=&quot;pin_1_02_02&quot;
+Description=&quot;&quot; /&gt;
+&lt;Pinout ChannelNumber=&quot;3&quot;
+Name=&quot;pin_1_02_03&quot;
+Description=&quot;&quot; /&gt;
+&lt;/Pinouts&gt;
+&lt;SCPs&gt;
+&lt;SCP Location=&quot;0&quot;
+Type=&quot;1510&quot; /&gt;
+&lt;SCP Location=&quot;1&quot;
+Type=&quot;1503&quot; /&gt;
+&lt;SCP Location=&quot;2&quot;
+Type=&quot;1502&quot; /&gt;
+&lt;/SCPs&gt;
+&lt;/Card&gt;
+&lt;Card Chassis=&quot;1&quot;
+Slot=&quot;4&quot;
+Type=&quot;1413&quot;
+ScanRateFactor=&quot;1&quot;&gt;
+&lt;Pinouts&gt;
+&lt;Pinout ChannelNumber=&quot;0&quot;
+Name=&quot;pin_1_04_00&quot;
+Description=&quot;&quot; /&gt;
+&lt;Pinout ChannelNumber=&quot;1&quot;
+Name=&quot;pin_1_04_01&quot;
+Description=&quot;&quot; /&gt;
+&lt;Pinout ChannelNumber=&quot;2&quot;
+Name=&quot;pin_1_04_02&quot;
+Description=&quot;&quot; /&gt;
+&lt;/Pinouts&gt;
+&lt;SCPs&gt;
+&lt;SCP Location=&quot;0&quot;
+Type=&quot;1503&quot; /&gt;
+&lt;SCP Location=&quot;1&quot;
+Type=&quot;1502&quot; /&gt;
+&lt;SCP Location=&quot;2&quot;
+Type=&quot;1510&quot; /&gt;
+&lt;/SCPs&gt;
+&lt;/Card&gt;
+&lt;/Cards&gt;
+&lt;/Subsystem&gt;</pre>
+</blockquote>
+<h3 id="TabDelimitFileStructure">Tab-Delimited File  Structure</h3>
+<p>The HSV Subsystem channel definition includes all <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic channel definition columns</a> and the specific HSV input parameters defined in the tab-delimited configuration file.</p>
+<p class="Note">Since the scan rate obtained dictates the rate at which the channel value is written to the RTE CVT and does not affect the buffering rate of the HSV Subsystem, its value is limited to a maximum of 200 Hertz.<br>
+  <br>
+  Other fields, such as the limit checking information and the critical flag, affect only the channel values stored in the RTE CVT.</p>
+<p>The rules, syntax and guidelines for creating HSV Subsystem channel definitions are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>PINOUT</td>
+    <td>PINOUT is a unique identifier given to each connection point. Either this field or all of the following fields must be specified:
+      <ul>
+        <li>CHASSIS</li>
+        <li>SLOT</li>
+        <li>CARD_CHAN_NO</li>
+      </ul>
+      Either set can uniquely identify the channel location. If all fields are entered, they must match (i.e.: specify the same physical location).<br>
+      <br>
+      Each PINOUT uniquely identifies an SCP type.</td>
+    <td>40 character alphanumeric, (case sensitive)</td>
+    <td>No</td>
+    <td>See Description.</td>
+  </tr>
+  <tr>
+    <td>CHASSIS</td>
+    <td>Identifies the VXI chassis to which the channel belongs. All cards must be defined in the same chassis.</td>
+    <td>Number 1, 2 or 3 </td>
+    <td>No</td>
+    <td>See Description.</td>
+  </tr>
+  <tr>
+    <td>SLOT</td>
+    <td>Identifies the slot in the chassis to which the channel belongs.</td>
+    <td>Number 1 - 12</td>
+    <td>No</td>
+    <td>See Description.</td>
+  </tr>
+  <tr>
+    <td>CARD_CHAN_NO</td>
+    <td>Identifies the channel on the card to which the channel belongs.
+      <p class="Note">The E1510 sample and hold channels are only available on the first four channels on each of the SCPs.</p></td>
+    <td>Number 0 - 63</td>
+    <td>No</td>
+    <td>See Description.</td>
+  </tr>
+  <tr>
+    <td>GAIN</td>
+    <td>Specifies the amplifier gain for the channel. A smaller input range requires a higher gain to optimize the resolution for the A/D converter.<br>
+      <br>
+      Valid gain settings for the 1503 SCP are 1, 8 and 64.<br>
+      <br>
+      Valid gain settings for the 1510 SCP are 0.5, 8, 64 or 512. The gain setting is ignored for all other SCPs.</td>
+    <td>Number 0.5, 1, 8, 64 or 512</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>RANGE</td>
+    <td>Sets the voltage range of the A/D converter for the channel. Range is in Volts.</td>
+    <td>Number 0.0625, 0.25, 1, 4 or 16</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>SENSOR_NAME</td>
+    <td>The primary sensor identifier.</td>
+    <td>40 character alphanumeric, (case sensitive)</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>SENSOR_AUX</td>
+    <td>The secondary sensor identifier.<br>
+      <br>
+      Must specify &quot;NA&quot; if this field is not defined but the SENSOR_NAME is defined.</td>
+    <td>40 character alphanumeric, (case sensitive)</td>
+    <td>No</td>
+    <td>See Description.</td>
+  </tr>
+  <tr>
+    <td>OTD_ON</td>
+    <td>Determines whether the Open Transducer Detection (OTD) feature is turned on (Y) or off (N). This value must be the same for all    channels on the same SCP.</td>
+    <td>Y, N</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>INPUT_FREQ</td>
+    <td>Input frequency in hertz.<br>
+      Applicable to 1503 and 1510 SCPs only.<br>
+      <br>
+      For the 1503, values of 0, 2, 10 and 100 are allowed.<br>
+      <br>
+      For the 1510, values of 0, 15, 100, 250, 500, and 1000 are valid. A value of 0 bypasses the filter. The input frequency is ignored for other SCPs.</td>
+    <td>Number 0, 2, 10, 15, 100, 250, 500 or 1000</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>TC_REF</td>
+    <td>The name of the UTR channel for thermocouple compensation. If populated, this channel is engineering unit (EU) corrected as a thermocouple channel. If null, regular analog EU conversion is performed.</td>
+    <td>40 character alphanumeric, (case sensitive)</td>
+    <td>No</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<p>To comply with the hardware limitations, the range and gain settings for the 1510 SCP are limited to the combinations listed in the table of Allowable Range and Gain Settings for the 1510 SCP. This will allow a maximum input voltage  of between 0.00390625V and 8V to be processed depending on the settings chosen below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="3">Allowable Range and Gain Settings for the 1510 SCP</th>
+  </tr>
+  <tr>
+    <th>1510 Gain Settings</th>
+    <th>Allowable 1413 Voltage Range Settings</th>
+    <th>Overall Input Channel Range ( +/- Volts)</th>
+  </tr>
+  <tr>
+    <td>0.5</td>
+    <td>0.0625</td>
+    <td>0.125</td>
+  </tr>
+  <tr>
+    <td>0.5</td>
+    <td>0.25</td>
+    <td>0.5</td>
+  </tr>
+  <tr>
+    <td>0.5</td>
+    <td>1</td>
+    <td>2</td>
+  </tr>
+  <tr>
+    <td>0.5</td>
+    <td>4</td>
+    <td>8</td>
+  </tr>
+  <tr>
+    <td>8</td>
+    <td>0.0625</td>
+    <td>0.0078125</td>
+  </tr>
+  <tr>
+    <td>8</td>
+    <td>0.25</td>
+    <td>0.3125</td>
+  </tr>
+  <tr>
+    <td>8</td>
+    <td>1</td>
+    <td>0.125</td>
+  </tr>
+  <tr>
+    <td>8</td>
+    <td>4</td>
+    <td>0.5</td>
+  </tr>
+  <tr>
+    <td>64</td>
+    <td>0.25</td>
+    <td>0.00390625</td>
+  </tr>
+  <tr>
+    <td>64</td>
+    <td>1</td>
+    <td>0.015625</td>
+  </tr>
+  <tr>
+    <td>64</td>
+    <td>4</td>
+    <td>0.0625</td>
+  </tr>
+  <tr>
+    <td>512</td>
+    <td>4</td>
+    <td>0.0078125</td>
+  </tr>
+</table>
+<h2 id="SubSysEditor">Subsystem Editor for HSV Channels</h2>
+<p>To edit the HSV Subsystem, the Subsystem Editor must be selected from within the Configuration Administrator.</p>
+<p>The tool bar in the Configuration Administrator allows the various configuration editors available for proDAS to be selected.</p>
+<p>The Subsystem Editor allows new subsystems to be added to the current configuration.</p>
+<div class="Container"><img src="images/SubsystemEditor.png" alt="SubsystemEditor" width="700" height="423"></div>
+<br>
+<p><strong>To add a new subsystem:</strong></p>
+<ol>
+  <li>From the Edit menu, select <strong>Append Data Record</strong> or, click in the left pane of the splitter window, click the right mouse button and select <strong>Append Data Record</strong> from the context sensitive menu.</li>
+  <li>Select <strong>HSV</strong> in the dialogue box to select the type of subsystem.<br>
+    A new line in the Subsystem Editor is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to <strong>HSV</strong>. The user must then assign a name and description to the subsystem.</li>
+  <li>Define the required cards.</li>
+  <li>For each card, define the required SCPs. When prompted, allow the pinouts to be generated automatically.</li>
+  <li>If desired, modify the pinout definitions which were defined.</li>
+</ol>
+<h2 id="RTEinitialisationFile">RTE Initialisation File</h2>
+<p>A section of the proDAS RTE initialisation file is devoted to  the HSV Subsystem and includes, as a minimum, the following HSV Subsystem parameters:</p>
+<ul>
+  <li>acquisition mode (Continuous or Circular)</li>
+  <li>pre-event time in seconds (required for Circular Mode only)</li>
+  <li>post-event time in seconds (required for Circular Mode only)</li>
+  <li>save with Critical (yes/no) (required for Circular Mode only)</li>
+  <li>store EU converted (yes/no)</li>
+</ul>
+<p>A typical RTE initialisation file would include the following  HSV Subsystem information:</p>
+<p>#========================================<br>
+  # HSV (Analog Input) Subsystem<br>
+  #----------------------------------------<br>
+  # card info (VXI chassis,slot,VME a16 and a24 address)<br>
+  # RTE can configure more than one card<br>
+  SS HSV TRUE<br>
+  CI card 1 2 0xC600 0xA40000<br>
+  CI card 1 4 0xCA00 0xAC0000<br>
+  # Extrapolation value<br>
+  # (float number, zero means no extrapolation, less than zero is invalid)<br>
+  #CI extrap_value 10<br>
+  # Extrapolation quality (G/B/S)<br>
+  CI extrap_quality G<br>
+  # pre-event log time(second), must great than 3 second<br>
+  CI pre_event_time 10<br>
+  # post-event log time(second), must great than 3 second<br>
+  CI post_event_time 40<br>
+  # card log mode (CONTINUOUS or CIRCULAR)<br>
+  CI log_mode CONTINUOUS<br>
+  # store EU converted value into log (YES or NO)<br>
+  CI store_EU_converted YES<br>
+  # save together with critical log (YES or NO)<br>
+  CI save_with_critical YES<br>
+</p>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click here to see the RTE Initialisation file.</a></p>
+<h2 id="MgmtInitialisationFile">Management GUI Initialisation File</h2>
+<p><a href="../../References/DASIniFiles/SoftwareiniFiles.pdf">Click here to see the Management GUI Initialisation file.</a></p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

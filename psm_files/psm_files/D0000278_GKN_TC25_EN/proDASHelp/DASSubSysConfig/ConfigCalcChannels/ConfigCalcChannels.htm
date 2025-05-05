@@ -1,0 +1,502 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Configuring Calculated Channels</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="ConfigCalcChannels">Configuring Calculated Channels<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>A Calculated Channel Definition has a specific Equation where computations are performed on data that is recorded by other channels. In a  calculated channel, the basic channel definitions (channel type, scan rate, limits, etc.) and the equation for the channel must be defined. </p>
+<p>A preliminary check is done when data is saved using the Channel Editor. A full check is done whenever proDAS is configured. Equations are checked for syntax when the configuration is loaded before an engine test. If a syntax error is found, a message is displayed in the Unified Event Log window, and the channel is not included in the configuration.</p>
+<h3 id="OrderCalc">Order of Calculations</h3>
+<p>Calculations are performed in a specific order of channels. The following actions occur to determine the order:</p>
+<ul>
+  <li>Each configured channel is automatically assigned a Channel ID number which defines its place in the processing sequence. The Channel ID is based on the assigned name for the channel. The order criteria for the processing sequence is defined below:</li>
+</ul>
+<ol>
+  <ol>
+    <li>Subsystem Name (Alphabetical)</li>
+    <li>Scan Rate (Increasing)</li>
+    <li>Channel Type (Discrete, Float)</li>
+    <li>Channel Name (Alphabetical).</li>
+  </ol>
+   <p class="Note">The order of calculations is based on the alphanumeric channel name and ID number. Ensure the channel naming conventions do not interfere with this. For example, a channel named W10abc is calculated prior to W1abc and W2abc.</p>
+</ol>
+<ul>
+  <li>The Master Channel List (MCL) is created, detailing the list of all channels that have been configured. The MCL is created each time proDAS is configured.</li>
+</ul>
+<ol>
+  <p class="Note">The MCL is located in the \\rtehost\rte\bin\tmp directory.</p>
+</ol>
+<ul>
+  <li>The RTE performs a Load Balancing operation. This spreads the processing for channels with the same scan rate over the scan rate interval.</li>
+</ul>
+<ol>
+  <p class="Note">The base scan rate for proDAS is 200 Hz. 200 Hz channels are processed every base cycle while lower scan rate channels are not all processed in the same cycle. To update all calculated channels consecutively, all channels need to be set at a 200 Hz scan rate.</p>
+  <p class="Note">The load balancing operation can be disabled in the proDAS initialisation file (load_balance_enable).</ol>
+<ul>
+  <li>Each channel is scanned based on the equation of the previous channel. All channels are processed within the same scan rate duration, but not all are necessarilly processed in the same 5 ms cycle.</li>
+</ul>
+<h2 id="ConfigCalculatedChannel">Configuring a Calculated Channel</h2>
+<p>To configure a Calculated Channel:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</li>
+  <li>Select the name of the Calculated Channel Subsystem from the list of available subsystems.
+    <div class="Container"><img src="images/SelectSubsystemType.png" alt="Select Subsystem Type" width="387" height="317"/></div>
+  </li>
+  <br>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a><a href="../ConfigEditors/ConfigEditors.htm#GenCol"></a>.</li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.
+    <div class="Container"><img src="images/ChannelEditorCalculated.png" alt="ChannelEditorCalculated" width="700" height="424"/></div>
+  </li>
+  <br>
+  <li>Enter an equation (refer to <a href="?2#EquationDefns">Equation Definitions</a> and <a href="?3#EquationSyntax">Equation Syntax</a> for the syntax definition).</li>
+  <li>Set the <strong>Persistancy</strong> column as either Volatile, Test or Global.</li>
+</ol>
+<h2 id="ConfigFileStructure">Configuration File Structure</h2>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu"> Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import a <strong>Calculated</strong> channel, see <a href="?10#XMLFileStructure"> XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import a <strong>Calculated</strong> channel, see <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Tab-Delimited File Structure</a>.</p>
+<h3 id="XMLFileStructure">XML File Structure</h3>
+<p>The channels are stored in files Channels.xml in the configuration directories.</p>
+<p>A Calculated Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor 
+- Generic Channel Parameters - XML File Structure</a>, and the following specific attribute:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Equation</td>
+    <td>Equation</td>
+    <td>EQUATION</td>
+    <td>The formula used by the RTE to calculate the value of this channel</td>
+    <td>String</td>
+    <td>A case sensitive string of max. 2000 characters</td>
+  </tr>
+  <tr>
+    <td>Persistency</td>
+    <td>Persistency</td>
+    <td>PERSISTENCY</td>
+    <td>Channel value is: <br>
+      <br>
+      &nbsp;&nbsp;&bull;&nbsp;&nbsp;volatile (not saved when scanning)<br>
+      &nbsp;&nbsp;&bull;&nbsp;&nbsp;saved on a per test basis<br>
+      &nbsp;&nbsp;&bull;&nbsp;&nbsp;saved on a per test cell basis (once per installation) </td>
+    <td>String</td>
+    <td>VOLATILE<br>
+      TEST<br>
+      GLOBAL</td>
+  </tr>
+</table>
+<p>The structure of a Calculated Channel complies with the following example:</p>
+<blockquote>
+  <pre>
+&lt;Channels LastModificationDate=&quot;<strong>2015-06-10</strong> <strong>13:53:04</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Channel Name=&quot;ZZCalc1&quot; 
+Description=&quot;&quot; 
+Enabled=&quot;true&quot; 
+LastModificationDate=&quot;2015-06-10 13:53:04&quot; 
+SubsystemName=&quot;Calculated&quot; 
+SubsystemType=&quot;Calculated&quot; 
+AlternateName=&quot;&quot; 
+DataType=&quot;Float&quot; 
+InitialValue=&quot;-999999&quot; 
+Format=&quot;4.2f&quot; 
+UpdateRate=&quot;1&quot; 
+QualityCeiling=&quot;GOOD&quot; 
+Critical=&quot;false&quot; 
+EngineeringUnit=&quot;K&quot; 
+DisplayMin=&quot;0&quot;
+DisplayMax=&quot;100&quot; 
+DeadBand=&quot;0&quot; 
+Output=&quot;false&quot; 
+ReferenceChannel=&quot;&quot; 
+Group=&quot;&quot; 
+SignalId=&quot;&quot; 
+CalSensor=&quot;&quot;
+CalGroup=&quot;&quot; 
+FixedSensor=&quot;&quot;
+CustomerSensor=&quot;&quot; 
+FullsetStability=&quot;false&quot;   
+ContinuousLog=&quot;true&quot; 
+Equation=&quot;0.0&quot; 
+Persistency=&quot;Volatile&quot;/&gt;
+&lt;/Channels&gt;
+</pre>
+</blockquote>
+<h3>Tab-Delimited File Structure</h3>
+<p>Subsystem configurations are stored in the Configuration database. The configurations can be imported into the Configuration database in the form of tab-delimited text files that can be opened by a spreadsheet editor, such as Microsoft Excel. In the spreadsheet, each channel is represented by one or more rows, and the columns record the channel definition parameters (such as name, units, actions, equations, etc.). </p>
+<p>The Calculated Channel definition includes all <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic channel definition columns</a> and the specific Calculated Channel parameters defined in the tab-delimited configuration file.</p>
+<p class="Note">Equations for calculated channels are defined in the EQUATION column of the spreadsheet, as described in the table below.</p>
+<p>The rules, syntax and guidelines for creating Calculated channels are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th> Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>EQUATION</td>
+    <td>EQUATION is the equation for the channel. It can reference other proDAS channels by name.</td>
+    <td>2000 character (maximum) case-sensitive string (for more information, see <a href="?4#EquationSyntax">Equation Syntax</a>)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>PERSISTENCY</td>
+    <td>Channel value is: <br>
+      <br>
+      &nbsp;&nbsp;&bull;&nbsp;&nbsp;volatile (not saved when scanning)<br>
+      &nbsp;&nbsp;&bull;&nbsp;&nbsp;saved on a per test basis<br>
+      &nbsp;&nbsp;&bull;&nbsp;&nbsp;saved on a per test cell basis (once per installation) </td>
+    <td>Enumeration: <br>
+      <br>
+      &nbsp;&nbsp;&bull;&nbsp;&nbsp;VOLATILE<br>
+      &nbsp;&nbsp;&bull;&nbsp;&nbsp;TEST<br>
+      &nbsp;&nbsp;&bull;&nbsp;&nbsp;GLOBAL </td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines  follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single line of the spread sheet.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<h2 id="EquationSyntax">Equation Syntax</h2>
+<p>Equations for calculated channels consist of the following elements, which can be combined into expressions:</p>
+<ul>
+  <li>numbers: single precision floats, in decimal or exponential notation; numbers can have up to six significant digits and up to two exponent digits</li>
+  <li>variables: any proDAS channel name</li>
+  <li>parenthesis: <strong>( , )</strong></li>
+  <li>Boolean values: <strong>True</strong>, <strong>False</strong></li>
+  <li>monadic operators: <strong>+</strong>, <strong>-</strong>, <strong>! (not)</strong></li>
+  <li>dyadic operators: <strong>+</strong>, <strong>-</strong>, <strong>*</strong>, <strong>/</strong>, <strong>^</strong>, <strong>fmod</strong>, <strong>&amp;&amp;</strong>, <strong>||</strong>, <strong>==</strong>, <strong>!=</strong>, <strong>&lt;</strong>, <strong>&gt;</strong>, <strong>&lt;=</strong>, <strong>&gt;=</strong></li>
+  <li>math and trigonometric functions: <strong>sin</strong>, <strong>cos</strong>, <strong>tan</strong>, <strong>asin</strong>, <strong>acos</strong>, <strong>atan</strong>, <strong>atan2 (atan<sup>2</sup>)</strong>, <strong>sinh</strong>, <strong>cosh</strong>, <strong>tanh</strong>, <strong>exp</strong>, <strong>ln</strong>, <strong>log (log<sub>10</sub>)</strong>, <strong>sqrt</strong>, <strong>abs</strong> (or <strong>fabs</strong>)</li>
+  <li>other commonly used functions: <strong>floor</strong>, <strong>ceil</strong>, <strong>min</strong>, <strong>max</strong>, <strong>mux</strong> (multiplexer), <strong>poly</strong>, <strong>lookup2d</strong>, <strong>lookup3d</strong>, <strong>lookupxy3d</strong>, <strong>qual</strong>, <strong>avg</strong>, <strong>avg_t</strong>, <strong>raw</strong></li>
+</ul>
+<h2 id="EquationDefns">Equation Definitions</h2>
+<p>The rules, syntax and guidelines for building equations, using the operators are described in the table below. The expressions &quot;expr&quot;, &quot;expr1&quot; and &quot;expr2&quot; are built by combining one or more operators and their arguments.</p>
+<p>The calculation expressions that can be used in calculated channel equations are also listed in the table below. Each expression, in an equation, can contain operators acting on numbers, local variables, and CVT variables. Local variables are double precision floating point variables.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Operator</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>True</td>
+    <td>Boolean True value (case insensitive); maps to float value 1.0</td>
+  </tr>
+  <tr>
+    <td>False</td>
+    <td>Boolean False value (case insensitive); maps to float value 0.0</td>
+  </tr>
+  <tr>
+    <td>(expr)</td>
+    <td>Parenthesis operator</td>
+  </tr>
+  <tr>
+    <td>+expr</td>
+    <td>Unary plus</td>
+  </tr>
+  <tr>
+    <td>-expr</td>
+    <td>Unary minus</td>
+  </tr>
+  <tr>
+    <td>expr1+expr2</td>
+    <td>Sum of expr1 and expr2</td>
+  </tr>
+  <tr>
+    <td>expr1-expr2</td>
+    <td>Subtract expr2 from expr1</td>
+  </tr>
+  <tr>
+    <td>expr1*expr2</td>
+    <td>Multiply expr1 and expr2</td>
+  </tr>
+  <tr>
+    <td>expr1/expr2</td>
+    <td>Divide expr1 by expr2 (domain error if expr2=0)</td>
+  </tr>
+  <tr>
+    <td>expr1^expr2</td>
+    <td>expr1 raised to the power of expr2 (domain error if (expr1=0 and expr2&le;0) or if (expr1&lt;0 and expr2 is not an integer))</td>
+  </tr>
+  <tr>
+    <td>expr1 fmod expr2</td>
+    <td>Modulus operator, returns the remainder of expr1/expr2, as a float (domain error if expr2=0)</td>
+  </tr>
+  <tr>
+    <td>!expr</td>
+    <td>Logical negation (NOT operator)</td>
+  </tr>
+  <tr>
+    <td>expr1&amp;&amp;expr2</td>
+    <td>True if expr1 AND expr2 are True</td>
+  </tr>
+  <tr>
+    <td>expr1||expr2</td>
+    <td>True if expr1 OR expr2 are True (inclusive OR)</td>
+  </tr>
+  <tr>
+    <td>expr1==expr2</td>
+    <td>True if expr1 is equal to expr2</td>
+  </tr>
+  <tr>
+    <td>expr1!=expr2</td>
+    <td>True if expr1 is not equal to expr2</td>
+  </tr>
+  <tr>
+    <td>expr1&lt;expr2</td>
+    <td>True if expr1 is less than expr2</td>
+  </tr>
+  <tr>
+    <td>expr1&gt;expr2</td>
+    <td>True if expr1 is greater than expr2</td>
+  </tr>
+  <tr>
+    <td>expr1&lt;=expr2</td>
+    <td>True if expr1 is less than or equal to expr2</td>
+  </tr>
+  <tr>
+    <td>expr1&gt;=expr2</td>
+    <td>True if expr1 is greater than or equal to expr2</td>
+  </tr>
+  <tr>
+    <td>sin(expr)</td>
+    <td>Sine function, where &quot;expr&quot; is in radians</td>
+  </tr>
+  <tr>
+    <td>Cos(expr)</td>
+    <td>Cosine function, where &quot;expr&quot; is in radians</td>
+  </tr>
+  <tr>
+    <td>tan(expr)</td>
+    <td>Tangent function, where &quot;expr&quot; is in radians</td>
+  </tr>
+  <tr>
+    <td>asin(expr)</td>
+    <td>Arcsine returned in the range [-<span style="font-family:Symbol;mso-ascii-font-family:Times New Roman;mso-hansi-font-family:
+  Times New Roman;mso-char-type:symbol;mso-symbol-font-family:Symbol">p</span>/2, <span style="font-family:Symbol;mso-ascii-font-family:Times New Roman; mso-hansi-font-family:Times New Roman;mso-char-type:symbol;mso-symbol-font-family: Symbol">p</span>/2] (domain error if expr&lt;-1 or expr&gt;1)</td>
+  </tr>
+  <tr>
+    <td>acos(expr)</td>
+    <td>Arccosine returned in the range [0, <span style="font-family:Symbol;mso-ascii-font-family:Times New Roman; mso-hansi-font-family:Times New Roman;mso-char-type:symbol;mso-symbol-font-family: Symbol">p</span>] (domain error if expr&lt;-1 or expr&gt;1)</td>
+  </tr>
+  <tr>
+    <td> atan(expr)</td>
+    <td> Arctangent returned in the range [-<span style="font-family:Symbol;mso-ascii-font-family:Times New Roman; mso-hansi-font-family:Times New Roman;mso-char-type:symbol;mso-symbol-font-family: Symbol">p</span>/2, <span style="font-family:Symbol;mso-ascii-font-family:Times New Roman;  mso-hansi-font-family:Times New Roman;mso-char-type:symbol;mso-symbol-font-family: Symbol">p</span>/2]</td>
+  </tr>
+  <tr>
+    <td>atan2(expr1,expr2)</td>
+    <td>Arctangent (expr1/expr2) returned in the range [-<span style="font-family:Symbol;mso-ascii-font-family:Times New Roman; mso-hansi-font-family:Times New Roman;mso-char-type:symbol;mso-symbol-font-family: Symbol">p</span>, <span style="font-family:Symbol;mso-ascii-font-family:Times New Roman;mso-hansi-font-family:Times New Roman;mso-char-type:symbol;mso-symbol-font-family:Symbol">p</span>]</td>
+  </tr>
+  <tr>
+    <td>sinh(expr)</td>
+    <td>Hyperbolic sine function</td>
+  </tr>
+  <tr>
+    <td>cosh(expr)</td>
+    <td>Hyperbolic cosine function</td>
+  </tr>
+  <tr>
+    <td>tanh(expr)</td>
+    <td>Hyperbolic tangent function</td>
+  </tr>
+  <tr>
+    <td>exp(expr)</td>
+    <td>Exponential function</td>
+  </tr>
+  <tr>
+    <td>ln(expr)</td>
+    <td>Natural logarithm function (domain error if expr&le;0)</td>
+  </tr>
+  <tr>
+    <td>log(expr)</td>
+    <td>Log base 10 function (domain error if expr&le;0)</td>
+  </tr>
+  <tr>
+    <td>sqrt(expr)</td>
+    <td>Square root function (domain error if expr&lt;0)</td>
+  </tr>
+  <tr>
+    <td>abs(expr) or fabs(expr)</td>
+    <td>Absolute value of &quot;expr&quot;; both spellings 
+      are identical</td>
+  </tr>
+  <tr>
+    <td>floor(expr)</td>
+    <td>Largest integer not greater than &quot;expr&quot;, 
+      represented as a float</td>
+  </tr>
+  <tr>
+    <td>ceil(expr)</td>
+    <td>Smallest integer not less than &quot;expr&quot;, represented 
+      as a float</td>
+  </tr>
+  <tr>
+    <td>min(expr1,&#133;,exprn)</td>
+    <td>Returns the value of the smallest expr<i style="mso-bidi-font-style:normal">i</i> (with 1&le; <i style="mso-bidi-font-style:normal">i</i> &le;n) . If any expression has a BAD quality or a BAD_VALUE, that expression will be excluded from the minimum calculation, and the min function will return a quality of SUSPECT. If all expressions have a BAD quality or BAD_VALUE, then the min function will return a quality of BAD and a value of BAD_VALUE.</td>
+  </tr>
+  <tr>
+    <td>max(expr1,&#133;,exprn)</td>
+    <td>Returns the value of the greatest expr<i style="mso-bidi-font-style:normal">i</i> (with 1&le; <i style="mso-bidi-font-style:normal">i </i>&le;n). If any expression has a BAD quality or a BAD_VALUE, that expression will be excluded from the maximum calculation, and the max function will return a quality of SUSPECT. If all expressions have a BAD quality or BAD_VALUE, then the max function will return a quality of BAD and a value of BAD_VALUE.</td>
+  </tr>
+  <tr>
+    <td>mux(expr1,expr2,expr3)</td>
+    <td>Multiplexer; returns &quot;expr1&quot; if &quot;expr3&quot; 
+      is False, returns &quot;expr2&quot; if &quot;expr3&quot; is True; &quot;expr3&quot; 
+      can be any expression, or a proDAS discrete channel name</td>
+  </tr>
+  <tr>
+    <td>poly (SensorName[.AuxiliaryAddress], expression)</td>
+    <td>Polynomial equation evaluation, where: <br>
+      <br>
+      &nbsp;&nbsp;&bull;&nbsp;&nbsp;SensorName[.AuxiliaryAddress] (dot separated) identifies the sensor containing the polynomial coefficients; the sensor must exist in the calibration database or polynomial editor. If the AuxiliaryAddress is included in the sensor name, then it can be assumed that the sensor exists in the calibration database. </td>
+  </tr>
+  <tr>
+    <td>Lookupx2d(bpt,expr)</td>
+    <td>2D  Breakpoint table lookup, where: <br>
+      <br>
+      &nbsp;&nbsp;&bull;&nbsp;&nbsp;&quot;bpt&quot; identifies the 2D breakpoint table, in the format: &quot;SensorName[.AuxiliaryAddress]&quot; (dot separated); the sensor must exist in the calibration database or BPT Editor. If the AuxiliaryAddress is included in the sensor name, then it can be assumed that the sensor exists in the calibration database<br>
+      <br>
+      &nbsp;&nbsp;&bull;&nbsp;&nbsp;&quot;expr&quot; is the input expression; a domain error occurs if the evaluation of expr falls outside of the range of the breakpoint table </td>
+  </tr>
+  <tr>
+    <td>Lookup2d(bpt,dir,expr)</td>
+    <td>2D Breakpoint table lookup, where: <br>
+      <br>
+      &nbsp;&nbsp;&bull;&nbsp;&nbsp;&quot;bpt&quot; identifies the 2D breakpoint table, in the format: &quot;SensorName[.AuxiliaryAddress]&quot; (dot separated); the sensor must exist in the calibration database or BPT Editor. If the AuxiliaryAddress is included in the sensor name, then it can be assumed that the sensor exists in the calibration database<br>
+      <br>
+      &nbsp;&nbsp;&bull;&nbsp;&nbsp;&quot;dir&quot; identifies the input dimension: one of 'X' (for X to Y lookup) or 'Y' (for Y to X)<br>
+      &nbsp;&nbsp;&bull;&nbsp;&nbsp;&quot;expr&quot; is the input expression; a domain error occurs if the evaluation of expr falls outside of the range of the breakpoint table </td>
+  </tr>
+  <tr>
+    <td>Lookup3d<br>
+      (bpt,dir1,expr1,dir2,expr2)</td>
+    <td>3D Breakpoint table lookup, where:
+      &nbsp;&nbsp;&bull;&nbsp;&nbsp;&quot;bpt&quot; identifies the 3D breakpoint table, in the format:<br>
+      &quot;SensorName[.AuxiliaryAddress]&quot; (dot separated); the sensor must exist in the calibration database or BPT editor; bpt must be sorted along at least one of dir1 or dir2 for the lookup  to succeed. If the AuxiliaryAddress is included in the sensor name, then it can be assumed that the sensor exists  in the calibration database<br>
+      <br>
+      &nbsp;&nbsp;&bull;&nbsp;&nbsp;&quot;dir1&quot; and &quot;dir2&quot; identify the input dimension ('X', 'Y' or 'Z') of the corresponding expression (expr1, expr2)<br>
+      <br>
+      &nbsp;&nbsp;&bull;&nbsp;&nbsp;&quot;expr1&quot; and &quot;expr2&quot; are the input expressions; a domain error occurs if the evaluation of expr1 or expr2 falls outside of the range of the breakpoint table </td>
+  </tr>
+  <tr>
+    <td>Lookupxy3d<br>
+      (bpt,expr1,expr2)</td>
+    <td>3D Breakpoint table lookup, where: <br>
+      <br>
+      &nbsp;&nbsp;&bull;&nbsp;&nbsp;&quot;bpt&quot; identifies  the 3D breakpoint table, in the format:<br>
+      &quot;SensorName[.AuxiliaryAddress]&quot;  (dot separated); the sensor must exist in the calibration database or BPT editor; bpt must be sorted along at least either the 'X' or 'Y' dimension in  order for the lookup to succeed.  If the AuxiliaryAddress is included in the sensor name, then it can be assumed  that the sensor exists in the calibration database<br>
+      <br>
+      &nbsp;&nbsp;&bull;&nbsp;&nbsp;&quot;expr1&quot; and &quot;expr2&quot; are the input expressions; a domain error occurs if the evaluation of expr1 or expr2 falls outside of the range of the breakpoint table. The 'X' dimension is represented by &quot;expr1&quot;, and the 'Y' dimension is represented by &quot;expr2&quot;. </td>
+  </tr>
+  <tr>
+    <td>qual(expr)</td>
+    <td>Returns TRUE if the quality of the expression &ldquo;expr&rdquo; is GOOD or SUSPECT; returns FALSE if the quality of the expression is BAD.</td>
+  </tr>
+  <tr>
+    <td>avg(expr1,&hellip;,exprn)</td>
+    <td>Returns the average value of all expressions expri (with 2&le; i &le;n). If any expression has a BAD quality or a BAD_VALUE, that expression will be excluded from the average calculation, and the avg function will return a quality of SUSPECT. If all expressions have a BAD quality or a BAD_VALUE, then the avg function will return a quality of BAD and a value of BAD_VALUE. </td>
+  </tr>
+  <tr>
+    <td>avg_t(tol_expr,expr1,&hellip;,exprn)</td>
+    <td>Returns the average value of all expressions expri (with 2&le; i &le;n). If the value of any expression expri deviates from the average value by more than the value contained in expression &ldquo;tol_expr&rdquo;, then that expression will be excluded from the average calculation, and the avg_t function will return a quality of SUSPECT.<br>
+      <br>
+      If any expression has a BAD quality or a BAD_VALUE, that expression will be excluded from the average calculation, and the avg_t function will return a quality of SUSPECT. If all expressions have a BAD quality or a BAD_VALUE, then the avg_t function will return a quality of BAD and a value of BAD_VALUE.</td>
+  </tr>
+  <tr>
+    <td>bitget(expr,start_bit,num_bits)</td>
+    <td>Extracts  a number of bits from an integer value, where: <br>
+      <br>
+      &nbsp;&nbsp;&bull;&nbsp;&nbsp;&quot;expr&quot; is the input expression representing the integer value<br>
+      <br>
+      &nbsp;&nbsp;&bull;&nbsp;&nbsp;&ldquo;start_bit&rdquo; is the start bit number where the extraction is to start. The start_bit value begins at 0, and goes up to 31.<br>
+      <br>
+      &nbsp;&nbsp;&bull;&nbsp;&nbsp;&ldquo;num_bits&rdquo; is the number of bits to extract, which can have a value from 1 to 32.
+      <p class="Note">The value of start_bit + num_bits must be less than 32.</p></td>
+  </tr>
+  <tr>
+    <td>Raw(channel_name)</td>
+    <td>Obtains the raw channel value of the specified channel.</td>
+  </tr>
+</table>
+<br>
+<p class="Note">When a float expression is found and a Boolean expression is expected, a value of &quot;0.0&quot; is taken to be &quot;False&quot; and any other value is taken to be &quot;True&quot;.<br>
+  <br>
+  When a Boolean expression is found and a float expression is expected, the value &quot;1.0&quot; is used for &quot;True&quot;, and &quot;0.0&quot; is used for &quot;False&quot;.<br>
+  <br>
+  A domain error occurs in an expression if a function argument is outside the domain over which the function is defined. When a domain error occurs, the value of the expression is set to BAD_VALUE and its quality is set to BAD (i.e.: BAD_VALUE is -99999.000). If the report_all_error tag in the RTE Initialisation File is set to TRUE this error will be reported in the UEL.<br>
+  <br>
+  An equation that includes a channel flagged BAD will take on the quality defined by the propogated_quality tag found in the RTE Initialisation File.<br>
+  <br>
+  The value of an equation is set to BAD_VALUE when its quality is BAD, and vice-versa.<br>
+  <br>
+  Function names are not case sensitive, but channel names are.</p>
+<h2>Referencing Channel Names in Equations</h2>
+<p>The output value of a channel in an equation can be referenced by using the channels name as a variable as shown in the example below:</p>
+<blockquote>
+  <p>ChannelName * 10</p>
+</blockquote>
+<p class="Note">During the consistency check a warning message is displayed if the equation references a channel that doesn't exist or is not enabled.</p>
+<h2 id="SampleEquations">Sample Equations</h2>
+<p>The following are examples of equations in calculated channels:</p>
+<ul>
+  <li>trip_overspeed = (speed &gt; 3000) &amp;&amp; ! halting</li>
+  <li>PI = 3.141592654</li>
+  <li>area = PI * radius^2</li>
+  <li>average_temp = (temp1 + temp2 + temp3 + temp4) / 4</li>
+  <li>temp_above_500 = mux (False, True, average_temp &gt; 500)</li>
+</ul>
+<h2 id="InternalChannels">Internal Channels</h2>
+<p>proDAS maintains a series of internal channels that can be used as channel names in calculations. Internal channels are defined internally by proDAS and cannot be edited or changed. The proDAS internal channels are: </p>
+<ul>
+  <li>Millisecond</li>
+  <li>Second</li>
+  <li>Minute</li>
+  <li>Hour</li>
+  <li>Day</li>
+  <li>DateDays (represents the number of days since December 30, 1899 (the minimum value is 30000 and the maximum value is 50000). For example, February 18, 1982 is a DateDays of 30000. November 21, 2036 is a DateDays of 50000.</li>
+  <li>DateTime (represents a fractional second (i.e.: the number of seconds / seconds in a day). The minimum value is 0 and the maximum value is 1. For example, 2:00am can be translated into a DateTime of 0.083 seconds (2*60*60 / 86400).</li>
+  <li>Month</li>
+  <li>Year</li>
+  <li>Time (Time recording starts when the operator selects Start Scan on the Management GUI Control Panel. Time is recorded, as a running counter, at the proDAS base scan rate.)</li>
+  <li>RTE_LOAD (% value which depicts the % load or overload in the RTE. Over 100 means an overrun has occurred.)</li>
+</ul>
+<p class="Note">These two float values (DateDays and DateTime) can be used in Windows applications to create a DATE (double float) data type.</p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

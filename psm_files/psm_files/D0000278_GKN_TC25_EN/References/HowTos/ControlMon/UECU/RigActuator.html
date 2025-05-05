@@ -1,0 +1,108 @@
+<!DOCTYPE HTML PUBliC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>How To &ndash; Rig an Actuator</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left>
+  <h1>How To &ndash; Rig an Actuator<a href="#" onClick="window.print(); return false;"><img src="../../../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<p>This <strong>How To</strong> provides the steps required to rig an actuator. Rigging is the process used to relate the position of the fuel control unit on the engine to the position of the actuator. The throttle actuator has a potentiometer to provide position feedback to the controller. Because the controller only knows the actuator position, a rigging is carried out to relate the fuel control unit position to the actuator position. A breakpoint table conversion is used as the relation. The rigging may be performed as a manual or an automatic procedure.</p>
+<p>An actuator must be rigged before it can be used to control the engine.</p>
+<ol>
+  <p class="Note">Run Mode is disabled until the defined actuator(s) are rigged.</p>
+</ol>
+<h2>To Rig an Actuator</h2>
+<p>The actuator is moved via the lever to either 1 point or 2 points when performing a manual rigging.</p>
+<ul>
+  <li>1 point - the slope is constant and predefined in the configuration file and the actuator is manually moved to a single point which is used to calculate the rig offset</li> 
+  <li>2 point - the actuator is manually moved to two different points and a new breakpoint table is calculated from those two points </li>
+</ul>
+<p>There are 2 methods to rig an actuator:</p>
+<ul>
+  <li><a href="#ManualRig">Manually Rigging an Actuator</a></li>
+  <li><a href="#AutoRig">Auto-Rigging an Actuator</a></li>
+</ul>
+<h3><a id="ManualRig"></a>Manually Rigging an Actuator</h3>
+<ol>
+  <li>At the bottom of the display computer screen, press the <strong>Rigging</strong> button <img src="images/RiggingButton.png" alt="Rigging Button">.</li>
+  The Rigging button is disabled if any of the following conditions are true.
+  <ul>
+    <ul>
+      <li>Is fuel turned on?</li>
+      <li>Is a calibration in progress?</li>
+      <li>An Auto Mission is in progress?</li>
+      <li>Calibrations are disabled?</li>
+      <li>An engine is not selected?</li>
+      <li>The selected engine is not configured with an actuator.</li>
+    </ul>
+  </ul>
+ <br>The Rigging Mode screen is displayed.
+    <div class="Container"><img src="images/RiggingMode.png" alt="Rigging Mode" width="450" height="620" border="1"></div>
+   <p class="Note">This screen is displayed automatically if the engine is configured with an actuator.</p>
+  <li>If 2 actuators are defined for the engine, from the list box, select the actuator to rig (either Right Actuator  or Left Actuator).</li>
+  <li>Press the <strong>Start Manual</strong> button.</li>
+  <li>Using the throttle lever, move the actuator to the lowest rig point.<br>
+  The position is displayed in the Position field.</li>
+    <br>
+    <img src="images/RigManualAccept.png" alt="Rig Manual Accept" width="450" height="600" border="1">
+  <li>Press the <strong>Accept</strong> button to accept the position.</li>
+     <p class="Note">If only a one point rigging is required, go to step 9.</p>
+
+  <li>Using the throttle lever, move the actuator to the highest rig point.<br>
+    The position is displayed in the Position field.</li> 
+  <li>Press the <strong>Accept</strong> button to accept the position.</li>   
+  <li>Press the <strong>Save</strong> button to save the new rigging.</li>
+  <li>If there are no other actuators to rig, press the <strong>Run</strong> button to move to the Run Mode screen.</li>
+</ol>
+<ol>
+<p class="Note">To cancel the rigging, press the Cancel button.</p>
+</ol>
+<h3><a id="AutoRig"></a>Auto-Rigging an Actuator</h3>
+<p>An auto-rigging procedure moves the actuator automatically between the low   point and the high point. </p>
+<p>The auto-rigging procedure requires two mechanical stops at either end of the actuator travel. The mechanical stops must be able to handle the actuator torque. Rig pins cannot be used unless the rig pins do not hold the throttle lever in position. </p>
+<ol>
+  <li>At the bottom of the display computer screen, press <img src="images/RiggingButton.png" alt="Rigging Button">.<br>
+  The Rigging Mode screen is displayed. The Rigging button is disabled if any of the following conditions are true.</li>
+    <ul>
+      <ul>
+        <li>Is fuel turned on?</li>
+        <li>Is a calibration in progress?</li>
+        <li>An Auto Mission is in progress?</li>   
+        <li>Calibrations are disabled?</li> 
+        <li>An   engine is not selected?</li>
+        <li>The selected engine is not configured with an actuator.</li>
+      </ul>
+    </ul>
+
+    <p class="Note">This screen is displayed automatically if the engine is configured with an actuator.</p>
+  <li>If 2 actuators are defined for the engine, from the list box, select the actuator to rig (either Right Actuator  or Left Actuator).</li>  
+  <li>Press the <strong>Start Auto</strong> button.</li>
+    <ul>
+      <li>The throttle controller automatically moves the actuator to the low point at a slow controlled rate and holds until the signal stabilizes</li>   
+      <li>The throttle controller then moves the actuator to the high point at a slow controlled rate and holds until the signal stabilizes</li>  
+      <li>The throttle controller calculates the new breakpoint table </li>
+    </ul>
+    <p>The new low and high point values are displayed.<br>
+      <img border="1" alt="Auto Rig Save" src="images/AutoRigSave.png" width="450" height="620"></p>
+  <li>Press the <strong>Save</strong> button to save the new rigging.</li>
+  <p class="Note">To cancel the rigging press the Cancel button.</p>
+  <li>Once all the actuators have been rigged, press the <strong>Run</strong> button to move to the Run Mode screen.</li>
+</ol>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

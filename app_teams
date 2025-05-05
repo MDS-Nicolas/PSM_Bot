@@ -1,0 +1,295 @@
+# app.py
+import os
+import uuid
+import asyncio
+import requests
+import uvicorn
+from datetime import datetime, timedelta
+
+from fastapi import FastAPI, Request, HTTPException
+from fastapi.responses import JSONResponse
+
+# Bot Framework imports
+from botbuilder.core import BotFrameworkAdapter, BotFrameworkAdapterSettings, TurnContext
+from botbuilder.schema import Activity, ActivityTypes
+
+# Import your PDF processing functions from your Python code (e.g., main.py)
+from app_testingFunction import process_pdf
+
+# Import OpenAI (as used in your code)
+from openai import OpenAI
+
+# Azure Blob Storage imports
+from azure.storage.blob import BlobServiceClient, generate_blob_sas, BlobSasPermissions
+
+# Load environment variables from .env file
+from dotenv import load_dotenv, find_dotenv
+load_dotenv(find_dotenv())
+
+# Configuration from environment variables 
+MICROSOFT_APP_ID = os.environ.get("MICROSOFT_APP_ID")
+MICROSOFT_APP_PASSWORD = os.environ.get("MICROSOFT_APP_PASSWORD")
+BLOB_CONNECTION_STRING = os.environ.get("BLOB_CONNECTION_STRING")
+BLOB_CONTAINER_NAME = os.environ.get("BLOB_CONTAINER_NAME") 
+API_KEY = os.environ.get("API_KEY") # Use API_KEY loaded here
+
+# Check if essential variables are set
+if not MICROSOFT_APP_ID:
+    raise ValueError("MICROSOFT_APP_ID not set in .env file")
+if not MICROSOFT_APP_PASSWORD:
+    raise ValueError("MICROSOFT_APP_PASSWORD not set in .env file")
+if not BLOB_CONNECTION_STRING:
+    raise ValueError("BLOB_CONNECTION_STRING not set in .env file")
+if not BLOB_CONTAINER_NAME:
+    raise ValueError("BLOB_CONTAINER_NAME not set in .env file")
+if not API_KEY:
+    raise ValueError("API_KEY not set in .env file")
+
+# Initialize the Bot Framework adapter
+adapter_settings = BotFrameworkAdapterSettings(MICROSOFT_APP_ID, MICROSOFT_APP_PASSWORD)
+adapter = BotFrameworkAdapter(adapter_settings)
+
+# Initialize OpenAI client using your load_api_key function
+# api_key = load_api_key() # No longer need to call this separately
+openai_client = OpenAI(api_key=API_KEY) # Use the API_KEY loaded above
+
+app = FastAPI()
+
+async def on_message_activity(turn_context: TurnContext):
+    """
+    Handles incoming Teams message activities.
+    Checks for 'Hello' text message or a PDF attachment.
+    """
+    # Handle text messages first
+    if turn_context.activity.text:
+        received_text = turn_context.activity.text.strip().lower()
+        print(f"Received message: '{turn_context.activity.text}'") # Print to local server terminal
+
+        if received_text == "hello":
+            await turn_context.send_activity("Hello") # Send 'Hello' back to Teams
+            return
+
+    # If not a recognized text message, check for attachments (existing logic)
+    elif turn_context.activity.attachments and len(turn_context.activity.attachments) > 0:
+        pdf_attachment = None
+        print(f"Received {len(turn_context.activity.attachments)} attachments. Checking for PDF...")
+        for attachment in turn_context.activity.attachments:
+            print(f" - Checking attachment: Name='{attachment.name}', ContentType='{attachment.content_type}'")
+            # Check for the specific Teams file info content type AND verify the name ends with .pdf
+            if attachment.content_type == "application/vnd.microsoft.teams.file.download.info" and attachment.name and attachment.name.lower().endswith(".pdf"):
+                pdf_attachment = attachment
+                print(f"   Found PDF attachment via Teams download info: {attachment.name}")
+                break # Found the PDF, stop searching
+            # Optional: Keep the check for application/pdf in case Teams sends it differently sometimes?
+            elif attachment.content_type == "application/pdf":
+                 pdf_attachment = attachment
+                 print(f"   Found PDF attachment directly: {attachment.name}")
+                 break # Found the PDF, stop searching
+
+        # If no PDF attachment was found after checking all attachments
+        if pdf_attachment is None:
+            print("   No PDF attachment found.")
+            await turn_context.send_activity("Please attach a PDF file.")
+            return
+
+        # --- Process the found PDF attachment ---
+        print(f"Processing PDF attachment: {pdf_attachment.name}")
+        file_url = pdf_attachment.content_url # Use the URL from the found PDF attachment
+
+        try:
+            # Download the PDF file from the provided URL.
+            # Add headers that might help, like User-Agent
+            headers = {'User-Agent': 'Mozilla/5.0'} 
+            response = requests.get(file_url, headers=headers)
+            response.raise_for_status() # Raises HTTPError for bad responses (4XX or 5XX)
+            print(f"   Successfully downloaded file from {file_url}")
+        except requests.exceptions.RequestException as e:
+            print(f"   Failed to download file: {e}")
+            await turn_context.send_activity(f"Failed to download file: {e}")
+            return
+        except Exception as e: # Catch other potential errors during download
+            print(f"   An unexpected error occurred during download: {e}")
+            await turn_context.send_activity(f"An unexpected error occurred downloading the file: {e}")
+            return
+        
+        # Ensure content was actually downloaded
+        if not response.content:
+             print("   Downloaded file content is empty.")
+             await turn_context.send_activity("Downloaded file content is empty.")
+             return
+
+
+        # Create a temporary directory for file storage.
+        temp_dir = "temp"
+        os.makedirs(temp_dir, exist_ok=True)
+
+        # Save the downloaded PDF to a temporary file using the attachment name if available
+        # Use a UUID if the name is missing or unsuitable for a filename
+        file_basename = os.path.basename(pdf_attachment.name) if pdf_attachment.name else f"{uuid.uuid4()}.pdf"
+        # Basic sanitization (replace common problematic characters) - more robust sanitization might be needed
+        safe_basename = "".join(c if c.isalnum() or c in ('.', '_', '-') else '_' for c in file_basename)
+        if not safe_basename.lower().endswith(".pdf"):
+             safe_basename += ".pdf" # Ensure it has a pdf extension
+             
+        input_file_path = os.path.join(temp_dir, safe_basename)
+        # Ensure the input path is unique if a file with the same name was processed recently
+        counter = 1
+        base, ext = os.path.splitext(input_file_path)
+        while os.path.exists(input_file_path):
+            input_file_path = f"{base}_{counter}{ext}"
+            counter += 1
+            
+        print(f"   Saving downloaded content to temporary file: {input_file_path}")
+        try:
+            with open(input_file_path, "wb") as f:
+                f.write(response.content)
+            print(f"   Successfully saved temporary file.")
+        except Exception as e:
+            print(f"   Failed to save temporary file: {e}")
+            await turn_context.send_activity(f"Failed to save temporary file: {e}")
+            return
+
+        # Define an output file path for the DOCX, using the original PDF name as a base
+        output_basename = os.path.splitext(safe_basename)[0] + "_formatted_content.docx"
+        output_file_path = os.path.join(temp_dir, output_basename)
+        # Ensure output path is unique
+        counter = 1
+        base, ext = os.path.splitext(output_file_path)
+        while os.path.exists(output_file_path):
+            output_file_path = f"{base}_{counter}{ext}"
+            counter += 1
+        
+        print(f"   Output DOCX path set to: {output_file_path}")
+
+        try:
+            # Process the PDF into a DOCX using your asynchronous process_pdf function.
+            print(f"   Calling process_pdf for {input_file_path}")
+            await process_pdf(openai_client, input_file_path, output_file_path)
+            print(f"   process_pdf completed successfully.")
+        except Exception as e:
+            print(f"   Error during process_pdf: {e}")
+            # Clean up input file even if processing fails
+            try:
+                if os.path.exists(input_file_path):
+                    os.remove(input_file_path)
+                    print(f"   Cleaned up input file: {input_file_path}")
+            except Exception as remove_error:
+                 print(f"   Error cleaning up input file {input_file_path}: {remove_error}")
+            await turn_context.send_activity(f"Error processing file: {e}")
+            return
+
+        # Clean up the input PDF after successful processing.
+        try:
+             if os.path.exists(input_file_path):
+                 os.remove(input_file_path)
+                 print(f"   Cleaned up input file: {input_file_path}")
+        except Exception as e:
+             print(f"   Error cleaning up input file {input_file_path} after processing: {e}")
+             # Decide if this is critical - maybe just log and continue
+
+        # Check if the output file was actually created by process_pdf
+        if not os.path.exists(output_file_path):
+            print(f"   Error: process_pdf did not create the output file: {output_file_path}")
+            await turn_context.send_activity("Error: Processing failed to create the output file.")
+            # No further cleanup needed for output file as it doesn't exist
+            return
+
+        try:
+            # Upload the DOCX file to Azure Blob Storage and obtain a secure download link.
+            print(f"   Uploading {output_file_path} to Azure Blob Storage...")
+            download_link = upload_and_get_link(output_file_path)
+            print(f"   Upload complete. Download link: {download_link}")
+        except Exception as e:
+            print(f"   Error uploading file to Azure Blob Storage: {e}")
+            # Clean up local output file even if upload fails
+            try:
+                if os.path.exists(output_file_path):
+                     os.remove(output_file_path)
+                     print(f"   Cleaned up output file after upload error: {output_file_path}")
+            except Exception as remove_error:
+                 print(f"   Error cleaning up output file {output_file_path} after upload error: {remove_error}")
+            await turn_context.send_activity(f"Error uploading file: {e}")
+            return
+
+        # Remove the local DOCX file after successful upload.
+        try:
+            if os.path.exists(output_file_path):
+                 os.remove(output_file_path)
+                 print(f"   Cleaned up output file: {output_file_path}")
+        except Exception as e:
+            print(f"   Error cleaning up output file {output_file_path} after upload: {e}")
+            # Log this, but the user already has the link, so maybe not critical to report to user
+
+        # Reply in Teams chat with the download link.
+        print(f"   Sending download link to Teams chat.")
+        await turn_context.send_activity(
+            f"Your file '{pdf_attachment.name}' has been processed. Download it here: {download_link}"
+        )
+        print(f"--- Attachment processing finished for {pdf_attachment.name} ---")
+    # Handle cases with no text and no attachments, or unrecognized text without attachments
+    else:
+        # You might want a more specific message here depending on the case
+        print("Received message with no text or attachments, or unrecognized text.")
+        await turn_context.send_activity("Please send 'Hello' or attach a PDF file.")
+
+def upload_and_get_link(file_path: str) -> str:
+    """
+    Uploads the given file to Azure Blob Storage and generates a secure download URL
+    using a Shared Access Signature valid for 1 hour.
+    """
+    blob_service_client = BlobServiceClient.from_connection_string(BLOB_CONNECTION_STRING)
+    container_client = blob_service_client.get_container_client(BLOB_CONTAINER_NAME)
+    blob_name = os.path.basename(file_path)
+
+    with open(file_path, "rb") as data:
+        container_client.upload_blob(name=blob_name, data=data, overwrite=True)
+
+    sas_token = generate_blob_sas(
+        account_name=blob_service_client.account_name,
+        container_name=BLOB_CONTAINER_NAME,
+        blob_name=blob_name,
+        account_key=blob_service_client.credential.account_key,
+        permission=BlobSasPermissions(read=True),
+        expiry=datetime.utcnow() + timedelta(hours=1)
+    )
+
+    download_url = (
+        f"https://{blob_service_client.account_name}.blob.core.windows.net/"
+        f"{BLOB_CONTAINER_NAME}/{blob_name}?{sas_token}"
+    )
+    return download_url
+
+async def on_turn(turn_context: TurnContext):
+    """
+    Routes incoming activities based on their type.
+    Handles message activities and ignores conversation updates.
+    """
+    if turn_context.activity.type == ActivityTypes.message:
+        await on_message_activity(turn_context)
+    elif turn_context.activity.type == ActivityTypes.conversation_update:
+        # Optionally add logic here for when the bot is added/removed
+        # For now, just pass to avoid sending 'Unsupported activity type'
+        pass 
+    else:
+        # Log other activity types for debugging if needed, but don't crash
+        print(f"Received unhandled activity type: {turn_context.activity.type}")
+        # Optionally send a gentler message or just do nothing
+        # await turn_context.send_activity("I received an activity I don't handle yet.")
+        pass # Avoid sending the error message for now
+
+@app.post("/api/messages")
+async def messages(req: Request):
+    """
+    Endpoint for receiving messages from the Bot Framework (Microsoft Teams).
+    """
+    body = await req.json()
+    activity = Activity().deserialize(body)
+    auth_header = req.headers.get("Authorization", "")
+    
+    response = await adapter.process_activity(activity, auth_header, on_turn)
+    if response:
+        return JSONResponse(content=response.body, status_code=response.status)
+    return JSONResponse(content={"message": "Activity processed"}, status_code=200)
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=6000)

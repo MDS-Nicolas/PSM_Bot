@@ -1,0 +1,980 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>CEC Vibration Subsystem</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="CEC">CEC Vibration Subsystem (*Option)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" >
+</a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The CEC C-CATS 8000 is a modular, programmable vibration signal conditioning system. It accepts inputs from a variety of vibration transducers (including single ended and differential accelerometers, velocity transducers and displacement transducers).The system can also process up to four tachometer signals for tracking and filtering purposes.</p>
+<p>The C-CATS can be configured to run as a stand-alone system using an optional Manual Operation Module (M.O.M.) or as an integrated system where each module is programmed via proDAS through a serial link.</p>
+<p>Up to 14 single channel vibration modules can be installed in a C-CATS system. These modules combine transducer inputs and programmable filters with AC, DC and proportional outputs to provide a flexible system.</p>
+<p>Each module can be programmed to provide a fixed or variable bandpass filter, a tracking filter or a sweep filter. The module can also be set to balance mode to provide a phase output for trim balancing applications.</p>
+<h2 id="ConfigCECChannel">Configuring a CEC Channel</h2>
+<p>To configure a CEC Channel:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</li>
+  <li>Select the name of the CEC Vibration Subsystem from the list of available subsystems.
+    <div class="Container"><img src="images/SelectSubsystemName.PNG" alt="SelectSubsystemName" width="387" height="317"></div>
+  </li>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a>.</li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.</li>
+  <li>Set the <strong>Pinout</strong> column.</li>
+  <li>Set the appropriate columns depending on the pinout and other parameters: <strong>Input Type</strong>, <strong>Sensitivity</strong>, <strong>Unit Type</strong>, <strong>Transd. Scaling</strong>, <strong>Filter Mode</strong>, <strong>Backplane No</strong>, <strong>Filter On</strong>, <strong>Output Range</strong>, <strong>Output Mode</strong>, <strong>Output Scaling</strong>, <strong>Output Range AC</strong>, <strong>Output Range DC</strong>,<strong> Fixed Filter Table</strong>, <strong>Low Pass Freq</strong>, <strong>High Pass Freq</strong>, <strong>Bandwidth Type</strong>, <strong>Bandwidth</strong>, <strong>Min Out Freq</strong>, <strong>Max Out Freq</strong>, <strong>Var Filter Freq</strong>, <strong>Min Bandwidth</strong>, <strong>Max Bandwidth</strong>, <strong>Tach Input No</strong>, <strong>Track Filter Order</strong>, <strong>Sweep Freq Step</strong>, <strong>Sweep Freq Delay</strong>, <strong>Sweep Type</strong>, <strong>Min Sweep Freq</strong> , <strong>Max Sweep Freq</strong>, <strong>Tach Channel No</strong>, <strong>Tach Ratio</strong> and <strong>Tach Edge</strong>.
+    <div class="Container"><img src="images/ChannelEditor.png" alt="ChannelEditor" width="700" height="424" ></div>
+  </li>
+</ol>
+<h2 id="ConfigFileStructure">Configuration File Structure</h2>
+<p>Channel configuration information (e.g. output ranges, filter modes etc.) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm" >Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu">Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import a <strong>CEC</strong> channel, see <a href="?10#XMLFileStructure" >XML File Structure</a>. </p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import TAB-delimited in the Channel Editor module</a><a href="../ChannelEditor/ChannelEditor.htm"></a>. For detailed tab-delimited file structure information required to import a <strong>CEC</strong> channel, see <a href="?11#TabDelimitFileStructure" >Tab-Delimited File Structure</a>.</p>
+<h3 id="XMLFileStructure">XML File Structure</h3>
+<h4 id="ChannelsXML">Channels</h4>
+<p>The channels are stored in <em>Channels.xml</em> files in the configuration directories.</p>
+<p>A CEC Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor - Generic Channel Parameters - XML File Structure</a>, and some specific attributes <strong>Pinout</strong>, <strong>Input Type</strong>, <strong>Sensitivity</strong>, <strong>Unit Type</strong>, <strong>Transd. Scaling</strong>, <strong>Filter Mode</strong>, <strong>Backplane No</strong>, <strong>Filter On</strong>, <strong>Output Range</strong>, <strong>Output Mode</strong>, <strong>Output Scaling</strong>, <strong>Output Range AC</strong>, <strong>Output Range DC</strong>, <strong>Fixed Filter Table</strong>, <strong>Low Pass Freq</strong>, <strong>High Pass Freq</strong>, <strong>Bandwidth Type</strong>, <strong>Bandwidth</strong>, <strong>Min Out Freq</strong>, <strong>Max Out Freq</strong>, <strong>Var Filter Freq</strong>, <strong>Min Bandwidth</strong>, <strong>Max Bandwidth</strong>, <strong>Tach Input No</strong>, <strong>Track Filter Order</strong>, <strong>Sweep Freq Step</strong>, <strong>Sweep Freq Delay</strong>, <strong>Sweep Type</strong>, <strong>Min Sweep Freq</strong> , <strong>Max Sweep Freq</strong>, <strong>Tach Channel No</strong>, <strong>Tach Ratio</strong> and <strong>Tach Edge</strong>. These attributes are explained in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr  >
+    <td width="10%">Pinout</td>
+    <td width="10%">Pinout</td>
+    <td width="10%">PINOUT</td>
+    <td width="30%">Text field used to specify a chassis and slot combination for an Amplifier card or a chassis identifier for a Tachometer card. Note that the up to four tachometer channels in a chassis are all on the same card, so they all share the same Pinout definition.</td>
+    <td width="10%">String</td>
+    <td width="25%">The collection of Pinouts defined in the CEC subsystem</td>
+  </tr>
+  <tr  >
+    <td width="10%">Input Type</td>
+    <td width="10%">InputType</td>
+    <td width="10%">INPUT_TYPE</td>
+    <td width="30%">Type of input transducer.</td>
+    <td width="10%">String</td>
+    <td width="25%">V = Velocity Coil (self-generating)<br>
+      S = Acceleration (single ended)<br>
+      D = Acceleration (differential)<br 
+      >
+      VC = Velocity (constant current)<br 
+      >
+      VV = Velocity (voltage excitation)<br 
+      >
+      AC = Acceleration (constant current)<br 
+      >
+      AV = Acceleration (voltage excitation)<br 
+      >
+      VBP = Velocity (backplane route)<br 
+      >
+      ABP = Acceleration</td>
+  </tr>
+  <tr  >
+    <td>Unit Type</td>
+    <td>EngineeringUnitType</td>
+    <td>UNIT_TYPE</td>
+    <td>Transducer units of measurement, used to select Imperial or Metric  units. The units being used for the input transducer would depend on the  &ldquo;InputType&rdquo; selected:<br>
+      <br>
+      Velocity:  mV/ips (IMP) or mV/cm/s (MET) <br>
+      <br>
+      Acceleration: pC/g  (IMP) or pC/m/s/s (MET)</td>
+    <td>String</td>
+    <td>IMP <br>
+      <br>
+      MET</td>
+  </tr>
+  <tr  >
+    <td>Transd. Scaling</td>
+    <td>TransducerScaling</td>
+    <td>TX_SCALING</td>
+    <td>Scaling applied to the input transducer units.</td>
+    <td>String</td>
+    <td>RMS = RMS<br 
+      >
+      AVG = Average<br>
+      Pk = Peak<br 
+      >
+      PTP = Peak-to-Peak</td>
+  </tr>
+  <tr  >
+    <td width="10%">Sensitivity</td>
+    <td width="10%">Sensitivity</td>
+    <td width="10%">SENSITIVITY</td>
+    <td width="30%">Sensitivity of input transducer.</td>
+    <td width="10%">Float</td>
+    <td width="25%">A float value between 1.0 and 1100.0<br>
+      <br>
+      V = 6 to 1100 mV/ips<br>
+      S = 1 to 110 pc/g<br>
+      D = 1 to 110 pc/g<br>
+      VC= 6 to 1100 mV/ips<br>
+      VV = 6 to 1100 mV/ips<br>
+      AC = 6 to 1100 mV/g<br>
+      AV = 6 to 1100 mV/g <br>
+      VBP = not required<br>
+      ABP = not required</td>
+  </tr>
+  <tr  >
+    <td width="10%">Filter Mode</td>
+    <td width="10%">FilterMode</td>
+    <td width="10%">FILTER_MODE</td>
+    <td width="30%">Type of filter applied to channel.</td>
+    <td width="10%">String</td>
+    <td width="25%">N = None<br>
+      F = Fixed Bandpass<br>
+      V = Variable Bandpass<br 
+      >
+      T = Tracking Filter<br>
+      S = Sweep Filter<br>
+      B = Balance Mode</td>
+  </tr>
+  <tr  >
+    <td width="10%">Back Plane No</td>
+    <td width="10%">BackPlaneNumber</td>
+    <td width="10%">BACKPLANE_NO</td>
+    <td width="30%">Route on backplane for signal. This field defines the backplane output for a physical input channel, or a backplane input for a backplane input channel. This must be unique for the driving channel. This is only required if communication using the backplane is required.</td>
+    <td width="10%">Integer</td>
+    <td width="25%">An integer value between 1 and 8</td>
+  </tr>
+  <tr  >
+    <td width="10%">Filter On</td>
+    <td width="10%">IsTransducerFilterOn</td>
+    <td width="10%">TX_FILTER</td>
+    <td width="30%">Turns the 2 pole, 16 kHz transducer filter on or off. This field is only used if &quot;Input Type&quot; = <em>S</em>, <em>D</em>.</td>
+    <td width="10%">String</td>
+    <td width="25%">true or false</td>
+  </tr>
+  <tr  >
+    <td>Output Mode</td>
+    <td>OutputMode</td>
+    <td>OUTPUT_MODE</td>
+    <td>Output signal type and units of measurement (defines integration). <br>
+      If &quot;Input Type&quot; is a velocity then only &quot;Output Mode&quot; = {<em 
+      >Velocity</em>, <em 
+      >Displacement</em>} are permitted.<br 
+      >
+      The selection also indicates the units to use, which  should be based on the &ldquo;EngineeringUnitType&rdquo; selection.</td>
+    <td>String</td>
+    <td>Imperial:<br>
+      V [ips] = Velocity<br>
+      A [g] = Acceleration<br 
+      >
+      D [mils] = Displacement<br>
+      <br 
+      >
+      Metric:<br>
+      V [cm/s] = Velocity<br>
+      A [m/s/s]= Acceleration<br 
+      >
+      D [mm]= Displacement</td>
+  </tr>
+  <tr  >
+    <td width="10%">Output Range</td>
+    <td width="10%">OutputRange</td>
+    <td width="10%">OUTPUT_RANGE</td>
+    <td width="30%">Max output in EU.</td>
+    <td width="10%">Float</td>
+    <td width="25%">A float value between 0.0 and 200.0</td>
+  </tr>
+  <tr  >
+    <td width="10%">Output Scaling</td>
+    <td width="10%">OutputScaling</td>
+    <td width="10%">OUTPUT_SCALING</td>
+    <td width="30%">Scaling applied to the output units.</td>
+    <td width="10%">String</td>
+    <td width="25%">RMS = RMS<br 
+      >
+      AVG = Average<br>
+      Pk = Peak<br 
+      >
+      PTP = Peak-to-Peak</td>
+  </tr>
+  <tr  >
+    <td width="10%">Output Range AC</td>
+    <td width="10%">OutputRangeAC</td>
+    <td width="10%">AC_OUTPUT</td>
+    <td width="30%">AC voltage output max range. This field is optional.</td>
+    <td width="10%">Float</td>
+    <td width="25%">A float value between 0.0 and 10.0</td>
+  </tr>
+  <tr  >
+    <td width="10%">Output Range DC</td>
+    <td width="10%">OutputRangeDC</td>
+    <td width="10%">DC_OUTPUT</td>
+    <td width="30%">DC voltage output max range.</td>
+    <td width="10%">Float</td>
+    <td width="25%">A float value between 0.0 and 10.0</td>
+  </tr>
+  <tr  >
+    <td width="10%">Fixed Filter Table</td>
+    <td width="10%">FixedFilterTable</td>
+    <td width="10%">FIXED_FILTER_TABLE</td>
+    <td width="30%">Selects the filter table to use when selecting the low pass and high pass filter cut-off frequencies for a fixed filter. This field is only required for &quot;Filter Mode&quot; = <em 
+      >F</em>.</td>
+    <td width="10%">String</td>
+    <td width="25%">A = 5Hz - 5kHz<br 
+      >
+      B = 1kHz - 25kHz</td>
+  </tr>
+  <tr  >
+    <td width="10%">Low Pass Freq</td>
+    <td width="10%">LowPassFreq</td>
+    <td width="10%">LOW_PASS_FREQ</td>
+    <td width="30%">Sets low pass cut-off freq for fixed filter in Hz. This field is only required for &quot;Filter Mode&quot; = <em 
+      >F</em> and could be blank. If both &quot;Low Pass Freq&quot; and &quot;High Pass Freq&quot; are defined, then &quot;High Pass Freq&quot; shall be less than &quot;Low Pass Freq&quot;.</td>
+    <td width="10%">Integer</td>
+    <td width="25%">&quot;Fixed Filter Table&quot; = <em 
+      >A</em> (5 Hz - 5 kHz):<br>
+      50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 225, 250, 275, 300, 325, 350, 375, 400, 425, 450, 475, 500, 600, 700, 800, 900, 1000, 1250, 1500, 1750, 2000, 2250, 2500, 2750, 3000, 3250, 3500, 3750, 4000, 4250, 4500, 4750, 5000<br 
+      >
+      <br>
+      &quot;Fixed Filter Table&quot; = <em 
+      >B</em> (1 kHz - 25 kHz):<br 
+      >
+      1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000, 13000, 14000, 15000, 16000, 17000, 18000, 19000, 20000, 21000, 22000, 23000, 24000, 25000</td>
+  </tr>
+  <tr  >
+    <td width="10%">High Pass Freq</td>
+    <td width="10%">HighPassFreq </td>
+    <td width="10%">HIGH_PASS_FREQ</td>
+    <td width="30%">Sets high pass cut-off freq for fixed filter in Hz. This field is only required for &quot;Filter Mode&quot; = <em 
+      >F</em> and could be blank. If both &quot;Low Pass Freq&quot; and &quot;High Pass Freq&quot; are defined, then &quot;High Pass Freq&quot; shall be less than &quot;Low Pass Freq&quot;.</td>
+    <td width="10%">Integer</td>
+    <td width="25%">&quot;Fixed Filter Table&quot; = <em 
+      >A</em> (5 Hz - 5 kHz):<br>
+      5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 110, 120, 130, 140, 150, 160, 170, 180, 190, 200, 250, 300, 350, 400, 450, 500, 600, 700, 800, 900, 1000<br>
+      <br 
+      >
+      &quot;Fixed Filter Table&quot; = <em 
+      >B</em> (1 kHz - 25 kHz):<br 
+      >
+      1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000, 11000, 12000, 13000, 14000, 15000, 16000, 17000, 18000, 19000, 20000, 21000, 22000, 23000, 24000, 25000</td>
+  </tr>
+  <tr  >
+    <td width="10%">Bandwidth Type</td>
+    <td width="10%">FilterBandWidthType</td>
+    <td width="10%">FILTER_BW_TYPE</td>
+    <td width="30%">This sets the filter bandwidth type. This field is only required for &quot;Filter Mode&quot; = {<em 
+      >Variable</em>, <em>Tracking</em>, <em 
+      >Sweep</em>, <em>Balance</em>}.</td>
+    <td width="10%">String</td>
+    <td width="25%"><em>F</em><em> = </em><em>Fixed</em>&nbsp;or<br>
+      <br>
+      <em>P</em> = <em>Percentage</em></td>
+  </tr>
+  <tr  >
+    <td width="10%">Bandwidth</td>
+    <td width="10%">FilterBandWidth</td>
+    <td width="10%">FILTER_BW</td>
+    <td width="30%">Sets bandwidth value for filter. This field is only required for &quot;Filter Mode&quot; = {<em 
+      >Variable</em>, <em>Tracking</em>, <em 
+      >Sweep</em>, <em>Balance</em>}.</td>
+    <td width="10%">Integer</td>
+    <td width="25%">&quot;FilterBandwidth Type&quot; = <em 
+      >F</em>:<br>
+      An integer value between 1 and 100 <br>
+      <br 
+      >
+      &quot;FilterBandwidth Type&quot; = <em 
+      >P</em>:<br>
+      An integer value between 1 and 5</td>
+  </tr>
+  <tr  >
+    <td width="10%">Min Out Freq</td>
+    <td width="10%">FreqOutMin</td>
+    <td width="10%">FREQ_OUT_MIN</td>
+    <td width="30%">Frequency at minimum 0 V DC voltage on output.This field is only used for &quot;Filter Mode&quot; = {<em 
+      >Variable</em>, <em>Tracking</em>, <em 
+      >Sweep</em>, <em>Balance</em>}.</td>
+    <td width="10%">Float</td>
+    <td width="25%">A float value [Hz]</td>
+  </tr>
+  <tr  >
+    <td width="10%">Max Out Freq</td>
+    <td width="10%">FreqOutMax</td>
+    <td width="10%">FREQ_OUT_MAX</td>
+    <td width="30%">Frequency at maximum 10 V DC voltage on output.This field is only used for &quot;Filter Mode&quot; = {<em 
+      >Variable</em>, <em>Tracking</em>, <em 
+      >Sweep</em>, <em>Balance</em>}.</td>
+    <td width="10%">Float</td>
+    <td width="25%">A float value [Hz]</td>
+  </tr>
+  <tr  >
+    <td width="10%">Var Filter Freq</td>
+    <td width="10%">VariableFilterFreq</td>
+    <td width="10%">VAR_FILTER_FREQ</td>
+    <td width="30%">Sets centre frequency for variable filter in Hz. This field is only used for &quot;Filter Mode&quot; = <em>Variable.</em></td>
+    <td width="10%">Float</td>
+    <td width="25%">A float value between 5.0 and 5000.0 Hz</td>
+  </tr>
+  <tr  >
+    <td width="10%">Min Bandwidth</td>
+    <td width="10%">FilterBandWidthMin</td>
+    <td width="10%">BW_MIN</td>
+    <td width="30%">Sets minimum bandwidth value when the bandwidth is calculated as a percentage of the center frequency. This field is only required for &quot;Filter Mode&quot; = {<em>Tracking</em>, <em 
+      >Sweep</em>, <em>Balance</em>} and &quot;Bandwidth Type&quot; = <em>P</em>.</td>
+    <td width="10%">Integer</td>
+    <td width="25%">An integer value between 1 and 100 Hz</td>
+  </tr>
+  <tr  >
+    <td width="10%">Max Bandwidth</td>
+    <td width="10%">FilterBandWidthMax</td>
+    <td width="10%">BW_MAX</td>
+    <td width="30%">Sets maximum bandwidth value when the bandwidth is calculated as a percentage of the center frequency. This field is only required for &quot;Filter Mode&quot; = {<em>T</em><em>racking</em>, <em 
+      >Sweep</em>, <em>Balance</em>} and &quot;Bandwidth Type&quot; = <em>P</em>.</td>
+    <td width="10%">Integer</td>
+    <td width="25%">An integer value between 1 and 100 Hz</td>
+  </tr>
+  <tr  >
+    <td width="10%">Tach Input No</td>
+    <td width="10%">TachInputNumber</td>
+    <td width="10%">TACH_INPUT_NO</td>
+    <td width="30%">Tach channel number assigned to channel. This field is only required for &quot;Filter Mode&quot; = {<em>Tracking</em>, <em>Balance</em>}.</td>
+    <td width="10%">Integer</td>
+    <td width="25%">An integer value between 1 and 4</td>
+  </tr>
+  <tr  >
+    <td width="10%">Track Filter Order</td>
+    <td width="10%">TrackingFilterOrder</td>
+    <td width="10%">TRACK_ORDER</td>
+    <td width="30%">Sets the tracking filter order. This is the tracking filter multiple. The tracking filter frequency is set at the RPM rate times this number. This field is only required for &quot;Filter Mode&quot; = {<em>Tracking</em>, <em>Balance</em>}.</td>
+    <td width="10%">Integer</td>
+    <td width="25%">An integer value between 1 and 4</td>
+  </tr>
+  <tr  >
+    <td width="10%">Sweep Freq Step</td>
+    <td width="10%">SweepFreqStep</td>
+    <td width="10%">SWEEP_FREQ_STEP</td>
+    <td width="30%">Sets frequency step in sweep mode. This field is only used for &quot;Filter Mode&quot; = <em>Sweep</em>.</td>
+    <td width="10%">Float</td>
+    <td width="25%">A float value between 1.0 and 100.0 Hz</td>
+  </tr>
+  <tr  >
+    <td width="10%">Sweep Freq Delay</td>
+    <td width="10%">SweepFreqDelay</td>
+    <td width="10%">SWEEP_FREQ_DELAY</td>
+    <td width="30%">Sets frequency delay between frequency steps in sweep mode. This field is only used for &quot;Filter Mode&quot; = <em>Sweep</em>.</td>
+    <td width="10%">Integer </td>
+    <td width="25%">An integer value between 1 and 32767 ms</td>
+  </tr>
+  <tr  >
+    <td width="10%">Sweep Type</td>
+    <td width="10%">SweepType</td>
+    <td width="10%">SWEEP_TYPE</td>
+    <td width="30%">Sets type of sweep to perform. This field is only used for &quot;Filter Mode&quot; = <em>Sweep</em>.</td>
+    <td width="10%">String</td>
+    <td width="25%"><em>UP</em> or <em>DOWN</em></td>
+  </tr>
+  <tr  >
+    <td width="10%">Min Sweep Freq</td>
+    <td width="10%">SweepFreqMin</td>
+    <td width="10%">SWEEP_FREQ_MIN</td>
+    <td width="30%">Sets minimum sweep frequency value. This field is only used for &quot;Filter Mode&quot; = <em>S</em>weep.</td>
+    <td width="10%">Integer</td>
+    <td width="25%">An integer value between 5 and 5000 Hz </td>
+  </tr>
+  <tr  >
+    <td width="10%">Max Sweep Freq</td>
+    <td width="10%">SweepFreqMax</td>
+    <td width="10%">SWEEP_FREQ_MAX</td>
+    <td width="30%">Sets maximum sweep frequency value. This field is only used for &quot;Filter Mode&quot; = <em>Sweep</em>.</td>
+    <td width="10%">Integer</td>
+    <td width="25%">An integer value between 5 and 5000 Hz</td>
+  </tr>
+  <tr  >
+    <td width="10%">Tach Channel No</td>
+    <td width="10%">TachChannelNumber</td>
+    <td width="10%">TACH_CHAN_NO</td>
+    <td width="30%">Defines the tachometer number and also enables that input.</td>
+    <td width="10%">Integer</td>
+    <td width="25%">An integer value between 1 and 4</td>
+  </tr>
+  <tr>
+    <td width="10%">Tach Ratio</td>
+    <td width="10%">TachRatio</td>
+    <td width="10%">TACH_RATIO</td>
+    <td width="30%">Set tach ratio. Tach ratio is defined as the number of pulses per one revolution.</td>
+    <td width="10%">Float</td>
+    <td width="25%">A float value between 0.01 and 9999.99</td>
+  </tr>
+  <tr>
+    <td width="10%">Tach Edge</td>
+    <td width="10%">TachEdge</td>
+    <td width="10%">TACH_EDGE</td>
+    <td width="30%">Set leading or trailing edge as the trigger for the tach signal.</td>
+    <td width="10%">String</td>
+    <td width="25%"><em>LEAD</em> or <em>TRAIL</em></td>
+  </tr>
+</table>
+<p>The structure of a CEC Channel complies with the following example: </p>
+<blockquote><code>&lt;Channels LastModificationDate=&quot;<strong>2015-06-10 14:15:46</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;<br>
+  &lt;Channel Name=&quot;CEC1&quot; <br>
+  Description=&quot;&quot; <br>
+  Enabled=&quot;true&quot; <br>
+  LastModificationDate=&quot;2015-06-10 14:15:46&quot; <br>
+  SubsystemName=&quot;CEC&quot; <br>
+  SubsystemType=&quot;CEC&quot; <br>
+  AlternateName=&quot;&quot; <br>
+  DataType=&quot;Float&quot; <br>
+  InitialValue=&quot;-999999&quot; <br>
+  Format=&quot;4.2f&quot; <br>
+  UpdateRate=&quot;0&quot; <br>
+  QualityCeiling=&quot;GOOD&quot; <br>
+  Critical=&quot;false&quot; <br>
+  EngineeringUnit=&quot;-&quot; <br>
+  DisplayMin=&quot;0&quot; <br>
+  DisplayMax=&quot;100&quot; <br>
+  DeadBand=&quot;0&quot; <br>
+  Output=&quot;false&quot; <br>
+  ReferenceChannel=&quot;&quot; <br>
+  Group=&quot;&quot; <br>
+  SignalId=&quot;&quot; <br>
+  CalSensor=&quot;&quot; <br>
+  CalGroup=&quot;&quot; <br>
+  FixedSensor=&quot;&quot; <br>
+  CustomerSensor=&quot;&quot; <br>
+  FullsetStability=&quot;false&quot; <br>
+  ContinuousLog=&quot;true&quot; <br>
+  Pinout=&quot;Pinout1_1&quot; <br>
+  InputType=&quot;D&quot; <br>
+  EngineeringUnitType=&quot;IMP&quot; <br>
+  TransducerScaling=&quot;Pk&quot; <br>
+  Sensitivity=&quot;0&quot; <br>
+  FilterMode=&quot;S&quot; <br>
+  BackPlaneNumber=&quot;0&quot; <br>
+  IsTransducerFilterOn=&quot;true&quot; <br>
+  OutputMode=&quot;V[ips]&quot; <br>
+  OutputRange=&quot;-1&quot; <br>
+  OutputScaling=&quot;Pk&quot; <br>
+  OutputRangeAC=&quot;1&quot; <br>
+  OutputRangeDC=&quot;10&quot; <br>
+  FixedFilterTable=&quot;&quot; <br>
+  LowPassFreq=&quot;0&quot; <br>
+  HighPassFreq=&quot;0&quot; <br>
+  FilterBandWidthType=&quot;&quot; <br>
+  FilterBandWidth=&quot;0&quot; <br>
+  FreqOutMin=&quot;0&quot; <br>
+  FreqOutMax=&quot;0&quot; <br>
+  VariableFilterFreq=&quot;0&quot; <br>
+  FilterBandWidthMin=&quot;0&quot; <br>
+  FilterBandWidthMax=&quot;0&quot; <br>
+  TachInputNumber=&quot;0&quot; <br>
+  TrackingFilterOrder=&quot;0&quot; <br>
+  SweepFreqStep=&quot;0&quot; <br>
+  SweepFreqDelay=&quot;0&quot; <br>
+  SweepType=&quot;&quot; <br>
+  SweepFreqMin=&quot;0&quot; <br>
+  SweepFreqMax=&quot;0&quot; <br>
+  TachChannelNumber=&quot;0&quot; <br>
+  TachRatio=&quot;0&quot; <br>
+  TachEdge=&quot;LEAD&quot;/&gt;<br>
+  &lt;/Channels&gt;<br>
+</code></blockquote>
+<h4 id="SubsystemsXML">Subsystems</h4>
+<p>The subsystem definitions are stored in <em>Subsystems.xml</em> files in the configuration directories.</p>
+<p>A CEC Vibration Subsystem contains generic information, described in <a href="../SubsystemEditor/SubsystemEditor.htm#XMLFileStructure" ></a><a href="../SubsystemEditor/SubsystemEditor.htm#XMLFileStructure" >Subsystem Editor - Generic Subsystem Parameters - XML File Structure</a>, and the specific attributes: </p>
+<ul>
+  <li><strong>Pinouts</strong></li>
+</ul>
+<p><strong><strong></strong></strong>The specific attribute <strong>Pinouts</strong> defines a collection of pinouts implemented for the CEC Subsystem. <br>
+  Each Pinout has the following properties:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td width="10%">Pinout</td>
+    <td width="10%">Pinout</td>
+    <td width="10%">PINOUT</td>
+    <td width="30%">Text field used to specify a chassis and slot combination for an Amplifier card or a Tachometer card.</td>
+    <td width="10%">String</td>
+    <td width="25%">A case sensitive alphanumeric string of max. 40 characters</td>
+  </tr>
+  <tr>
+    <td width="10%">Chassis Number </td>
+    <td width="10%">Chassis</td>
+    <td width="10%">CHASSIS_NO</td>
+    <td width="30%">The number of the chassis.</td>
+    <td width="10%">Integer</td>
+    <td width="25%">1 or 2</td>
+  </tr>
+  <tr>
+    <td width="10%">Card Type</td>
+    <td width="10%">CardType</td>
+    <td width="10%">CARD_TYPE</td>
+    <td width="30%">The type of card installed in that slot.</td>
+    <td width="10%">Combo Box</td>
+    <td width="25%">Amplifier or Tachometer</td>
+  </tr>
+  <tr>
+    <td width="10%">Slot</td>
+    <td width="10%">Slot</td>
+    <td width="10%">SLOT_NO</td>
+    <td width="30%">This is the slot number in the chassis and only applicable for the Amplifier card type.</td>
+    <td width="10%">Integer</td>
+    <td width="25%">An integer between 1 and 14</td>
+  </tr>
+</table>
+<p>The structure of a CEC Vibration Subsystem is shown in the following example: </p>
+<blockquote>
+  <pre>&lt;Subsystems   LastModificationDate=&quot;<strong>2008-09-04   14:13:03</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Subsystem Name=&quot;ZZCEC&quot;
+Description=&quot;ATP CEC&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2008-04-25 16:28:32&quot;
+Id=&quot;0&quot;
+Type=&quot;CEC&quot;
+CreationDate=&quot;2008-04-25 16:00:53&quot;&gt;
+&lt;Pinouts&gt;
+&lt;Pinout Name=&quot;Pinout1_tach&quot;
+Chassis=&quot;1&quot;
+CardType=&quot;Tachometer&quot;
+Slot=&quot;0&quot; /&gt;
+&lt;Pinout Name=&quot;Pinout1_1&quot;
+Chassis=&quot;1&quot;
+CardType=&quot;Amplifier&quot;
+Slot=&quot;1&quot; /&gt;
+&lt;Pinout Name=&quot;Pinout1_2&quot;
+Chassis=&quot;1&quot;
+CardType=&quot;Amplifier&quot;
+Slot=&quot;2&quot; /&gt;
+&lt;/Pinouts&gt;
+&lt;/Subsystem&gt;</pre>
+</blockquote>
+<h3 id="TabDelimitFileStructure">Tab-Delimited File Structure</h3>
+<p>The CEC Vibration Subsystem configuration contains both the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic channel definition columns</a> and the specific CEC input parameters defined in the tab-delimited configuration file. </p>
+<p>The rules, syntax and guidelines for creating CEC channels are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected<br>
+      in the column)</th>
+    <th>Multiple Values Allowed<br>
+      (See Note*)</th>
+    <th>Data Required<br>
+      (See Note**)</th>
+    <th>Data Required for Tach Channel <br>
+      (See Note**)</th>
+  </tr>
+  <tr>
+    <td width="10%">PINOUT</td>
+    <td width="40%">Text field used to specify a chassis and slot combination for an Amplifier card or a Tachometer card. Note that the PINOUT name will be the same for all Tachometer channels on the same Tachometer card.</td>
+    <td width="15%">40 character alphanumeric, (case sensitive)</td>
+    <td width="5%">No</td>
+    <td width="5%">Yes</td>
+    <td width="15%">Yes</td>
+  </tr>
+  <tr>
+    <td width="10%">INPUT_TYPE</td>
+    <td width="40%">Type of input transducer. <br>
+      V = Velocity Coil (self-generating)<br>
+      S = Acceleration (single ended)<br>
+      D = Acceleration (differential)<br>
+      VC = Velocity (constant current)<br>
+      VV = Velocity (voltage excitation)<br>
+      AC = Acceleration (constant current)<br>
+      AV = Acceleration (voltage excitation)<br>
+      VBP = Velocity (backplane route)<br>
+      ABP = Acceleration (backplane route)
+      <p> Default value should be &ldquo;D.&rdquo;</p></td>
+    <td width="15%"><p>V, S, D, VC, VV, AC, AV, VBP, or ABP</p></td>
+    <td width="5%">No</td>
+    <td width="5%">Yes</td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%">UNIT_TYPE</td>
+    <td width="40%">Transducer units of measurement, based on INPUT_TYPE. Either Imperial (IMP) or Metric (MET) can be selected.
+      <p>IMP = pC/g or mV/ips</p>
+      <p>MET = pC/m/s/s or mV/cm/s </p>
+      <p> Default should be &ldquo;IMP.&rdquo;</p></td>
+    <td width="15%"> pC/g, mV/ips, pC/m/s/s or mV/cm/s </td>
+    <td width="5%">No</td>
+    <td width="5%">Yes</td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%">TX_SCALING</td>
+    <td width="40%">Scaling applied to the input transducer units.<br>
+      RMS = RMS<br>
+      AVG = Average<br>
+      Pk = Peak<br>
+      PTP = Peak-to-Peak
+      <p> Default should be &ldquo;Pk.&rdquo; </p></td>
+    <td width="15%">RMS, AVG, Pk, or PTP </td>
+    <td width="5%">No</td>
+    <td width="5%">Yes</td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%">SENSITIVITY</td>
+    <td width="40%">Sensitivity of input transducer. The acceptable range is determined by the INPUT_TYPE and shall be as defined below.
+      <p> V = 6 to 1100 mV/ips ( )<br>
+        S = 1 to 110 pc/g ( )<br>
+        D = 1 to 110 pc/g ( )<br>
+        VC= 6 to 1100 mV/ips ( )<br>
+        VV = 6 to 1100 mV/ips ( )<br>
+        AC = 1 to 110 mV/g ( )<br>
+        AV = 1 to 110 mV/g ( ) <br>
+        VBP = not required<br>
+        ABP = not required</p></td>
+    <td width="15%">Number 1.00 to 1100.00 </td>
+    <td width="5%">No</td>
+    <td width="5%">See Desc. </td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%">FILTER_MODE</td>
+    <td width="40%">Type of filter applied to channel.<br>
+      N = None<br>
+      F = Fixed Bandpass<br>
+      V = Variable Bandpass<br>
+      T = Tracking Filter<br>
+      S = Sweep Filter<br>
+      B = Balance Mode
+      <p> FE is used to enable filter mode and FM is used to set the mode. </p>
+      <p> Default should be &ldquo;N.&rdquo;</p></td>
+    <td width="15%">N,F,V,T,S or B </td>
+    <td width="5%">No</td>
+    <td width="5%">Yes</td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%">BACKPLANE_NO</td>
+    <td width="40%">Route on backplane for signal. This field defines the backplane output for a physical input channel, or a backplane input for a backplane input channel. This must be unique for the driving channel. This is only required if communication using the backplane is required. </td>
+    <td width="15%">Integer Number 0 to 8 </td>
+    <td width="5%">No</td>
+    <td width="5%">See Desc. </td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%">TX_FILTER</td>
+    <td width="40%">Turns the 2 pole, 16 kHz transducer filter on or off. This field is only used if INPUT_TYPE = S, D.
+      <p> Default should be &ldquo;ON.&rdquo; </p></td>
+    <td width="15%">Integer
+      <p> 1 for On, </p>
+      <p> 0 for Off </p></td>
+    <td width="5%">No</td>
+    <td width="5%">See Desc. </td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%">OUTPUT_MODE</td>
+    <td width="40%">Output signal type (defines integration). <br>
+      V = Velocity<br>
+      A = Acceleration<br>
+      D = Displacement
+      <p> If INPUT_TYPE is a velocity then only OUTPUT_MODE V and D are permitted. If INPUT_TYPE is a displacement then only OUTPUT_MODE D is permitted. </p>
+      <p> Default should be &ldquo;V.&rdquo; </p></td>
+    <td width="15%">V(ips)
+      <p> A(g) </p>
+      <p> D(mils) </p>
+      <p> V(cm/s) </p>
+      <p> A(m/s/s) or </p>
+      <p> D (mm) </p></td>
+    <td width="5%">No</td>
+    <td width="5%">Yes</td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%">OUTPUT_RANGE</td>
+    <td width="40%">Max output in EU. </td>
+    <td width="15%">Number 0.0 &ndash; 200.0 </td>
+    <td width="5%">No</td>
+    <td width="5%">Yes</td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%">OUTPUT_SCALING</td>
+    <td width="40%">Scaling applied to the output units.
+      <p> RMS = RMS<br>
+        AVG = Average<br>
+        Pk = Peak<br>
+        PTP = Peak-to-Peak </p>
+      <p> Default should be &ldquo;Pk.&rdquo;</p></td>
+    <td width="15%">RMS, AVG, Pk or PTP </td>
+    <td width="5%">No</td>
+    <td width="5%">Yes</td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%">AC_OUTPUT</td>
+    <td width="40%">AC voltage output max range. This field is optional.
+      <p> Default should be 1 V. </p></td>
+    <td width="15%">Number 0.0 &ndash; 10.0</td>
+    <td width="5%">No</td>
+    <td width="5%">See Desc. </td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%">DC_OUTPUT</td>
+    <td width="40%">DC voltage output max range.
+      <p> Default should be 10 V.</p></td>
+    <td width="15%">Number 0.0 &ndash; 10.0</td>
+    <td width="5%">No</td>
+    <td width="5%">Yes</td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%">FIXED_FILTER_TABLE</td>
+    <td width="40%"> Selects the filter table A (5 Hz &ndash; 5 kHz) or B (1 kHz &ndash; 25 kHz) to use when selecting the low pass and high pass filter cut-off frequencies for a fixed filter. This field is only required for FILTER_MODE = FIXED. </td>
+    <td width="15%"> A or B </td>
+    <td width="5%">No</td>
+    <td width="5%">See Desc. </td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%">LOW_PASS_FREQ</td>
+    <td width="40%"> Sets low pass cut-off freq for fixed filter in Hz. This field is only required for FILTER_MODE = FIXED. FH enables filter only if values are specified. This field could be blank. If both LOW_PASS_FREQ and HIGH_PASS_FREQ are defined, then HIGH_PASS_FREQ shall be less than LOW_PASS_FREQ. </td>
+    <td width="15%">Number</td>
+    <td width="5%">No</td>
+    <td width="5%">See Desc. </td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%">HIGH_PASS_FREQ</td>
+    <td width="40%"> Sets high pass cut-off freq for fixed filter in Hz. This field is only required for FILTER_MODE = FIXED. FL enables filter only if values are specified. This field could be blank. If both LOW_PASS_FREQ and HIGH_PASS_FREQ are defined, then HIGH_PASS_FREQ shall be less than LOW_PASS_FREQ. </td>
+    <td width="15%">Number</td>
+    <td width="5%">No</td>
+    <td width="5%">See Desc. </td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%">FILTER_BW_TYPE</td>
+    <td width="40%"> This sets the filter bandwidth type (either Fixed or Percentage). This field is only required for FILTER_MODE = VARIABLE, TRACKING, SWEEP or BALANCE. </td>
+    <td width="15%"> F, P </td>
+    <td width="5%">No</td>
+    <td width="5%">See Desc. </td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%">FILTER_BW</td>
+    <td width="40%"><p>Sets bandwidth value for filter. This field is only required for FILTER_MODE = VARIABLE, TRACKING, SWEEP or BALANCE </p>
+      <p> (FILTER_BW_TYPE = F Integer Number 1 &ndash; 100 [Hz]) </p>
+      <p> (FILTER_BW_TYPE = P Integer Number 1 &ndash; 5 [%]) <strong></strong></p></td>
+    <td width="15%"> Integer Number 1 &ndash; 100 </td>
+    <td width="5%">No</td>
+    <td width="5%">See Desc. </td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%">FREQ_OUT_MIN</td>
+    <td width="40%"> Frequency at minimum 0 V DC voltage on output. This field is only used for FILTER_MODE = VARIABLE, TRACKING, SWEEP or BALANCE. </td>
+    <td width="15%"> Number [Hz] with up to 1 decimal place </td>
+    <td width="5%">No</td>
+    <td width="5%">See Desc. </td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%"> FREQ_OUT_MAX </td>
+    <td width="40%"> Frequency at maximum 10 V DC voltage on output. This field is only used for FILTER_MODE = VARIABLE, TRACKING, SWEEP or BALANCE. </td>
+    <td width="15%"> Number with up to 1 decimal place </td>
+    <td width="5%">No</td>
+    <td width="5%">See Desc. </td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%">VAR_FILTER_FREQ</td>
+    <td width="40%"> Sets centre frequency for variable filter in Hz. This field is only required for FILTER_MODE = VARIABLE </td>
+    <td width="15%"> Number 5 &ndash; 5000 with up to 1 decimal place </td>
+    <td width="5%">No</td>
+    <td width="5%">See Desc. </td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%"> BW_MIN </td>
+    <td width="40%"> Sets minimum bandwidth value when the bandwidth is calculated as a percentage of the center frequency . This field is only required for FILTER_MODE = TRACKING, SWEEP or BALANCE and FILTER_BW_TYPE = P. </td>
+    <td width="15%"> Integer 1 &ndash; 100 </td>
+    <td width="5%">No</td>
+    <td width="5%">See Desc. </td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%">BW_MAX</td>
+    <td width="40%"> Sets maximum bandwidth value when the bandwidth is calculated as a percentage of the center frequency . This field is only required for FILTER_MODE = TRACKING, SWEEP or BALANCE and FILTER_BW_TYPE = P. </td>
+    <td width="15%"> Integer 1 &ndash; 100 </td>
+    <td width="5%">No</td>
+    <td width="5%">See Desc. </td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%"> TACH_INPUT_NO </td>
+    <td width="40%"> Tach channel number assigned to channel. This field is only required for FILTER_MODE = TRACKING or BALANCE. </td>
+    <td width="15%"> Integer 1 - 4 </td>
+    <td width="5%">No</td>
+    <td width="5%">See Desc. </td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%">TRACK_ORDER</td>
+    <td width="40%"> Sets the tracking filter order. This is the tracking filter multiple. The tracking filter frequency is set at the RPM rate times this number. This field is only required for FILTER_MODE = TRACKING or BALANCE </td>
+    <td width="15%"> Integer 1 &ndash; 4 </td>
+    <td width="5%">No</td>
+    <td width="5%">See Desc. </td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%"> SWEEP_FREQ_STEP </td>
+    <td width="40%"> Sets frequency step in sweep mode This field is only used for FILTER_MODE = SWEEP. </td>
+    <td width="15%"> Number 1.0 &ndash; 100.0 </td>
+    <td width="5%">No</td>
+    <td width="5%">See Desc. </td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%">SWEEP_FREQ_DELAY</td>
+    <td width="40%"> Sets frequency delay between frequency steps in sweep mode This field is only used for FILTER_MODE = SWEEP. </td>
+    <td width="15%"> Integer 1 &ndash; 32767 </td>
+    <td width="5%">No</td>
+    <td width="5%">See Desc. </td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%"> SWEEP_TYPE </td>
+    <td width="40%"> Sets type of sweep to perform. This field is only used for FILTER_MODE = SWEEP.<br>
+      UP = continuous sweep, min to max<br>
+      DOWN = continuous sweep, max to min </td>
+    <td width="15%"> UP, DOWN or * </td>
+    <td width="5%">No</td>
+    <td width="5%">See Desc. </td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%"> SWEEP_FREQ_MIN </td>
+    <td width="40%"> Sets minimum sweep frequency value. This field is only used for FILTER_MODE = SWEEP.<br></td>
+    <td width="15%"> Integer 5 &ndash; 5000 </td>
+    <td width="5%">No</td>
+    <td width="5%">See Desc. </td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%"> SWEEP_FREQ_MAX </td>
+    <td width="40%"> Sets maximum sweep frequency value. This field is only used for FILTER_MODE = SWEEP.<br></td>
+    <td width="15%"> Integer 5 &ndash; 5000 </td>
+    <td width="5%">No</td>
+    <td width="5%">See Desc. </td>
+    <td width="15%">No</td>
+  </tr>
+  <tr>
+    <td width="10%">TACH_CHAN_NO</td>
+    <td width="40%"> Defines the tachometer number and also enables that input. </td>
+    <td width="15%"> Integer 1 &ndash; 4 </td>
+    <td width="5%">No</td>
+    <td width="5%">No</td>
+    <td width="15%">Yes</td>
+  </tr>
+  <tr>
+    <td width="10%">TACH_RATIO</td>
+    <td width="40%"> Set tach ratio. Tach ratio is defined as the number of pulses per one revolution. </td>
+    <td width="15%"> Number 0.01 &ndash; 9999.99 </td>
+    <td width="5%">No</td>
+    <td width="5%">No</td>
+    <td width="15%">Yes</td>
+  </tr>
+  <tr>
+    <td width="10%">TACH_EDGE</td>
+    <td width="40%"> Set leading or trailing edge as the trigger for the tach signal. Default shall be LEAD. </td>
+    <td width="15%"> LEAD or TRAIL </td>
+    <td width="5%">No</td>
+    <td width="5%">No</td>
+    <td width="15%">Yes</td>
+  </tr>
+  <tr>
+    <td colspan="6"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single line of the spread sheet.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is always optional.</p></td>
+  </tr>
+</table>
+<h2 id="SubsystemEditorCEC">Subsystem Editor for CEC Channels</h2>
+<p>To edit the CEC Vibration Subsystem, the Subsystem Editor must be selected from within the Configuration Administrator.</p>
+<p>The tool bar in the Configuration Administrator allows the various configuration editors available for proDAS to be selected.</p>
+<p>The Subsystem Editor allows new subsystems to be added to the current configuration.</p>
+<div class="Container"><img src="images/SubsystemEditor.png" alt="SubsystemEditor" width="700" height="423" ></div>
+<p>To add a new subsystem to the current configuration:</p>
+<ol>
+  <li>Select <strong>Append Data Record</strong> from the Edit menu or click in the left pane of the splitter window and then click the right mouse button and select <strong>Append Data Record</strong> from the context sensitive menu.</li>
+  <li>Select <strong>CEC </strong>in the dialogue box to select the type of subsystem.<br>
+    A new line in Subsystem Editor is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to <strong>CEC</strong>. The user must then assign a name and description to the subsystem.</li>
+</ol>
+<h2 id="RTEInitialisationFile">RTE Initialisation File</h2>
+<p>The CEC Vibration Subsystem is configured by the RTE, along with all the other subsystems, as a request from the Management Interface GUI. For legacy purposes, the configuration request can also be specified in the command line of the RTE.</p>
+<p>A typical RTE initialisation file would include the following CEC Vibration Subsystem information:</p>
+<table width="95%" border="0" cellspacing="1" cellpadding="2">
+  <tr>
+    <td colspan="3">#--------------------------------------------------------------------------<br>
+      # CEC-8000 subsystem<br>
+      #--------------------------------------------------------------------------</td>
+  </tr>
+  <tr>
+    <td width="13%">SS CEC </td>
+    <td width="20%">False</td>
+    <td width="67%"> 04/26/05</td>
+  </tr>
+  <tr>
+    <td colspan="3">#Chassis information </td>
+  </tr>
+  <tr>
+    <td width="13%">CI</td>
+    <td width="20%">chassis</td>
+    <td width="67%">1 /dev/ttyM3 19200 1 8 N </td>
+  </tr>
+  <tr>
+    <td colspan="3">#Time out in ms. Must be greater than 3000 ms&gt;</td>
+  </tr>
+  <tr>
+    <td width="13%">CI</td>
+    <td width="20%">timeout</td>
+    <td width="67%">3000</td>
+  </tr>
+  <tr>
+    <td colspan="3">#Maximum number of retry before give up </td>
+  </tr>
+  <tr>
+    <td width="13%">CI</td>
+    <td width="20%">retry</td>
+    <td width="67%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="3"><p>#--------------------------------------------------------------------------<br>
+      #<br>
+      #--------------------------------------------------------------------------<br>
+      /CEC </p></td>
+  </tr>
+</table>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf" >Click here to see the RTE Initialisation file.</a></p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

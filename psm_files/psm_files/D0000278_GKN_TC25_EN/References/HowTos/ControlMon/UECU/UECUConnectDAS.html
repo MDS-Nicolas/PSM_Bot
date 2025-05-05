@@ -1,0 +1,454 @@
+<!DOCTYPE HTML PUBliC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>How To &ndash; Connect an Analogue Position Indicator or DAS</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left><h1>How To &ndash; Connect an Analogue Position Indicator or Data Acquisition System (DAS)<a href="#" onClick="window.print(); return false;"><img src="../../../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<p>The analogue position outputs a +/- 10 VDC signal from a 15 bit digital to analogue converter. This signal is used for display of throttle lever position on DAS (MDS or customer supplied).</p>
+<p>It requires a high impedance input (typically 100 kOhm or more) and should be shielded. The shield is ungrounded inside the controller chassis and should be connected at the customer end. A twisted pair plus shield cable is recommended.</p>
+<p>When calibrating equipment is connected to the analogue output, be aware that the minimum and maximum output values are -180 Deg to +180 Deg. These positions are equal to -10 VDC to +10 VDC. These outputs are independent of the Lever Min and Lever Max values defined for the engine type.</p>
+<h3>Customer Interface Connections</h3>
+<p>The tables below describe the functions of the customer interface connections.</p>
+<table cellspacing="1" class="Table-Grey">
+ <tr>
+ <th colspan="4">J6 Analogue Inputs</th>
+ </tr>
+ <tr>
+ <th>Analogue Inputs</th>
+ <th>Pinout</th>
+ <th>Signal Type</th>
+ <th>Description</th>
+ </tr>
+ <tr>
+ <td width="20%">Remote Command </td>
+ <td width="20%">S (+) &amp; T (-) </td>
+ <td width="20%">-10 to +10 VDC </td>
+ <td width="35%">Remote command for AAM mode.</td>
+ </tr>
+ <tr vAlign="top">
+ <td width="20%">Closed Loop Feedback #1</td>
+ <td width="20%"> A (+) &amp; B (-)</td>
+ <td width="20%">-10 to +10 VDC</td>
+ <td rowSpan="5" width="35%">Engine signal feedback used for closed loop control during auto mission.</td>
+ </tr>
+ <tr vAlign="top">
+ <td width="20%">Closed Loop Feedback #2</td>
+ <td width="20%"> D (+) &amp; E (-) </td>
+ <td width="20%">-10 to +10 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td width="20%">Closed Loop Feedback #3</td>
+ <td width="20%"> G (+) &amp; H (-) </td>
+ <td width="20%">-10 to +10 VDC </td>
+ </tr>
+ <tr vAlign="top">
+ <td width="20%">Closed Loop Feedback #4</td>
+ <td width="20%"> K (+) &amp; L (-) </td>
+ <td width="20%">-10 to +10 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td width="20%">Closed Loop Feedback #5</td>
+ <td width="20%"> N (+) &amp; P (-) </td>
+ <td width="20%">-10 to +10 VDC</td>
+ </tr>
+</table>
+
+<table cellspacing="1" class="Table-Grey">
+ <tr>
+ <th colspan="4">J7 Analogue Outputs</th>
+ </tr>
+ <tr>
+ <th>Analogue Outputs</th>
+ <th>Pinout</th>
+ <th>Signal Type</th>
+ <th>Description</th>
+ </tr>
+ <tr>
+ <td width="20%">Actuator 1 position #1</td>
+ <td width="20%"> A (+) &amp; B (-)</td>
+ <td width="20%">-10 to +10 VDC</td>
+ <td rowSpan="4" width="35%">Any of the 4 outputs can be configured for any of Lever 1 position, lever 2 position, Actuator 1 position or Actuator 2 position.<br>
+ <br>
+ The output range can be configured to any combination between &plusmn;10 V and &plusmn;5 V. </td>
+ </tr>
+ <tr vAlign="top">
+ <td>Actuator 2 position # 2</td>
+ <td> D (+) &amp; E (-) </td>
+ <td>-10 to +10 VDC </td>
+ </tr>
+ <tr vAlign="top">
+ <td>Actuator 1 Position #2 </td>
+ <td> G (+) &amp; H (-) </td>
+ <td>-10 to +10 VDC </td>
+ </tr>
+ <tr vAlign="top">
+ <td>Actuator 2 Position #2 </td>
+ <td> J (+) &amp; K (-) </td>
+ <td>-10 to +10 VDC </td>
+ </tr>
+</table>
+
+<table cellspacing="1" class="Table-Grey">
+ <tr>
+ <th colspan="4">J8 Discrete Inputs</th>
+ </tr>
+ <tr>
+ <th>Discrete Inputs</th>
+ <th>Pinout</th>
+ <th>Signal Type</th>
+ <th>Description</th>
+ </tr>
+ <tr>
+ <td rowSpan="2" width="24%">Disable Calibration</td>
+ <td rowSpan="2" width="19%"> A (+) &amp; E (-)</td>
+ <td width="21%">Disabled = 24 VDC</td>
+ <td rowSpan="2" width="36%">Disables the ability to calibrate. Used typically when the engine is running.</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Not Disabled = 0 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td rowSpan="2">Remote Trip #1</td>
+ <td rowSpan="2"> B (+) &amp; E (-)</td>
+ <td>Trip = 24 VDC</td>
+ <td rowSpan="2">Trips the engine to a predefined throttle angle.</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Not Trip = 0 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td rowSpan="2">Remote Auxiliary Trip #1</td>
+ <td rowSpan="2"> C (+) &amp; E (-)</td>
+ <td>Aux Trip = 24 VDC</td>
+ <td rowSpan="2">Trips the engine to another predefined throttle angle.</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Not Aux Trip = 0 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td rowSpan="2">Mode Select #1</td>
+ <td rowSpan="2"> D (+) &amp; E (-)</td>
+ <td>Selected = 24 VDC</td>
+ <td rowSpan="6">Remotely selects the auto mission mode.</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Not Selected = 0 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td rowSpan="2">Mode Select #2</td>
+ <td rowSpan="2"> F (+) &amp; K (-)</td>
+ <td>Selected = 24 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Not Selected = 0 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td rowSpan="2">Mode Select #3</td>
+ <td rowSpan="2"> G (+) &amp; K (-)</td>
+ <td>Selected = 24 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Not Selected = 0 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td rowSpan="2">Remote Engine Select #1</td>
+ <td rowSpan="2"> H (+) &amp; K (-)</td>
+ <td>Selected = 24 VDC</td>
+ <td rowSpan="8">Remotely selects the engine under test.</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Not Selected = 0 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td rowSpan="2">Remote Engine Select #2</td>
+ <td rowSpan="2"> J (+) &amp; K (-)</td>
+ <td>Selected = 24 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Not Selected = 0 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td rowSpan="2">Remote Engine Select #3</td>
+ <td rowSpan="2"> L (+) &amp; R (-)</td>
+ <td>Selected = 24 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Not Selected = 0 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td rowSpan="2">Remote Engine Select #4</td>
+ <td rowSpan="2"> M (+) &amp; R (-)</td>
+ <td>Selected = 24 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Not Selected = 0 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td rowSpan="2">Heart Beat Signal</td>
+ <td rowSpan="2"> N (+) &amp; R (-)</td>
+ <td>On = 24 VDC</td>
+ <td rowSpan="2">Determines whether the Host Computer is still active.<br>
+   <br>
+   Expected to toggle at 1 Hz.</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Off = 0 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td rowSpan="2">Remote Mission Start</td>
+ <td rowSpan="2"> P (+) &amp; R (-)</td>
+ <td>Start = 24 VDC</td>
+ <td rowSpan="2">Remotely starts an auto mission.<br>
+  Signal must turn on for 1 second then turn off.</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Not Start = 24 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td rowSpan="2">Remote Mission Pause</td>
+ <td rowSpan="2"> S (+) &amp; R (-)</td>
+ <td>Pause = 24 VDC</td>
+ <td rowSpan="2">Remotely stops an auto mission.<br>
+  Signal must turn on for 1 second then turn off.</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Not Pause = 0 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td rowSpan="2">Remote Mission Stop</td>
+ <td rowSpan="2"> T (+) &amp; R (-)</td>
+ <td>Stop = 24 VDC</td>
+ <td rowSpan="2">Remotely pauses an auto mission.<br>
+  Signal must turn on for 1 second then turn off.</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Not Stop = 0 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td rowSpan="2">Remote Fuel On </td>
+ <td rowSpan="2"> U (+) &amp; W (-)</td>
+ <td>Fuel On = 24 VDC </td>
+ <td rowSpan="2">Provides the throttle with the status of the fuel valve. </td>
+ </tr>
+ <tr vAlign="top">
+ <td>Fuel Off = 0 VDC </td>
+ </tr>
+ <tr vAlign="top">
+ <td rowspan="2">Remote Flight Idle</td>
+ <td rowspan="2"> V (+) &amp; W (-) </td>
+ <td>Flight Idle = 24 VDC
+  <br></td>
+ <td rowspan="2">Remotely starts flight idle.</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Ground Idle = 0 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Emergency Stop Channel 1</td>
+ <td> X (+) &amp; Y(-)</td>
+ <td>Closed = Fuel allowed to be turned on
+<p>Open = Fuel turned off</p></td>
+ <td>E-Stop signal for channel 1 (must be connected to a dual channel E-Stop circuit)</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Emergency Stop Channel 2</td>
+ <td> Z (+) &amp; c (-)</td>
+ <td>Closed = Fuel allowed to be turned on <br>
+   Open = Fuel turned off</td>
+ <td>E-Stop signal for channel 2 (must be connected to a dual channel E-Stop circuit)</td>
+ </tr>
+ <tr vAlign="top">
+ <td rowspan="2">Remote Trip #2</td>
+ <td rowspan="2"> a (+)</td>
+ <td>Trip = 24 VDC</td>
+ <td rowspan="2">Trips the engine to a predefined throttle angle.</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Not Trip = 0 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td rowspan="2">Remote Auxiliary Trip #2</td>
+ <td rowspan="2"> b (+)</td>
+ <td>Aux Trip = 24 VDC</td>
+ <td rowspan="2">Trips the engine to another predefined throttle angle.</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Not Aux Trip = 0 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td rowspan="2">Throttle Health</td>
+ <td rowspan="2"> V (+) &amp; W (-)</td>
+ <td>Healthy = 24 VDC</td><br>
+  
+ <td rowspan="2">--</td>
+ </tr>
+  <tr vAlign="top"> 
+   <td>Error = 0 VDC</td>
+  </tr>
+</table>
+<h4>Sample Discrete Input Connection</h4>
+<br><div class="Container"><img src="images/DiscInputConnections.gif" alt="Discrete Input Connections" width="851" height="253"></div><br>
+
+<table cellspacing="1" class="Table-Grey">
+ <tr>
+ <th colspan="4">J9 Discrete Outputs</th>
+ </tr>
+ <tr>
+ <th>Discrete Outputs</th>
+ <th>Pinout</th>
+ <th>Signal Type</th>
+ <th>Description</th>
+ </tr>
+ <tr>
+ <td rowSpan="2" width="20%">Trip Active </td>
+ <td rowSpan="2" width="20%"> A (+) &amp; E (-)</td>
+ <td width="20%">On = 24VDC</td>
+ <td rowSpan="2" width="35%">Informs the DAS that the throttle has been commanded to the trip position.</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Off = 0 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td rowSpan="2">Aux Trip Active</td>
+ <td rowSpan="2"> B (+) &amp; E (-)</td>
+ <td width="20%">On = 24VDC</td>
+ <td rowSpan="2">Informs the DAS that the throttle has been commanded to the aux trip position.</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Off = 0 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td rowSpan="2">Flight Idle Select </td>
+ <td rowSpan="2"> C (+) &amp; E (-)</td>
+ <td width="20%">On = 24VDC</td>
+ <td rowSpan="2">Puts the engine into flight idle.</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Off = 0 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td rowSpan="2">Fuel On Select</td>
+ <td rowSpan="2"> D (+) &amp; E (-)</td>
+ <td width="20%">On = 24VDC</td>
+ <td rowSpan="2">Opens the fuel valve to the engine.</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Off = 0 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td rowSpan="2">Remote Discrete #1</td>
+ <td rowSpan="2"> G (+) &amp; K (-)</td>
+ <td width="20%">On = 24VDC</td>
+ <td rowSpan="4">Used during auto mission.</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Off = 0 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td rowSpan="2">Remote Discrete #2</td>
+ <td rowSpan="2"> H (+) &amp; K (-)</td>
+ <td width="20%">On = 24VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Off = 0 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td rowSpan="2">Auto Mission Running </td>
+ <td rowSpan="2"> J (+) &amp; K (-)</td>
+ <td width="20%">On = 24VDC</td>
+ <td rowSpan="2">Informs the DAS that the throttle is in auto mission mode.</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Off = 0 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td rowSpan="2">Mission Paused </td>
+ <td rowSpan="2"> L (+) &amp; K (-)</td>
+ <td width="20%">On = 24VDC</td>
+ <td rowSpan="2">Informs the DAS that the throttle auto mission is paused.</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Off = 0 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td rowSpan="2">Mission Finished </td>
+ <td rowSpan="2"> M (+) &amp; K (-)</td>
+ <td width="20%">On = 24VDC</td>
+ <td rowSpan="2">Informs the DAS that the throttle auto mission is complete.</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Off = 0 VDC</td>
+ </tr>
+ <tr vAlign="top">
+ <td rowSpan="2">Mission Ready </td>
+ <td rowSpan="2"> N (+) &amp; K (-)</td>
+ <td width="20%">On = 24VDC</td>
+ <td rowSpan="2">Informs the DAS that the throttle is ready to perform an auto mission.</td>
+ </tr>
+ <tr vAlign="top">
+ <td>Off = 0 VDC</td>
+ </tr>
+</table>
+<h4>Sample Discrete Output Connection</h4>
+<br><div class="Container"><img src="images/DiscOutputConnections.gif" alt="Discrete Output Connections" width="851" height="253"></div><br>
+<table cellspacing="1" class="Table-Grey">
+ <tr>
+ <th colspan="4">J5 Resolver</th>
+ </tr>
+ <tr>
+ <th>Resolver</th>
+ <th>Pinout</th>
+ <th>Signal Type</th>
+ <th>Description</th>
+ </tr>
+ <tr>
+ <td width="20%">Channel A - Sin</td>
+ <td width="20%"> A (+) &amp; B (-)</td>
+ <td rowspan="6" width="20%">Transformer Isolated, up to 15 V RMS</td>
+ <td width="35%">Excitation voltage modified by the Sin of the commanded angle (Vsin = Vexc x SIN (ANGLE) X TRANSFORMATION RATIO).</td>
+ </tr>
+ <tr valign="top">
+ <td>Channel A - Cos</td>
+ <td> D (+) &amp; E (-)</td>
+ <td>Excitation voltage modified by the Cos of the commanded angle (Vcos = Vexc x COS (ANGLE) X TRANSFORMATION RATIO).</td>
+ </tr>
+ <tr valign="top">
+ <td>Channel A - Excitation</td>
+ <td> G (+) &amp; H (-)</td>
+ <td>Excitation voltage from the engine&rsquo;s EEC.</td>
+ </tr>
+ <tr valign="top">
+ <td>Channel B - Sin</td>
+ <td> K (+) &amp; L (-)</td>
+ <td>Excitation voltage modified by the Sin of the commanded angle (Vsin = Vexc x SIN (ANGLE) X TRANSFORMATION RATIO).</td>
+ </tr>
+ <tr valign="top">
+ <td>Channel B - Cos</td>
+ <td> N (+) &amp; P (-)</td>
+ <td>Excitation voltage modified by the Cos of the commanded angle (Vcos = Vexc x COS (ANGLE) X TRANSFORMATION RATIO).</td>
+ </tr>
+ <tr valign="top">
+ <td>Channel B - Excitation</td>
+ <td> S (+) &amp; T (-)</td>
+ <td>Excitation voltage from the engine&rsquo;s EEC.</td>
+ </tr>
+</table>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

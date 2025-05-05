@@ -1,0 +1,166 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Transient Log Definition Editor</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="TransientLogDefnEditor">Transient Log Definition Editor<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" >
+</a><div float:right></div></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The Transient Log Definition Editor is used to create and edit the definitions of a transient log. A transient log definition includes the 
+set of channels to be logged, the logging rate, and the duration of the log.</p>
+<div class="Container"><img src="images/TransientLogDefEditor.png" alt="Transient Log Def Editor" width="700" height="395"></div>
+<p>The Transient Log Definition Editor provides the following functionality:</p> 
+<ul>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuFile">File</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuEdit">Edit</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuView">View</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuConfiguration">Configuration</a></li>
+  <li><a href="#ImpExpTab">Extras</a></li>	
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuHelp">Help</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#GenCol">Index, Level, Enabled, Active, LastModDate, Name and Description</a></li>
+  <li><a href="#CreatingTransientLog">Creating a Transient Log Definition</a></li>
+  <li><a href="#TransLogDefnEditor">Specific Properties of a Transient Log Definition</a></li>
+  <li><a href="#ImpExpTab">Import / Export a Tab-Delimited File</a></li>
+</ul>
+<h2 id="CreatingTransientLog">Creating a Transient Log Definition</h2>
+<p>To create a transient log:</p>
+<p class="Note">The system checks every five minutes (default) whether there is enough disc space. If there is not, a warning is displayed in the UEL. This feature can be disabled in the proDAS initialisation file. If this feature is disabled, a warning is displayed only if there is less than 250 MB of free space when a transient log definition is created.</p>
+<ol>
+  <li>From the Edit menu, select <strong>Append Data Record</strong> or, in the left pane of the splitter window, click the right mouse button and select <strong>Append Data Record</strong> from the context sensitive menu.</li>
+  <li>Input the appropriate data in the <a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#GenCol">Generic</a> and <a href="?57#TransLogDefnEditor">Specific</a> columns.
+    <p class="Note">When a new transient log definition is created the Duration field is intentionally initialised to an invalid value (i.e. 0.00002 mins.). The user must change the initial duration to a valid duration (up to 1440 mins.).</p>
+  </li>
+  <li>Add channels to the log definition using the right pane of the splitter window.<br>
+    The right pane contains a list of all available channels in the configuration, as well as a list of all the channels currently selected for the log definition and the channel filters.<br>
+  </li>
+  <li>To move one or more channels from the available list to the selected channels list:
+    <ul>
+      <li>double-click the channel or</li>
+      <li> select the channels using the -&gt; and &lt;- buttons or</li>
+      <li>to move all channels, use the -&gt; all and &lt;- all buttons</li>
+    </ul>
+  </li>
+</ol>
+<h2 id="TransLogDefnEditor">Specific Properties of a Transient Log Definition</h2>
+<p>The following specific properties of a transient log definition are displayed:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>auto-report</td>
+    <td>n/a</td>
+    <td>Flag indicating whether the log is converted automatically, 
+      when stopped, into an ASCII format.<br>
+      <br>
+      This flag is saved as string AUTO_REPORT in the description.</td>
+    <td>Boolean</td>
+    <td>true or false</td>
+  </tr>
+  <tr>
+    <td>Scan rate</td>
+    <td>Rate</td>
+    <td>The scan rate, in hertz, at which the log reads values.</td>
+    <td>Float</td>
+    <td>A positive number</td>
+  </tr>
+  <tr>
+    <td>Duration</td>
+    <td>Duration</td>
+    <td>The duration of the log in minutes.</td>
+    <td>Float</td>
+    <td>A positive number</td>
+  </tr>
+</table>
+<h2 id="ImpExpTab">Import / Export a Tab-Delimited File</h2>
+<p>The Transient Log Definition Editor allows Tab-Delimited transient log files to be imported and exported. The Tab-Delimited 
+  transient log files, which can be identified by the extension .def, comply with the structure detailed in the following table.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Row</th>
+    <th>Description</th>
+    <th>Type</th>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Header or identifier.</td>
+    <td>User Log</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Information about the format version.</td>
+    <td>2.1</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Description of the transient log.</td>
+    <td>Description of atpTransLogDef2</td>
+  </tr>
+  <tr>
+    <td>4</td>
+    <td>Destination of import / export.</td>
+    <td>File</td>
+  </tr>
+  <tr>
+    <td>5</td>
+    <td>Duration.</td>
+    <td>5000</td>
+  </tr>
+  <tr>
+    <td>6</td>
+    <td>Scan rate.</td>
+    <td>33.3</td>
+  </tr>
+  <tr>
+    <td>7</td>
+    <td>List of selected channels.</td>
+    <td>fCalc2i, ...</td>
+  </tr>
+</table>
+<p class="Note">When importing a transient log file, the file will be imported at the level where the Transient Log Editor is opened. For example, if the editor is opened to a level 6 configuration, the file will be imported at a level 6. If the editor is opened to a level 1 configuration, the file will be imported at a level 1. For more information on the levels, see <a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm">Configuration Editors</a>.</p>
+<p><strong>To import a Tab-Delimited file</strong>:</p>
+<ol>
+  <li>Select <strong>Import Tab-delimited file...</strong> from the <strong>Extras</strong> menu.<br>
+    The Import window is displayed.
+    <div class="Container"><img src="images/TldImport.png" alt="Tab-delimited Import" width="561" height="413"></div>
+  </li>
+  <li> Select the appropriate file from the Import window and select <strong>Open</strong>.<br>
+    Select <strong>Cancel</strong> to exit from the import operation.
+    <p class="Note">The name of the file must be the same as the subsystem name with which the file will be associated.</p>
+  </li>
+</ol>
+<p><strong>To export a Tab-Delimited file</strong>:</p>
+<ol>
+  <li>Select <strong>Export Tab-delimited file...</strong> from the <strong>Extras</strong> menu.<br>
+    The Export window is displayed.
+    <div class="Container"><img src="images/TldExport.png" alt="Export Tab-delimited File" width="561" height="413"></div>
+  </li>
+  <li>Select the appropriate file from the Export window and select <strong>Save</strong>. <br>
+    Select <strong>Cancel</strong> to exit from the export operation.</li>
+</ol>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

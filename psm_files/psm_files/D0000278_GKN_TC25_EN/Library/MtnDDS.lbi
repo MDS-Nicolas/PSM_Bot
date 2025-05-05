@@ -1,0 +1,13 @@
+﻿<table class="Table-Grey">
+  <tr>
+    <th class="row-Topic" rowspan="2">Topic</th>
+    <th colspan="1">Maintenance</th>
+  </tr>
+  <tr>
+    <th class="row-AsReq">As Required</th>
+  </tr>
+  <tr>
+    <td><a href="../References/HowTos/CompCfgHT/GenInfo/DustInspectPC.html">Dust and Verify the Internal Components on a Computer</a> <a href="../References/HowTos/CompCfgHT/GenInfo/DustInspectPC.html"></a>(Includes dusting and checking the cooling fans.)</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+</table>

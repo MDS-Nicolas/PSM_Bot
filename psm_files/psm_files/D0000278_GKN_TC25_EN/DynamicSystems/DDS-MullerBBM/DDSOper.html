@@ -1,0 +1,78 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>DDS - Operation</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left>
+  <h1>Dynamic Data System (DDS) - Muller-BBM PAK MKII<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<h2>Operation</h2>
+<p>The Dynamic Data System (DDS) is a Muller-BBM PAK MKII Data Acquisition System (referred to as the PAK MKII in this section). The PAK MKII is a compact, mobile, multi-channel measurement system for technological acoustic and vibration analyses. The client system measures the following:</p>
+<ul>
+  <li><a href="#Vibration">Vibration</a></li>
+  <li><a href="#Speed">Speed</a></li>
+  <li><a href="#BridgePressure">Bridge Pressure</a></li>
+</ul>
+<p>The PAK MKII is connected to proDAS through the Real-Time network and data is displayed on a <a href="../../CompCfg/RTDPC/RTDPCOverview.html">Real-Time Display Computer</a> screen and a PAK Workstation monitor. The PAK MKII communicates with proDAS using the Modbus serial communications protocol. The channels are defined within the <a href="../../proDASHelp/DASSubSysConfig/Modbus/Modbus.htm">Generic Modbus Subsystem Drivers</a> and the channels are configured with the <a 
+href="../../proDASHelp/DASSubSysConfig/ChannelEditor/ChannelEditor.htm">Channel Editor</a>.</p>
+<p>proDAS scans the PAK MKII channels up to 100 Hz.</p>
+	<h5>Block Diagram of the DDS</h5>
+<div class="Container"><img src="images/BDMBBM.png" width="797" height="360" alt=""/></div>
+<h2 id="Vibration">Vibration</h2>
+<p>The PAK MKII monitors vibration levels in a test engine to detect degradation or imminent failure from:</p>
+<ul>
+  <li>rotational imbalance</li>
+  <li>internal debris</li>
+  <li>turbine blade corrosion</li>
+  <li>bearing damage lubrication deficiencies</li>
+</ul>
+<p>Vibration is measured using three CHG42S G2 modules installed on a SC42 Signal Conditioning Board. Each module has four input channels for a total of 12 vibration measurement channels. The CHG module accepts inputs from 12 piezoelectric accelerometers installed on the test engine and the adapter.</p>
+<p>The 12 vibration channel are scanned at up to 204.8 kSa/s with 24 bit resolution by the PAK MKII Data Acquisition System.</p>
+<h2 id="Speed">Speed</h2>
+<p>The rotational speed of the engine is measured using an ICT42 G2 Input Module installed on a SC42 Signal Conditioning Board. The module accepts 2 inputs from the engine tachometer generators. </p>
+<p>The two speed channels are scanned at up to 204.8 kSa/s with 24 bit resolution by the PAK MKII Data Acquisition System.</p>
+<h2 id="BridgePressure">Bridge Pressure</h2>
+<p>Bridge pressure is measured using two WSB42X G2 Input Modules installed on a SC42 Signal Conditioning Board. The input module has 4 strain bridge/voltage input channels for a total of 8 strain bridge/voltage input channels which accept inputs from 8 bridge pressure transducers installed on the fuel and oil systems of the RM12 engines.</p>
+<p>The 8 bridge pressure channels are scanned at up to 102.4 kSa/s by the PAK MKII Data Acquisition System.</p>
+
+<h2 id="FFT">Fast Fourier Transform (FFT) Analysis</h2>
+<p>The PAK MKII Data Acquisition System can perform calculations of real or complex spectra according to the variant with amplitude/phase or real/imaginary values such as FFT, APS, CPS, or PRS on all channels simultaneously using the PAK Signature software installed on the PAK Workstation.</p>
+<p>Any waveform in the time domain can be represented by the weighted sum of pure sine waves of all frequencies. If the signal in the time domain is periodic, then its spectrum is probably dominated by a single frequency component. The Signature software represents the time domain signal by its component frequencies. FFT analysis is provided in real-time to proDAS through the Real-Time network.</p>
+<p>Post analysis data from the PAK Data Server can be converted to data formats ASAM-ODS, ASAM Transport Format/XML, universal files, sdf, matlab binary and RPC.</p>
+<p>Results from an FFT analysis can be printed directly to any printer attached to a computer with a Windows Operating System or saved in PDF, SVG, EMF and PNG formats, as well as directly printed to the Windows-based laser printer in the Control Room.</p>
+<h2 id="Calibration">Calibration</h2>
+<p>The PAK MKII Data Acquisition System does not require any regular user calibration. It has a self-calibration feature which is performed by the PAK software whenever the system is powered on. For details, see the <a href="../../References/VendorDocs/MBBM/PAKMKIIUM.pdf">PAK MKII User Manual</a>.</p>
+<p class="Note">The unit must be calibrated by the manufacturer every two years. If an alternate schedule is required, it must be done in agreement with the manufacturer.</p>
+<h2>How To</h2>
+<p>The following table contains links to instructional information for the Dynamic Data System (DDS):</p>
+<table width="200" class="Table-Grey">
+  <tbody>
+    <tr>
+      <th scope="col">Topic</th>
+    </tr>
+    <tr>
+      <td><h4><a href="../../References/HowTos/CompCfgHT/GenInfo/DustInspectPC.html">How To - Dust and Verify the Internal Components on a Computer</a></h4>
+(Includes checking the cooling fans.)</td>
+    </tr>
+  </tbody>
+</table>
+<p><br>
+</p>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

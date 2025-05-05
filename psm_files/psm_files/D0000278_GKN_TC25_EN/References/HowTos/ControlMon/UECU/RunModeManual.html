@@ -1,0 +1,250 @@
+<!DOCTYPE HTML PUBliC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>How To &ndash; Run an Engine in Run Mode (Manual)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left><h1>How To &ndash; Run an Engine in Run Mode (Manual)<a href="#" onClick="window.print(); return false;"><img src="../../../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<p>This <strong>How To</strong> provides the steps required to run an engine in Run Mode (Manual).</p>
+<h2 id="RunMode">Running an Engine in Run Mode (Manual)</h2>
+<p>Run Mode is used for running the engine. In Run Mode, the operator has full control of the engine using the throttle levers.</p>
+<p>When the system is in Run Mode (or Auto Mode), any remote engine selection is delayed until the operator exits Run Mode. This prevents an accidental change of engine type during an engine test.</p>
+<p>In Run Mode, the following data is displayed on the Run Mode Screen in real time:</p>
+<ul>
+  <li>Right Lever Position</li> 
+  <li>Right Actuator  Position</li>  
+  <li>Left Lever Position</li> 
+  <li>Left Actuator Position</li> 
+  <li>Fuel On Status</li> 
+  <li>Flight Idle Status</li>  
+  <li>Idle Status</li>
+  <li>Cutoff Status</li>
+</ul>
+<h4>To Enter Run Mode:</h4>
+<ol>
+  <li>At the bottom of the display computer screen, press the <strong>Run</strong> button.<br>
+  The Run Mode screen is displayed.<br>
+  <p class="Note">An operator can only enter Run Mode after an engine is selected and (if applicable) all Actuators have been rigged.</p>
+  </li>
+</ol>
+<h3 id="RunModeProcedures">Run Mode Procedures</h3>
+<p>The following procedures can be performed in Run Mode:</p>
+<ul>
+  <li><a href="#FuelOn">Turn the Fuel On and Off</a><a href="#Stops"></a></li>
+  <li><a href="#SetFlightIdle">Set the Engine State to Flight Idle</a></li>
+  <li><a href="#Trips">Trip the Engine to a Predefined Position</a></li>
+  <li><a href="#Stops">Add and Remove Stops</a></li>
+  <li><a href="#ExitRunMode">Exit Run Mode</a></li>
+  <li><a href="RunModeAuto.html">Run an Auto Ramp Mission (Auto Throttle)</a></li>
+  <li><a href="RunModeAuto.html">Run an Auto Mission (Auto Throttle)</a></li>
+</ul>
+<h3 id="FuelOn">Turn the Fuel On and Off</h3>
+<p>The fuel supply can be turned on and off from the throttle quadrant when the system is in Run Mode.</p>
+<h4>To turn on the fuel:</h4>
+<ol>
+  <li>While in Run Mode, press the <strong>Fuel</strong> button.<br>
+  An acknowledge window is displayed.</li>
+  <br><div class="Container"><img alt="Confirm Fuel On" src="images/ConfirmFuelOn.png" width="505" height="80"></div><br>
+  <li>Press <strong>OK</strong>.<br>
+  The Fuel Button changes to green and the fuel is turned on.</li>
+  <p class="Note">An operator can only exit Run Mode when the fuel to the engine is turned off.</p>  
+</ol>
+<h4>To turn off the fuel:</h4>
+<ol>
+  <li>While in Run Mode when the fuel status is on, press the <strong>Fuel</strong> button.<br>
+  An acknowledge window is displayed.</li>
+  <br><div class="Container"><img alt="Confirm Fuel On" src="images/ConfirmFuelOn.png" width="505" height="80"></div><br>
+  
+  <li>Press <strong>OK</strong>.<br>
+  The Fuel button changes to grey and the fuel is turned off. </li>
+</ol>
+<p>Return to <a href="#RunModeProcedures">Run Mode Procedures</a>.</p>
+<h3 id="SetFlightIdle">Set the Engine State to Flight Idle</h3>
+<p>Flight Idle is an engine state. The engine schedules fuel differently depending on whether the engine is in a Ground Idle or Flight Idle state. When in Flight Idle the engine speed is higher than when in Ground Idle.</p>
+<p class="Note">On many modern turbofan engines, the terms "Flight Idle" and "Ground Idle" are misleading. The terminology should be Low Idle and High Idle as most engines are set up to use Low Idle on the ground and in normal flight. This is termed "Ground Idle". The High Idle state is set in flight (Flight Idle) so that the engine is spooled up in the event of a missed approach and for a short duration just after touchdown to facilitate rapid reverse thrust. Logic circuits determine that the aircraft is in the air and in the approach and landing configuration to command the increase to "Flight Idle". The idle setting is returned to the low, or "Ground Idle" state after a predetermined time interval after the landing gear touches down. The terminology is likely a carryover from the earlier turboprop days that strictly used Flight Idle and Ground Idle. </p>
+<p>The flight idle state can be set in three different ways: </p>
+<ul>
+  <li>the Flight Idle button on the throttle quadrant is pressed</li>  
+  <li>Flight Idle is digitally commanded from proDAS</li> 
+  <li>Flight Idle is commanded by a hardwired discrete input to the throttle controller </li>
+</ul>
+<p>When Flight Idle is initiated, the output command to the engine (via hardwired discrete output or through proDAS via ARINC subsystem) depending on the engine type is turned on.</p>
+<h4>To set the engine state to Flight Idle:</h4>
+<ol>
+  <li>Press the <strong>Flight Idle</strong> button.<br>
+  The Flight Idle button illuminates and the Throttle System output moves to the Flight Idle position.</li>
+  <p class="Note">The Flight Idle state can not be selected unless the fuel status is on.</p>
+</ol>
+<h4>To clear Flight Idle state:</h4>
+<ol>
+  <li>Press the<strong> Flight Idle</strong> button.<br>
+  The Flight Idle state is cleared and the engine is set to ground idle.</li>
+</ol>
+<p>Return to <a href="#RunModeProcedures">Run Mode Procedures</a>.</p>
+<h3 id="Trips">Trip the Engine to a Predefined Position</h3>
+<p>A trip is a predefined position (set-point) for the Throttle System. The Throttle System moves (increasing/decreasing the fuel supply to the engine) to the predefined position if:</p>
+<ul>
+  <li>one of the trip buttons on the throttle quadrant is pressed</li> 
+  <li>a trip is digitally commanded from proDAS (digitally via Ethernet)</li> 
+  <li>a trip is commanded by a hardwired discrete input to the throttle controller (for example, from an emergency stop system)</li>
+</ul>
+<p>The trip set point can be set to any value between the minimum and maximum positions of the engine.</p>
+<p>When a trip is initiated, the output command to the engine (either via actuator, resolver/RVDT or both)  moves to the predefined value at the defined trip rate.</p>
+<p>The rate at which the output moves to the tripped position is configurable.  It can be configured using the &lt;tripIdleRampRate&gt; and the &lt;tripCutOffRampRate&gt; elements in the master configuration file. For details, see <a href="Configuration.html">Configuration</a>. The units of these parameters are in degrees per second. A higher number results in a faster response. The maximum value (default) that can be entered is 400 deg/sec.</p>
+<p class="Note"> In a dual lever system, the trips can be configured so that they  trip either lever or both levers and the positions that the levers trip to can be different.  The dead bands and trip rates can be different as well. </p>
+<p>There are two trip Positions, Idle and Cutoff. Both positions work the same way. The trip positions can be the same but Cutoff is usually lower than Idle. Trip to Cutoff has a higher priority than Trip to Idle. <strong></strong></p>
+
+<p class="Note">If an idle trip is commanded and a Trip to Cutoff command is received, the Idle trip is cleared and the system initiates the Trip to Cutoff.</p>
+
+<h4>Using the Throttle Quadrant to Initiate a Trip</h4>
+<p>On the throttle quadrant a  trip can be initiated from the Run Mode screen. </p>
+<p>To move to a trip position:</p>
+<ol>
+  <li>Press the desired trip button (<strong>Idle/</strong><strong>Cut Off</strong>).<br>
+  The button illuminates and the Throttle System output moves to the trip position. </li>
+</ol>
+<p>To clear a trip position and resume manual control:</p>
+<ol>
+  <li>Clear all external trip conditions from external sources such as proDAS or any remote external inputs such as one from an emergency stop system.</li>
+  <li>Move the throttle lever to within the desired trip reset band (<strong>Idle/</strong><strong>Cut Off</strong>).<br>
+  The trip button starts to flash.</li>
+<p class="Note">The trip reset band is the area around the trip position. The size of the trip reset band is configurable. It can be configured using the &lt;tripIdleResetBand&gt; or &lt;tripCutOffResetBand&gt; elements in the master configuration file. For details, see <a href="Configuration.html">Configuration</a>.</p>
+  <li>Press the trip button.<br>
+  The trip position is cleared and the operator can control the Throttle System with the throttle lever.</li>
+</ol>
+<h4><strong id="ConfigTrip">Configuring a Trip Position</strong> Initiated by the Throttle Quadrant</h4>
+<p>The trip position can be configured using the &lt;tripIdlePosition&gt; and &lt;tripCutOffPosition&gt; elements in the master configuration file. For details, see <a href="Configuration.html">Reference - Configuration</a>.</p>
+<h4>Using  proDAS to Initiate a Trip</h4>
+<p>A  trip can be initiated from proDAS using the following:</p>
+<ul>
+  <li>control on a Real-Time Display Page</li>
+  <li>spotlight sticky</li>
+  <li>channel with an alarm action</li>
+</ul>
+<p>The trigger for the trip is created using a proDAS OPC Channel. The trigger channel is configured in proDAS using the Channel Editor. For details, see the Channel Editor in proDAS Integrated Help accessed from the MDS Product Support Manual (PSM) or from the Management GUI Computer.</p>
+<p class="Note">The proDAS documentation referenced above is only available for facilities with a proDAS installation.</p>
+<p>The variables for the trip are contained in the Throttle System master file. For details, see <a href="#ConfigTrip">Configuring a Trip Position Initiated by the Throttle Quadrant</a>.</p>
+<h4> Delayed Trip</h4>
+<p>A delayed trip can also be initiated from proDAS. A delayed trip is a trip request that is not performed until after a specified delay period. For example, a delay could be set based on an action such as engine acceleration.   In this scenario, the engine  continues to accelerate for the length of the delay and then the trip  starts and the engine  moves towards the trip position.  </p>
+<p>A delayed trip is initiated from proDAS in the same manner as a regular trip except:</p>
+<ul>
+  <li>a delayed trip is  controlled directly from proDAS without interaction from the display computer (throttle quadrant) </li>
+  <li>the  variables for the delayed trip are sent  to the throttle controller   using proDAS channels. The values are checked by the throttle controller and validated/limited to  the following values:</li>
+  <ul>
+    <li><strong>Trip  Position</strong>: Limited  to values between the min and max PLA values downloaded with the engine data. (float channel)</li>
+    <li><strong>Rate of  Change</strong>:&nbsp;  Limited to values within 0.1 and 360 degrees/second (float channel)</li>
+    <li><strong>Delay  Time</strong>:&nbsp; Must be  greater than Zero (0) seconds. (float channel)
+      <p class="Note">Zero (0) seconds can be used for a trip without a delay. </p>
+    </li>
+    <li><strong>Reset  Band</strong>:&nbsp; Value  must be greater than or equal to one (1). (float channel)</li>
+    <li><strong>Delayed Trip Command</strong>: Triggers the trip according to the above variables (boolean channel)</li>
+  </ul>
+</ul>
+<p>The image below is an example of a delayed trip configured using a spotlight sticky.</p>
+<p><img src="images/delayed_trip.JPG" width="467" height="150" alt=""/></p>
+<p>When the delayed trip is commanded using the Delayed Trip Command channel, the command must remain ON for the  duration of the delay time for the trip to be activated.</p>
+<p>If the  command is turned off before the delay time is over, the delay time is reset and the trip does not occur.</p>
+<p>When the  delayed trip is activated, the throttle command signal  automatically moves  to the delayed trip position at the rate specified by the proDAS rate of change  parameter.</p>
+<p>After the  command signal has moved to the trip position, it  remains at this position  until the throttle lever is moved within the reset band of the trip position. This  resets  the trip and the throttle lever  resumes control of the engine's fuel valve.</p>
+<p>The delayed  trip is automatically reset if:</p>
+<ul>
+  <li>the PLC is  reset to factory settings</li>
+  <li>new engine  data is downloaded to the throttle controller</li>
+  <li> the  Throttle System is put into  Auto Throttle mode</li>
+  <li> proDAS  sends a trip override signal</li>
+</ul>
+<p>The delayed trip is configured in proDAS using the Channel Editor. For details, see the Channel Editor in proDAS Integrated Help accessed from the MDS Product Support Manual (PSM) or from the Management GUI Computer.</p>
+<p class="Note">The proDAS documentation referenced above is only available for facilities with a proDAS installation.</p>
+<p>Return to <a href="#RunModeProcedures">Run Mode Procedures</a>.</p>
+<h3 id="Stops">Add and Remove Stops</h3>
+<p>A stop is a point that can be set beyond which the throttle quadrant does not increase or decrease the fuel supply to the engine. Up to four (4) stops can be added per lever for a total of four (4) stops in a single lever system and eight (8) stops in a dual lever system.</p>
+<p class="Note">If the maximum number of stops have already been added, the Add bottom on the Run Mode screen is disabled. </p>
+<p>The stops have three different options:</p>
+<ul>
+  <li>stops in both directions</li>
+  <li>stops in an increasing direction (but lets the throttle lever move through if in a decreasing direction)</li> 
+  <li>stops in a decreasing direction (but lets the throttle lever move through if in an increasing direction)</li>
+ <p class="Note">The throttle quadrant's lever movement is not mechanically restricted so it can always move past a stop but the throttle quadrant does not send any signals to the throttle controller. If the operator passes by a stop without pushing the release button, the command bar graph showing the command to the engine is limited at the stop setting.</p>
+</ul>
+<p>From the display computer the operator can:</p>
+<ul>
+  <li>add a new stop at the current lever position</li>
+  <li>add a new stop at a position different than the current lever position</li> 
+  <li>remove a stop </li>
+</ul>
+<p class="Note">The Throttle System can be configured so that stops can be added at just the current lever position or at either the current lever position or a new potion. </p>
+<h4>To Add a Stop at the current lever position:</h4>
+<ol>
+  <li>If the Stop Editor buttons are not displayed, press the <strong>Stop Editor</strong> button.<br>
+  The Stop Editor buttons are displayed.</li>
+  <li>Move the throttle lever to the position where a stop needs to be added.</li>
+  <li>Press the arrow button for the stop type that you want to add. For details, see <a href="../../../../ControlMonitor/UECU/UECUDisplay.html?#RunScreen">Run Mode Screen</a>.<br>
+  The arrow button turns blue.</li>
+  <li>Press the <strong>Add </strong>button.<br>
+A number pad is displayed.<br>
+  <img src="../../../../ControlMonitor/UECU/images/StopNumberPad.png" width="250" height="305" alt=""/></li>
+  <li>Confirm that the stop position displayed on the number pad is the correct position and click <strong>Enter</strong>.<br>
+    The stop is added to the loaded engine configuration (e.g. Engine 1) and the position of the stop is displayed on the stop icon next to the lever gauge.</li>
+  <p class="Note">Once a stop is added, it is saved to the loaded engine configuration in the master configuration file. When the engine is loaded for a future engine test, the stops do not have to be added again.</p>
+  <div class="Container"><img border="1" alt="" src="images/AddStop.png" width="450" height="620"></div>
+</ol>
+<h4>To Add a Stop at a position different than the current lever position:</h4>
+<ol>
+  <li>If the Stop Editor buttons are not displayed, press the <strong>Stop Editor</strong> button.<br>
+    The Stop Editor buttons are displayed.</li>
+  <li>Press the arrow button for the stop type that you want to add. For details, see <a href="../../../../ControlMonitor/UECU/UECUDisplay.html?#RunScreen">Run Mode Screen</a>.<br>
+  The arrow button turns blue.</li>
+  <li>Press the <strong>Add </strong>button.<br>
+A number pad is displayed.<br>
+  <img src="../../../../ControlMonitor/UECU/images/StopNumberPadLeverPos.png" width="250" height="305" alt=""/>  </li>
+  <li>Press <strong>C</strong> to clear the current lever position.</li>
+
+<p class="Note">To enter a negative number, press in Inv button.</p>
+
+  <li>Enter the desired stop position into the number pad and click <strong>Enter</strong>.<br>
+    The stop is added to the loaded engine configuration (e.g. Engine 1) and the position of the stop is displayed on the stop icon next to the lever gauge.</li>
+  <p class="Note">Once a stop is added, it is saved to the loaded engine configuration in the master configuration file. When the engine is loaded for a future engine test, the stops do not have to be added again.</p>
+  <div class="Container"><img border="1" alt="" src="images/AddStop.png" width="450" height="620"></div>
+</ol>
+<h4>To Remove a Stop:</h4>
+<ol>
+  <li>If the Stop Editor buttons are not displayed, press the <strong>Stop Editor</strong> button.<br>
+  The Stop Editor buttons are displayed.</li>
+  <li>Press the <strong>Stop icon</strong> that you want to delete.<br>
+  <strong>Delete</strong> is displayed on the stop icon.</li>
+  <br><div class="Container"><img border="1" alt="" src="images/DeleteStop.png" width="450" height="620"></div><br>
+  <li>Press the <strong>Stop</strong> <strong>icon</strong> again.<br>
+  An acknowledge window is displayed.</li>
+  <br><div class="Container"><img alt="" src="images/DeleteStopConfirm.png" width="350" height="153"></div><br>
+  <li>Press <strong>OK</strong>.<br>
+  The stop is removed.</li>
+</ol>
+<p>Return to <a href="#RunModeProcedures">Run Mode Procedures</a>.</p>
+<h3 id="ExitRunMode">Exit Run Mode</h3>
+<ol>
+  <li>Ensure that the fuel is turned off.</li>
+  <p class="Note">It is not possible to exit Run Mode while fuel to the engine is on.</p>
+  <li>On the bottom of the screen, press the <strong>Config </strong>button.<br>
+  The Config Mode buttons are displayed.</li>
+  <li>Press the desired button.</li>
+  <br><div class="Container"><img border="1" alt="" src="images/RunModeExit.png" width="450" height="620"></div>
+</ol>
+<p>Return to <a href="#RunModeProcedures">Run Mode Procedures</a>.</p>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

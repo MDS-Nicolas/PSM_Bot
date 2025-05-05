@@ -1,0 +1,270 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Configuration Import / Export (CIE) Utility (Option*)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="ConfigImportExport">Configuration Import / Export (CIE) Utility (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" >
+</a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The Configuration Import / Export (CIE) Utility allows the user to import Rolls-Royce Business System (RIBS) configuration files   into proDAS. Based on several tab-delimited files, the CIE Utility creates a configuration with various components such as subsystems, channels, views, and transient log definitions. This is the only mechanism whereby a <a href="?2#TrialDownload">Trial Download</a> and Import of a complete RIBS generated master configuration can be accomplished. </p>
+<p class="Note">CIE tab-delimited import/export supports legacy CIMEX columns.</p>
+<p>The main screen consists of 3 parts:</p>
+<ul>
+  <li><strong>Configuration Tree</strong> -  displays all configurations of the proDAS system in a hierarchical order, similar to the <a href="../../DASSubSysConfig/ConfigAdmin/ConfigAdmin.htm#ConfigAdmin">Configuration Administrator</a>. Almost all functions of CIE can be invoked here.</li>
+  <li><strong>Configuration Data</strong> - displays the most important information about the currently selected configuration.</li>
+  <li><strong> Message View</strong> - displays error messages and other necessary information to the user.</li>
+</ul>
+<div class="Container"><img src="images/GuiLayout.gif" alt="GUI Layout" width="473" height="395"></div>
+<h2 id="Config">Configuration</h2>
+<p>Before starting the application, several settings in the INI file must be adjusted:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Section</th>
+    <th>Value</th>
+    <th>Description </th>
+  </tr>
+  <tr>
+    <td rowspan="2">General</td>
+    <td>Root (string)</td>
+    <td>Path to the CIE root folder where all data is saved. The folder tree within this directory has the same structure as the proDAS configuration folder.</td>
+  </tr>
+  <tr>
+    <td>LastSelectedDir</td>
+    <td>This path is only for internal use and should not be altered. CIE uses this path when providing a file selection dialogue.</td>
+  </tr>
+  <tr>
+    <td rowspan="3">Trace</td>
+    <td>Tag</td>
+    <td>The value &quot;CIE&quot; should not be altered.</td>
+  </tr>
+  <tr>
+    <td>Level</td>
+    <td>The level can be defined as Error, Warning, Feedback or MethodID. The value controls the amount of traced data.</td>
+  </tr>
+  <tr>
+    <td>Filename</td>
+    <td>This path points to the trace file. Tracing will only work if the path already exists.</td>
+  </tr>
+  <tr>
+    <td>Log</td>
+    <td>Filename</td>
+    <td>This path points to the log file. Logging will only work if the path already exists. The log file shows exactly the same information as the message window and can be analysed in <a href="?3#CommandLineMode">Command Line Mode</a>.</td>
+  </tr>
+  <tr>
+    <td>AccessLevel</td>
+    <td>Username, Password</td>
+    <td>Username and password to access the config server.</td>
+  </tr>
+  <tr>
+    <td rowspan="3">DynamicFile</td>
+    <td>ExportCalibrationFields</td>
+    <td>This boolean value controls whether the additional calibration fields in the dynamic file will be exported.</td>
+  </tr>
+  <tr>
+    <td>ExportTestInfo</td>
+    <td>This boolean value controls whether the additional test header section in the dynamic file will be exported.</td>
+  </tr>
+  <tr>
+    <td>CheckConfig</td>
+    <td>This path points to the CheckConfig tool which will do a consistency check of the dynamic file during an import operation.</td>
+  </tr>
+  <tr>
+    <td>TemplateFiles</td>
+    <td>DDS, DDTC</td>
+    <td>These paths point to folders where the DDS/DDTC  template files are located.</td>
+  </tr>
+  <tr>
+    <td>Facility</td>
+    <td>UnitIDx, DevTypex, HiuPortx, DataStreamx</td>
+    <td>The facility devices can be defined which will always be processed for the DDTC subsystem during an import operation. There is no limitation in the number of facility devices, but start with UnitID1 as the first value name.</td>
+  </tr>
+  <tr>
+    <td rowspan="2">CommandLine</td>
+    <td>TestCell, EngineStandard, Customer</td>
+    <td>These string values are used in <a href="?4#CommandLineMode">Command Line Mode</a> to create a configuration. In <a href="?5#GUIMode">GUI Mode</a> these values are provided by the user&rsquo;s configuration selection. The engine type is provided by the test header file.</td>
+  </tr>
+  <tr>
+    <td>LastConfigId</td>
+    <td>This integer value is for internal use  only. CIE uses this value to save the last used configuration ID. This is important only in <a href="?6#CommandLineMode">Command Line Mode</a>.</td>
+  </tr>
+  <tr>
+    <td rowspan="2">Display</td>
+    <td>Templates, Views</td>
+    <td>These two paths define the locations of the Data Views template files and views. The wildcard &quot; &lt;engine_type&gt;&quot; can be used to provide a folder which is named by the specific engine type.</td>
+  </tr>
+  <tr>
+    <td>RTDEditor</td>
+    <td>The path to the application RTDEditor.exe.</td>
+  </tr>
+  <tr>
+    <td>ODBC</td>
+    <td>DSN, PASSWORD</td>
+    <td>These string values point to the proDAS database. The database is used to create tests and to obtain device addresses.</td>
+  </tr>
+  <tr>
+    <td>Localization</td>
+    <td>Language</td>
+    <td>The string value &quot;en&quot; should not be changed because English is currently the only supported language.</td>
+  </tr>
+</table>
+<h2 id="CommandLineMode">Command Line Mode</h2>
+<p>The Command Line Mode is initiated when command line arguments are used to start the application. The Configuration User Test Information (CUTI) invokes the CIE Utility in Command Line Mode whenever it needs to import a Master Configuration directory selected by the user. The following commands can be used:</p>
+<ul>
+  <li>ConfImpEx -help | -h</li>
+  <li>ConfImpEx -TrialDownload | -T &lt;Source path&gt; [-quiet | -q]</li>
+  <li>ConfImpEx -ImportConfiguration | -I &lt;Source path&gt; [-quiet | -q]</li>
+  <li>ConfImpEx -ExportConfiguration | -E &lt;Destination path&gt; [-quiet | -q]</li>
+  <li>ConfImpEx -ImportSubsystem | -IS &lt;Source path&gt; [-quiet | -q]</li>
+  <li>ConfImpEx -UpdateSubsystem | -US &lt;Source path&gt; [-quiet | -q]</li>
+  <li>ConfImpEx -ChangeConfiguration | -C &lt;Config ID&gt; [-quiet | -q</li>
+</ul>
+<p>Each command can also be used with the shortcut shown after the '|'. When processing each command, a log file is created (defined in the INI file) which consists of all messages which are normally shown in the GUI message window. After the command has finished, the contents of the log file are displayed in the command window. To suppress the results append -quiet or -q to a command.</p>
+<p>The commands &quot;ExportConfiguration&quot;, &quot;ImportSubsystem&quot; and &quot;UpdateSubsystem&quot; are processed on the current configuration. The current configuration can be changed with a command. After &quot;ImportConfiguration&quot; is called, the command &quot;ExportConfiguration&quot; is processed on the newly created configuration. (This is done by saving the current config ID in the INI file).</p>
+<p class="Note">The command &quot;ImportConfiguration&quot; changes the current configuration.</p>
+<p>When importing a configuration in the Command Line Mode, the necessary values for the test cell, engine standard, and customer fields are retrieved from the INI file.</p>
+<h2 id="GUIMode">GUI Mode</h2>
+<p>CIE is started in GUI mode when no command line arguments are passed. The CIE is started by clicking on the ConfImpEx executable, located in the BIN folder. After the main screen is visible, the user can navigate through the configurations shown in the tree. For a description of the icons, see the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Icon</th>
+    <th>Config Level</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><img src="images/IconRoot.gif" alt="Icon Root" width="14" height="14"></td>
+    <td>0</td>
+    <td>Root</td>
+  </tr>
+  <tr>
+    <td><img src="images/IconTCcontainer.gif" alt="Icon TC Container" width="13" height="14"></td>
+    <td>--</td>
+    <td>Test Cells Container</td>
+  </tr>
+  <tr>
+    <td><img src="images/IconTestCell.gif" alt="Icon Test Cell" width="14" height="14"></td>
+    <td>1</td>
+    <td>Test Cell </td>
+  </tr>
+  <tr>
+    <td><img src="images/IconEngTypeinCell.gif" alt="Icon Engine Type in Cell" width="16" height="16"></td>
+    <td>3</td>
+    <td>Engine Type in Test Cell</td>
+  </tr>
+  <tr>
+    <td><img src="images/IconEngClass.gif" alt="Icon Engine Class" width="12" height="13"></td>
+    <td>--</td>
+    <td>Engine Classes Container</td>
+  </tr>
+  <tr>
+    <td><img src="images/IconEngType.gif" alt="Icon Engine Type" width="16" height="16"></td>
+    <td>2</td>
+    <td>Engine Type</td>
+  </tr>
+  <tr>
+    <td><img src="images/IconEngStandard.gif" alt="Icon Engine Standard" width="14" height="11"></td>
+    <td>4</td>
+    <td>Engine Standard </td>
+  </tr>
+  <tr>
+    <td><img src="images/IconCustomer.gif" alt="Icon Customer" width="9" height="14"></td>
+    <td>5</td>
+    <td>Customer</td>
+  </tr>
+  <tr>
+    <td><img src="images/IconConfig.gif" alt="Icon Config" width="10" height="10"></td>
+    <td>6</td>
+    <td>Configuration</td>
+  </tr>
+</table>
+<h2 id="ImportConfiguration">Importing a Configuration</h2>
+<p>The main operation of CIE is to import a new configuration.</p>
+<p>To Import a Configuration:</p>
+<ol>
+  <li>Right-click on a customer tree node.
+    <div class="Container"><img src="images/ImportConfig.gif" alt="Import Config" width="700" height="504"></div>
+  </li>
+  <p class="Note">The selected tree node automatically defines the new configurations engine type, engine standard and customer.</p>
+  <li>Select <strong>Import Configuration</strong>. A dialogue is displayed.
+    <div class="Container"><img src="images/ImportPath.gif" alt="Import Path" width="500" height="247"></div>
+  </li>
+  <li>Select a test cell and the root folder of the configuration files. The root folder is selected by clicking the <strong>Browse</strong> button which opens a standard file dialogue.</li>
+  <li> Select <strong>OK</strong> to start the import process.</li>
+</ol>
+<p>The user can check the message window for errors and other messages.</p>
+<p>CIE performs specific processing for configuration files found in the following folders:</p>
+<ul>
+  <li>TESTHEAD - processes the test header file</li>
+  <li>LOGDEF - processes the log definition files</li>
+  <li>DISPLAY -    processes the DataViews template files</li>
+  <li>DYNAMIC - processes the Dynamic file</li>
+</ul>
+<p>For any other folder, CIE tries to match the folder name with an available subsystem name. If a match is found, CIE processes all the files in that folder as belonging to the matching subsystem.</p>
+<h2 id="TrialDownload">Invoking a Trial Download</h2>
+<p>To test whether an import operation will succeed the user can first invoke a trial import of the configuration files. The configuration files are imported for test purposes only and no data is saved. No test is created in the database.</p>
+<p>To do a Trial Download:</p>
+<ol>
+  <li>Right-click on a customer tree node.</li>
+  <li>Select <strong>Trial Download</strong>.</li>
+  <li>Select a test cell and the root folder of the configuration files. The root folder is selected by clicking the <strong>Browse</strong> button which opens a standard file dialogue.</li>
+  <li>Select <strong>OK</strong>.</li>
+</ol>
+<h2 id="ImportUpdate">Importing / Updating Subsystem / File(s)</h2>
+<p>After a new configuration is created, it is possible to import a dynamic file or further channels to the newly created configuration.</p>
+<p class="Note">Test header, display and transient log definition files can not be imported individually.</p>
+<p>An Import operation of new subsystem files only appends the new channels to the old ones. An Update operation first deletes all old channels of the subsystem type.</p>
+<p>In case of a dynamic file there is no difference between Import and Update. All data of the old dynamic file is deleted during the operation as only one dynamic subsystem file can be supported.</p>
+<p>To Import/Update Subsystem/File(s):</p>
+<ol>
+  <li>Select Import/Update Subsystem to choose an import folder.
+    <p class="Note">The name of the folder must match the corresponding subsystem name of the configuration files contained in the folder.</p>
+    <strong>or</strong></li>
+  <li>Select Import/Update Files(s) to choose one or more files within a folder.
+    <p class="Note">The file name must match the corresponding subsystem name for the configuration data or the name of the folder that contains the file(s) must match the corresponding subsystem name.</p>
+  </li>
+</ol>
+<h2 id="Export">Exporting a Configuration / Subsystem</h2>
+<p>It is possible to export configuration data to a specific folder. The export files can include the dynamic and testhead file, the transient log definitions and the channels at config level 6. When exporting the dynamic file, the INI file export settings in section DynamicFile are used.</p>
+<h4>To Export a Configuration: </h4>
+<ol>
+  <li>Right-click on the desired configuration.</li>
+  <li>Select <strong>Export Configuration</strong>.</li>
+</ol>
+<h4>To Export a Single Subsystem:</h4>
+<ol>
+  <li>Right-click a configuration and select <strong>Show Data</strong>.</li>
+  <li>Right-click a Subsystem in the data list.</li>
+  <li>Select<strong> Export</strong>.</li>
+</ol>
+<p class="Note">Display files cannot be exported because they were transformed during the Import process.</p>
+<h2 id="DeleteConfig">Deleting a Configuration</h2>
+<p>When a configuration is being deleted with CIE, all corresponding data is removed and the corresponding record is removed from the table Test and the corresponding CIE data folder.</p>
+<p>If a configuration is deleted using the Config Admin tool, none of the dynamic data created by CIE is removed and the CIE reports that there is  data stored without a corresponding configuration.</p>
+<p>To Delete a Configuration:</p>
+<ol>
+  <li>Right-click a configuration.</li>
+  <li>Select <strong>Delete</strong>.</li>
+  <li>Select <strong>OK</strong> to complete the process.</li>
+</ol>
+<br>
+<br>
+
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

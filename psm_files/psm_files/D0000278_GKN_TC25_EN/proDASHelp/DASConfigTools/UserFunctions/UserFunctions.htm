@@ -1,0 +1,348 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>User Functions</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="UserFunctions">User Functions<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" >
+</a><div float:right></div></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The User Functions System enables a user to define calculations within proDAS, using measured or calculated Real-Time data, to generate results, which may be further processed in proDAS. The User Functions can operate cyclically during the test run, or instantaneously, to process steady state data. </p>
+<p>The User Functions System consists of a:</p>
+ <ul>
+  <li><a href="#UserFunctionsEditor">User Functions Editor</a></li> 
+  <li><a href="#UserFunctionsInterpreter">User Functions Interpreter</a></li>
+</ul>
+ <h2 id="UserFunctionsEditor">User Functions Editor</h2>
+ <p>The User Functions Editor is a separate tool used to configure the User Functions System. The User Functions Editor can be started from the 
+   Configuration Administrator or the Management GUI. User functions are represented by the User Functions Editor in an easy to use language similar to Visual Basic Script (VBS). Although similar to VBS, the User Function Editor offers several dialogues that allow the user to define calculations with simple point-and-click operations.</p>
+ <p>For a detailed description of the User Function language, see the <a href="UFLanguage.htm"> User Function Language</a> module.</p>
+ <p>For detailed information on the COM interface(s), refer to <a href="../../References/ICDs/ICD2656UserFunctions.pdf">ICD78024.2656 User Functions</a>.</p>
+
+ <h2 id="Description">User Function Editor Window</h2>
+ <p>The User Function Editor window is divided into three panes:</p>
+ <ul>
+   <li><a href="#DataRecordView">Data Record View</a></li>
+   <li><a href="#MessageView">Message View</a></li>
+   <li><a href="#EditorView">Editor View</a></li>
+   <li><a href="#MenuBar">Menu Bar</a></li>
+ </ul>
+ <div class="Container"><img src="images/EditorWindow.png" alt="Editor Window" width="700" height="423"></div>
+ <h3 id="DataRecordView">Data Record View</h3>
+ <p>The Data Record View pane (i.e.: the left-hand pane of the User Function Editor window) shows the available User Functions, with the generic 
+   attributes, for the currently selected configuration. Entries in the Data Record View can be edited unless the entry has a grey background. Entries with a grey background cannot be edited. The user can filter data and set the visibility of the columns in the Data Record View pane.</p>
+ <h3 id="MessageView">Message View</h3>
+ <p>The Message View pane (i.e.: the bottom pane of the User Function Editor window) displays warnings, error messages, and general information messages pertaining to the currently selected function.</p>
+ <h3 id="EditorView">Editor View</h3>
+ <p>The Editor View pane (i.e.: the right-hand pane of the User Function Editor window) shows the selected User Function in a text format that is similar to the Visual Basic Script language. In this view, each row contains a statement. The user cannot edit the code directly. The code can only be edited with the help of specific dialogues which can be called using the <em>User Functions</em> menu. This allows the editor to control the basic programming syntax to simplify usage.</p>
+ <h3 id="MenuBar">Menu Bar</h3>
+ <p>The following menus provide commands that are common to all proDAS editors:</p>
+ <ul>
+   <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuFile">File</a></li>
+   <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuEdit">Edit</a></li>
+   <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuView">View</a></li>
+   <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuConfiguration">Configuration</a></li>
+ </ul>
+ <p>For a detailed description of the commands provided in these menus, see <a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm"> Configuration Editors</a>.</p>
+ <p>The following menus provide access to specific User Function Editor commands:</p>
+ <ul>
+   <li><a href="?7#MenuUserFunction">User Functions</a></li>
+   <li><a href="?8#MenuSimulation">Simulation</a></li>
+ </ul>
+ <h2 id="MenuUserFunction">User Functions</h2>
+ <p>The User Functions menu includes all of the commands available to the User Functions. The user can create and modify User Functions with the 
+   following commands:</p>
+ <ul>
+   <li><a href="?9#AssignmentStatements">Assignment Statements</a></li>
+   <li><a href="?10#ControlStatements">Control Statements</a></li>
+   <li><a href="?11#EditAndSetupStatement">Editing and Setup</a></li>
+ </ul>
+ <h3 id="AssignmentStatements">Assignment Statements</h3>
+ <ul>
+   <li><a href="?12#BoolExpression">Boolean Assignment</a></li>
+   <li><a href="?13#RealAssign">Real Assignment</a></li>
+   <li><a href="?14#FuncAssign">Poly Function Assignment</a></li>
+ </ul>
+ <h4 id="BoolExpression">Boolean Assignment</h4>
+ <p>The Boolean Assignment command creates a new statement at the currently selected position within the function. For specifying the expression of the statement, the Boolean Assignment dialogue box (below) is used.</p>
+ <div class="Container"><img  alt="Bool Assignment" src="images/BoolAssignment.png" width="700" height="445"></div>
+ <p>The Boolean Assignment dialogue box is comprised of the following panes:</p>
+ <ul>
+   <li>Left hand side</li>
+   <li>Boolean expression</li>
+   <li>Real left operand</li>
+   <li>Real right operand</li>
+   <li>Boolean left operand</li>
+   <li>Boolean right operand</li>
+ </ul>
+ <p>The <strong>Left hand side</strong> pane specifies the name of the resulting variable that is to be defined. The user can select an existing variable name from the combo box or type in a new one. The volatile check box marks the variable as volatile. The volatile flag applies only to cyclical functions. Volatile variables are always initialised with NaN at the beginning of every cycle while the values of nonvolatile variables are saved from one cycle to the another. The Variable, IF - Statement, and ELSE IF - Statement radio buttons switch the type of the statement from Boolean assignment to an if or else if statement. No result variable can be specified for If - statements and Else If - Statement.</p>
+ <p>The <strong>Boolean expression</strong> pane allows the user to specify the expression to be applied. The type of the possible expressions is listed in the table below.</p>
+ <table class="Table-Grey">
+   <tr>
+     <th>Expression Type</th>
+     <th>Available Operators</th>
+     <th>Meaning</th>
+   </tr>
+   <tr>
+     <td>&nbsp;</td>
+     <td>&gt; (greater)<br>
+       &lt; (less)<br>
+       == (equal)<br>
+       &gt;!= (not equal)<br>
+       &gt; &gt;= (greater or equal)<br>
+       &gt;&lt;= (less or equal)</td>
+     <td>Real relation expressions allow the user to compare two&nbsp;real&nbsp;values. 
+       Real values can be channels or variables. A real relation produces a Boolean 
+       result which can have the values TRUE and FALSE.<br>
+       <br>
+       Boolean results can be assigned to Boolean variables and can be</td>
+   </tr>
+   <tr>
+     <td>Boolean Expression</td>
+     <td>OR (logical OR) AND (logical AND) XOR (exclusive OR) NOR (negated OR) NAND (negated AND) EQUIV (equivalence)</td>
+     <td>Boolean expressions allow the user to combine two Boolean variables.</td>
+   </tr>
+   <tr>
+     <td>Unary Expression</td>
+     <td>&lt;Empty&gt; NOT Initialisation AllEvents</td>
+     <td>The unary operation &lt;Empty&gt; can be used to copy a Boolean value or evaluate it in a branching statement.<br>
+       <br>
+       NOT negates a Boolean value. Both operators &lt;Empty&gt; and NOT depend on a Boolean operand.<br>
+       <br>
+       The functions Initialisation and AllEvents are functions without argument. Initialisation returns TRUE only the first time the 
+       function is calculated. AllEvents returns TRUE only if all events occurred at least once.</td>
+   </tr>
+   <tr>
+     <td>IsNaN</td>
+     <td>n/a</td>
+     <td>IsNaN allows the user to check if a channel or real variable has the value NaN. It returns TRUE if the checked value is NaN.</td>
+   </tr>
+   <tr>
+     <td>BitTest</td>
+     <td>n/a</td>
+     <td>BitTest allows the user to check if a specific bit is set in a real value. TRUE is returned if the queried bit is 1.<br>
+       <br>
+       Parameter #1: zero-based bit position; parameter #2: real value to be  queried.</td>
+   </tr>
+   <tr>
+     <td>Apply Function</td>
+     <td>FirstTime  LastTime</td>
+     <td>The Check Box Apply function allows the user to create an event. FirstTime will return TRUE, if the expression which is observed becomes TRUE the first time.<br>
+       <br>
+       In contrast to this LastTime returns true if the observed expression becomes FALSE after it was TRUE before.</td>
+   </tr>
+ </table>
+ <p>The <strong>Real left operand</strong> and <strong>Real right operand</strong> panes define the members for expressions that depend on real values. The user can specify a floating point number as literal value or select existing channels or variables. New channels, which are not yet included in the configuration, can also be referenced by typing the new name into the Combo Box. These channels must also be defined manually, using the Channel Editor, prior to executing the user function.</p>
+ <p>The <strong>Boolean left operand</strong> and <strong>Boolean right operand</strong> panes define the members for expressions which depend on Boolean values. The user can specify a Boolean value (TRUE or FALSE) literally or select an existing Boolean variable.</p>
+ <h4 id="RealAssign">Real Assignment</h4>
+ <p>By selecting Real Assignment form the User Functions menu, a new statement is created at the currently selected position within the function. 
+   To specify the expression of the statement, the Real Assignment dialogue box (below) is used.</p>
+ <div class="Container"><img alt="Real Assignment" src="images/RealAssignment.png" width="700" height="340"></div>
+ <p>The Real Assignment dialogue box is comprised of the following panes:</p>
+ <ul>
+   <li>Left hand side</li>
+   <li>Operator</li>
+   <li>Left Operand</li>
+   <li>Right Operand</li>
+ </ul>
+ <p>The <strong>Left hand side</strong> pane specifies the name of the result. 
+   The user can select either an existing variable name from the combo box or type 
+   in a new one or select an existing channel name or type in a new one. If a new 
+   channel name is used, it is not automatically added to the channel configuration. 
+   The user must do this manually using the Channel Editor. The volatile check 
+   box marks the variable as a volatile variable. The volatile flag, only used 
+   by a cyclical function, ensures that the variable is re-initialised at the beginning 
+   of each execution cycle. When not selected, the variable saves the value from 
+   one cycle to another. Volatile variables are always un-initialised at the beginning 
+   of an execution cycle while the values of nonvolatile variables are saved from 
+   one cycle to the another. The Variable and Channel radio buttons switch between 
+   the two types of real results.</p>
+ <p>The <strong>Operator</strong> pane allows the user to specify the operator for either binary or unary expressions. The possible operators are listed in the table below.</p>
+ <table class="Table-Grey">
+   <tr>
+     <th>Expression Type</th>
+     <th>Available Operators</th>
+     <th>Meaning</th>
+   </tr>
+   <tr>
+     <td rowSpan="5">Binary</td>
+     <td> +</td>
+     <td>Addition</td>
+   </tr>
+   <tr>
+     <td> -</td>
+     <td>Subtraction</td>
+   </tr>
+   <tr>
+     <td> *</td>
+     <td>Multiplication</td>
+   </tr>
+   <tr>
+     <td>/</td>
+     <td>Division</td>
+   </tr>
+   <tr>
+     <td> ^</td>
+     <td>To Power</td>
+   </tr>
+   <tr>
+     <td rowSpan="4">Unary</td>
+     <td>&lt;Empty&gt;</td>
+     <td>&nbsp;</td>
+   </tr>
+   <tr>
+     <td> -</td>
+     <td>Negation</td>
+   </tr>
+   <tr>
+     <td>NaN</td>
+     <td>Value of <em>Not a Number</em></td>
+   </tr>
+   <tr>
+     <td> Rand</td>
+     <td>Random number</td>
+   </tr>
+ </table>
+ <p>The <strong>Left operand</strong> and <strong>Right operand</strong> panes define 
+   the members for the expression. The user can specify a floating point number 
+   literally or select existing channels or variables. New channels can be created 
+   by typing the new name into the Combo Box. If a new channel is used, it is not 
+   automatically added to the channel configuration. The user must add the new 
+   channel to the channel configuration manually, using the Channel Editor.</p>
+ <p>Additionally, single argument functions can be applied to an operand 
+   (e.g.: abs, ceil, floor etc.). To apply a single argument function to an 
+   operand, select the Apply Function check box. For a list of the available functions 
+   and a description of each function, see <a href="UFLanguage.htm#SingleArgumentFunctions"> Single Argument Functions</a> in the Language Description.</p>
+ <h4 id="FuncAssign">Poly Function Assignment</h4>
+ <p>Poly Function Assignment specifies a real assignment operation which is a function call. The functions that can be used have been divided into 
+   the following categories:</p>
+ <ul>
+   <li><a href="UFLanguage.htm#TwoArgumentFunctions">Two Argument Functions</a></li>
+   <li><a href="UFLanguage.htm#InterpolationFunctions">Interpolation Functions</a></li>
+   <li><a href="UFLanguage.htm#AerodynamicFunctions">Aerodynamic Functions</a></li>
+   <li><a href="UFLanguage.htm#DateTimeFunctions">Date and Time Functions</a></li>
+ </ul>
+ <p>For a description of all available functions, see the <a href="UFLanguage.htm#AvailableFunctions"> Available Functions</a> in the Language Description.</p>
+ <p>The Poly Function&nbsp;Assignment command creates a new statement at the currently selected position within the function. To specify the expression of the statement, the Real Poly Function Assignment dialogue box (below) is used.</p>
+ <div class="Container"><img src="images/FuncAssignment.png" alt="Func Assignment" width="596" height="420"></div>
+ <p>The Real Poly Function Assignment dialogue box is comprised of the following panes:</p>
+ <ul>
+   <li>Left hand side</li>
+   <li>Operation</li>
+   <li>Operand (3/3)</li>
+ </ul>
+ <p>The <strong>Left hand side</strong> pane specifies the name of the result. The user can select either an existing variable name from the combo box or type in a new one or select an existing channel name or type in a new one. If a new channel name is used, it is not automatically added to the channel configuration. The user must do this manually using the Channel Editor. The volatile check box marks the variable as a volatile variable. The volatile flag, only used by cyclical functions, ensures that the variable is re-initialised with NaN at the beginning of each execution cycle. When not selected, the variable saves the value from one cycle to another. Volatile variables are always un-initialised at the beginning of an execution cycle while the values of nonvolatile variables are saved from one cycle to the another. The Variable and Channel radio buttons switch between the two types of real results.</p>
+ <p>The <strong>Operation</strong> pane allows the user to setup a function call. In the Function name combo box, the user can select:</p>
+ <ul>
+   <li><a href="UFLanguage.htm#TwoArgumentFunctions"> Two Argument Functions</a></li>
+   <li><a href="UFLanguage.htm#InterpolationFunctions">Interpolation Functions</a></li>
+   <li><a href="UFLanguage.htm#AerodynamicFunctions">Aerodynamic Functions</a></li>
+   <li><a href="UFLanguage.htm#DateTimeFunctions">Date and Time Functions</a></li>
+ </ul>
+ <p>The number of operands that must be specified by the user is dependent on the function selected in the Function name combo box.</p>
+ <p>If an <a href="UFLanguage.htm#InterpolationFunctions">Interpolation Functions</a> is selected, the BreakPointTable combo box is activated. 
+   The BreakPointTable combo box lists the Break Point Tables that are available for use with the selected Interpolation Function. Only 2-dimensional Break Point Tables are listed for 2-dimensional Interpolation Functions and only 3-dimensional Break Point Tables are listed for 3-dimensional Interpolation Functions.</p>
+ <p>The <strong>Operand</strong> pane defines the members for the expression.</p>
+ <p>The user can specify a floating point number literally or select existing channels or variables. New channels can be created by typing the new 
+   name into the Combo Box. If a new channel is used, it is not automatically added to the channel configuration. The user must add the new channel to the channel configuration manually, using the Channel Editor.</p>
+ <p>A single argument function can also be applied to an operand. Click in the Apply Function check box to apply a single argument function to an operand. For a list of available functions and a description of each function, see the <a href="UFLanguage.htm#SingleArgumentFunctions"> Single Argument Functions</a> in the Language Description.</p>
+ <p>The Previous and Next buttons allow the user to switch back-and-forth between the functions of an operands.</p>
+ <h3 id="ControlStatements">Control Statements</h3>
+ <p>The control statements are:</p>
+ <ul>
+   <li>If</li>
+   <li>Else If</li>
+   <li>Else</li>
+   <li>End If</li>
+   <li>Stop</li>
+   <li>Return</li>
+   <li>Comment Statement</li>
+   <li><a href="?20#LabelStatement">Label</a></li>
+   <li><a href="?21#GotoStatement">Goto</a></li>
+ </ul>
+ <p><strong>If</strong> and <strong>Else If</strong> show the same dialogue as described for <a href="?25#BoolExpression">Boolean Assignment</a>. Creating an If statement does not automatically create the appropriate End If statement. The user must ensure that the If statement is closed correctly.</p>
+ <p><strong>Else</strong> creates a new statement at the currently selected position within the function. Else also closes a branch opened with an If..Then or an Else If statement and opens an alternative control path.</p>
+ <p><strong>End If</strong> creates a new statement at the currently selected position within the function. End If also closes a branch opened with an If..Then, Else If, or Else statement.</p>
+ <p><strong>Stop</strong> creates a new statement at the currently selected position within the function. If a Stop statement is reached within cyclic calculations, the function is not executed again.</p>
+ <p><strong>Return</strong> creates a new statement at the currently selected position within the function. Return also stops the current execution of a function. In cyclic calculations, the function is executed again in a new cycle.</p>
+ <p><strong>Comment</strong> creates a new statement at the currently selected position within the function. The Comment statement is provided for documenting purposes and for code structuring and can be used to create empty lines.</p>
+ <p>Since these statements (i.e.: Else, End If, Stop, Return, and Comment) have no settings, a common dialogue box (below) is used to enter these statements. The caption (i.e.: name) of the dialogue box (e.g.: Comment Statement) indicates the type of statement being created.</p>
+ <div class="Container"><img src="images/CommentStatement.png" alt="Comment Statement"  width="446" height="103"></div>
+ <h4 id="LabelStatement">Label</h4>
+ <p>The Label command creates a new statement at the currently selected position within the function. The dialogue box (below) is used to specify the name (e.g.: TestLabel) for the label. If a duplicate name is specified, a warning is printed.</p>
+ <div class="Container"><img src="images/LabelStatement.png" alt="Label Statement" width="461" height="135" ></div>
+ <h4 id="GotoStatement">Goto</h4>
+ <p>The GoTo command creates a new statement at the currently selected position within the function. A GoTo statement is a jump to a labeled position. Only existing label names can be used as jump destinations. The Jump to label combo box lists the available label names for the current edited user function. The Max. jumps field allows the user to specify the number of jumps that this Goto can perform.</p>
+ <p>The dialogue box (below) is used to specify the labeled position (e.g.: TestLabel) and the maximum jump count (e.g.: 5) that can be performed.</p>
+ <div class="Container"><img src="images/GotoStatement.png" alt="Goto Statement"  width="437" height="160"></div>
+ <h3 id="EditAndSetupStatement">Editing and Setup</h3>
+ <p>The editing and setup commands are:</p>
+ <ul>
+   <li><a href="?26#Edit">Edit</a></li>
+   <li><a href="?27#TreatAsComment">Treat as Comment</a></li>
+   <li><a href="?28#Delete">Delete</a></li>
+   <li><a href="?29#DisplayDataType">Display Data Type</a></li>
+   <li><a href="?30#SetCycleTime">Set Cycle Time</a></li>
+ </ul>
+ <h4 id="Edit">Edit</h4>
+ <p>The Edit command opens the appropriate dialogue for the currently selected statement. This is the same as double clicking a statement and only 
+   works for one statement at a time.</p>
+ <h4 id="TreatAsComment">Treat As Comment </h4>
+ <p>The Treat As Comment command is provided for simulation purposes. With the Treat As Comment command, the user can temporarily disable the execution of a statement. To revoke the Treat As Comment command, select the statement again and click on the Treat As Command menu item.</p>
+ <h4 id="Delete">Delete</h4>
+ <p>The Delete command removes the currently selected statements from the User Function.</p>
+ <h4 id="DisplayDataType">Display Data Type </h4>
+ <p>The Display Data Type command allows the user to display the type of an assignment statement near the left-hand side value. Possible data types are:</p>
+ <ul>
+   <li>real</li>
+   <li>bool</li>
+ </ul>
+ <h4 id="SetCycleTime">Set Cycle Time</h4>
+ <p>With the Set Cycle Time command, the user can specify the period for cyclical executions during test runs. The Set Cycle Time value only affects the User Function Interpreter  if the User Function Interpreter is started as an External Hook program.</p>
+ <div class="Container"><img src="images/CycleTime.png" alt="Cycle Time" width="284" height="116"></div>
+ <h3 id="MenuSimulation">Simulation Commands</h3>
+ <p>The simulation commands allow the user to simulate a user function. There are two simulation commands:</p>
+ <ul>
+   <li><a href="?31#SetupSimulation">Setup Simulation...</a></li>
+   <li><a href="?32#RunSimulation">Run Simulation...</a></li>
+ </ul>
+ <h4 id="SetupSimulation">Setup Simulation...</h4>
+ <p>The Setup Simulation command connects the UserFunctionInterpreterIPS.dll and sends the currently edited function to it. The interpreter checks the function for the correct syntax. If any errors are found, they are reported in the Message View of the editor. If the syntax of the function is correct, then the Simulation Setup dialogue box (below) is opened.</p>
+ <div class="Container"><img alt="Simulation Setup" src="images/SimulationSetup.png" width="389" height="343"></div>
+ <p>In the <em>Simulation Setup</em> dialogue box, the user can specify the number of execution cycles. The User Function Interpreter executes the function cyclically, as specified by this value, to simulate the behavior of volatile and nonvolatile variables during cyclical calculations.</p>
+ <p>The table in the Simulation Setup dialogue box lists the channels that are used on the right-hand side of an expression (e.g.: output values of the RTE), which are input values for the User Function. By default, simulation values are set to 0 with quality GOOD. The user can change these values to configure his or her simulation.</p>
+ <p>The user can set any positive and negative floating point value. The qualities can have the values GOOD, SUSPECT and BAD.</p>
+ <p>If the <em>Simulation Setup</em> dialogue is confirmed, the settings are saved until the editor is closed. Reopening the Simulation Setup dialogue box will show the previously made settings. This allows the user to define his or her simulation settings once. The <em>Simulate</em> button starts the simulation directly. For further simulation processes, the user can use the <em>Run Simulation</em> command.</p>
+ <h4 id="RunSimulation">Run Simulation...</h4>
+ <p>The Run Simulation command connects the UserFunctionInterpreterIPS.dll and sends the currently edited function to it. The interpreter checks the function for the correct syntax. If any errors are found, they are reported in the Message View of the editor. If the syntax of the function is correct, then the simulation is started immediately using the current settings.</p>
+ <p>While the interpreter is running a large number of execution cycles, the editor displays the following message box. This allows the user to abort a simulation that takes too long.</p>
+ <div class="Container"><img alt="Simulation Running" src="images/SimulationRunning.png" width="378" height="130"></div>
+ <p>After the simulation has been completed, the User Function Editor displays the following dialogue box, which shows the results of the  calculation.</p>
+ <div class="Container"><img src="images/SimulationResult.png" alt="Simulation Result" width="378" height="334"></div>
+ <p>The spreadsheet in the Simulation Results dialogue box lists the channels, which are used on the left-hand side of expressions (i.e.: RTE input channels), that are output values from the User Function. The spreadsheet shows the calculated values and their qualities.</p>
+ <h2 id="UserFunctionsInterpreter">User Functions Interpreter</h2>
+ <p>The User Function Interpreter (UFI) is a special External Hook Program (EHP), which deciphers and analyses previously defined user functions  (see <a href="../../DASSubSysConfig/ExternalHooks/ExternalHooks.htm">External Hooks Subsystem</a> for more information). Running on the client machines, the UFI acts as an In-Proc COM server (DLL).</p>
+ <p>Prior to being run, the UserFunctionInterpreter.dll must be called with the argument &quot;/regsvr32.exe&quot; to self-register. Registration usually takes place when proDAS is installed.</p>
+<p>The User Function Interpreter is accessed programmatically. For information on the UFI interfaces, see the <a href="../../References/ICDs/ICD2656UserFunctions.pdf">Interface Control Document for User Functions (ICD 78024.2656)</a>. Examples of how to 
+   program with UFI interfaces are also included in ICD 78024.2656.</p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

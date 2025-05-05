@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Digital Inputs/Outputs - Overview</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left><h1>Digital Inputs/Outputs<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<h2>Overview</h2>
+<p>Digital Input/Outputs transmit and receive facility and engine control signals from devices such as limit switches, proximity switches, lamps, relays and solenoid valves.</p>
+<p>Signals are transmitted through <a href="DIOComp.html">optical isolating relays</a> to a multi-channel digital input/output module located in the <a href="../VXI/VXIOverview.html"> VXI Chassis</a>. The signals are configured as digital input or digital output channels for proDAS using the <a href="../../proDASHelp/DASSubSysConfig/ChannelEditor/ChannelEditor.htm">Channel Editor</a>. The channels are defined in <a href="../../proDASHelp/DASSubSysConfig/ConfigDIOs/ConfigDIOs.htm">Configuring Digital Input and Output Signals</a>.</p>
+<p>The optical isolating relays are mounted in a relay chassis.</p>
+<p>The Digital Input channels and Output channels are accessed at individual connectors on the Digital IO Chassis. For more information on connection details, see the engineering drawings (System Schematic, proDAS, DIO).</p>
+<p>The following diagram provides an example of digital signal paths:</p>
+<h5>Digital Inputs/Outputs Block Diagram</h5>
+<br>
+<div class="Container"><img src="images/BDDIOs.png" width="851" height="313" alt="Digital I/O Block Diagram"/></div>
+<br>
+<p>Acceptable input signals for the system include Transistor&ndash;Transistor Logic (TTL) levels and voltage from 9 VDC to 32 VDC. Different voltages are accommodated by installing different optical isolator modules in the relay chassis.</p>
+<p>The output modules are capable of sending 9 VDC to 33 VDC at 5 Amps using output interface modules.</p>
+<p>Digital Input / Output channels are scanned at up to a 200 Hz rate.</p>
+<p>Status parameters are indicated on a <a href="../../CompCfg/RTDPC/RTDPCOverview.html">Real-Time Display Computer</a>.</p>
+<p>The <a href="../../Measurement/PneuPMeas/PneuPMOverview.html">Pneumatic Pressure Measurement System</a> and the <a href="../../Measurement/TempMeas/TempMsOverview.html">Temperature Measurement System</a> outputs are transmitted to proDAS through an independent Ethernet connection, however, data transfer is controlled by Digital Input/Outputs (scanning is triggered by a discrete output).</p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

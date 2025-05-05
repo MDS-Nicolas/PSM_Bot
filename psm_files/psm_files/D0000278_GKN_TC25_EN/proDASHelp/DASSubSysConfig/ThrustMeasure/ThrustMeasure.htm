@@ -1,0 +1,538 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Thrust Measurement Subsystem</title><!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="ThrustMeasurement">Thrust Measurement Subsystem (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The Thrust Measurement Subsystem measures, in one axis, the force exerted on the thrust frame during an engine test. The force (i.e. thrust) is measured by full-bridge strain-gauge load cells mounted on the thrust frame. The load cells generate an electrical signal (i.e. voltage) that is proportional to the load (i.e. thrust force) applied by the engine-under-test. The thrust signal conditioner digitises the output from the load cells and transmits the output to proDAS over a serial RS485 interface at a rate of one to ten samples-per-second. In some cases, the Thrust Measurement Subsystem also provides a separate voltage analogue output that is proportional to the force (i.e. thrust) and is updated at a rate of ten samples-per-second.</p>
+<p>The Thrust Measurement Subsystems communicates with the Thrust Interface. The Channel configuration depends on the type of Thrust Measurement system.</p>
+<ul>
+  <li><a href="#ConfigThrustChannel">Engine Specific Thrust Channel</a></li> 
+  <li><a href="#ConfigThrustNobelChannel">Nobel Thrust Channel</a></li> 
+  <li><a href="#ConfigThrust55Channel">Thrust 55 Channel</a></li>
+</ul>
+<h2 id="ConfigThrustChannel">Configuring an Engine Specific Thrust Channel</h2>
+<p>To configure an Engine Specific Thrust Channel:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<ol>
+  <li> Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</li>
+  <li>Select the name of the Engine Specific Thrust Subsystem from the list of available subsystems.
+    <div class="Container"><img src="images/SelectSubsystemNameES.PNG" alt="SelectSubsystemNameES" width="387" height="317"></div>
+  </li>
+  <br>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a>.</li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.</li>
+  <li>Set the <strong> Measurement Type</strong> column.</li>
+  <li>For a channel with a Measurement Type of WEI or WEI2, both a Calibration Sensor and a Fixed Sensor need to be defined. The Calibration Sensor must contain the calibration 2D breakpoint table for the working load cell, and the Fixed Sensor must contain the polynomial zero offset coefficient for the working load cell.<br>
+    For a channel with a Measurement Type of TAD1 or TAD2, a Fixed Sensor needs to be defined. The Fixed Sensor must contain the calibration 2D breakpoint table for the master transfer standard load cell.
+    <div class="Container"><img src="images/ChannelEditorES.PNG" alt="ChannelEditorES" width="700" height="424"></div>
+  </li>
+</ol>
+<h2 id="ConfigFileStructure">Configuration File Structure</h2>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu"> Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import a <strong>ThrustES</strong> channel, see <a href="?10#XMLFileStructureThrust"> XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import a <strong>ThrustES</strong> channel, see <a href="?11#TabDelimitFileStructure"> Tab-Delimited File Structure</a>.</p>
+<h3 id="XMLFileStructureThrust">XML File Structure</h3>
+<h4 id="ChannelsXML">Channels</h4>
+<p>The channels are stored in files Channels.xml in the configuration directories.</p>
+<p>A ThrustES Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor - Generic Channel Parameters - XML File Structure</a>, and the specific attribute <strong>SignalConditionerName</strong>. These attributes are explained in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Measurement Type</td>
+    <td>SignalConditionerName</td>
+    <td>CHAN_TYPE</td>
+    <td>The type of the channel being used, where WEI is a working load cell and TAD a master load cell signal conditioner.<br>
+      <br>
+      Fixed sensors are used to store the conversion  required for the TAD1 and TAD2 channel types. Calibration and Fixed sensors are  used to store the correction curve and zero offset respectively for the WEI and  WEI2 channel types.</td>
+    <td>String</td>
+    <td>WEI, WEI_Raw, WEI2, WEI2_Raw, TAD1, TAD2 or TAD as configured in the Thrust ES subsystem. Only one of each type will be allowed at any point in time</td>
+  </tr>
+</table>
+<p>The structure of an Engine Specific Thrust Channel complies with the following example:</p>
+<blockquote><code>&lt;Channels LastModificationDate=&quot;<strong>2015-06-11 11:10:28</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;<br>
+  &lt;Channel Name=&quot;ThrustES1&quot; <br>
+  Description=&quot;&quot; <br>
+  Enabled=&quot;true&quot; <br>
+  LastModificationDate=&quot;2015-06-11 11:10:28&quot; <br>
+  SubsystemName=&quot;ZZThrustES&quot; <br>
+  SubsystemType=&quot;ThrustES&quot; <br>
+  AlternateName=&quot;&quot; <br>
+  DataType=&quot;Float&quot; <br>
+  InitialValue=&quot;-999999&quot; <br>
+  Format=&quot;4.2f&quot; <br>
+  UpdateRate=&quot;1&quot; <br>
+  QualityCeiling=&quot;GOOD&quot; <br>
+  Critical=&quot;false&quot; <br>
+  EngineeringUnit=&quot;-&quot; <br>
+  DisplayMin=&quot;0&quot; <br>
+  DisplayMax=&quot;100&quot; <br>
+  DeadBand=&quot;0&quot; <br>
+  Output=&quot;false&quot; <br>
+  ReferenceChannel=&quot;&quot; <br>
+  Group=&quot;&quot; <br>
+  SignalId=&quot;&quot; <br>
+  CalSensor=&quot;WEI.NA&quot; <br>
+  CalGroup=&quot;Thrust&quot; <br>
+  FixedSensor=&quot;WEI.ZERO&quot; <br>
+  CustomerSensor=&quot;&quot; <br>
+  FullsetStability=&quot;false&quot; <br>
+  ContinuousLog=&quot;true&quot; <br>
+  SignalConditionerName=&quot;WEI&quot;/&gt;<br>
+  &lt;/Channels&gt;<br>
+</code></blockquote>
+<h4 id="SubsystemsXML">Subsystems</h4>
+<p>The subsystems are stored in files Subsystems.xml in the configuration directories.</p>
+<p>An Engine Specific Thrust Subsystem (ThrustES) contains generic information, described in <a href="../SubsystemEditor/SubsystemEditor.htm#XMLFileStructure">Subsystem Editor - Generic Subsystem Parameters - XML File Structure</a>, and the specific  attributes:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Working Cells</td>
+    <td>NumberOfWorkingCells</td>
+    <td>NO_WORKING_CELLS</td>
+    <td>Defines the number of Working Cells configured for the Thrust ES subsystem</td>
+    <td>Integer</td>
+    <td>1 or 2</td>
+  </tr>
+  <tr>
+    <td>Master Cells</td>
+    <td>NumberOfMasterCells</td>
+    <td>NO_MASTER_CELLS</td>
+    <td>Defines the number of Master Cells configured for the Thrust ES subsystem</td>
+    <td>Integer</td>
+    <td>1 or 2</td>
+  </tr>
+</table>
+<p>The structure of a ThrustES Subsystem is shown in the following example:</p>
+<blockquote>
+  <pre>&lt;Subsystems   LastModificationDate=&quot;<strong>2008-09-04   14:13:03</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Subsystem Name=&quot;ZZThrustES&quot;
+Description=&quot;&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2008-04-28 13:44:58&quot;
+Id=&quot;0&quot;
+Type=&quot;ThrustES&quot;
+CreationDate=&quot;2008-04-28 13:38:31&quot;
+NumberOfWorkingCells=&quot;2&quot;
+NumberOfMasterCells=&quot;1&quot; /&gt;
+&lt;/Subsystems&gt;</pre>
+</blockquote>
+<h3 id="TabDelimitFileStructure">Tab-Delimited File Structure</h3>
+<p>The Engine Specific Thrust Measurement Subsystem channel definition includes all <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic channel definition columns</a> and the specific engine specific thrust measurement input parameters defined in the tab-delimited configuration file.</p>
+<p>The rules, syntax and guidelines for creating engine specific thrust measurement channels are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>CHAN_TYPE</td>
+    <td>Specifies the type of channel being used, where a WEI channel type represents a working load cell signal conditioner and a TAD channel type  represents a master load cell signal conditioner.</td>
+    <td>WEI, WEI_RAW, WEI2, WEI2_RAW, TAD1, TAD2, or TAD</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>CAL_SENSOR</td>
+    <td>A sensor name/auxiliary address pair, of the form Sensorname.AuxiliaryAddress (dot separated). The sensor must exist in the calibration database, and is used to store the most recent calibration for the corresponding signal conditioner. This field is mandatory for TAD1, TAD2, WEI and WEI2 channel types.</td>
+    <td>40 character alphanumeric (case sensitive)</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>ZERO_SENSOR</td>
+    <td>A sensor name/auxiliary address pair, of the form SensorName.AuxiliaryAddress (dot separated). The sensor must exist in the calibration database, and is used to store the zero offset for the corresponding signal conditioner. This field is mandatory for WEI and WEI2 channel types.</td>
+    <td>40 character alphanumeric (case sensitive)</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines 
+      follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel 
+      to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. 
+      Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single line of the spread sheet.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is always optional.</p></td>
+  </tr>
+</table>
+<h2 id="ConfigThrustNobelChannel">Configuring a Nobel Thrust Channel</h2>
+<p>To configure a Nobel Thrust Channel:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</li>
+  <li>Select the name of the Nobel Thrust Subsystem from the list of available subsystems.
+    <div class="Container"><img src="images/SelectSubsystemNameNobel.PNG" alt="SelectSubsystemNameNobel" width="387" height="317"></div>
+  </li>
+  <br>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a>.</li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.</li>
+  <li>Set the measurement <strong>Measurement Type</strong> column.</li>
+  <li>For a channel with a Measurement Type of WEI or WEI2, both a Calibration Sensor and a Fixed Sensor need to be defined. The Calibration Sensor must contain the calibration 2D breakpoint table for the working load cell, and the Fixed Sensor must contain the polynomial zero offset coefficient for the working load cell.<br>
+    For a channel with a Measurement Type of TAD1 or TAD2, a Calibration Sensor needs to be defined. The Calibration Sensor must contain the calibration 2D breakpoint table for the master transfer standard load cell.
+    <div class="Container"><img src="images/ChannelEditorNobel.PNG" alt="ChannelEditorNobel" width="700" height="424"></div>
+  </li>
+</ol>
+<br>
+<h2 id="ConfigFileStructureNobel">Configuration File Structure - Nobel</h2>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu">Selecting  the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import a <strong>ThrustNobel</strong> channel, see <a href="?12#XMLFileStructureNobel"> XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import a <strong>ThrustNobel</strong> channel, see <a href="?13#NobelTabDelimitFileStructure"> Tab-Delimited File Structure</a>.</p>
+<h3 id="XMLFileStructureNobel">XML File Structure</h3>
+<h4 id="ChannelsXMLNobel">Channels</h4>
+<p>The channels are stored in files Channels.xml in the configuration directories.</p>
+<p>A ThrustNobel Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor - Generic Channel Parameters - XML File Structure</a>, and the specific attribute <strong>Measurement Type</strong>. These attributes are explained in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Measurement Type</td>
+    <td>SignalConditionerName</td>
+    <td>ADDRESS</td>
+    <td>The Type of the channel being used, Where WEI is a working load cell and TAD a master load cell signal conditioner</td>
+    <td>Combo Box</td>
+    <td>WEI, WEI Raw, WEI2, WEI2 Raw, TAD1, TAD2 or TAD as configured in the Thrust Nobel subsystem. Only one of each type will be allowed at any point in time</td>
+  </tr>
+</table>
+<p>The structure of a Nobel Thrust Channel complies with the following example:</p>
+<blockquote>
+  <pre>&lt;Channels   LastModificationDate=&quot;<strong>2008-09-04   14:15:19</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Channel Name=&quot;ZZThrustNobel1&quot;
+Description=&quot;&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2008-04-29 10:41:48&quot;
+SubsystemName=&quot;ZZThrustNobel&quot;
+SubsystemType=&quot;ThrustNobel&quot;
+AlternateName=&quot;&quot;
+DataType=&quot;Float&quot;
+InitialValue=&quot;-999999&quot;
+Format=&quot;4.2f&quot;
+UpdateRate=&quot;1&quot;
+QualityCeiling=&quot;GOOD&quot;
+Critical=&quot;false&quot;
+EngineeringUnit=&quot;-&quot;
+DisplayMin=&quot;0&quot;
+DisplayMax=&quot;100&quot;
+DeadBand=&quot;0&quot;
+Output=&quot;false&quot;
+ReferenceChannel=&quot;&quot;
+Group=&quot;&quot;
+SignalId=&quot;&quot;
+CalSensor=&quot;&quot;
+CalGroup=&quot;&quot;
+FixedSensor=&quot;&quot;
+SignalConditionerName=&quot;WEI&quot; /&gt;
+&lt;/Channels&gt;</pre>
+</blockquote>
+<h4 id="SubsystemsXML2">Subsystems</h4>
+<p>The subsystems are stored in files Subsystems.xml in the configuration directories.</p>
+<p>A Nobel Thrust Measurement Subsystem (ThrustNobel) contains generic information, described in <a href="../SubsystemEditor/SubsystemEditor.htm#XMLFileStructure">Subsystem Editor - Generic Subsystem Parameters - XML File Structure</a>, and the specific 
+  attributes:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Working Cells</td>
+    <td>NumberOfWorkingCells</td>
+    <td>NO_WORKING_CELLS</td>
+    <td>Defines the number of Working Cells configured for the Nobel Thrust subsystem</td>
+    <td>Integer</td>
+    <td>1 or 2</td>
+  </tr>
+  <tr>
+    <td>Master Cells</td>
+    <td>NumberOfMasterCells</td>
+    <td>NO_MASTER_CELLS</td>
+    <td>Defines the number of Master Cells configured for the Nobel Thrust subsystem</td>
+    <td>Integer</td>
+    <td>1 or 2</td>
+  </tr>
+</table>
+<p>The structure of a Nobel Thrust Subsystem is shown in the following example:</p>
+<blockquote>
+  <pre>&lt;Subsystems   LastModificationDate=&quot;<strong>2008-09-04   14:13:03</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Subsystem Name=&quot;ZZThrustNobel&quot;
+Description=&quot;&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2008-04-28 13:44:58&quot;
+Id=&quot;0&quot;
+Type=&quot;ThrustNobel&quot;
+CreationDate=&quot;2008-04-28 13:39:24&quot;
+NumberOfWorkingCells=&quot;2&quot;
+NumberOfMasterCells=&quot;1&quot; /&gt;
+&lt;/Subsystems&gt;</pre>
+</blockquote>
+<h3 id="NobelTabDelimitFileStructure">Tab-Delimited File Structure</h3>
+<p>The Nobel Thrust Measurement Subsystem channel definition includes all <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic 
+  channel definition columns</a> and the specific thrust measurement input parameter defined in the tab-delimited configuration file.</p>
+<p>The rules, syntax and guidelines for creating engine specific thrust measurement channels are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>ADDRESS</td>
+    <td>Specifies the type of channel being used, where a WEI channel type represents a working load cell signal conditioner and a TAD channel type represents a master load cell signal conditioner.</td>
+    <td>WEI, WEI_RAW, WEI2, WEI2_RAW, TAD1, TAD2, or TAD</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines 
+      follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel 
+      to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. 
+      Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single line of the spread sheet.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is always optional.</p></td>
+  </tr>
+</table>
+<h2 id="ConfigThrust55Channel">Configuring a Thrust 55 Channel</h2>
+<p>To configure a Thrust 55 Channel:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</li>
+  <li>Select the name of the Thrust 55 Subsystem from the list of available subsystems.<br>
+    <br>
+    <div class="Container"><img src="images/SelectSubsystemName55.PNG" alt="SelectSubsystemName55" width="387" height="317"></div>
+  </li>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a>.</li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.
+    <div class="Container"><img src="images/ChannelEditor55.PNG" alt="ChannelEditor55" width="700" height="424"></div>
+  </li>
+</ol>
+<h2 id="ConfigFileStructure55">Configuration File Structure - Thrust 55</h2>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu">Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import a <strong>Thrust55</strong> channel, see <a href="?14#XMLFileStructure55"> XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import a <strong>Thrust55</strong> channel, see <a href="?15#TabDelimitFileStructureThrust55"> Tab-Delimited File Structure</a>.</p>
+<h3 id="XMLFileStructure55">XML File Structure</h3>
+<h4 id="ChannelsXML55">Channels</h4>
+<p>The channels are stored in files Channels.xml in the configuration 
+  directories.</p>
+<p>A Thrust 55 Channel only contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor - Generic Channel Parameters - XML File Structure</a>.</p>
+<p>The structure of a Thrust 55 Channel complies with the following example:</p>
+<blockquote>
+  <pre>&lt;Channels   LastModificationDate=&quot;<strong>2008-09-04   14:15:19</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Channel Name=&quot;ZZThrust551&quot;
+Description=&quot;&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2008-04-29 10:41:48&quot;
+SubsystemName=&quot;ZZThrust55&quot;
+SubsystemType=&quot;Thrust55&quot;
+AlternateName=&quot;&quot;
+DataType=&quot;Float&quot;
+InitialValue=&quot;-999999&quot;
+Format=&quot;4.2f&quot;
+UpdateRate=&quot;1&quot;
+QualityCeiling=&quot;GOOD&quot;
+Critical=&quot;false&quot;
+EngineeringUnit=&quot;-&quot;
+DisplayMin=&quot;0&quot;
+DisplayMax=&quot;100&quot;
+DeadBand=&quot;0&quot;
+Output=&quot;false&quot;
+ReferenceChannel=&quot;&quot;
+Group=&quot;&quot;
+SignalId=&quot;&quot;
+CalSensor=&quot;&quot;
+CalGroup=&quot;&quot;
+FixedSensor=&quot;&quot; /&gt;
+&lt;/Channels&gt;</pre>
+</blockquote>
+<h4 id="SubsystemsXML3">Subsystems</h4>
+<p>The subsystems are stored in files Subsystems.xml in the configuration directories.</p>
+<p>A Thrust 55 Subsystem contains generic information, described in <a href="../SubsystemEditor/SubsystemEditor.htm#XMLFileStructure">Subsystem Editor - Generic Subsystem Parameters - XML File Structure</a>, and no further subsystem specific attributes.</p>
+<p>The structure of a Thrust 55 Subsystem is shown in the following example:</p>
+<blockquote>
+  <pre>&lt;Subsystems   LastModificationDate=&quot;<strong>2008-09-04   14:13:03</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Subsystem Name=&quot;ZZThrust55&quot;
+Description=&quot;&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2008-04-28 13:44:58&quot;
+Id=&quot;0&quot;
+Type=&quot;Thrust55&quot;
+CreationDate=&quot;2008-04-28 13:38:07&quot; /&gt;
+&lt;/Subsystems&gt;</pre>
+</blockquote>
+<h3 id="TabDelimitFileStructureThrust55">Tab-Delimited File Structure</h3>
+<p>The Thrust 55  Subsystem channel definition includes all <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic channel definition columns</a>.</p>
+<h2 id="SubSysEditorThrust">Subsystem Editor for Thrust Channels</h2>
+<p>To edit a Thrust Subsystem, the Subsystem Editor must be selected from within the Configuration Administrator.</p>
+<p>The tool bar in the Configuration Administrator allows the various configuration editors available for proDAS to be selected.</p>
+<p>The Subsystem Editor allows new subsystems to be added to the current configuration <a href="../SubsystemEditor/SubsystemEditor.htm#MenuEdit">Subsystem Editor - Menu Edit</a>.</p>
+<p>To add a new subsystem to the current configuration:</p>
+<ol>
+  <li>Select the menu item <strong>Edit - Append Data Record</strong> in the menu bar or click in the left pane of the splitter window and then click the right mouse button and select <strong>Append Data Record</strong> from the context sensitive menu.</li>
+  <li>Select <strong>ThrustES, ThrustNobel,</strong> or <strong>Thrust55</strong> in the dialogue box to select the type of subsystem. <br>
+    A new line is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to the type just selected (as shown in the typical Subsystem Editor screenshots below).<br>
+    The user must then assign a name and description to the subsystem.<br>
+    <br>
+    <p class="Note">A Thrust55 Subsystem has no further subsystem specific information.<br>
+      <br>
+      Working Cells and Master Cells have to be defined for both Thrust ES and Thrust Nobel Subsystems.</p>
+    <div class="Container"><img src="images/SubsystemEditorES.png" alt="SubsystemEditorES" width="700" height="423"></div>
+    <strong>Subsystem Editor - Thrust ES</strong>
+    <div class="Container"><img src="images/SubsystemEditorNobel.png" alt="SubsystemEditorNobel" width="700" height="423"></div>
+    <strong>Subsystem Editor - Thrust Nobel</strong>
+    <div class="Container"><img src="images/SubsystemEditor55.png" alt="SubsystemEditor55" width="700" height="423"></div>
+    <strong>Subsystem Editor - Thrust 55</strong></li>
+</ol>
+<h3 id="LoadCells">Load Cells</h3>
+<p>The thrust frame is equipped with working load cells and calibration load cells. The load cells generate an electrical signal (i.e.: voltage) that is proportional to the load (i.e.: thrust force) applied by the engine-under-test. Variations in the voltage levels provide a measurement of the thrust being generated by the engine being tested.</p>
+<div class="Container"><img src="images/LoadCells.gif" alt="LoadCells" width="700" height="260"></div>
+<p>As an engine applies thrust to the frames, strain gauges within the load cells convert the load to a voltage for measurement by the test cell data acquisition system.</p>
+<p>The signal from the working load cells in the thrust frame is sent, via thrust signal conditioners, to an analogue input card in the PLC chassis.</p>
+<p>The calibration load cells measure simulated engine thrust forces during the calibration of the thrust frame. The calibration load string serves as a  calibration reference for the working load cell and signal conditioner.</p>
+<h3 id="SignalConditioner">E-2-WEI Signal Conditioner</h3>
+<p>The E-2-WEI is a microprocessor controlled, strain gauge signal conditioner, with RS485 communications capability. The E-2-WEI digitises the analogue signal from the load cell and provides the engineering unit value via the RS485 interface. The E-2-WEI provides a 10 vdc excitation for the load cells and also provides various filtering capabilities. The E-2-WEI can apply a shunt calibration resistor to the load cell input on command from the RTE and can be configured on command by the RTE.</p>
+<h3 id="TAD3">E-2-TAD and TAD3 Signal Conditioners</h3>
+<p>The E-2-TAD and TAD-3 signal conditioners digitise the output voltage from an associated transfer standard load cell and transmits the data to proDAS. Data is transmitted at a sample rate of 1 Hz over an RS-232 serial link to proDAS. The E-2-TAD and TAD-3 provide the excitation voltage to the load cell.</p>
+<h3 id="AddNewLoadCells">Adding New Load Cells</h3>
+<p>Both ThrustES and Thrust Nobel have to be configured with Load Cells. The number of Working and Master Cells configured for the <a href="?5#SubsystemsXML">Subsystem</a> can be edited in the right pane of the splitter window of the Subsystem Editor screen.</p>
+<p>Since the number of Load Cells are defined using combo box dialogues, the EditSpecific menu item has no options to append or edit data, and the list boxes are edited directly.</p>
+<p>Once the number of Load Cells is known, the Load Cells are named as follows:</p>
+<ul>
+  <li>the first Working Load Cell is called <strong>WEI</strong></li>
+  <li>the second Working Load Cell is called <strong>WEI2</strong></li>
+  <li>the first Calibration Load Cell is called <strong>TAD1</strong></li>
+  <li>the second Calibration Load Cell is called <strong>TAD2</strong></li>
+</ul>
+<h2 id="RTEInitialiseFile">RTE Initialisation File</h2>
+<p>The Thrust Measurement Subsystem is configured by the RTE, along with all the other subsystems, as a request from the Management Interface GUI. For legacy purposes, the configuration request can also be specified in the command line of the RTE.</p>
+<p>The RTE Initialisation File must, as a minimum, include the following information for each signal conditioner:</p>
+<ul>
+  <li>device (serial port #)</li>
+  <li>baudrate (default: 9600 for WEI, 4800 for TAD)</li>
+  <li>databit (default: 7)</li>
+  <li>stop bit (default: 1)</li>
+  <li>parity (default: even)</li>
+</ul>
+<p>A typical RTE initialisation file would include the following Thrust Measurement Subsystem information:</p>
+<blockquote>
+  <p>#--------------------------------------------------------------------------<br>
+    # Thrust Measurement Subsystem<br>
+    #--------------------------------------------------------------------------<br>
+    SS THRUST TRUE<br>
+    # driver communicating with the WEI1 port<br>
+    CI WEI_device /dev/ttyd1<br>
+    # Baud-rate used for WEI<br>
+    CI WEI_baudrate 9600<br>
+    # Parity used for WEI<br>
+    CI WEI_parity none<br>
+    # Number of stop bits used for WEI<br>
+    CI WEI_stopbits 1<br>
+    # Number of data bits used for WEI<br>
+    CI WEI_databits 7<br>
+    # Instrument address in E-2-WEI<br>
+    CI WEI_instr_addr 01<br>
+    # driver communicating with the WEI2 port<br>
+    #CI WEI2_device /dev/null<br>
+    # Baud-rate used for WEI<br>
+    #CI WEI2_baudrate 9600<br>
+    # Parity used for WEI<br>
+    #CI WEI2_parity none<br>
+    # Number of stop bits used for WEI<br>
+    #CI WEI2_stopbits 1<br>
+    # Number of data bits used for WEI<br>
+    #CI WEI2_databits 7<br>
+    # Instrument address in E-2-WEI<br>
+    #CI WEI2_instr_addr 02<br>
+    # driver communicating with the TAD1 port<br>
+    CI TAD1_device /dev/ttyd2<br>
+    # Baud-rate used for TAD1<br>
+    CI TAD1_baudrate 9600<br>
+    # Parity used for TAD1<br>
+    CI TAD1_parity none<br>
+    # Number of stop bits used for TAD1<br>
+    CI TAD1_stopbits 1<br>
+    # Number of data bits used for TAD1<br>
+    CI TAD1_databits 7<br>
+    # driver communicating with the TAD2 port<br>
+    #CI TAD2_device /dev/ttyd2<br>
+    # Baud-rate used for TAD2<br>
+    #CI TAD2_baudrate 9600<br>
+    # Parity used for TAD2<br>
+    #CI TAD2_parity none<br>
+    # Number of stop bits used for TAD2<br>
+    #CI TAD2_stopbits 1<br>
+    # Number of data bits used for TAD2<br>
+    #CI TAD2_databits 7<br>
+    # Number of milliseconds that EDAS should wait for a TAD to respond.<br>
+    CI TAD_timeout 300<br>
+    # Number of consecutive times EDAS will try to reestablish communication with a TAD<br>
+    CI TAD_retries 2<br>
+    # Number of seconds before giving up on the WEI<br>
+    CI lostcomm_timeout 180<br>
+    # Default channel quality to use during temporary communication loss<br>
+    # one of GOOD / BAD / SUSPECT<br>
+    CI WEI_comm_fail_quality GOOD<br>
+    # maximum number of consecutive communication failures to tolerate<br>
+    CI WEI_max_comm_fail 5<br>
+    # WEI device<br>
+    # Communication protocol for WEI devices<br>
+    #CI WEI_Protocol WEI<br>
+    CI WEI_Protocol TAD</p>
+</blockquote>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click here to see the RTE Initialisation file</a>.</p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

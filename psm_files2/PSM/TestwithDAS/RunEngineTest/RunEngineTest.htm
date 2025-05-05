@@ -1,0 +1,289 @@
+<!DOCTYPE HTML><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" -->
+<title>Running an Engine Test</title><!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1>Running an Engine Test<a href="#" onClick="window.print(); return false;"><img src="../../images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" /></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>This module is designed to be used as a reference guide in the everyday work of the Test Cell operator. The different operator functions that can be performed while nxDAS is scanning and acquiring data are explained through step-by-step procedures.</p>
+<p>This section contains information on the following topics:</p>
+<ul>
+    <li><a href="#Prep">Preparation Tasks</a></li>
+    <li><a href="#Config">Master Configuration</a></li>
+    <li><a href="#PreTest">Pre-Test Checks</a></li>
+    <li><a href="#Displays">Configurable Displays</a></li>
+    <li><a href="#Log">Logging Events</a></li>
+    <li><a href="#TestPage">Test Page</a></li>
+    <li><a href="#TestProcedure">Test Procedure Scripts</a></li>
+    <li><a href="#Timer">Timer</a></li>
+    <li><a href="#DataLog">Data Logging</a></li>
+    <li><a href="#ModChannel">Modifying Channel Parameters</a></li>
+    <li><a href="#Reports">Reports</a></li>
+</ul>
+<h3 id="Prep">Preparation Tasks</h3>
+<p>Before an engine test can be started and data acquired, there are several set up tasks that may need to be performed.</p>
+<p>The following table identifies a list of preparation tasks that might apply and the associated sections that describe the desired task:</p>
+
+<table class="Table-Grey">
+  <tr>
+    <th width="26%">Task</th>
+    <th width="33%">Description </th>
+    <th width="41%">References</th>
+  </tr>
+  <tr>
+    <td>Performing Calibrations</td>
+    <td>Perform calibrations on applicable channels.</td>
+    <td>&nbsp;&bull;&nbsp;<a href="../../DASConfigTools/SensorEditor/SensorEditor.htm">Sensor Editor</a></td>
+  </tr>
+  <tr>
+    <td>Performing Thrust Calibration</td>
+    <td>Perform an audit of Thrust Measurement System calibration.</td>
+    <td>&nbsp;&bull;<a href="../../CustomApps/TCA/TCA.htm">&nbsp;Thrust Calibration Application</a></td>
+  </tr>
+  <tr>
+    <td>Setting up Data Recording</td>
+    <td>Set up data recording functions, such as transient logs.</td>
+    <td>&nbsp;&bull;&nbsp;<a href="../../StandardTools/Logs/LogsOperation.htm" >Data Recording</a></td>
+  </tr>
+  <tr>
+    <td>Setting up Test Procedure Scripts</td>
+    <td>Review or update test procedure scripts.</td>
+    <td>&nbsp;&bull;&nbsp;<a href="../../DASConfigTools/ScriptEditor/ScriptEditorOverview.html" >Script Editor</a><br>
+	  &nbsp;&bull;&nbsp;<a href="../../DASConfigTools/ScriptEditor/HowTo/HTSECreateTPS.htm">How To &ndash; Create a Test Procedure Script</a></td>
+  </tr>
+  <tr>
+    <td>Creating Operator Display Pages</td>
+    <td>Review or update operator display pages.</td>
+    <td>&nbsp;&bull;&nbsp;<a href="../../DASConfigTools/DisplayPages/DisplayPages.htm" >RTD Editor GUI</a><br>
+	&nbsp;&bull;&nbsp;<a href="../../DASConfigTools/DisplayPages/DisplayDriver.htm">RTD Driver</a></td>
+  </tr>
+</table>
+<h3 id="Config">Master Configuration</h3>
+<p>After all the appropriate tasks have been completed, nxDAS must be configured with a master configuration. The master configuration is selected using the Operations Manager (See <a href="../../OpsMgr/HowTo/HTSetCfgActive.htm">How To &ndash; Set a Configuration as Active</a>). The active configuration is loaded using the Operations Manager in Acquisiton Mode.</p>
+<h3 id="PreTest">Pre-Test Checks</h3>
+<p>nxDAS gives the operator the ability to run various pre-test checks prior to acquiring data. These tests allow the user to perform functions such as confirming that channel readings are within the appropriate ranges and purging of the pressure scanner lines.</p>
+<p>The execution of the pre-test checks depends on Customer hardware and procedures. For details on the pre-test checks, see <a href="../../CustomApps/InstrumentControls/InstrumentControls.htm#PreTest">Instrument Controls</a>.</p>
+
+ <p class="Note">Please refer to the &quot;Home&quot; section of the Product Support Manual for details on your applicable pre-run checks.</p>
+<h3 id="Displays">Configurable Displays</h3>
+<p>nxDAS provides several user configurable displays that can be used to view the current data during an engine test, including:</p>
+<ul>
+  <li><a href="../../nxViz/nxVizRuntime/Runtime.htm">nxViz Runtime</a></li>
+  <li><a href="../../DASConfigTools/DisplayPages/DisplayDriver.htm#Spotlight">Spotlights</a></li>
+  <li><a href="../../StandardTools/TCD/TCD.htm#Operation">Tabular Channel Display (TCD)</a></li>
+</ul>
+<h3 id="Log">Logging Events</h3>
+<p>nxDAS performs logging (data recording) of all system event messages including operator interactions, alarm conditions, warning messages, and error messages.</p>
+<p>Event messages are logged using the following:</p>
+<ul>
+  <li><a href="../../StandardTools/Logs/LogsUEL.htm">Event Log</a></li>
+  <li><a href="../../DASConfigTools/EventViewer/EventViewer.html">Event Viewer</a></li>
+  <li><a href="../../OpsMgr/OpsMgrGUI/OpsMgrGUI_StatusPane.htm">Operations Manager &ndash; Status Pane</a></li>
+</ul>
+<h3 id="TestPage">Test Page</h3>
+<p>During an engine test, most of the testing tasks can be performed using the <a href="../../OpsMgr/OpsMgrOpMode/OpsMgrAcquisitionMode.htm#TestProcessing">Test Page</a>.</p>
+<h3 id="TestProcedure">Test Procedure Scripts</h3>
+<p>nxDAS can run predefined engine test procedure scripts that instruct the operators on how to test the engine as well as automatically record data such as fullsets or logs. For more information, see <a href="../../OpsMgr/OpsMgrOpMode/OpsMgrAcquisitionMode.htm">Operations Manager &ndash; Acquisition Mode</a> and <a href="../../DASConfigTools/ScriptEditor/ScriptOperation.html">Script Editor</a>.</p>
+<h3 id="Timer">Timer</h3>
+<p>nxDAS has a built in Timer that operators can use during the engine test. For more information, see <a href="../../OpsMgr/OpsMgrOpMode/OpsMgrAcquisitionMode.htm#Timer">Operations Manager &ndash; Acquisition Mode &ndash; Timer Panel</a>.</p>
+<h3 id="DataLog">Data Logging</h3>
+<p>If required, the operators may also record test data independent of an engine test script.</p>
+<p>nxDAS can log (record) the following:</p>
+<ul>
+  <li><a href="../../StandardTools/Logs/LogsTransient.htm">Transient Logs</a></li>
+  <li><a href="../../StandardTools/Logs/LogsFullsets.htm">Fullsets</a></li>
+  <li><a href="../../StandardTools/Logs/LogsCLogs.htm">Critical Logs</a></li>
+  <li><a href="../../StandardTools/Logs/LogsContLog.htm">Continuous Logs (if configured)</a></li>
+  <li><a href="../../OpsMgr/Tests/Tests.htm">Test Comments</a></li>
+</ul>
+<h3 id="ModChannel">Modifying Channel Parameters</h3>
+<p>Modifying channels is local to the CVT only. The true value of the channel is always published over iDDS. For example, if the user overrides a PBS channel value, the CVT value is set, however the true channel value is published over iDDS. Likewise, if the user overrides a channel subscribed to by the RTE over iDDS, the CVT is set with the user-defined value, but the published value on the network is not changed.</p>
+<p>During an engine test the operator has the ability to modify the following channel parameters:</p>
+<ul>
+  <li><a href="../../DASConfigTools/MGTGUI/HowTo/HTMGTGUIChanRedir.htm">Set/Redirect Channel Value</a></li>
+  <li><a href="../../DASConfigTools/MGTGUI/HowTo/HTMGTGUISetQualChan.htm">Set Channel Quality</a></li>
+  <li><a href="../../DASConfigTools/MGTGUI/HowTo/HTMGTGUIModChanLim.htm">Set Channel Limit</a></li>
+</ul>
+
+<h3 id="Reports">Reports</h3>
+<p>nxDAS gives the operator access to several reports and other <a href="../../CustomApps/InstrumentControls/InstrumentControls.htm#PostTest">post test applications</a> that may be useful during an engine test. Reports are accessed through the <a href="../../StandardTools/RTReports/RTReports.htm">Real-Time (RT) Reports GUI</a>.</p>
+	<br>
+	<br>
+<!---
+<h2 id="RETOperation">Operation</h2>
+<p>Preparing for and running an engine test can require multiple tasks.</p>
+<h2>How To</h2>
+<p>The following table contains instructional information on typical tasks for setting up and running an engine test.</p>
+<p class="WritersNote">Update with Operations Manager information</p>
+<table class="Table-Grey">
+  <tr>
+    <th width="26%">Task</th>
+    <th width="33%">How To</th>
+    <th width="41%">References</th>
+  </tr>
+  <tr>
+    <td>Selecting a Real-Time Display</td>
+    <td><a href="../../DASConfigTools/DisplayPages/HowTo/HTRTDDvrSelOpPage.htm">How To &ndash; Select an Operator Page Using the RTD Driver GUI</a></td>
+    <td><a href="../../DASConfigTools/DisplayPages/DisplayPages.htm#Operation">RTD Editor &ndash; Operation</a><br>
+      <br>
+      <a href="../../DASConfigTools/DisplayPages/DisplayPages.htm#RTDEdGUI">RTD Editor GUI</a><br>
+      <br>
+      <a href="../../DASConfigTools/DisplayPages/DisplayDriver.htm#Operation">RTD Driver &ndash; Operation</a><br>
+      <br>
+      <a href="../../DASConfigTools/DisplayPages/DisplayDriver.htm">RTD Driver &ndash; GUI</a></td>
+  </tr>
+  <tr>
+    <td>Using the Spotlight Feature</td>
+    <td><a href="../../DASConfigTools/DisplayPages/HowTo/HTRTDSpotlight.htm">How To &ndash; Create a Spotlight Sticky</a></td>
+    <td><a href="../../DASConfigTools/DisplayPages/DisplayDriver.htm#Spotlight">RTD Driver GUI &ndash; Spotlight Sticky</a></td>
+  </tr>
+  <tr>
+    <td>Using the Tabular Channel Display (TCD)</td>
+    <td><a href="../../StandardTools/TCD/HowTo/HTTCDStart.htm">How To &ndash; Start the Tabular Channel Display</a></td>
+    <td><a href="../../StandardTools/TCD/TCD.htm#Operation">TCD - Operation</a></td>
+  </tr>
+  <tr>
+    <td>Using the Channel Info Context Menu</td>
+    <td><a href="../../DASConfigTools/DisplayPages/HowTo/HTRTDDvrChanInfo.htm">How To &ndash; Use the Channel Info Context Menu on Display Pages</a></td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td>Unified Event Log (UEL)</td>
+    <td><a href="../../StandardTools/Logs/LogsUEL.htm">Unified Event Log (UEL)</a></td>
+    <td><a href="../../StandardTools/Logs/HowTo/HTLogsOpenEvDisp.htm">How To &ndash; Open Additional UEL Windows</a><br>
+      <br>
+      <a href="../../DASConfigTools/MGTGUI/HowTo/HTMGTGUIOperCom.htm">How To &ndash; Add Operator Comments (to the UEL)</a></td>
+  </tr>
+  <tr>
+    <td>Interpreting Alarms and Warnings</td>
+    <td><a href="../../StandardTools/AlarmsWarnings/AlarmsWarnings.htm">Alarms and Warnings &ndash; Operation</a></td>
+    <td><a href="../../StandardTools/AlarmsWarnings/AlarmsWarnings.htm#AlarmSumDisplay">Alarms and Warnings &ndash; Alarm Summary Display Window</a><br>
+      <br>
+      <a href="../../StandardTools/AlarmsWarnings/AlarmsWarnings.htm#InfoSumDisplay">Alarms and Warnings &ndash; Info Summary Display Window</a></td>
+  </tr>
+  <tr>
+    <td>Opening the Test Page</td>
+    <td><a href="../../DASConfigTools/MGTGUI/HowTo/HTMGTGUIOpenTP.htm">How To &ndash; Open the Test Page</a></td>
+    <td><a href="../../DASConfigTools/MGTGUI/MGTGUI.htm#MGTGUITP">Management GUI &ndash; Test Page</a></td>
+  </tr>
+  <tr>
+    <td>Selecting and Running a Test Procedure</td>
+    <td><a href="../../DASConfigTools/MGTGUI/HowTo/HTMGTGUISelRun.htm">How To &ndash; Select and Run an Engine Test Procedure</a></td>
+    <td><a href="../../DASConfigTools/MGTGUI/MGTGUI.htm#MGTGUITP">Management GUI &ndash; Test Page</a></td>
+  </tr>
+  <tr>
+    <td>Recording Transient Logs</td>
+    <td><a href="../../StandardTools/Logs/HowTo/HTLogsRecTLogs.htm">How To &ndash; Record Transient Logs</a></td>
+    <td><a href="../../StandardTools/Logs/LogsTransient.htm">Transient Logs</a></td>
+  </tr>
+  <tr>
+    <td>Recording a Fullset (Steady State Data)</td>
+    <td><a href="../../StandardTools/Logs/HowTo/HTLogsRecFullset.htm">How To &ndash; Record a Fullset</a></td>
+    <td><a href="../../StandardTools/Logs/LogsFullsets.htm">Fullsets (Steady-State Test Data)</a></td>
+  </tr>
+  <tr>
+    <td>Recording a Critical Log</td>
+    <td><a href="../../StandardTools/Logs/HowTo/HTLogsRecCLog.htm">How To &ndash; Record a Critical Log</a></td>
+    <td><a href="../../StandardTools/Logs/LogsCLogs.htm">Critical Logs</a></td>
+  </tr>
+  <tr>
+    <td>Continuous Logging</td>
+    <td>--</td>
+    <td><a href="../../StandardTools/Logs/LogsContLog.htm">Continuous Logging</a></td>
+  </tr>
+  <tr>
+    <td>Inserting Operator Comments</td>
+    <td><a href="../../DASConfigTools/MGTGUI/HowTo/HTMGTGUIOperCom.htm">How To &ndash; Insert Operator Comments</a></td>
+    <td><a href="../../DASConfigTools/MGTGUI/MGTGUI.htm">Management GUI &ndash; Overview</a><br>
+      <br>
+      <a href="../../DASConfigTools/MGTGUI/MGTGUI.htm#MGTGUIOperation">Management GIU &ndash; Operation</a><br>
+      <br>
+      <a href="../../DASConfigTools/MGTGUI/MGTGUI.htm#MGTGUITP">Management GUI &ndash; Test Page</a></td>
+  </tr>
+  <tr>
+    <td>Using the Channel Redirect Feature</td>
+    <td><a href="../../DASConfigTools/MGTGUI/HowTo/HTMGTGUIChanRedir.htm">How To &ndash; Use the Channel Redirect Feature</a></td>
+    <td><a href="../../DASConfigTools/MGTGUI/MGTGUI.htm">Management GUI &ndash; Overview</a><br>
+      <br>
+      <a href="../../DASConfigTools/MGTGUI/MGTGUI.htm#MGTGUIOperation">Management GIU &ndash; Operation</a><br>
+      <br>
+      <a href="../../DASConfigTools/MGTGUI/MGTGUI.htm#MGTGUITP">Management GUI &ndash; Test Page</a></td>
+  </tr>
+  <tr>
+    <td>Setting the Quality of a Channel</td>
+    <td><a href="../../DASConfigTools/MGTGUI/HowTo/HTMGTGUISetQualChan.htm">How To &ndash; Set the Quality of a Channel Using the MGT GUI Test Page</a></td>
+    <td><a href="../../DASConfigTools/MGTGUI/MGTGUI.htm">Management GUI &ndash; Overview</a><br>
+      <br>
+      <a href="../../DASConfigTools/MGTGUI/MGTGUI.htm#MGTGUIOperation">Management GIU &ndash; Operation</a><br>
+      <br>
+      <a href="../../DASConfigTools/MGTGUI/MGTGUI.htm#MGTGUITP">Management GUI &ndash; Test Page</a></td>
+  </tr>
+  <tr>
+    <td>Starting nxDAS</td>
+    <td><a href="../../DASConfigTools/MGTGUI/HowTo/HTMGTGUIStart.htm"> How To &ndash; Start the Management GUI</a><br>
+      <br>
+      <br></td>
+    <td>See the facility Product Support Manual for information on powering up/down the nxDAS hardware.<br>
+      <br>
+      <a href="../StartConfigStopDAS/SCSDASOperation.htm">Starting, Configuring and Stopping nxDAS &ndash; Operation</a></td>
+  </tr>
+  <tr>
+    <td>Setting the active configuration</td>
+    <td><a href="../../OpsMgr/HowTo/HTSetCfgActive.htm">How To &ndash; Set a Configuration as Active</a></td>
+    <td><a href="../../OpsMgr/OpsMgrOperation.htm">Operations Manager &ndash; Operation</a></td>
+  </tr>
+  <tr>
+    <td>Loading the active configuration and starting to scan using the Management GUI</td>
+    <td><a href="../../DASConfigTools/MGTGUI/HowTo/HTMGTGUILoadCfg.htm">How To &ndash; Load the Configuration using the Management GUI</a></td>
+    <td><a href="../../DASConfigTools/MGTGUI/MGTGUI.htm#MGTGUIOperation">Management GIU &ndash; Operation<br>
+      <br>
+    </a><a href="../StartConfigStopDAS/SCSDASOperation.htm">Starting, Configuring and Stopping nxDAS &ndash; Operation</a><a href="../../DASConfigTools/MGTGUI/MGTGUI.htm#MGTGUIOperation"> </a></td>
+  </tr>
+  <tr>
+    <td>Modifying Channel Limits While nxDAS is Scanning</td>
+    <td><a href="../../DASConfigTools/MGTGUI/HowTo/HTMGTGUIModChanLim.htm">How To &ndash; Modify Channel Limits While nxDAS is Scanning</a></td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td>Real-Time Reports</td>
+    <td><a href="../../DASSubSysConfig/RTReports/RTReports.htm">RT Reports</a></td>
+    <td><a href="../../StandardTools/RAVE/RAVE.htm#RAVEOperation">RAVE Operation</a><br>
+      <br>
+      <a href="../../StandardTools/RAVE/RAVE.htm">RAVE GUI</a></td>
+  </tr>
+  <tr>
+    <td>Using the Timer Feature</td>
+    <td><a href="../../DASConfigTools/MGTGUI/HowTo/HTMGTGUITimer.htm">How To &ndash; Use the Timer Feature</a></td>
+    <td><a href="../../DASConfigTools/MGTGUI/MGTGUI.htm">Management GUI &ndash; Overview</a><br>
+      <br>
+      <a href="../../DASConfigTools/MGTGUI/MGTGUI.htm#MGTGUIOperation">Management GIU &ndash; Operation</a><br>
+      <br>
+      <a href="../../DASConfigTools/MGTGUI/MGTGUI.htm#MGTGUITP">Management GUI &ndash; Test Page</a></td>
+  </tr>
+  <tr>
+    <td>Stopping nxDAS</td>
+    <td><a href="../StartConfigStopDAS/HowTo/HTnxDASStop.htm">How To &ndash; Stop nxDAS</a></td>
+    <td><a href="../StartConfigStopDAS/SCSDASOperation.htm">Starting, Configuring and Stopping nxDAS &ndash; Operation</a></td>
+  </tr>
+</table>
+<p><br>
+  <br>
+</p>
+--->
+<!-- #EndEditable -->
+<br>
+</body>
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

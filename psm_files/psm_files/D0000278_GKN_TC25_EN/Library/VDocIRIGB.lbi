@@ -1,0 +1,32 @@
+<table class="Table-Grey">
+  <tr> 
+    <th class="row-VDocManufacturer">Manufacturer</th>
+    <th class="row-VDocTitle">Manual Title</th>
+    <th class="row-VDocType">Manual Type</th>
+    <th class="row-VDocPartNumber">Part Number</th>
+  </tr>
+  <tr>
+    <td>(Microsemi) Symmetricom</td>
+    <td> <a href="../References/VendorDocs/Symmetricom/CATbc637pcie.pdf">GPS Synchronized, PCI Express Time &amp; Frequency Processor (bc635PCIe)</a></td>
+    <td>Product Data</td>
+    <td>bc635pcie</td>
+  </tr>
+  <tr>
+    <td>(Microsemi) Symmetricom</td>
+    <td><a href="../References/VendorDocs/Symmetricom/UM09800179000.pdf">PCI / PCIe Time and Frequency Processor User’s Guide</a></td>
+    <td>User Manual</td>
+    <td>09800179000</td>
+  </tr>
+  <tr>
+    <td>(Microsemi) Symmetricom</td>
+    <td>BC635/637PCI/PCIe, Product CD</td>
+    <td>CD-ROM</td>
+    <td>098-00179-000, Revision B</td>
+  </tr>
+  <tr>
+    <td>(Microsemi) Symmetricom</td>
+    <td>TSC 4059B 1x15 Low Frequency Distribution Amplifier Operations and Maintenance Manual</td>
+    <td>User Manual</td>
+    <td>--</td>
+  </tr>
+</table>

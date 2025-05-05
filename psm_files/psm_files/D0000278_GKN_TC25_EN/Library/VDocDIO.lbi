@@ -1,0 +1,20 @@
+<table class="Table-Grey">
+  <tr> 
+    <th class="row-VDocManufacturer">Manufacturer</th>
+    <th class="row-VDocTitle">Manual Title</th>
+    <th class="row-VDocType">Manual Type</th>
+    <th class="row-VDocPartNumber">Part Number</th>
+  </tr>
+  <tr>
+    <td>Opto 22</td>
+    <td><a href="../References/VendorDocs/Opto/PIIDC5D.pdf">IDC5D Standard DC Input Module</a></td>
+    <td>Product Data</td>
+    <td>Form 0451-120920</td>
+  </tr>
+  <tr>
+    <td>Opto 22</td>
+    <td><a href="../References/VendorDocs/Opto/PIODC5.pdf">ODC5 Standard DC Output Module</a></td>
+    <td>Product Data</td>
+    <td>Form 450-120920</td>
+  </tr>
+</table>

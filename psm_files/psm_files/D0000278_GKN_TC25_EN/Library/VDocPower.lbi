@@ -1,0 +1,20 @@
+<table class="Table-Grey">
+  <tr> 
+    <th class="row-VDocManufacturer">Manufacturer</th>
+    <th class="row-VDocTitle">Manual Title</th>
+    <th class="row-VDocType">Manual Type</th>
+    <th class="row-VDocPartNumber">Part Number</th>
+  </tr>
+  <tr>
+    <td>Phoenix Contact</td>
+      <td><a href="../References/VendorDocs/PhoenixContact/UM2745855.pdf">Power Supply Units User Manual</a></td>
+      <td>User Manual</td>
+      <td>27 45 85 5</td>
+  </tr>
+  <tr>
+    <td> TDK-Lambda America Inc.</td>
+      <td><a href="../References/VendorDocs/TDK/UM83507013.pdf">Technical Manual for Genesystm 750W/1500W Programmable DC Power Supplies</a></td>
+      <td>Technical Manual</td>
+      <td>83-507-013</td>
+  </tr>
+  </table>

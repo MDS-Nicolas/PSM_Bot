@@ -1,0 +1,799 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Throttle - Display Computer Screens</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left><h1>Throttle<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+
+<h2> Display Computer Screens</h2>
+<p>The display computer screens are described in the section below. The display computer screens are divided into the following areas:</p>
+<ul>
+  <li>an engine title at the top of the screen showing the engine that is currently selected</li>
+  <li>a main display area in the middle of the screen. The content depends on the screen selected</li>
+  <li>a log summary panel at the bottom of the screen
+    <ul>
+      <li>status  icons and buttons in the left side of the log summary panel</li>
+    </ul>
+  </li>
+  <li>mode select buttons at the bottom of the screen</li>
+</ul>
+<p>The throttle display has the following screens:</p>
+<ul>
+  <li><a href="#EngineSelect">Engine Selection Mode Screen</a></li>
+  <li><a href="#RigScreen">Rigging Mode Screens</a></li>
+  <li><a href="#CalMode">Calibration Mode Screens</a></li>
+  <li><a href="#RunScreen">Run Mode Screens</a></li>
+</ul>
+<p>The content of each section depends on the engine that is tested. The <strong>Engine Selection</strong> screen shown below is a typical example of a display computer screen.</p>
+<div class="Container"><img src="images/DisplayScreen.png" alt="Display Screen" width="732" height="622"></div>
+<h3>Log Summary Panel</h3>
+<p>The log summary panel displays all actions taken since the Throttle System started running. Use the log window up and down arrows to scroll through the entries.</p>
+<div class="Container"><img src="images/LogSummary.png" alt="" width="700" height="180"></div>
+<br>
+<h4>Status Icons and buttons</h4>
+<p>The table below describes the status icons and buttons.</p>
+<table width="90%" cellspacing="1" class="Table-Grey">
+  <tr>
+    <th width="20%">Component Identification</th>
+    <th width="49%">Description</th>
+    <th width="31%">Status Message or Engineering Units</th>
+  </tr>
+  <tr>
+    <td>Alarms button<br>
+      <img src="images/DangerIgon.png" alt="" width="72" height="51"></td>
+    <td>Displays all alarms in the Log Summary Panel.<br>
+    Pressing the button filters the log window to only display alarms.<br>
+    Pressing the button again clears the filter.</td>
+    <td>Red symbol: Alarms present.<br>
+      <br>
+      Grey symbol: No alarms present.</td>
+  </tr>
+  <tr>
+    <td>Warning button<br>
+      <br>
+      <img src="images/Warning.png" alt="" width="72" height="44"></td>
+    <td>Displays all warnings in the Log Summary Panel.<br>
+        Pressing the button filters the log window to only display warnings.<br>
+        Pressing the button again clears the filter.
+    </td>
+    <td>Orange symbol: Warnings present.<br>
+      <br>
+      Grey symbol: No Warnings present.</td>
+  </tr>
+  <tr>
+    <td>Heart Beat icon<br>
+      <br>
+      <img src="images/UECO.png" alt="" width="72" height="45"></td>
+    <td>Indicates that the display computer software is running. When the system is running correctly the word &quot;UECU&quot;  continuously scrolls across the icon.</td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td>Up Arrow<br>
+      <br>
+      <img src="images/UpArrow.png" alt="" width="71" height="47"></td>
+    <td>Scrolls up through the log entries in the Log Summary Panel.</td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td>Down Arrow<br>
+      <br>
+      <img src="images/DownArrow.png" alt="" width="71" height="47"></td>
+    <td>Scrolls down through the log entries in the Log Summary Panel.</td>
+    <td>--</td>
+  </tr>
+</table>
+<h3> Mode Select Buttons</h3>
+<p>The config mode buttons allow the operator to navigate between the different screens.</p>
+<div class="Container"><img src="images/ConfigModeButtons.png" alt="" width="639" height="60"></div>
+<br>
+<h4>Config Mode buttons</h4>
+<p>The table below describes the config mode buttons.</p>
+<table width="90%" cellspacing="1" class="Table-Grey">
+  <tr>
+    <th width="20%" height="18">Component Identification</th>
+    <th width="36%">Description</th>
+    <th width="44%">Status Message or Engineering Units</th>
+  </tr>
+  <tr>
+    <td>Run button<br>
+      <br>
+      <img src="images/RunButton.png" alt="" width="95" height="54"></td>
+    <td>Displays the Run Mode screen.</td>
+    <td>Green button: Run Mode screen open and active.<br>
+      <br>
+      Grey button with blue label: Button is inactive.<br>
+      <br>
+      Grey button with grey label: Button is disabled.</td>
+  </tr>
+  <tr>
+    <td>Engine button<br>
+      <br>
+      <img src="images/EngineButton.png" alt="" width="119" height="41"></td>
+    <td>Displays the Engine Select Mode screen.</td>
+    <td>Green button: Engine Select Mode screen open and active.<br>
+      <br>
+      Grey button with blue label: Button is inactive.<br>
+      <br>
+      Grey button with grey label: Button is disabled.</td>
+  </tr>
+  <tr>
+    <td>Rigging button<br>
+      <br>
+      <img src="images/RiggingButton.png" alt="" width="119" height="41"></td>
+    <td>Displays the Rigging Mode screen.</td>
+    <td>Green button: Rigging Mode screen open and active.<br>
+      <br>
+      Grey button with blue label: Button is inactive.<br>
+      <br>
+      Grey button with grey label: Button is disabled.</td>
+  </tr>
+  <tr>
+    <td>Calibration button<br>
+      <br>
+      <img src="images/CalibrationButton.png" alt="" width="119" height="41"></td>
+    <td>Displays the Calibration  Mode screen.</td>
+    <td>Green button: Calibration Mode screen open and active.<br>
+      <br>
+      Grey button with blue label: Button is inactive.<br>
+      <br>
+      Grey button with grey label: Button is disabled.</td>
+  </tr>
+  <tr>
+    <td>Config button<br>
+      <br>
+      <img src="images/ConfigButton.png" alt="" width="95" height="54"></td>
+    <td>Displays the Config Mode buttons when in Run Mode.</td>
+    <td>Green button: Config Mode  screen open and active.<br>
+        <br>
+		Grey button with blue label: Button is inactive.</td>
+  </tr>
+</table>
+<h3><a name="EngineSelect"></a>Engine Selection Mode Screen</h3>
+<p>Use the Engine Selection Mode screen to select the desired test engine. The Engine Selection screen (below) can be displayed by pressing the <strong>Config -&gt; Engine </strong>button on the bottom of the screen.</p>
+<div class="Container"><img src="images/EngineSelectMode.png" alt="" width="450" height="618" border="1"></div>
+
+<h4>Screen Components</h4>
+<table width="90%" cellspacing="1" class="Table-Grey">
+  <tr>
+    <th>Component Identification</th>
+    <th>Description</th>
+    <th>Status Message or Engineering Units</th>
+  </tr>
+  <tr>
+    <td width="20%">Select Engine list box</td>
+    <td width="55%">Lists the test engines available to select.</td>
+    <td width="25%">--</td>
+  </tr>
+  <tr>
+    <td width="20%">Information about selected engine table</td>
+    <td width="55%">Displays information about the selected engine such as:
+      <ul>
+        <li> ID (used when configuring remotely or from proDAS)</li>
+        <li>Name</li>
+        <li>Number of levers</li>
+        <li>Type (Actuator, Resolver or RVDT, or combination of Actuator_RVDT, Actuator_Resolver)</li>
+        <li>Range of actuator, resolver, or RVDT)</li>
+      </ul></td>
+    <td width="25%">--</td>
+  </tr>
+  <tr>
+    <td>Download button<br>
+      <br>
+      <img src="images/DownLoadButton.png" alt="" width="117" height="55"></td>
+    <td>Downloads the selected engine's configuration file to the throttle controller.</td>
+    <td>Grey button with blue label: Button is active.<br>
+      <br>
+      Grey button with grey label: Button is inactive.</td>
+  </tr>
+</table>
+<h3><a name="RigScreen"></a>Rigging Mode Screens</h3>
+<p>Use the Rigging  Mode screens to rig the  actuator(s) that have been defined for the selected engine.</p>
+<p>There are the following Rigging Mode screens:</p>
+<ul>
+  <li><a href="#RigModeScr"> Rigging Mode Screen</a></li>
+  <li><a href="#ManRigScr">Manual Rigging  Mode Screen</a></li>
+  <li><a href="#AutoRigScr">Auto Rigging  Mode Screen</a></li>
+</ul>
+<h4><a name="RigModeScr"></a>Rigging Mode Screen</h4>
+<p>Use the Rigging Mode screen to select the actuator to be rigged and the type of rigging to be performed. The Rigging Mode screen (below) can be displayed by pressing the <strong>Config -&gt;Rigging </strong>button on the bottom of the screen.</p>
+<div class="Container"><img src="images/RiggingMode.png" alt="" width="450" height="620" border="1"></div>
+<br>
+<h4>Screen Components</h4>
+<table width="90%" cellspacing="1" class="Table-Grey">
+  <tr>
+    <th>Component Identification</th>
+    <th>Description</th>
+    <th>Status Message or Engineering Units</th>
+  </tr>
+  <tr>
+    <td width="20%">Select Actuator list box</td>
+    <td width="60%">Lists the actuators defined for the selected engine.</td>
+    <td width="20%">--</td>
+  </tr>
+  <tr>
+    <td>Information about selected channel table</td>
+    <td>Displays information about the selected actuator such as:
+      <ul>
+        <li>Type (Actuator)</li>
+        <li>S/N </li>
+        <li>Default Slope</li>
+      </ul></td>
+    <td>degrees</td>
+  </tr>
+  <tr>
+    <td width="20%">Start Manual button<br>
+      <br>
+      <img src="images/StartManual.png" alt="" width="117" height="58"></td>
+    <td width="60%">Starts the manual rigging process for the selected actuator.</td>
+    <td width="20%">--</td>
+  </tr>
+  <tr>
+    <td>Start Auto button<br>
+      <br>
+      <img src="images/StartAuto.png" alt="" width="117" height="58"></td>
+    <td>Starts the auto rigging process for the selected actuator.</td>
+    <td>--</td>
+  </tr>
+</table>
+<h4><a name="ManRigScr"></a>Manual Rigging Mode Screen</h4>
+<p>Use the Manual Rigging Mode screen to perform  a manual rigging. The Manual Rigging screen (below) can be displayed by pressing the <strong>Start Manual </strong>button on the Rigging Mode screen.</p>
+<div class="Container"><img src="images/RigManualAccept.png" alt="" width="450" height="600" border="1"> </div>
+<br>
+<h4>Screen Components</h4>
+<table width="90%" cellspacing="1" class="Table-Grey">
+  <tr>
+    <th>Component Identification</th>
+    <th>Description</th>
+    <th>Status Message or Engineering Units</th>
+  </tr>
+  <tr>
+    <td>Rigging Table</td>
+    <td>Displays the following rigging data:
+      <ul>
+        <li>Target (Low or High)</li>
+        <li>Raw value</li>
+        <li>Torque</li>
+      </ul>      </td>
+    <td>Raw value: degrees<br>
+    Torque: oz-in</td>
+  </tr>
+  <tr>
+    <td width="20%">Accept Button<br>
+      <br>
+      <img src="images/AcceptButton.png" alt="" width="117" height="58"> <br>
+      <br></td>
+    <td width="39%">Accepts the low or high value.</td>
+    <td width="41%">Grey button with blue label: Button is active.<br>
+      <br>
+      Grey button with grey label: Button is inactive.</td>
+  </tr>
+  <tr>
+    <td>Cancel Button<br>
+      <br>
+      <img src="images/CancelButtonRig.png" alt="" width="117" height="58"><br>
+      <br></td>
+    <td>Cancels the rigging.</td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td>Save Button<br>
+      <br>
+      <img src="images/SaveButton.png" alt="" width="117" height="58"></td>
+    <td>Saves the rigging.</td>
+    <td>Grey button with blue label: Button is active.<br>
+      <br>
+      Grey button with grey label: Button is inactive.</td>
+  </tr>
+</table>
+<h4><a name="AutoRigScr"></a>Auto Rigging  Mode Screen</h4>
+<p>Use the Auto Rigging Mode screen to perform and an automatic  rigging. The Auto Rigging   Mode screen (below) can be displayed by pressing the <strong>Start Auto </strong>button on the Rigging Mode screen.</p>
+<div class="Container"><img src="images/AutoRigSave.png" alt="" width="450" height="620" border="1"></div>
+<br>
+<h4>Screen Components</h4>
+<table width="90%" cellspacing="1" class="Table-Grey">
+  <tr>
+    <th>Component Identification</th>
+    <th>Description</th>
+    <th>Status Message or Engineering Units</th>
+  </tr>
+  <tr>
+    <td>Rigging Table</td>
+    <td>Displays the following rigging data:
+      <ul>
+        <li>Target (Low or High)</li>
+        <li>Raw value</li>
+        <li>Torque</li>
+      </ul></td>
+    <td>Raw value: degrees<br>
+    Torque: oz-in</td>
+  </tr>
+  <tr>
+    <td>Cancel Button<br>
+      <br>
+      <img src="images/CancelButtonRig.png" alt="" width="117" height="58"> <br>
+      <br></td>
+    <td>Cancels  the  rigging.</td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td width="20%">Save Button<br>
+      <br>
+      <img src="images/SaveButton.png" alt="" width="117" height="58"></td>
+    <td width="36%">Saves the rigging.</td>
+    <td width="44%">Grey button with blue label: Button is active.<br>
+      <br>
+      Grey button with grey label: Button is inactive.</td>
+  </tr>
+</table>
+<h3><a name="CalMode"></a>Calibration Mode Screens</h3>
+<p>Use the Calibration Mode screens to calibrate a channel.</p>
+<p>There are the following Calibration Mode screens:</p>
+<ul>
+  <li> <a href="#CalModeScr">Calibration Mode Screen</a></li>
+  <li><a href="#LevCalScr">Lever Calibration Screen</a></li>
+  <li><a href="#ActCalScr">Actuator Calibration Screen</a></li>
+  <li><a href="#FeddCalScr">Rem Command and Feedback Calibration Screen</a></li>
+</ul>
+<h4><a name="CalModeScr"></a>Calibration Mode Screen</h4>
+<p>Use the Calibration Mode screen to select and calibrate a channel. The Calibration Mode screen (below) can be displayed by pressing the <strong>Calibration </strong>button on the bottom of the screen.</p>
+<div class="Container"><img src="images/CalibrationMode.png" alt="" width="450" height="620" border="1"></div>
+<br>
+<h4>Screen Components</h4>
+<table width="90%" cellspacing="1" class="Table-Grey">
+  <tr>
+    <th width="20%">Component Identification</th>
+    <th width="60%">Description</th>
+    <th width="20%">Status Message or Engineering Units</th>
+  </tr>
+  <tr>
+    <td>Select Channel list box</td>
+    <td>Lists channels that can be calibrated.</td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td>Information about selected channel window</td>
+    <td>Displays information about the selected actuator such as:
+      <ul>
+        <li>Type (Actuator, Lever, Feedback)</li>
+        <li>Calibration Date </li>
+        <li>Number of Points</li>
+      </ul></td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td>Start button<br>
+      <br>
+      <img src="images/Start.png" alt="" width="119" height="58"></td>
+    <td>Starts the calibration procedure for a channel.</td>
+    <td>--</td>
+  </tr>
+</table>
+<h4><a name="LevCalScr"></a>Right Lever Calibration Screen</h4>
+<p>Use the Right Lever Calibration  screen to calibrate the Lever channel. The Lever Calibration  screen (below) can be displayed by selecting <strong>Right Lever </strong>in the<strong> Select Channel List</strong> box and pressing <strong>Start</strong>.</p>
+<div class="Container"><img src="images/LeverCalibration.png" alt="" width="450" height="600" border="1"></div>
+<br>
+<h4>Screen Components</h4>
+<table width="90%" cellspacing="1" class="Table-Grey">
+  <tr>
+    <th>Component Identification</th>
+    <th>Description</th>
+    <th>Status Message or Engineering Units</th>
+  </tr>
+  <tr>
+    <td>Lever Calibration Table</td>
+    <td>Displays the following rigging data:
+      <ul>
+        <li>Target (Low or High)</li>
+        <li>Raw value</li>
+        <li>EU value</li>
+      </ul></td>
+    <td>Raw value: degrees<br>      Torque: degrees</td>
+  </tr>
+  <tr>
+    <td>Accept Button<br>
+      <br>
+      <img src="images/AcceptButton.png" alt="" width="117" height="58"> <br>
+      <br></td>
+    <td>Accepts the  value.</td>
+    <td>Grey button with blue label: Button is active.<br>
+      <br>
+      Grey button with grey label: Button is inactive.</td>
+  </tr>
+  <tr>
+    <td>Cancel Button<br>
+      <br>
+      <img src="images/CancelButtonRig.png" alt="" width="117" height="58"> <br>
+      <br></td>
+    <td>Cancels  the  calibration.</td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td width="20%">Save Button<br>
+      <br>
+      <img src="images/SaveButton.png" alt="" width="117" height="58"></td>
+    <td width="41%">Saves the calibration.</td>
+    <td width="39%">Grey button with blue label: Button is active.<br>
+      <br>
+      Grey button with grey label: Button is inactive.</td>
+  </tr>
+</table>
+<h4><a name="ActCalScr"></a>Actuator Calibration Screen</h4>
+<p>Use the Actuator Calibration screen to calibrate the Actuator channel. The Actuator Calibration screen (below) can be displayed by selecting <strong>Right Actuator</strong> in the <strong>Select Channel List</strong> box and pressing <strong>Start</strong>.</p>
+<div class="Container"><img src="images/ActuatorCalibration.png" alt="" width="450" height="619" border="1"></div>
+<br>
+<h4>Screen Components</h4>
+<table width="90%" cellspacing="1" class="Table-Grey">
+  <tr>
+    <th>Component Identification</th>
+    <th>Description</th>
+    <th>Status Message or Engineering Units</th>
+  </tr>
+  <tr>
+    <td>Actuator Calibration Table</td>
+    <td>Displays the following calibration data:
+      <ul>
+        <li>Target </li>
+        <li>Raw value</li>
+        <li>Converted Engineering Unit (EU) value</li>
+      </ul></td>
+    <td>degrees </td>
+  </tr>
+  <tr>
+    <td>Cancel Button<br>
+      <br>
+      <img src="images/CancelButtonRig.png" alt="" width="117" height="58"> <br>
+      <br></td>
+    <td>Cancels  the  calibration.</td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td width="20%">Save Button<br>
+      <br>
+      <img src="images/SaveButton.png" alt="" width="117" height="58"></td>
+    <td width="60%">Saves the calibration.</td>
+    <td width="20%">--</td>
+  </tr>
+</table>
+<h4><a name="FeddCalScr"></a>Rem Command and Feedback   Calibration Screen</h4>
+<p style="margin-top:12.0pt;margin-right:0in;margin-bottom:12.0pt;margin-left:0in;line-height:normal;">Use the Rem Command and Feedback   Calibration screen to calibrate the remote command and feedback channels. The Rem Command and Feedback  # Calibration screen (below) can be displayed by selecting <strong>Rem Command </strong>or<strong> Feedback  # </strong>in the <strong>Select Channel List</strong> box and pressing <strong>Start</strong>.</p>
+<div class="Container"><img src="images/FeedbackCalibration.png" alt="" width="450" height="620" border="1"></div>
+<br>
+<h4>Screen Components</h4>
+<table width="90%" cellspacing="1" class="Table-Grey">
+  <tr>
+    <th>Component Identification</th>
+    <th>Description</th>
+    <th>Status Message or Engineering Units</th>
+  </tr>
+  <tr>
+    <td>Feedback Calibration Table<br><br>
+	(The table can hold up to 8 points.)
+   </td>
+    <td>Displays the following calibration data:
+      <ul>
+        <li>Target</li>
+        <li>Raw value</li>
+        <li>Converted Engineering Unit (EU) value</li>
+      </ul></td>
+    <td>degrees<br>
+    rp, lbf, etc.</td>
+  </tr>
+  <tr>
+    <td>Accept Button<br>
+      <br>
+      <img src="images/AcceptButton.png" alt="" width="117" height="58"> <br>
+      <br></td>
+    <td>Accepts the  value.</td>
+    <td>Grey button with blue label: Button is active.<br>
+      <br>
+      Grey button with grey label: Button is inactive.</td>
+  </tr>
+  <tr>
+    <td>Cancel Button<br>
+      <br>
+      <img src="images/CancelButtonRig.png" alt="" width="117" height="58"> <br>
+      <br></td>
+    <td>Cancels  the  calibration.</td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td width="20%">Save Button<br>
+      <br>
+      <img src="images/SaveButton.png" alt="" width="117" height="58"></td>
+    <td width="38%">Saves the calibration.</td>
+    <td width="42%">--</td>
+  </tr>
+</table>
+<h3><a name="RunScreen"></a>Run Mode Screens</h3>
+<p>Use the Run Mode screens to operate and monitor the test engine.</p>
+<p>There are the following Run Mode screens:</p>
+<ul>
+  <li> <a href="#RunModeScr">Run Mode Screen</a></li>
+  <li><a href="#AutoRampScr">Auto Ramp Mode Screen</a></li>
+  <li><a href="#AutoMissScr">Auto Mission Mode Screen</a></li>
+</ul>
+<h4><a name="RunModeScr"></a>Run Mode Screen </h4>
+<p>Use the Run Mode screen to operate the Throttle System manually. The Run Mode screen (below) can be displayed by pressing the <strong>Run</strong> button on the bottom of the screen.</p>
+<p class="Note">The Run Mode button is only enabled after an engine has been selected and any actuator(s) defined in the engine configuration file are rigged.</p>
+<h4>Dual Lever Throttle System</h4>
+
+<div class="Container"><img src="images/TwoLever.png" alt="" width="450" height="620" border="1">
+</div><br>
+<h4>Single Lever Throttle System</h4>
+  <div class="Container"><img src="images/AddStop.png" alt="Add Stop" width="450" height="620" border="1"></div>
+<br>
+<h4>Screen Components</h4>
+<table width="90%" cellspacing="1" class="Table-Grey">
+  <tr>
+    <th>Component Identification</th>
+    <th>Description</th>
+    <th>Status Message or Engineering Units</th>
+  </tr>
+  <tr>
+    <td><p>Lever Gauge(s)</p>
+     <p><img src="images/LeverGauge.png" alt="" width="100" height="278"></p></td>
+    <td>Displays the position of the lever(s) and actuator, resolver, or RVDT. The label on top of the lever gauge is the name of the lever.
+    <p class="Note">The label at the top of lever gauge can be changed in the master configuration file in the &lt;lever#&gt;&lt;caption&gt;TLA&lt;/caption&gt; element.</p></td>
+    <td>Green Bar: Indicates the position of the Throttle lever<br>
+      <br>      
+      Blue Bar: Indicates the position of the actuator, resolver, or RVDT.</td>
+  </tr>
+  <tr>
+    <td><p>Position indicators</p>
+      <p><img src="images/PositionIndicators.png" alt="" width="100" height="32"></p></td>
+    <td>Indicates the engine Idle position and the Cut Off position.</td>
+    <td>Red  indicator: engine Idle position<br>
+      <br>
+Yellow indicator: engine Cut Off position</td>
+  </tr>
+  <tr>
+    <td>Fuel button<br>
+      <br>
+      <img src="images/FuelButton.png" alt="" width="112" height="54"></td>
+    <td>Turns on/off the fuel supply to the Engine. The default state is off. The user can not exit Run Mode if the fuel state is   on.
+      <p class="Note">The label on the button can be changed in the master configuration file using the &lt;fuelOnPosition  buttonTitle=&quot;Fuel&quot;&gt; element.<br>
+        <br>
+    </p></td>
+    <td>Green button: the fuel is on.<br>
+      <br>Grey button: the fuel is off.</td>
+  </tr>
+  <tr>
+    <td width="20%">Flight Idle button<br>
+      <br>
+      <img src="images/FlightIdleButton.png" alt="" width="113" height="54"></td>
+    <td width="51%">Sets the engine state to Flight Idle.<br>
+      <br>
+      The Flight Idle state cannot be selected unless the fuel status is on. 
+    <p class="Note">The label on the button can be changed in the master configuration file using the &lt;flightIdlePosition buttonTitle=&quot;Flight Idle&quot;&gt; element.</p></td>
+    <td width="29%">Blue button: Flight Idle is active.<br>
+      <br>Grey button: Flight Idle is inactive.</td>
+  </tr>
+  <tr>
+    <td>Idle button<br>
+      <br>
+    <img src="images/IdleButton.png" alt="" width="112" height="54"><br></td>
+    <td>Trips the  engine state to Idle.
+      <p class="Note">The label on the button can be changed in the master configuration file  using the &lt;tripIdlePosition  buttonTitle=&quot;Idle&quot;&gt; element. </p></td>
+    <td>Red button:  Idle is active.<br>
+      <br>Grey button: Idle is inactive.</td>
+  </tr>
+  <tr>
+    <td>Cut Off button<br>
+      <br>
+      <img src="images/CutOffButton.png" alt="" width="113" height="54"></td>
+    <td>Trips the engine state to Cut Off. 
+    <p class="Note">The label on the button can be changed in the master configuration file  using the &lt;tripCutOffPosition buttonTitle=&quot;Cut Off&quot;&gt; element. </p></td>
+    <td>Orange button: Cut Off is active.<br>
+      <br>Grey button: Cut Off is inactive.</td>
+  </tr>
+  <tr>
+    <td>Stop Editor button<br>
+      <br>
+      <img src="images/StopEditorButton.png" alt="" width="126" height="37"></td>
+    <td>Displays the Stop Editor buttons.</td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td colspan="3"><strong>Stop Editor Buttons</strong></td>
+  </tr>
+  <tr>
+    <td>Arrow button up direction<br>
+      <br>
+      <img src="images/ArrowUpDir.png" alt="" width="81" height="51"></td>
+    <td>Creates a Stop that limits the lever in the increasing direction.<br>
+    <br>
+    When the lever reaches an  increasing stop, if the lever is moving in an  increasing  direction, the output to the  engine stops at the stop position.&nbsp;  If the lever is moving in the decreasing direction the output  moves  past the position without stopping.<br>    </td>
+    <td>Blue button: Button is active.<br>
+      <br>Grey button: Button is inactive.</td>
+  </tr>
+  <tr>
+    <td>Arrow button up direction<br>
+      <br>
+      <img src="images/ArrowBothDir.png" alt="" width="81" height="54"></td>
+    <td>Creates a Stop that limits the lever in both directions.<br>
+    <br>When the lever reaches a both  direction stop the output to the engine stops at the stop position regardless of the direction the lever is travelling.</td>
+    <td>Blue button: Button is active.<br>
+      <br>Grey button: Button is inactive.</td>
+  </tr>
+  <tr>
+    <td>Arrow button up direction<br>
+      <br>
+      <img src="images/ArrowDownDir.png" alt="" width="81" height="51"></td>
+    <td>Creates a Stop that limits the lever in the decreasing  direction.<br>
+    When the lever reaches a decreasing stop, if the lever is is moving in a decreasing direction, the output to the engine stops at the stop position. If the lever is moving in the increasing direction the output moves  past the position without stopping.</td>
+    <td>Blue button: Button is active.<br>
+      <br>Grey button: Button is inactive.</td>
+  </tr>
+  <tr>
+    <td>Add button<br>
+      <br>
+      <img src="images/Add.png" alt="" width="64" height="46"></td>
+    <td>Adds a Stop. The output command to the engine (either actuator, resolver, or RVDT) does not move past the stop position.<br>
+      <p class="Note">The Stop is not a mechanical stop so the Throttle lever can move past this point but the Throttle does not send a command to increase/decrease fuel supply to the engine.</p>
+      <br>
+      <p class="Note">The operator can override the Stop by pressing a button on the handle of the Throttle lever when the lever is within 2 percent of the Stop position.</p>
+    </td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td>Stop Location<br>
+    <br>
+    <img src="images/StopLocation.png" alt="Stop Location" width="69" height="46"></td>
+    <td>Indicates the location of a stop in degrees.</td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td colspan="3"><strong>Auto Throttle Buttons</strong></td>
+  </tr>
+  <tr>
+    <td>Auto Ramp button<br>
+      <br>
+      <img src="images/AutoRampbutton.png" alt="" width="115" height="41"></td>
+    <td>Displays the Auto Ramp screen.</td>
+    <td>Grey button with blue label: Button is active.<br>
+      <br>
+      Grey button with grey label: Button is inactive.</td>
+  </tr>
+  <tr>
+    <td>Auto Mission button<br>
+      <br>
+      <img src="images/AutoMissionbutton.png" alt="" width="115" height="41"></td>
+    <td>Displays the Auto Mission screen.</td>
+    <td> Grey button with blue label: Button is active.<br>
+      <br>
+      Grey button with grey label: Button is inactive.</td>
+  </tr>
+</table>
+<h4><a name="AutoRampScr"></a>Auto Ramp Mode Screen</h4>
+<p>Use the Auto Ramp Mode screen to run the Throttle System in Auto Throttle Mode. Auto Ramp Mode is used to set a one time move. When the <strong>Start</strong> button is pressed, the target and time is sent to the controller and the move is executed. When the move is complete the system is put back into manual mode. The Auto Ramp Mode screen (below) can be displayed by pressing the <strong>Auto Ramp</strong> button on the bottom of the Run Mode screen.</p>
+<div class="Container"><img src="images/AutoRamp.png" alt="" width="450" height="600" border="1"></div>
+<br>
+<h4>Screen Components</h4>
+<table width="90%" cellspacing="1" class="Table-Grey">
+  <tr>
+    <th width="20%">Component Identification</th>
+    <th width="60%" class="Table-Grey">Description</th>
+    <th width="20%">Status Message or Engineering Units</th>
+  </tr>
+  <tr>
+    <td colspan="3"><strong>Auto Ramp Set</strong></td>
+  </tr>
+  <tr>
+    <td>Ramp field</td>
+    <td>Displays the Auto Throttle Mode output to be controlled. Clicking on the lever gauge selects that output to control. Only applicable in a dual lever system.</td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td>Position field</td>
+    <td>Indicates the actuator position in degrees that is used in the Auto Ramp mission.</td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td>Move time field</td>
+    <td>Indicates the duration of time that the engine runs for during the Auto Ramp mission.</td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td>Start/Stop Button<br>
+      <br>
+      <img src="images/StartButton.png" alt="" width="69" height="45"></td>
+    <td>Starts or stops Auto Ramp.</td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td colspan="3"><strong>Auto Ramp Mission in Progress</strong> <strong>Window</strong></td>
+  </tr>
+    <tr>
+    <td colspan="3"><p class="Note">The Auto Ramp Mission in Progress window is the same window as the Auto Mission in Progress window. (For details see, <a href="#missprog">Auto Mission in Progress Window)</a>.</p>
+    <p class="Note">During auto Throttle movements the lever does not follow.</p></td>
+  </tr>
+</table>
+<h4><a name="AutoMissScr"></a>Auto Mission Mode Screen</h4>
+<p>Use the Auto Mission Mode screen to select preconfigured  Auto Throttle Mode missions. A mission is a script with many auto Throttle commands. The Auto Mission Mode screen (below) can be displayed by pressing the <strong>Auto Mission</strong> button on the bottom of the Run Mode screen.</p>
+<div class="Container"><img src="images/AutoMission.png" alt="" width="450" height="600" border="1"></div>
+<h4>Auto Mission Started Screen</h4>
+<div class="Container"><img src="images/AutoStarted.png" alt="" width="450" height="600" border="1"></div>
+<br>
+<h4>Screen Components</h4>
+<table width="90%" cellspacing="1" class="Table-Grey">
+  <tr>
+    <th width="20%">Component Identification</th>
+    <th width="60%" class="Table-Grey">Description</th>
+    <th width="20%">Status Message or Engineering Units</th>
+  </tr>
+  <tr>
+    <td colspan="3"><strong>Auto Mission Selection</strong></td>
+  </tr>
+  <tr>
+    <td>Select Mission list box</td>
+    <td>Lists the Auto Missions configured for the selected engine.</td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td>Start button</td>
+    <td>Starts the Auto Mission.</td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td colspan="3"><strong><a name="missprog"></a>Auto Mission in Progress Window</strong></td>
+  </tr>
+  <tr>
+    <td>Mode field</td>
+    <td>Displays the Auto Throttle Mode, see <a href="../../References/HowTos/ControlMon/UECU/RunModeAuto.html">Running an Engine in Auto Throttle Mode.</a></td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td>Position field</td>
+    <td><span>Indicates the commanded lever position in degrees.</span></td>
+    <td>degrees</td>
+  </tr>
+  <tr>
+    <td>Feedback field</td>
+    <td>Indicates the current lever position in degrees.</td>
+    <td>degrees</td>
+  </tr>
+  <tr>
+    <td>Move Time field</td>
+    <td>Indicates the total time that the Throttle System runs at the current speed.</td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td>Elapsed Time field</td>
+    <td>Indicates the elapsed time that the Throttle System has been running at the current speed.</td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td>Pause/Start button<br>
+      <br>
+      <img src="images/PauseButton.png" alt="" width="69" height="46"></td>
+    <td>Pauses and then restarts the Auto Mission after it has been paused.</td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td>Cancel button<br>
+      <br>
+      <img src="images/CancelButton.png" alt="" width="69" height="46"></td>
+    <td>Cancels the Auto Mission.</td>
+    <td>--</td>
+  </tr>
+</table>  
+<p>&nbsp;</p>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

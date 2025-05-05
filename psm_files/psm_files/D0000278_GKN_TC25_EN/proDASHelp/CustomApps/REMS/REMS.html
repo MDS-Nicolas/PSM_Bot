@@ -1,0 +1,319 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>REMS External Hook Application (Option*)</title><!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1>Richmond Emission Measurement System (REMS) External Hook Application (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The Richmond Emission Measurement System (REMS) External Hook Application interfaces with the Richmond Emission System (RES) and gathers test information from physical samples. Using an Ethernet connection and the TCP/IP protocol it is possible for REMS to read from, and transmit to, the RES at a rate of 1Hz.</p>
+<h2 id="Operation">Operation</h2>
+<p>The REMS External Hook Application is started automatically by the REMS External Hook Subsystem. The connection between the REMS and the RES is transparent and is made when proDAS enters scan mode. Information is transferred in both directions and stops when proDAS exits scan mode. If the application stops abnormally, it is restarted again while proDAS is scanning.</p>
+<p class="Note">REMS may not be configured for every customer.</p>
+<h3 id="Architecture">Module Architecture</h3>
+<p>The REMS External Hook Application consists of a main application and a library. These two modules and their relationship to other proDAS modules are shown in the diagram below:</p>
+<div class="Container"><img src="Images/BDarchitecture.gif" alt="BDarchitecture" width="638" height="182"></div>
+<h3 id="Errors">Errors</h3>
+<p>The REMS External Hook Application queries the status of the RES and displays the information in the proDAS <a href="../../StandardTools/OfflineReviewEventLogs/OfflineReviewEventLogs.htm">Unified Event Log (UEL)</a>. It is possible to get the status information from the RES regardless of the operating state.</p>
+<p>In the case of RES specific errors, all other proDAS functions remain in operation. All RES errors are handled by the REMS External Hook Application and are reported to the user via the yellow pop-up warning box in  the UEL and in a trace file. The list of potential errors includes:</p>
+<ul>
+  <li>Failure to connect to the RES</li>
+  <li>Loss of communication with the RES</li>
+  <li>Invalid names -  when the  names do not match the  channel names in the proDAS CVT</li>
+  <li>Other error codes as received from the RES</li>
+</ul>
+<p>In the case of communication failures, the REMS External Hook Application continuously attempts to re-establish communications with the RES.</p>
+<h2 id="ConfigREMSChans">Configuring REMS Channels</h2>
+<p>To configure a REMS Channel:</p>
+<ol>
+  <li> Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm"> Configuration Editors</a>.</li>
+  <li> Select the name of the REMS Subsystem from the list of available subsystems.
+    <div class="Container"><img src="Images/SelectSubsystemName.png" alt="SelectSubsystemName" width="335" height="179"></div>
+  </li>
+  <li>Fill the category independent columns as described in <a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm"> Configuration Editors</a>. </li>
+  <li> Fill the Channel Specific Columns as described in the <a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm">Channel Editor</a>. </li>
+  <li>There are no subsystem specific channel columns to enter.
+    <div class="Container"><img src="Images/ChannelEditor.png" alt="ChannelEditor" width="700" height="373"></div>
+  </li>
+</ol>
+<h3 id="ChansWhichMustExist">Channels Which Must Exist</h3>
+<p>Communication and computation by the RTE is directly related to the channel names defined for the subsystem and the channel names assigned to the REMS parameters in the RTE .config file.</p>
+<p>The REMS program always utilises the following channels, that must be defined as REMS Subsystem channels:</p>
+<ul>
+  <li>REMS_ERROR - a Boolean channel that informs the RTE if there is an error in the external program</li>
+  <li>REMS_HEARTBEAT - a float channel that toggles between the external program and the RTE to ensure communication is alive</li>
+</ul>
+<h2 id="ConfigFileStructure">Configuration File Structure</h2>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+<p>To import configuration information from an XML file, see <a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#FileImportMenu"> Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import a <strong>REMS</strong> channel, see <a href="?9#XMLFileStructure"> XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import a <strong>REMS</strong> channel, see <a href="?10#TabDelimitFileStructure"> Tab-Delimited File Structure</a>.</p>
+<h3 id="XMLFileStructure">XML File Structure</h3>
+<p>An XML file structure is used to define the channels and subsystems.</p>
+<h4 id="ChannelsXML">Channels</h4>
+<p>The channel definitions are stored in the <em>Channels.xml</em> files in the configuration directories.</p>
+<p>A REMS Channel contains generic information, described in <a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor - Generic Channel Parameters - XML File Structure</a>. There are no subsystem specific columns.</p>
+<p>The structure of a REMS Channel complies with the following example: </p>
+<blockquote>
+  <p>&lt;Channels LastModificationDate=&quot;2008-04-16 09:50:43&quot;&gt;<br>
+    &lt;Channel Name=&quot;AN01_CONCENTRATION&quot; Description=&quot;Concentrator #1 - CO&quot; Enabled=&quot;true&quot; LastModificationDate=&quot;2008-04-16 09:50:43&quot; SubsystemName=&quot;REMS&quot; SubsystemType=&quot;External&quot; AlternateName=&quot;&quot; DataType=&quot;Float&quot; InitialValue=&quot;-999999&quot; Format=&quot;4.2f&quot; UpdateRate=&quot;1&quot; QualityCeiling=&quot;GOOD&quot; Critical=&quot;true&quot; EngineeringUnit=&quot;-&quot; DisplayMin=&quot;0&quot; DisplayMax=&quot;100&quot; DeadBand=&quot;0&quot; Output=&quot;false&quot; ReferenceChannel=&quot;&quot; Group=&quot;&quot; SignalId=&quot;&quot; /&gt;<br>
+    &lt;/Channels&gt;</p>
+</blockquote>
+<h4 id="SubsystemsXML">Subsystems</h4>
+<p>The subsystem definitions are stored in the <em>Subsystems.xml</em> files in the configuration directories.</p>
+<p>The structure of a REMS Subsystem is shown in the following example:</p>
+<blockquote>
+  <p>&lt;Subsystems LastModificationDate=&quot;2008-04-16 09:58:50&quot;&gt;<br>
+    &lt;Subsystem Name=&quot;REMS&quot; Description=&quot;REMS External Hook SS&quot; Enabled=&quot;true&quot; LastModificationDate=&quot;2008-04-16 09:58:50&quot; Id=&quot;0&quot; Type=&quot;External&quot; CreationDate=&quot;2008-02-22 14:11:51&quot; Executable=&quot;&quot; Recalculate=&quot;false&quot; /&gt;<br>
+    &lt;/Subsystems&gt;</p>
+</blockquote>
+<p>The REMS Subsystem is configured as an External&nbsp;Subsystem which contains generic information, described in <a href="../../DASSubSysConfig/SubsystemEditor/SubsystemEditor.htm#XMLFileStructure">Subsystem Editor - Generic Subsystem Parameters - XML File Structure</a>. The specific attributes available to the external subsystem are not required to be defined. </p>
+<table class="Table=Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Executable</td>
+    <td>Executable</td>
+    <td>n/a</td>
+    <td>Displays the complete path to an executable file. In the case of REMS, this value is stored in the .config file for the RTE.</td>
+    <td>String</td>
+    <td>A case sensitive string</td>
+  </tr>
+  <tr>
+    <td>Program Used for Recalculation</td>
+    <td>Recalculate</td>
+    <td>n/a</td>
+    <td>If the executable is used for recalculation, then this flag must be set. In the case of REMS it will be false.</td>
+    <td>Check Box</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<h3 id="TabDelimitFileStructure">Tab-Delimited File Structure</h3>
+<p>The REMS Subsystem channel definition includes all <a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic channel definition columns</a>. No subsystem specific configuration information is required.</p>
+
+<h2 id="SubsysEditorREMSchannels">Subsystem Editor for REMS</h2>
+<p>To edit the REMS Subsystem, the Subsystem Editor must be selected from within the Configuration Administrator.</p>
+<p>The tool bar in the Configuration Administrator allows the various configuration editors available for proDAS to be selected.</p>
+<p>The Subsystem Editor allows new subsystems to be added to the current configuration.</p>
+<div class="Container"><img src="Images/SubsystemEditor.png" alt="SubsystemEditor" width="700" height="201"></div>
+<p>To add a new subsystem:</p>
+<ol>
+  <li>From the Edit menu, select Append Data Record or, in the left pane of the splitter window, click the right mouse button and select <strong>Append Data Record</strong> from the context sensitive menu.</li>
+  <li>Select <strong>External</strong> in the dialogue box to select the type of subsystem.<br>
+    A new line in the Subsystem Editor is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to <strong>External</strong>. The user must then assign a name and description to the subsystem.</li>
+</ol>
+<p>Since this input is defined using a text box dialogue, the Subsystem menu item is greyed out and the text box is edited directly.</p>
+<p class="Note">As REMS is not used for recalculation, the appropriate box must not be checked.</p>
+<h2 id="ConfigFiles">REMS Configuration Files</h2>
+<p>REMS is dependent upon specific information to function effectively. This information includes:</p>
+<ul>
+  <li><a href="?12#Config">Configuration</a></li>
+  <li><a href="?14#RTEInitialisationFile"> RTE Initialisation File</a></li>
+  <li><a href="#REMSINI">REMS Initialisation File</a></li>
+  <li><a href="#ChanMapConfig">REMS Channel Mapping File</a></li>
+</ul>
+<p class="Note">REMS may not be configured for every customer.</p>
+<h3 id="Config">Configuration</h3>
+<p>The REMS Subsystem requires a unique subsystem configuration. The channels in this configuration define how the External Hook driver communicates with the REMS External Hook program.</p>
+<p>If any of the REMS required channels (see <a href="?17#ChansWhichMustExist">Channels Which Must Exist</a>), or all of the channels specified in the engine specific configuration file don&#146;t exist, the REMS program will report a UEL message and exit.</p>
+<p>If REMS loses communication with the RES, it will set all input channels to bad value (-99999), and generate a UEL message. If any of the output channels go to bad value, REMS will stop sending the output data to the RES and report a UEL message. </p>
+<h3 id="RTEInitialisationFile">RTE Initialisation File - REMS Section</h3>
+<p>The REMS Subsystem is configured by the RTE, along with all the other subsystems, as a request from the Management GUI. For legacy purposes, the configuration request can also be specified in the command line of the RTE.</p>
+<p>A typical RTE initialisation file may include the following REMS Subsystem information:</p>
+<table width="95%" border="0" cellspacing="1" cellpadding="2">
+  <tr>
+    <td colspan="2">#--------------------------------------------------------------------------<br>
+      # REMS Subsystem<br>
+      #--------------------------------------------------------------------------</td>
+  </tr>
+  <tr>
+    <td width="19%">SS REMS</td>
+    <td width="81%">TRUE</td>
+  </tr>
+  <tr>
+    <td>CI serv_key</td>
+    <td>REMS_serv</td>
+  </tr>
+  <tr>
+    <td width="19%">CI connection</td>
+    <td width="81%">SOCKET</td>
+  </tr>
+  <tr>
+    <td width="19%">CI program</td>
+    <td width="81%">/users/RTE/bin/exe/rems   -c  /users/RTE/bin/exe/.config.rems -s</td>
+  </tr>
+  <tr>
+    <td width="19%">CI heartbeat</td>
+    <td width="81%">REMS_HEARTBEAT</td>
+  </tr>
+  <tr>
+    <td width="19%">CI error</td>
+    <td width="81%">REMS_ERROR</td>
+  </tr>
+</table>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click here to see the RTE Initialisation file.</a></p>
+<h3 id="REMSINI">REMS Initialisation File</h3>
+<p>The REMS External Hook Application uses a configuration file located in the EXE directory of the RTE Host. The configuration file contains the following items:</p>
+<ul>
+  <li>RTE root path</li>
+  <li>REMS trace file</li>
+  <li>The verbosity level of the REMS trace file</li>
+  <li>RES PC hostname</li>
+  <li>RES TCP service name</li>
+  <li>The REMS response timeout in milliseconds</li>
+  <li>UEL registration name for REMS</li>
+</ul>
+<p> The following is a sample configuration file:</p>
+<p>#==========================================<br>
+  #  Module for REMS external subsystem<br>
+  MD    REMS<br>
+  #-----------------------------------------------------------------------<br>
+  #  The RTE root path<br>
+  CI    root_path    /users/RTE/<br>
+  #-----------------------------------------------------------------------<br>
+  #  The file name of the REMS trace file<br>
+  CI    rems_trace_file    Trace.rems<br>
+  #-----------------------------------------------------------------------<br>
+  #  The verbosity level for REMS trace file<br>
+  CI    verbosity_level    100<br>
+  #-----------------------------------------------------------------------<br>
+  #  The REMS PC hostname<br>
+  CI    rems_hostname      res_pc<br>
+  #-----------------------------------------------------------------------<br>
+  #  The RES TCP service port<br>
+  CI    rems_serv rems_ctrl<br>
+  #-----------------------------------------------------------------------<br>
+  #  The REMS response timeout in milliseconds<br>
+  CI    rems_timeout 300<br>
+  #-----------------------------------------------------------------------<br>
+  #  The UEL registration name (same as definedin .config UEL section)<br>
+  CI    uel_regname        REMS<br>
+  #============================================<br>
+  &lt;!&gt; END OF CONFIG &lt;!&gt; </p>
+<h3 id="ChanMapConfig">REMS Channel Mapping Configuration</h3>
+<p>Separate engine-specific configuration files are used to store the channel mappings. These files are located in the <em>/user/RTE/configuration/&lt;engine_name&gt;/REMS</em> directory of the RTE and are named <em>channels.map.</em></p>
+<p>The Input Channel list and the Output Channel list  define the mappings between RES variables and the channel names in the CVT. The format is:</p>
+<p><em>CI input_channel  CHANNEL_name<br>
+  or<br>
+  CI output_channel CHANNEL_name </em></p>
+<table class="Table-Grey">
+  <tr>
+    <th>Field</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>CI</td>
+    <td>Configuration Information.</td>
+  </tr>
+  <tr>
+    <td>output_channel</td>
+    <td>Keyword for an output channel.</td>
+  </tr>
+  <tr>
+    <td>input_channel</td>
+    <td>Keyword for an input channel.</td>
+  </tr>
+  <tr>
+    <td>CHANNEL_name</td>
+    <td>Defines the mapped channel name in the proDAS CVT.</td>
+  </tr>
+</table>
+<p> The following is a sample mapping file:</p>
+<p>#==========================================<br>
+  #  Module for REMS external subsystem<br>
+  MD    REMS<br>
+  #-----------------------------------------------------------------------<br>
+  #  The REMS Input Channel list<br>
+  #  Format:  CI input_channel channel_name<br>
+  #  The channel_name is the input channel in the CVT<br>
+  CI    input_channel     AN01_CONCENTRATION<br>
+  CI input_channel     AN02_CONCENTRATION<br>
+  CI input_channel     AN03_CONCENTRATION<br>
+  CI input_channel     AN04_CONCENTRATION<br>
+  CI input_channel     AN07_CONCENTRATION<br>
+  CI input_channel     AN08_CONCENTRATION<br>
+  CI input_channel     AN01SELECT<br>
+  CI input_channel     AN02SELECT<br>
+  CI input_channel     AN03SELECT<br>
+  CI input_channel     AN04SELECT<br>
+  CI input_channel     AN07SELECT<br>
+  CI input_channel     AN08SELECT<br>
+  CI input_channel     AN01OP<br>
+  CI input_channel     AN02OP<br>
+  CI input_channel     AN03OP<br>
+  CI input_channel     AN04OP<br>
+  CI input_channel     AN07OP<br>
+  CI input_channel     AN08OP<br>
+  #-----------------------------------------------------------------------<br>
+  #  The REMS Output Channel list<br>
+  # Format: CI output_channel channel_name<br>
+  # The channel_name is the output channel in the CVT <br>
+  CI    output_channel    BAROMETRIC_PRESSURE<br>
+  CI    output_channel AMBIENT_HUMIDITY<br>
+  CI    output_channel INLET_TEMPERATURE<br>
+  CI    output_channel FUEL_HYDROGEN_COUNT<br>
+  CI    output_channel FUEL_CARBON_COUNT<br>
+  #============================================<br>
+  &lt;!&gt; END OF CONFIG &lt;!&gt; </p>
+<p class="Note">The order of the input channels must match the order of the channels defined by the MDS command in the AK Server Configuration file (AK.ServerMap.cfg) located on the RES.<br>
+  <br>
+  The order of the output channels must match the order of the channels defined by the SDTS command in the AK Server Configuration file.</p>
+<p>The following is a sample of the message definitions in the AKServerMap.cfg file:</p>
+<p> **************************** AK SERVER CONFIGURATION FILE ****************************<br>
+  ********* *********************BENCH/ANALYZER COMMANDS *************************<br>
+  *************** ********** Send EAS data to test cell host computer **********<br>
+  $COMMAND MDS K0<br>
+  $RESPONSE TEXT MDS<br>
+  $RESPONSE GET BENCH_ERROR<br>
+  $RESPONSE GET AN01_CONCENTRATION<br>
+  $RESPONSE GET AN02_CONCENTRATION<br>
+  $RESPONSE GET AN03_CONCENTRATION<br>
+  $RESPONSE GET AN04_CONCENTRATION<br>
+  $RESPONSE GET AN07_CONCENTRATION<br>
+  $RESPONSE GET AN08_CONCENTRATION<br>
+  $RESPONSE GET AN01SELECT<br>
+  $RESPONSE GET AN02SELECT<br>
+  $RESPONSE GET AN03SELECT<br>
+  $RESPONSE GET AN04SELECT<br>
+  $RESPONSE GET AN07SELECT<br>
+  $RESPONSE GET AN08SELECT<br>
+  $RESPONSE GET AN01OP<br>
+  $RESPONSE GET AN02OP<br>
+  $RESPONSE GET AN03OP<br>
+  $RESPONSE GET AN04OP<br>
+  $RESPONSE GET AN07OP<br>
+  $RESPONSE GET AN08OP<br>
+  ********** Send test cell host data to EAS computer **********<br>
+  $COMMAND SDTS K0<br>
+  $RESPONSE TEXT SDTS<br>
+  $RESPONSE GET BENCH_ERROR<br>
+  $ACTION SET 2|BAROMETRIC_PRESSURE|EU<br>
+  $ACTION SET 3|AMBIENT_HUMIDITY|EU<br>
+  $ACTION SET 4|INLET_TEMPERATURE|EU<br>
+  $ACTION SET 5|FUEL_HYDROGEN_COUNT|EU<br>
+  $ACTION SET 6|FUEL_CARBON_COUNT|EU</p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

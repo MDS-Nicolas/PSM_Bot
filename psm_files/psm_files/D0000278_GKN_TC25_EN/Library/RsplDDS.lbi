@@ -1,0 +1,16 @@
+<table class="Table-Grey">
+  <tr> 
+    <th class="row-RSPLManufacturer">Manufacturer</th>
+    <th class="row-RSPLQty">Quantity</th>
+    <th class="row-RSPLPartNumber">Part Number</th>
+    <th class="row-RSPLDescription">Description</th>
+    <th class="row-RSPLLeadTime">Lead Time</th>
+  </tr>
+  <tr>
+    <td>Muller-BBM</td>
+    <td>1</td>
+    <td>PS_180.4</td>
+    <td>180W Power Supply</td>
+    <td>1 week</td>
+  </tr>
+</table>

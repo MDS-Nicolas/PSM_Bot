@@ -1,0 +1,25 @@
+﻿<table class="Table-Grey">
+  <tr>
+    <th class="row-Topic" rowspan="2">Topic</th>
+    <th colspan="2">Maintenance</th>
+  </tr>
+  <tr>
+    <th class="row-AsReq">As Required</th>
+    <th class="row-3Months">6 Months</th>
+  </tr>
+  <tr>
+    <td><a href="../References/HowTos/proDASHw/VXI/ExternalRefSignal.html">Check the Operation of the VXI DIO Card</a></td>
+    <td>&nbsp;</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+  <tr>
+    <td><a href="../References/HowTos/proDASHw/VXI/InspectCleanVXI.html">Inspect and Clean the VXI chassis</a></td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><a href="../References/HowTos/proDASHw/VXI/ChangeCardVXI.html">Replace a VXI Card in the VXI chassis</a></td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+    <td>&nbsp;</td>
+  </tr>
+</table>

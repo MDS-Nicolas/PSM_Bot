@@ -1,0 +1,718 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>External Hook Framework (Option*)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="ExtHookFramework">External Hook Framework (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The External Hook Framework allows the user to easily read and write channel values from and to the proDAS current value table (CVT) and the fullset database. The framework can be described as a layer between the <a href="../../DASSubSysConfig/ExternalHooks/ExternalHooks.htm">External Hooks Subsystem</a> and the External Hook applications.</p>
+<p>These applications run independently from proDAS and have to be started and stopped by the user. The following applications use the External Hook Framework:</p>
+<ul>
+ <li><a href="#ExtHookCyclic">ExtHook.Cyclic</a></li>
+ <li><a href="#ExtHookFullset">ExtHook.Fullset</a></li>
+ <li><a href="#ExtHookRecalc">ExtHook.Recalculation</a></li>
+</ul>
+<div class="Container"><img src="images/BDcomponents.gif" alt="BDcomponents" width="560" height="501"></div>
+<br>
+<p>Each application can handle one or multiple External Hook subsystems by communicating via the External Hook framework. These subsystems are implemented as class libraries which can hook to an external program, calculate new channel values, control a measurement device, etc.</p>
+<p>If the subsystem represents a measurement device, the subsystem library will not be hooked into the applications ExtHook.Fullset and ExtHook.Recalculation but into ExtHook.Cyclic only.</p>
+<p>Channels manipulated by External Hook libraries can be processed by proDAS, and used to register an alarm or perform other functions. External Hook subsystems enhance proDAS by providing a method of using proDAS data to perform functions, such as iterative or performance calculations, outside the normal proDAS scope.</p>
+<p>External Hook applications and subsystems can be developed using Windows platforms using Microsoft Visual C# or any other .NET language.</p>
+<h2 id="StartApp">Starting the External Hook Applications</h2>
+<p>The External Hook Applications can be started in one of two ways:</p>
+<ul>
+  <li>via the Management GUI Control Panel where the username and password are passed automatically</li>
+  <li>as an independent application where the username and password are not passed automatically </li>
+</ul>
+<p id="startfromproDAS">To start an External Hook Application from the Management GUI Control Panel:</p>
+<ol>
+  <li>From the Tools menu, select the applicable application (i.e. ExtHook.Recalculation).
+    <p class="Note">The operator is automatically logged into the application with the same user name and privileges as entered for the Management GUI.</p>
+    The selected application is started and the applications start-up screen is displayed.</li>
+</ol>
+<p id="startstandalone">To start an External Hook Application as an independent application:</p>
+<ol>
+  <li>Double-click the required application executable file, from your directory structure.<br>
+    The Login window is displayed.
+    <div class="Container"><img src="images/Login.png" alt="Login" width="407" height="272"></div>
+  </li>
+  <li>Enter a valid Username and Password.
+    <p class="Note">The user name and password must be a minimum of three characters and five characters long, respectively, to enable the Login button.</p>
+  </li>
+  <li>Select <strong>Login</strong>.<br>
+    The selected application is started and the applications start-up screen is displayed.</li>
+  <li>To close the Login window, select <strong>Cancel</strong>.</li>
+</ol>
+<h2 id="ExtHookCyclic">ExtHook.Cyclic</h2>
+<p>The ExtHook.Cyclic.exe is an External Hook application which cyclically retrieves input values and qualities from the CVT, lets the External Hook subsystems perform calculations based on these input values and qualities and writes the output values and qualities back to the CVT. The main External Hook Cyclic screen (below) is described in the following table.</p>
+<p class="Note">The application can receive the values of arbitrary online channels as input. However, the connection to the RTE is specific to the External subsystem and allows only values of channels of the specific subsystem to be written to the CVT.</p>
+<div class="Container"><img src="images/ExtHookCyclic2.png" alt="Ext Hook Cyclic2" width="600" height="399"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Button</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>File</td>
+    <td>Used to exit the application.</td>
+  </tr>
+  <tr>
+    <td>Edit</td>
+    <td>Used to change the settings of a subsystem. For this feature it is necessary that the subsystem itself provides an Edit form.</td>
+  </tr>
+  <tr>
+    <td>Help</td>
+    <td>Displays information about the application, comprising the name, version number, and copyright.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnStart2.png" alt="BtnStart2" width="40" height="40"><img src="images/BtnStop2.png" alt="BtnStop2" width="40" height="40"></td>
+    <td>Used to start/stop the online calculation. Normally, this is done automatically by monitoring the RTE status.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnFlush2.png" alt="BtnFlush2" width="40" height="40"></td>
+    <td>Used to flush trace and error files in the specific subsystems.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnReInit2.png" alt="BtnReInit2" width="40" height="40"></td>
+    <td>Used to reinitialize the defined subsystems. This is useful if some subsystem settings have changed (i.e. in the ini file).</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnHide2.png" alt="BtnHide2" width="40" height="40"></td>
+    <td>Minimizes the GUI to a tray icon so that the application is invisible.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnInfo.png" alt="BtnInfo" width="40" height="40"></td>
+    <td>Opens an information panel displaying any alarms or errors in the application.</td>
+  </tr>
+</table>
+<h3 id="CyclicIni">ExtHook.Cyclic.ini</h3>
+<p>The following table displays the most important settings in the ini file.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Section</th>
+    <th> Parameter</th>
+    <th> Description</th>
+  </tr>
+  <tr>
+    <td>General</td>
+    <td>Subsystems</td>
+    <td>A comma delimited list of subsystems which is used for calculation in the specific order. It is necessary to provide the DLLs of these subsystems.</td>
+  </tr>
+  <tr>
+    <td>General</td>
+    <td>Autostart</td>
+    <td>Enter &ldquo;true&rdquo; to always leave the Cyclic application in online mode. The <span class="bold">Run</span> button is disabled.</td>
+  </tr>
+  <tr>
+    <td>General</td>
+    <td>LoopPeriod</td>
+    <td>The time period in ms between two calculations. The minimum value depends on the necessary time span for the whole calculation process and should be set carefully.</td>
+  </tr>
+  <tr>
+    <td>General</td>
+    <td>Visible</td>
+    <td>Makes the main window visible/invisible.</td>
+  </tr>
+  <tr>
+    <td>General</td>
+    <td>ErrorOutPut</td>
+    <td>Indicates whether the error output should be written to the frame window. The default is set to true.</td>
+  </tr>
+  <tr>
+    <td>General</td>
+    <td>TraceBadChannels</td>
+    <td>Bad value channels for cyclic external hook calculation on CVT values are traced.</td>
+  </tr>
+  <tr>
+    <td>ExternalHooks</td>
+    <td>Services</td>
+    <td>The name of the service from the .config file (i.e. userfunctioninterpreter).</td>
+  </tr>
+  <tr>
+    <td>OSSCOM</td>
+    <td>Host</td>
+    <td>Default value proDAS_rte, depends on the etc\hosts file.</td>
+  </tr>
+  <tr>
+    <td>OSSCOM</td>
+    <td>Services</td>
+    <td>Default value ui_serv.</td>
+  </tr>
+  <tr>
+    <td>UEL</td>
+    <td>Host</td>
+    <td>Default value proDAS_rte, depends on the etc\hosts file.</td>
+  </tr>
+  <tr>
+    <td>UEL</td>
+    <td>Source</td>
+    <td>Source of the message displayed in UEL display (i.e. EHC)</td>
+  </tr>
+  <tr>
+    <td>&lt;Subsystem&gt;</td>
+    <td>...</td>
+    <td>Each subsystem can define its own section. To distinguish this section from the other application sections, the subsystem section should use the name of the subsystem. The parameters depend on the implementation of the subsystem.</td>
+  </tr>
+</table>
+<h2 id="ExtHookFullset">ExtHook.Fullset</h2>
+<p>The ExtHook.Fullset.exe is an External Hook application which monitors the fullset database for fullsets of a specified test cell. If a new fullset appears it retrieves its values and qualities from the database, lets the External Hook subsystems perform their calculations based on these values and qualities and writes back the values and qualities of all channels to the database as part of the same fullset. The main External Hook Fullset screen (below) is described in the following table.</p>
+<div class="Container"><img src="images/ExtHookFullset2.png" alt="Ext Hook Fullset2" width="641" height="431"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Button</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>File</td>
+    <td>Used to exit the application.</td>
+  </tr>
+  <tr>
+    <td>Edit</td>
+    <td>Used to change the settings of a subsystem. For this feature it is necessary that the subsystem itself provides an Edit form.</td>
+  </tr>
+  <tr>
+    <td>Help</td>
+    <td>Displays information about the application, comprising the name, version number, and copyright.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnStop2.png" alt="Btn Stop2" width="40" height="40"><img src="images/BtnStart2.png" alt="Btn Start2" width="40" height="40"></td>
+    <td>Used to start/stop the online calculation. Normally, this is done automatically by monitoring the RTE status. </td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnFlush2.png" alt="Btn Flush2" width="40" height="40"></td>
+    <td>Used to flush trace and error files in the specific subsystems.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnReInit2.png" alt="Btn ReInit2" width="40" height="40"></td>
+    <td>Used to reinitialize the defined subsystems. This is useful if some subsystem settings have changed (i.e. in the ini file).</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnHide2.png" alt="Btn Hide2" width="40" height="40"></td>
+    <td>Minimizes the GUI to a tray icon so that the application is invisible.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnInfo.png" alt="Btn Info" width="40" height="40"></td>
+    <td>Opens an information panel displaying any alarms or errors in the application.
+      <p class="Note">Hovering over the button displays information regarding the test cell.</p></td>
+  </tr>
+</table>
+<h3 id="FullsetIni">ExtHook.Fullset.ini</h3>
+<p>The following table displays the most important settings in the ini file.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Section</th>
+    <th>Parameter</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>General</td>
+    <td>Subsystems</td>
+    <td>A comma delimited list of subsystems which is used for calculation in the specific order. It is necessary to provide the DLLs of these subsystems.</td>
+  </tr>
+  <tr>
+    <td>General</td>
+    <td>Autostart</td>
+    <td>Enter &ldquo;true&rdquo; to always leave the Fullset application in online mode. The <strong>Run</strong> button is disabled.</td>
+  </tr>
+  <tr>
+    <td>General</td>
+    <td>TestCellID</td>
+    <td>The test cell ID which should be monitored for fullsets.</td>
+  </tr>
+  <tr>
+    <td>General</td>
+    <td>ConfigID</td>
+    <td>The configuration ID which should be monitored for fullsets.</td>
+  </tr>
+  <tr>
+    <td>General</td>
+    <td>PollingPeriod</td>
+    <td>The time period in ms to poll the database for new fullsets.</td>
+  </tr>
+  <tr>
+    <td>General</td>
+    <td>Visible</td>
+    <td>Makes the main window visible/invisible.</td>
+  </tr>
+  <tr>
+    <td>General</td>
+    <td>ErrorOutPut</td>
+    <td>Indicates whether the error output should be written to the frame window. The default is set to true.</td>
+  </tr>
+  <tr>
+    <td>General</td>
+    <td>DecimalSeparator</td>
+    <td>Separates groups of digits to the left of the decimal in numeric values.</td>
+  </tr>
+  <tr>
+    <td>ODBC</td>
+    <td>DSN</td>
+    <td>User name for the database. Default value is proDAS_DB, depends on the etc\hosts file.</td>
+  </tr>
+  <tr>
+    <td>ODBC</td>
+    <td>PASSWORD</td>
+    <td>Password string for the database.</td>
+  </tr>
+  <tr>
+    <td>UEL</td>
+    <td>Host</td>
+    <td>Default value proDAS_rte, depends on the etc\hosts file.</td>
+  </tr>
+  <tr>
+    <td>UEL</td>
+    <td>Source</td>
+    <td>Source of the message displayed in UEL display (i.e. EHF)</td>
+  </tr>
+  <tr>
+    <td>&lt;Subsystem&gt;</td>
+    <td>...</td>
+    <td>Each subsystem can define its own section. To distinguish this section from the other application sections, the subsystem section should use the name of the subsystem. The parameters depend on the implementation of the subsystem.</td>
+  </tr>
+</table>
+<h2 id="ExtHookRecalc">ExtHook.Recalculation</h2>
+<p>The ExtHook.Recalculation.exe is an External Hook application which is used in offline mode. The user can select fullsets from the database and the application retrieves the fullset values and qualities from the database, lets the External Hook subsystems perform their calculations based on these values and qualities and writes back the values and qualities of all channels to the database as part of a new fullset. The main External Hook Recalculation screen (below) is described in the following table.</p>
+<div class="Container"><img src="images/ExtHookRecalc2.png" alt="ExtHookRecalc2" width="746" height="615"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Button</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>File</td>
+    <td>Used to exit the application.</td>
+  </tr>
+  <tr>
+    <td>View</td>
+    <td>Turns the view on/off for the following:
+      <ul>
+        <li>Column Fullset Index</li>
+        <li>Column Event Id</li>
+        <li>Column Comment</li>
+        <li>Column Fullset Time</li>
+        <li>Column Date</li>
+        <li>Column Test Step</li>
+        <li>Column for Source Indication</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Script</td>
+    <td>Provides the following script functions:
+      <ul>
+        <li>Edit ...</li>
+        <li>Create ...</li>
+        <li>Add ...</li>
+        <li>Copy ...</li>
+        <li>Rename ...</li>
+        <li>Delete</li>
+        <li>Remove</li>
+        <li>Select Editor ...</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Fullsets</td>
+    <td>Allows the user to select all, deselect all or filter the fullsets.</td>
+  </tr>
+  <tr>
+    <td>Execution</td>
+    <td>Provides the following execution functions:
+      <ul>
+        <li>Recalculate</li>
+        <li>Start Script</li>
+        <li>Cancel Script</li>
+        <li>Abort Script</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Messages</td>
+    <td>Provides the following print options:
+      <ul>
+        <li>Print All</li>
+        <li>Print Selection</li>
+        <li>Configure Print ...</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Help</td>
+    <td>Displays information about the application, comprising the name, version number, and copyright. Also provides access to the proDAS Integrated Help.</td>
+  </tr>
+  <tr>
+    <td>Test Cell</td>
+    <td>Drop-down selection to define the test cell.</td>
+  </tr>
+  <tr>
+    <td>Test</td>
+    <td>Drop-down selection to define the test.</td>
+  </tr>
+  <tr>
+    <td>Config ID</td>
+    <td>Drop-down selection to define the configuration identification.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnShowFullsets.png" alt="Btn Show Fullsets" width="88" height="23"></td>
+    <td>Starts the query and displays a list of fullsets based upon the defined parameters.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnShowChannels.png" alt="Btn Show Channels" width="96" height="23"></td>
+    <td>Used to display a list of channel names. In the list the user can select some channels the values of which are displayed in the list of fullsets.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnRecalculate.png" alt="Btn Recalculate" width="113" height="23"></td>
+    <td>Starts the recalculation of the selected fullsets.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnReinitialize.png" alt="Btn Reinitialize" width="113" height="23"></td>
+    <td>Reinitializes the calculation of the selected fullsets.</td>
+  </tr>
+  <tr>
+    <td>Subsystems</td>
+    <td>Lets the user select one or more subsystems used to recalculate the selected fullsets.</td>
+  </tr>
+  <tr>
+    <td>Script Execution</td>
+    <td>Drop-down selection to choose a script.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnStartScriptExe2.png" alt="Btn Start ScriptExe2" width="121" height="23"></td>
+    <td>Used when a script is selected in the combo box <em>Script</em>. A script can be used to modify the recalculation process (i.e. allowing user input). </td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnCancelScriptExe2.png" alt="Btn Cancel ScriptExe2" width="130" height="23"></td>
+    <td>Cancels the script execution.</td>
+  </tr>
+</table>
+<p class="Note">The External Hook Framework must be closed before recalculating a framework with the ExtHook.Recalculation.exe application.</p>
+<p class="Note">The comments section in the External Hook Framework GUI supports non-English characters from Fullset comments.</p>
+<h3 id="FullsetIni2">ExtHook.Recalculation.ini</h3>
+<p>The following table displays the most important settings in the ini file.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Section</th>
+    <th>Parameter</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>General</td>
+    <td>ChannelSource</td>
+    <td>Source indicating channel.</td>
+  </tr>
+  <tr>
+    <td>General</td>
+    <td>SaveRecalculated Fullset (true)</td>
+    <td>Indicates if the recalculated fullset is saved back to the database.</td>
+  </tr>
+  <tr>
+    <td>General</td>
+    <td>Channels = Chan1, Chan2, Chan3...</td>
+    <td>The last selected channels.</td>
+  </tr>
+  <tr>
+    <td>General</td>
+    <td>SaveNewOutput Channels</td>
+    <td>False. Determines whether the values of channels not contained in the fullset are saved.</td>
+  </tr>
+  <tr>
+    <td>General</td>
+    <td>DecimalSeparator</td>
+    <td>Separates groups of digits to the left of the decimal in numeric values.</td>
+  </tr>
+  <tr>
+    <td>General</td>
+    <td>Send to EngineArchive</td>
+    <td>False</td>
+  </tr>
+  <tr>
+    <td>General</td>
+    <td>AddTimeChannels</td>
+    <td>If true, adds time channels to the channel list.</td>
+  </tr>
+  <tr>
+    <td>Subsystems</td>
+    <td>Count</td>
+    <td>The number of defined subsystems.</td>
+  </tr>
+  <tr>
+    <td>Subsystems</td>
+    <td>Group&lt;n&gt;</td>
+    <td>A comma delimited list of subsystems which is used for calculation in the specific order (Group0, Group1, &hellip;). It is necessary to provide the DLLs of these subsystems. There should be as many groups as defined in the parameter Count.</td>
+  </tr>
+  <tr>
+    <td>Subsystems</td>
+    <td>Selected</td>
+    <td>The index of the default group displayed in the GUI. Start at 0.</td>
+  </tr>
+  <tr>
+    <td>Selection</td>
+    <td>TestCellId</td>
+    <td>The default value for test cell ID displayed in the GUI.</td>
+  </tr>
+  <tr>
+    <td>Selection</td>
+    <td>TestId</td>
+    <td>The default value for test ID displayed in the GUI.</td>
+  </tr>
+  <tr>
+    <td>Selection</td>
+    <td>ConfigId</td>
+    <td>The default value for configuration ID displayed in the GUI.</td>
+  </tr>
+  <tr>
+    <td>ODBC</td>
+    <td>DSN</td>
+    <td>User name for the database. Default value is proDAS_DB, depends on the etc\hosts file.</td>
+  </tr>
+  <tr>
+    <td>ODBC</td>
+    <td>PASSWORD</td>
+    <td>Password string for the database.</td>
+  </tr>
+  <tr>
+    <td>Scripts</td>
+    <td>Script&lt;n&gt;</td>
+    <td>Path to a script (*.cs file). All defined paths can be selected in the combo box Script in the GUI.</td>
+  </tr>
+  <tr>
+    <td>Scripts</td>
+    <td>ScriptCount</td>
+    <td>The number of defined scripts.</td>
+  </tr>
+  <tr>
+    <td>&lt;Subsystem&gt;</td>
+    <td>...</td>
+    <td>Each subsystem can define its own section. To distinguish this section from the other application sections, the subsystem section should use the name of the subsystem. The parameters depend on the implementation of the subsystem.</td>
+  </tr>
+</table>
+<h3>Creating a Script</h3>
+<p>Instead of recalculating a fullset, a script can be used to modify the default recalculation process (i.e. a script could enable a user to enter specific channel values before or after the recalculation or conditions could be defined to manipulate the entire process).</p>
+<p>A script for the ExtHook.Recalculation.exe simply consists of a code file written in C# or VB.NET which implements a single class. This class should be derived from MTU.EET.proDAS.ExtHook.Recalculation.ScriptBase. The following table displays the most important parts of the interface that is provided by that base class:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Name</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>ScriptFilename</td>
+    <td>Property (get)</td>
+    <td>The filename of the script.</td>
+  </tr>
+  <tr>
+    <td>Recalculator</td>
+    <td>Property (get)</td>
+    <td>Object performing the recalculation.</td>
+  </tr>
+  <tr>
+    <td>EventId</td>
+    <td>Property (get)</td>
+    <td>Event ID of the current fullset.</td>
+  </tr>
+  <tr>
+    <td>EventDate</td>
+    <td>Property (get)</td>
+    <td>Event date of the current fullset.</td>
+  </tr>
+  <tr>
+    <td>FullsetTime</td>
+    <td>Property (get)</td>
+    <td>Fullset time of the current fullset.</td>
+  </tr>
+  <tr>
+    <td>EventComment </td>
+    <td>Property (get, set)</td>
+    <td>Comment of the event corresponding to a new fullset.</td>
+  </tr>
+  <tr>
+    <td>TestStep</td>
+    <td>Property (get)</td>
+    <td>Test step of the current fullset.</td>
+  </tr>
+  <tr>
+    <td>FullsetIndex</td>
+    <td>Property (get)</td>
+    <td>Index of the current fullset.</td>
+  </tr>
+  <tr>
+    <td>Channel</td>
+    <td>Property (get)</td>
+    <td>Retrieve the underlying channels hashtable.</td>
+  </tr>
+  <tr>
+    <td>Initialise</td>
+    <td>Method</td>
+    <td>Method to be overloaded in a script if initial operations are to be executed.</td>
+  </tr>
+  <tr>
+    <td>Work</td>
+    <td>Method</td>
+    <td>This method does the actual work. It should be overwritten by the derived class and is called for each selected fullset.</td>
+  </tr>
+  <tr>
+    <td>Finalise</td>
+    <td>Method</td>
+    <td>Method to be overloaded in a script if final operations are to be executed.</td>
+  </tr>
+  <tr>
+    <td>Recalculate</td>
+    <td>Method</td>
+    <td>Perform the complete recalculation of the fullset in a single step.</td>
+  </tr>
+  <tr>
+    <td>RetrieveInputValues</td>
+    <td>Method</td>
+    <td>Retrieve the data of the given fullset from the database. This method can be used to split the complete recalculation of the fullset over several steps enabling the user&rsquo;s code to interfere.</td>
+  </tr>
+  <tr>
+    <td>Calculate</td>
+    <td>Method</td>
+    <td>Let the external hook program calculate the current fullset. This method can be used to split the complete recalculation of the fullset over several steps enabling the user&rsquo;s code to interfere.</td>
+  </tr>
+  <tr>
+    <td>StoreResults</td>
+    <td>Method</td>
+    <td>Store the results into the tables EVENTS and FulLSETS of the database. This method can be used to split the complete recalculation of the fullset over several steps enabling the user&rsquo;s code to interfere.</td>
+  </tr>
+  <tr>
+    <td>SetConfigStore</td>
+    <td>Method</td>
+    <td>Select the configuration to store the results and to perform the recalculation.</td>
+  </tr>
+  <tr>
+    <td>InputBox</td>
+    <td>Method</td>
+    <td>Display a dialogue which enables the user to enter a value.</td>
+  </tr>
+  <tr>
+    <td>MultiChannelUserInput</td>
+    <td>Method</td>
+    <td>Displays a dialogue in which the user can modify the values of the given channels.</td>
+  </tr>
+</table>
+<p>A sample script (filename: MTU.EET.proDAS.ExtHook.Recalculation.Recalc.cs) is displayed below.</p>
+<blockquote>
+  <pre><em>// user script for proDAS Recalculation</em>
+<em>// The name of the class must be identical to the base name of the file!</em></pre>
+  <pre><em>using System;</em>
+<em>using System.Windows.Forms;</em></pre>
+  <pre><em>namespace MTU.EET.proDAS.ExtHook.Recalculation</em>
+<em>{</em>
+<em>&nbsp;&nbsp; public class Recalc : MTU.EET.proDAS.ExtHook.Recalculation.ScriptBase</em>
+<em>&nbsp;&nbsp; {</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; protected override void Initialise()</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MessageBox.Show(&quot;script: Initialise&quot;);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</em></pre>
+  <pre><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; protected override void Work() </em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RetrieveInputValues();</em></pre>
+  <pre><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; string name1 = &quot;Channel1&quot;;</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; string name2 = &quot;Channel2&quot;;</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; try</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Channel[name1].Value = InputBox (&quot;Please enter a value&quot;, &quot;Channel &quot; + name1, Channel[name1].Value);</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; catch (Exception ex)</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MTU.EET.Util.Trace.Error(&quot;Exception Recalc.Work() Channels&quot;);</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MTU.EET.Util.Trace.Error(ex.Message);</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</em>
+<em>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; DialogResult result;</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; result = MessageBox.Show(View,&quot;Shall the recalculation be executed?&quot;,&quot;Script&quot;,MessageBoxButtons.YesNo);</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (result == DialogResult.No)</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return;</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Calculate();</em></pre>
+  <pre><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; // let the user alter the value</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Channel[name2].Value = InputBox (&quot;Please enter a value&quot;, &quot;Channel &quot; + name2, Channel[name2].Value);</em></pre>
+  <pre><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; result = MessageBox.Show(View,&quot;Shall the Scan be saved?&quot;,&quot;Script&quot;,MessageBoxButtons.YesNo);</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; if (result == DialogResult.No)</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; return;</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; StoreResults(&quot;Channel1=&quot; + Channel[name1].Value.ToString(&quot;000&quot;) + &quot; Scan&quot;);</em></pre>
+  <pre><em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; protected override void Finalise()</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {</em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; MessageBox.Show(&quot;script: Finalise&quot;);&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </em>
+<em>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }</em>
+<em>&nbsp;&nbsp; }</em>
+<em>}</em></pre>
+</blockquote>
+<h2 id="ImplementLibrary">Implementing an External Hook Library</h2>
+<p>To implement and external hook library:</p>
+<ol>
+  <li>Create a new project in the Microsoft Developer Studio, selecting C# projects (or projects or another .NET language) and Class Library as the type.</li>
+  <li>Change the assembly name to ExtHook.&lt;subsystem name&gt;.</li>
+  <li>Change the default namespace to MTU.EET.proDAS.ExtHook.&lt;subsystem name&gt;.</li>
+  <li>Create a new class named Hook&lt;subsystem name&gt; and derive it from the abstract class MTU.EET.proDAS.ExtHook.Hook which is defined in the External Hook framework assembly.</li>
+</ol>
+<h3>Implementation details</h3>
+<p>The following table provides a list of implementation details:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Overload the method <em>DefineInputNames</em></td>
+    <td>This method is called once by the framework during the initialization of the subsystem. The implementation of this method  consists of filling the array list <em>inputNames</em>, which is an inherited member of the Hook base class. The contents of the array list can be hard-coded for simple subsystems and can also be filled with names requested from an external program or from the ConfigServer. The input names must be valid channel names. Not overloading this method makes the External Hook library receive all available input values, resulting in degraded performance.</td>
+  </tr>
+  <tr>
+    <td>Overload the method <em>DefineOutputNames</em></td>
+    <td>Similar to <em>DefineInputNames</em> this method is also called once by the framework during the initialization of the subsystem. But here the array list <em>outputNames</em> should be filled with valid channel names. Not overloading this method means that no output channel names are defined. No calculation results can be stored.</td>
+  </tr>
+  <tr>
+    <td>Overload the method <em>CalculateDirect</em></td>
+    <td>This method is called once for every calculation cycle by the framework. In this method the real work must be done (i.e. performing a calculation or passing the channel values and qualities to an external program for calculation). The function <em>CalculateDirect</em> has four parameters:
+      <ul>
+        <li>double[] inValues</li>
+        <li>string[] inQualities</li>
+        <li>out double[] outValues</li>
+        <li>out string[] outQualities</li>
+      </ul>
+      The first two parameters are the input values and qualities of the channels defined in inputNames. The last two parameters are the output values and qualities of the channels defined in outputNames and should be filled in this method. The order of the names correspond to the order of values and qualities. This method must be overloaded.</td>
+  </tr>
+  <tr>
+    <td>Overload the method <em>PostProcessing</em></td>
+    <td>This method is called by the framework when every defined subsystem has returned from the method <em>CalculateDirect</em>. In this method some post-processing can be done. This method must be overloaded but could be left empty.</td>
+  </tr>
+  <tr>
+    <td>Overload the method <em>Flush</em></td>
+    <td>This method is called by the framework for several reasons (i.e. when closing the External Hook applications, when the user presses the button <em>Flush</em>, etc.). In this method specific open files can be flushed (i.e. trace files, error logs, etc.). This method doesn't need to be overloaded if there is no need for flushing.</td>
+  </tr>
+</table>
+<h3>Configuration</h3>
+<p class="Note">It is assumed that the External Hook Framework is already installed.</p>
+<p>To configure an External Hook library:</p>
+<ol>
+  <li>Define the subsystem in the .config file of the RTE. This includes defining a service name.</li>
+  <li>Define the service name in the services file of the RTE Host Computer and the Windows computer where the External Hook library is to run. In both cases the same port number must be used.</li>
+  <li>Define the subsystem as an external subsystem in the <a href="../../DASSubSysConfig/SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a> for the appropriate configuration.</li>
+  <li>Define the output channels of the external subsystem in the <a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm">Channel Editor</a> for the same configuration.
+    <p class="Note">From the perspective of the RTE these output channels are input channels.</p>
+  </li>
+  <li>Install the DLL of this External Hook library in the same directory as the External Hook Framework.</li>
+  <li>Add the name of the subsystem to the specific ini file of an External Hook application.</li>
+</ol>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

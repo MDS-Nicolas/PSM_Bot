@@ -1,0 +1,330 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Definition of Terms</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+   
+
+<div float:left><h1>Definition of Terms<a href="#" onClick="window.print(); return false;"><img src="../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<table cellspacing="1" class="Table-Grey">
+  <tr> 
+    <th>Term</th>
+    <th>Definition (Items in bold type are also defined 
+    in the table)</th>
+  </tr>
+  <tr> 
+    <td width="20%">Action    </td>
+    <td width="75%">An action defines the RTE automatic response when 
+        the value of a limit-checked channel exceeds a user-defined <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">limit</span>. 
+        For example, the action could be to write a message to the <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">Event 
+        Log</span>, and to start a <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">User 
+    Log</span>.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Alarm    </td>
+    <td width="75%">An alarm notifies the Operator that the value of a 
+        limit-checked channel has reached or exceeded a predefined <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">limit</span>. 
+        Alarms are defined in the channel editor, and must be acknowledged by 
+        the operator. Examples of alarms include High Alarm (HIHI), High Warning 
+        (HI), Low Warning (LO) and Low (LOLO).<br>
+        <br>See also <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">Action</span> 
+    and <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">Limit</span>.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Analogue Channel    </td>
+    <td width="75%">An analogue channel receives continuous electrical 
+        signals from a signal source (transducer). The information supplied by 
+    the signal varies in direct proportion to the intensity of the signal.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Analogue-to-Digital Conversion    </td>
+    <td width="75%">Analogue-to-digital (A/D) conversion occurs when a 
+        signal from an analogue channel, monitored for voltage, frequency, or 
+        resistance is converted to a digital signal that can be interpreted by 
+    proDAS.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Autostart Log    </td>
+    <td width="75%">Autostart Logs are <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">transient 
+        logs</span> that start recording automatically when the RTE begins monitoring 
+    an engine test.    </td>
+  </tr>
+  <tr> 
+    <td width="20%" height="46">Break-point Calibration    </td>
+    <td width="75%" height="46">A calibration method in which a transducer’s characteristic 
+    is represented by several linear segments over a calibration range. </td>
+  </tr>
+  <tr> 
+    <td width="20%">Break-point Table    </td>
+    <td width="75%">A breakpoint table contains sets of corresponding 
+        values to allow conversion of values and units. The table may be stored in 
+        the TRSCDB or the BPT Editor. For example, a breakpoint table could be used to convert RTD 
+        voltages to temperatures. This voltage could then be recorded or used 
+    in a calculation.    </td>
+  </tr>
+  <tr> 
+    <td width="20%" height="49">Calibration    </td>
+    <td width="75%" height="49"> The operation of applying a physical phenomenon to 
+        a transducer or simulating a transducer’s output by electrical means over 
+        the full range of the transducer to convert an electrical signal to engineering 
+    unit values. </td>
+  </tr>
+  <tr> 
+    <td width="20%">Channel    </td>
+    <td width="75%">A channel is the basic structure for collecting, storing 
+        and processing data. Normally, it consists of an instrumentation signal 
+        source (e.g. transducer), a storage location in the <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">current 
+        value table</span> (CVT) for the data, and all of the hardware (cables, 
+        signal conditioners, converters...) and associated software between them.<br>
+        <br>Channels can be used to transmit data to other systems. 
+        In this case, the channel signal source is the CVT, and the final destination 
+        is a storage location in the receiving system.<br>
+<br>Channels can be used to provide communications between 
+        the RTE, other systems such as a Facility Control System or a Engine Management 
+    System.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Channel Definition    </td>
+    <td width="75%">The channel definition describes how data is received, 
+        stored, processed, and/or output by a proDAS <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">channel</span>. 
+        Each channel has a unique channel definition.<br>
+        <br>Channel definitions are stored in the database and 
+    can be edited with the Channel Editor and Subsystem Editor.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Channel Pinout    </td>
+    <td width="75%">Pinouts allow a  physical configuration of input and output data 
+        channels on a piece of hardware. Pinouts are configured to ensure consistent 
+    connectivity between hardware sub-assemblies within a system.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Computer Data Acquisition System    </td>
+    <td width="75%">A computer system that receives digital signals and 
+    converts them into engineering unit values that can be stored and logged.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Critical Channel    </td>
+    <td width="75%">A critical channel contains data that is extremely 
+        important to the test, or which has safety implications. Any channel may 
+        be defined as a critical channel.      <br>
+        <br>Data from critical channels is continuously recorded 
+        in the <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">critical 
+    log</span>.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Critical Log    </td>
+    <td width="75%">The Critical Log stores data from all the <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">critical 
+        channels</span> in a revolving (first-in, first out) buffer.  At any time the 
+        operator can save the log, and the data in the buffer will be transferred to permanent 
+        storage.      <br>
+        <br>The log can be set to save data from before and after 
+        an event. For example, a log could save the three minutes of data before 
+        the save command is issued, and the next two minutes of data after the 
+        save command. This allows analysis of data before and after a particular 
+    event or problem.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Current Value Table (CVT)    </td>
+    <td width="75%">The CVT contains the current values of all <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">channels</span>, both physical hardware channels and calculated channels.      <br>
+      <br>The CVT stores these values and displays them on the 
+        Primary and Secondary screens, uses them for calculations or alarm handling, 
+        and saves them as <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">Fullsets</span>, 
+      <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">transient 
+      logs</span> or <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">critical 
+    logs</span>.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Data Acquisition    </td>
+    <td width="75%">Data acquisition is the process of receiving data 
+        from instrumentation, processing and displaying the data, and recording 
+    it for analysis.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Data Acquisition System    </td>
+    <td width="75%">A data acquisition system is a computer system that 
+        collects, processes, stores, retrieves, and analyses data from instrumentation 
+    systems.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Deadband    </td>
+    <td width="75%">Deadband stops repeated alarms caused by fluctuations 
+        in the value of a critical channel, when the value is near the trigger 
+        point of an alarm. The deadband is half the size of the amplitude that 
+    the signal is allowed to fluctuate before it will trigger a new alarm.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Digital Signal    </td>
+    <td width="75%">A signal that can be interpreted by a <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">data 
+    acquisition system</span> as a digital value.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Discrete Channel    </td>
+    <td width="75%">A Discrete Channel is a channel that registers only 
+    an on/off, zero/one, or true/false value.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">proDAS    </td>
+    <td width="75%">A software and hardware system for collecting, storing 
+    and analysing engine test data.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Engine Test Log Sheet    </td>
+    <td width="75%">The Engine Test Log Sheet is a viewable and printable 
+        record of <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">Fullsets</span> 
+    and log comments recorded during an engine test.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Engineering Unit    </td>
+    <td width="75%">In general, an engineering unit could be defined as 
+        any human-readable format resulting from a technical measurement. An engineering 
+        unit (EU) is a unit that would be recognised by the user in terms of engine 
+    testing or performance (e.g.: temperature in degrees or pressure in psi).    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Event Log    </td>
+    <td width="75%">The Event Log displays and records all proDAS events 
+        such as operating messages, warnings, alarms, operator acknowledgments 
+    of alarms, and operator comments.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Float Channel    </td>
+    <td width="75%">A float channel registers a continuous range of values 
+        (as opposed to a <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">discrete 
+    channel</span>).    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Fullset    </td>
+    <td width="75%">A Fullset is a single point of averaged data from 
+        all the channels being monitored during the current test, including all calculated channels. The operator 
+    can define the length of time over which the data is averaged as well as a test step identifier for easy retrieval.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Host Computer    </td>
+    <td width="75%">The Host Computer is the computer on which a software 
+    application is installed.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Limits    </td>
+    <td width="75%">The values that define a range of normal operation 
+        within a system. Data inputs that exceed limit values will initiate warnings 
+        or <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">alarms</span>. 
+        Limits may be variable or sliding by associating the value with a value 
+    from another channel.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Log    </td>
+    <td width="75%">Refer to <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">Transient 
+    log</span>.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Master Configuration    </td>
+    <td width="75%">A Master Configuration is a stored set of <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">channel 
+        configurations</span>. Selecting a master configuration defines the subsystems, channels, logs and display pages
+    that the RTE monitors during an engine test.    </td>
+  </tr>
+  <tr> 
+    <td width="20%" height="47">Multi-point Linear Calibration    </td>
+    <td width="75%" height="47">A calibration method of acquiring two or more points 
+        and performing a linear regression analysis to generate a slope, offset 
+    and quality of fit statistics: mean squared error and R². </td>
+  </tr>
+  <tr> 
+    <td width="20%">Operator Page    </td>
+    <td width="75%">Operator Pages are dynamic graphical displays of engine 
+        test data monitored by the RTE during an engine test. Operator pages may 
+    also contain controls for changing the state of test equipment.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Scanning    </td>
+    <td width="75%">During an engine test, the RTE continually scans (monitors 
+    and records) engine test data.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Acquisition Rate    </td>
+    <td width="75%">The frequency (in Hz) at which the channel data in 
+    the CVT is updated.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Servicing    </td>
+    <td width="75%">The inspection and maintenance of equipment, usually 
+    on a periodic or scheduled basis.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Signal Conditioning    </td>
+    <td width="75%">The preparation (excitation, amplification, filtering 
+        and analogue-to-digital conversion) of raw data for interpretation by 
+    the RTE.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Signal Source    </td>
+    <td width="75%">A device that generates an electrical signal in response 
+        to measuring a physical quantity (such as a temperature or pressure) for 
+    interpretation by the RTE.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Subsystem    </td>
+    <td width="75%">A Subsystem is a discrete group of instrumentation, 
+        such as the General Analogue Subsystem, that supplies engine test data, 
+        support facility, or infrastructure data to proDAS (see also <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">Subsystem 
+        Configuration</span>). Subsystems are normally concerned with a specific 
+        type of related data, such as temperature or vibration. Note: in general 
+        discussions, "<span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">system</span>" 
+      and "subsystem" are frequently used interchangeably, depending on the 
+    context of the conversation. </td>
+  </tr>
+  <tr> 
+    <td width="20%">Subsystem Configuration    </td>
+    <td width="75%">A Subsystem Configuration consists of a set of <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">channel</span> 
+      definitions that define how the RTE processes the data from a <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">subsystem</span>. 
+        In this case, "subsystem" refers specifically to a subset of a <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">master 
+    configuration</span>. </td>
+  </tr>
+  <tr>
+    <td width="20%">Transient Log</td>
+    <td width="75%">Transient logs are user-defined time-based records of data acquired by selected channels. The Transient Log definition specifies the name of the log, the time that the log runs, the sampling frequency, and the channels recorded by the log.</td>
+  </tr>
+  <tr> 
+    <td width="20%" height="33">Two Point Linear Calibration    </td>
+    <td width="75%" height="33">A calibration method of acquiring two points to generate 
+    a slope and offset for engineering unit conversion.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">User Log    </td>
+    <td width="75%">Refer to <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">Transient 
+    Log</span>.    </td>
+  </tr>
+  <tr> 
+    <td width="20%">Warning    </td>
+    <td width="75%">A warning notifies the operator that the value of 
+        a channel has reached a warning <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">limit</span>. 
+        Warning limits are defined in the channel definition and are recorded 
+        in the <span style="color: #000000;  font-style: normal; font-weight: bold; text-decoration: none; text-transform: none; vertical-align: baseline">Event 
+    Log</span>. Warnings may have to be acknowledged by the operator depending on how the system was configured.    </td>
+  </tr>
+  <tr> 
+    <td width="20%" height="29">Zero    </td>
+    <td width="75%" height="29">The operation of removing an offset of an analogue 
+        input signal by adjusting the engineering unit conversion at the static 
+    zero condition.    </td>
+  </tr>
+</table>
+<p>&nbsp;</p>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

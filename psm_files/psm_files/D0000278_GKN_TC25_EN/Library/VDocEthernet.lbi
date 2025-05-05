@@ -1,0 +1,20 @@
+<table class="Table-Grey">
+  <tr> 
+    <th class="row-VDocManufacturer">Manufacturer</th>
+    <th class="row-VDocTitle">Manual Title</th>
+    <th class="row-VDocType">Manual Type</th>
+    <th class="row-VDocPartNumber">Part Number</th>
+  </tr>
+  <tr>
+    <td>Hewlett Packard	</td>
+    <td><a href="../References/VendorDocs/HP/SI59982867.pdf">General Safety and Regulatory Information	</a></td>
+    <td>Safety Information </td>
+    <td>5998-2867</td>
+  </tr>
+  <tr>
+    <td>Hewlett Packard </td>
+    <td><a href="../References/VendorDocs/HP/QR59983086.pdf">HP 2530-24G, 48G, 24G PoE, and 48G PoE + Switch Quick Setup Guide </a></td>
+    <td>Installation Guide</td>
+    <td>5998-3086</td>
+  </tr>
+</table>

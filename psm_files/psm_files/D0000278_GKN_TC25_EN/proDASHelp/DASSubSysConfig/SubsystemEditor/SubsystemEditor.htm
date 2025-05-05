@@ -1,0 +1,339 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" -->
+<title>Subsystem Editor</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="SubsystemEditor">Subsystem Editor<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+<h2 id="Overview">Overview</h2>
+
+<p>The Subsystem Editor is the graphical user interface used to create and edit the subsystem data in the <a href="../../TestwithDAS/IntrotoproDAS/IntrotoproDAS.htm#ConfigDatabase"> Configuration Database</a>. The Subsystem Editor allows creating and editing of subsystem configuration data.</p>
+<p>The Subsystem Editor uses the <a href="../../TestwithDAS/IntrotoproDAS/IntrotoproDAS.htm#ConfigDatabase"> 
+  Configuration Database</a> to retrieve and save the configuration information for a large portfolio of subsystems used for data acquisition when performing an Engine Test. The Subsystem Editor allows the user to define and to modify hardware configuration data required for the individual subsystems.</p>
+<p>The Subsystem Editor reads the available <a href="#SubsystemTypes">Generic Subsystem Types</a> from the Configuration Server initialisation file and displays the available generic subsystem types in the list of supported subsystems.</p>
+<div class="Container"><img height="423" src="images/SubsystemEditor.png" alt="Subsystem Editor" width="700"></div>
+<h3 id="Menus">Subsystem Editor Menu Bar</h3>
+<p>The Subsystem Editor menu bar (below) assists the user in creating and modifying hardware configurations through a series of menus and menu options.</p>
+<div class="Container"><img src="images/MenuBar.PNG" alt="Menu Bar" width="344" height="49"></div>
+<p> The Subsystem Editor provides the following menus:</p>
+<ul>
+  <li><a href="?2#MenuFile">File</a></li> 
+  <li><a href="?3#MenuEdit">Edit</a></li>
+  <li><a href="../ConfigEditors/ConfigEditors.htm#MenuView">View</a></li> 
+  <li><a href="../ConfigEditors/ConfigEditors.htm#MenuConfiguration">Configuration</a></li> 
+  <li><a href="?4#MenuEditSpecific">Subsystem</a> (e.g.: GASS)</li> 
+  <li><a href="../ConfigEditors/ConfigEditors.htm#MenuHelp">Help</a></li>
+</ul>
+<h4 id="MenuFile">File</h4>
+<p>The <strong>File</strong> menu of the Subsystem Editor (below) provides a number of options for handling files within the editor.</p>
+<div class="Container"><img src="images/MenuFile.PNG" alt="Menu File" width="199" height="233"></div>
+<p>The File menu options are:</p>
+<ul>
+  <li><a href="../ConfigEditors/ConfigEditors.htm#MenuFile">Save</a></li>
+  <li><a href="#MenuFile">Reload Config</a> - reloads the subsystem configuration to include recent modifications</li>
+  <li><a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu">Import ...</a></li>
+  <li> <a href="../ConfigEditors/ConfigEditors.htm#Export">Export ...</a></li>   
+  <li>  <a href="../ConfigEditors/ConfigEditors.htm#MenuFile">Print ...</a></li>  
+  <li><a href="../ConfigEditors/ConfigEditors.htm#MenuFile">Print Preview</a></li>
+  <li><a href="../ConfigEditors/ConfigEditors.htm#MenuFile">Print Setup ...</a></li>
+  <li><a href="../ConfigEditors/ConfigEditors.htm#MenuFile">Exit</a> 
+  </li>
+</ul>
+<h4 id="MenuEdit">Edit</h4>
+<p>The <strong>Edit</strong> menu of the Subsystem Editor (below) provides a 
+  number of options for editing files within the editor.</p>
+<div class="Container"><img src="images/MenuEdit.PNG" alt="MenuEdit" width="264" height="513"></div>
+<p>For generic Edit menu functionalities, see <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration 
+  Editors</a>.</p>
+<p>The Enable Channel(s) / Disable Channel(s) option of the Edit menu allows the user to enable or disable all channels associated with the subsystem. This can be used when the user does not want to configure any channels associated with this subsystem.</p>
+<p class="Warning">The Enable flag in the subsystem definition should not be used if the user does not want to configure the subsystem. Channel definitions may be lost if this is done.</p>
+<p>The 'Append Data Record' option of the Edit menu allows any of the subsystems included in the portfolio of subsystems to be selected and appended to the current subsystem configuration.</p>
+<p>A new subsystem is added to the collection of subsystems and the name and description of the subsystem has to be defined. The type is set to  the type of subsystem selected in the append process.</p>
+<div class="Container"><img src="images/MenuEditAppendDataRecord.png" alt="Menu Edit Append Data Record" width="285" height="184"></div>
+<h4 id="MenuEditSpecific">Subsystem</h4>
+<p>The subsystem menu (e.g.: TDM) of the Subsystem Editor assists the user when editing subsystem specific parameters.</p>
+<p>If the subsystem does not have any subsystem specific parameters, the subsystem menu is greyed out and does not support any edit functions. The text <strong>no subsystem specific data</strong> is displayed in the right splitter window of the Subsystem Editor Screen.</p>
+<div class="Container"><img src="images/MenuEditSpecific.png" alt="MenuEditSpecific" width="700" height="182"></div>
+<p>Similarly, if the subsystem can be configured with one or more textboxes in the right splitter window, where an address, a number or simply a path is required, the Subsystem menu item is also greyed out.</p>
+<p>If however a subsystem comprises a number of hardware modules which in turn accommodate a number of hardware channels, the right side of the splitter window of the Subsystem Editor Screen will offer a configuration possibility for the subsystem in the form of one or more spreadsheets.</p>
+<p>In this case, the subsystem type is automatically appended to the menu bar item (i.e.: 'Subsystem' becomes 'Subsystem PBS' for a PBS Subsystem and a number of edit items are offered depending on the subsystem being edited.</p>
+<p>The PBS subsystem shown here comprises a number of pressure bricks where each brick has a number of ports. The 'Brick' is defined first and then each individual 'Port' available on the brick is defined.</p>
+<div class="Container"><img src="images/MenuEditSpecific2.png" alt="Menu Edit Specific 2" width="700" height="182"></div>
+<ul>
+  <li>Brick</li>
+  <li>Port</li> 
+  <li>Print (Ctrl+P)</li>
+  <li>Print Preview</li>
+  <li>Print Setup</li>
+</ul>
+<p>The Subsystem PBS menu items shown above allow the 'Brick' specific and 'Port' specific data to be configured using the standard edit functions listed below. In this case, the Brick menu item has been selected and edit functions available apply to the 'Bricks' spreadsheet.</p>
+<ul>
+  <li>Cut</li> 
+  <li>Copy</li> 
+  <li>Paste</li> 
+  <li>Find</li>
+  <li>Replace</li> 
+  <li>Append</li> 
+  <li>Delete</li> 
+  <li>Print (Ctrl+P)</li>
+  <li>Print Preview</li>
+  <li>Print Setup</li>
+</ul>
+<p>On leaving the current row of the collection of subsystems in the left hand pane of the splitter window, a consistency check is performed on the new subsystem and if necessary, errors in the configuration are displayed in the message list at the bottom of the screen.</p>
+<p>A consistency check is initiated when the 'Edit/Check' is selected in the menu bar. The same consistency check is also automatically initiated when trying to save any modifications in the Subsystem Editor. Information concerning the status of the current Subsystem configuration is displayed in the message list at the bottom of the screen.</p>
+<h2 id="CreateEditXML">Creating or Editing XML Files</h2>
+<p>For creating or editing XML files, see the <a href="../ChannelEditor/ChannelEditor.htm#MenuFile">File menu Export Function in Configuration Editors</a>.</p>
+<h2 id="GenSubsystemParameters">Generic Subsystem Parameters</h2>
+<p>There is only one subsystem parameter that is independent of all the different types of subsystems available in the system and this is the Subsystem Type:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Subsystem Type</td>
+    <td>Type</td>
+    <td>The type of the subsystem. This is defined by the user when a subsystem is created. The field is then populated automatically.</td>
+    <td>String</td>
+    <td>Read only</td>
+  </tr>
+</table>
+<h2 id="SubsystemTypes">Generic Subsystem Types</h2>
+<p>The following subsystem types are supported by the Subsystem Editor:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Subsystem Type</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>AFDX</td>
+    <td>Aeronautical Radio Inc. Standard 664 Part 7</td>
+  </tr>
+  <tr>
+    <td>ARINC429</td>
+    <td>Aeronautical Radio Inc. Standard 429</td>
+  </tr>
+  <tr>
+    <td>ATH</td>
+    <td>Ambient Temperature/Humidity</td>
+  </tr>
+  <tr>
+    <td>AVM</td>
+    <td>Aircraft Vibration Monitor (Endevco)</td>
+  </tr>
+  <tr>
+    <td>Calculated</td>
+    <td>Calculated channel definition</td>
+  </tr>
+  <tr>
+    <td>CEC</td>
+    <td>CEC C-CATS 8000 Vibration System</td>
+  </tr>
+  <tr>
+    <td>Consort</td>
+    <td>PW interface computer to process ARINC data</td>
+  </tr>
+  <tr>
+    <td>DDS</td>
+    <td>Dynamic Data System </td>
+  </tr>
+  <tr>
+    <td>DDSC</td>
+    <td>Dynamic Data System </td>
+  </tr>
+  <tr>
+    <td>DDTC </td>
+    <td>Dynamic Data Telemetry Control </td>
+  </tr>
+  <tr>
+    <td>DPS</td>
+    <td>Scanivalve DSA Pressure Scanners</td>
+  </tr>
+  <tr>
+    <td>DTS3250</td>
+    <td>Scanivalve Digital Thermocouple Scanner</td>
+  </tr>
+  <tr>
+    <td>External</td>
+    <td>External channel definition</td>
+  </tr>
+  <tr>
+    <td>FTOTS</td>
+    <td>Fast Temperature Only Telemetry System</td>
+  </tr>
+  <tr>
+    <td>GASSAI</td>
+    <td>GASS Analogue Input</td>
+  </tr>
+  <tr>
+    <td>GASSAO</td>
+    <td>GASS Analogue Output</td>
+  </tr>
+  <tr>
+    <td>GASSDIO</td>
+    <td>GASS Digital Input / Output</td>
+  </tr>
+  <tr>
+    <td>GASSTC</td>
+    <td>GASS Totalizer Counter</td>
+  </tr>
+  <tr>
+    <td>GASSVXI</td>
+    <td>GASS VXI Analogue Input, RTD Current Source and Frequency Measurement</td>
+  </tr>
+  <tr>
+    <td>HSS</td>
+    <td>High Speed Sentry</td>
+  </tr>
+  <tr>
+    <td>HSV</td>
+    <td>High Speed VXI</td>
+  </tr>
+  <tr>
+    <td>HyScan</td>
+    <td>Scanivalve HyScan</td>
+  </tr>
+  <tr>
+    <td>IRIGB</td>
+    <td>Time Code Generator (Serial Time Code Formats)</td>
+  </tr>
+  <tr>
+    <td>M1553</td>
+    <td>MIL-STD-1553B</td>
+  </tr>
+  <tr>
+    <td>ModBusEthernet</td>
+    <td>ModBus Ethernet</td>
+  </tr>
+  <tr>
+    <td>ModBusSerial</td>
+    <td>ModBus Serial</td>
+  </tr>
+  <tr>
+    <td>MSS</td>
+    <td>Mechanical Scanivalve System</td>
+  </tr>
+  <tr>
+    <td>NDDS</td>
+    <td>Network Data Distribution System (added from the Configuration Server Initialisation File)
+      <p class="Note">The NDDS subsystem is a generic subsystem that is defined in the configserver.ini file, where the subsystem is labelled as &quot;NSS&quot;. If any changes need to be made it is done through the .ini file.</p></td>
+  </tr>
+  <tr>
+    <td>OPC</td>
+    <td>OLE for Process Control</td>
+  </tr>
+  <tr>
+    <td>PBS</td>
+    <td>PSI Pressure Bricks</td>
+  </tr>
+  <tr>
+    <td>PLCAB</td>
+    <td>Programmable Logic Controller (Allan Bradley)</td>
+  </tr>
+  <tr>
+    <td>PLCGE</td>
+    <td>Programmable Logic Controller (Generic)</td>
+  </tr>
+  <tr>
+    <td>PLCOmron</td>
+    <td>OMRON PLC </td>
+  </tr>
+  <tr>
+    <td>PWM</td>
+    <td>Process Write Monitor</td>
+  </tr>
+  <tr>
+    <td>RTP</td>
+    <td>Real-Time Products</td>
+  </tr>
+  <tr>
+    <td>SCUTR</td>
+    <td>Scanning UTR</td>
+  </tr>
+  <tr>
+    <td>TBDAU</td>
+    <td>Test Bed Data Acquisition Unit</td>
+  </tr>
+  <tr>
+    <td>TDM</td>
+    <td>Temperature Data Monitor</td>
+  </tr>
+  <tr>
+    <td>THG</td>
+    <td>Thrust Generic </td>
+  </tr>
+  <tr>
+    <td>ThrustES</td>
+    <td>Engine Specific Thrust</td>
+  </tr>
+  <tr>
+    <td>ThrustNobel</td>
+    <td>Engine Specific and Nobel Thrust</td>
+  </tr>
+  <tr>
+    <td>Thrust55</td>
+    <td>RAMS Thrust Interface</td>
+  </tr>
+  <tr>
+    <td>TruTemp</td>
+    <td>Temperature measurement (Kaye TruTemp)</td>
+  </tr>
+  <tr>
+    <td>TSM</td>
+    <td>Temperature Scanner Module (TSM) </td>
+  </tr>
+  <tr>
+    <td>UTRH</td>
+    <td>UTR Half Box</td>
+  </tr>
+  <tr>
+    <td>VEXA</td>
+    <td>VTI EX10xxA devices</td>
+  </tr>
+</table>
+<h3 id="BasicChannelID">Basic Subsystem Identification</h3>
+<p>A subsystem is uniquely identified by its name. The following rules apply for subsystem names:</p>
+<ul>
+  <li>names can consist of alpha-numeric characters and the characters "_#@"</li>
+  <li>the first character of the name must be an alphabetical character or the character "_" (i.e. numbers and the characters "#@" are not allowed)</li>
+  <li>the maximum name length is 60 characters</li>
+</ul>
+<p class="Note">The generic subsystem names are defined in the configserver.ini file, where the subsystem is labelled as &quot;NSS&quot;.</p>
+<h3 id="XMLFileStructure">XML File Structure</h3>
+<p>The subsystems are stored in the <a href="../../TestwithDAS/IntrotoproDAS/IntrotoproDAS.htm#ConfigDatabase">Configuration Database</a> locally in an XML file.</p>
+<p>The subsystem information consists of a list of attributes. A Subsystem comprises a list of the generic subsystem attributes and if necessary  the subsystem specific attributes.</p>
+<p>The structure of a Subsystem is shown in the following example which shows the simplest subsystem type with no further subsystem specific attributes:</p>
+<blockquote>
+  <pre>&lt;Subsystems LastModificationDate=&quot;2003-07-22 09:02:25&quot;&gt;
+&lt;Subsystem Name=&quot;myCalculated&quot; 
+Description=&quot;Calculated Subsystem&quot; 
+Enabled=&quot;true&quot; 
+LastModificationDate=&quot;2003-07-22 09:02:25&quot; 
+Id= &quot;0&quot;
+Type= &quot;Calculated&quot;&lt; br&gt; CreationDate=&quot;2003-07-22 09:01:58&quot;/&gt;
+&lt;/Subsystems&gt;</pre>
+</blockquote>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

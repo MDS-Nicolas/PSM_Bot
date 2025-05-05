@@ -1,0 +1,287 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Snecma XML Transfer (Option*)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="SNEXML">Snecma XML Transfer (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The Snecma XML Transfer (SNEXML) application translates steady-state (fullset) and transient (history and  critical) log files into a customer-specific format. The application then transfers the data to a local test cell computer by File Transfer Protocol (FTP), from where the data is manually or automatically transmitted to a remote site. Data can be analysed at the remote site during the test. SNEXML is located within proDAS on the Management Interface Computer.</p>
+<p>The primary components of the application are two conversion templates for steady-state and transient log data. The templates are used to translate data into the customer-specific format by replacing the associated user-defined HTML comment tags with corresponding test data. The SNEXML tags identify how the data is written into the customer-specific fullset or log format. The tags are removed when the data is transmitted for storage in the test cell computer.</p>
+<h2 id="Overview2">Automatic Transmission of SNEXML Files</h2>
+<p>The Real Time Engine (RTE) and Database Server are configured to automatically start the SNEXML application and control the transmission of transient log files and fullset data. Transmissions are controlled by command line interface or by the editable configuration files <a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">RTE Initialisation File</a> and <a href="../../References/DASIniFiles/SoftwareiniFiles.pdf">Real Time .DB_Server_Initialisation file</a>.</p>
+<h3 id="RTEinitialiseFile">RTE Initialisation File</h3>
+<p>The following entry must be present in the RTE  initialisation file to automatically start the conversion of transient log files by SNEXML:</p>
+<ul>
+  <li> CI log_conversion SNECMA /usr/bin/rsh MGTGUI_hostname C:\\proDAS\\bin\\SNEXML.exe /mode TR /log<br>
+    <br>
+    where MGTGUI_hostname is the host name of the Management Interface Computer</li>
+</ul>
+<p> The following entry must be present in the RTE initialisation file to automatically start the conversion of critical log files by SNEXML:</p>
+<ul>
+  <li> CI crit_description SNECMA</li>
+</ul>
+<p>For any transient log file to be transferred, &quot;SNECMA&quot; needs to be added into the Description field of the transient log file definition (i.e. Transient Log Definition Editor).</p>
+<h3 id="DBserverInitialiseFile">Real Time .DB Server Initialisation File</h3>
+<p>The following entry must be present in the Real-Time Database Server initialisation file to automatically start the conversion of fullsets by SNEXML:</p>
+<ul>
+  <li>CI FS_CONVERSION /usr/bin/rsh MGTGUI_hostname C:\\proDAS\\bin\\SNEXML.exe /mode SS /testcellid $TESTCELL$ /testid $TESTID$ /eventid $EVENTID$</li>
+</ul>
+<h2 id="ManTxSNEXMLfiles">Manual Transmission of SNEXML Files</h2>
+<p>The SNEXML application can be manually started with the following command line interface:</p>
+<ul>
+  <li>for steady state data transmission format:<strong> /mode SS /testcellid &lt;#&gt; /testid &lt;#&gt; /eventid &lt;#&gt;</strong>
+    <ul>
+      <li>example: snexml.exe /mode SS /testcellid 20 /testid 601 /eventid 27</li>
+    </ul>
+  </li>
+  <li>for transient log data transmission format:<strong> /mode TR /log &lt;unix file path&gt;</strong>
+    <ul>
+      <li>example: snexml.exe /mode tr /log /users/RTE/logs/CFM56/test/hist_logs/Vib.1</li>
+    </ul>
+  </li>
+  <li>to initiate the FTP transfer of any previously generated files: <strong>/mode FTP</strong>
+    <ul>
+      <li>example: snexml.exe mode FTP </li>
+    </ul>
+  </li>
+</ul>
+<p>To transmit a transient log or fullset, SNEXML is started from the command line. The parameters that identify a specific fullset or transient log are manually entered into the command line. Fullsets are identified by <strong>test id</strong>, <strong>test cell id</strong> and <strong>event id</strong>. Transient logs are identified by the log path and log name, which can be retrieved with the <a href="../../StandardTools/RAVE/RAVE.htm">RAVE</a> application.</p>
+<p>The application generates an XML file for each converted steady-state fullset. The application generates one XML file and one binary file for each converted transient log file. The location where the files are saved is defined by the directory parameter in the [OUTPUT] section of the SNEXML .ini file.</p>
+<p>After the files are generated, any files that are located in the directory are transferred. If the  transfer fails, files are not deleted and are automatically retransferred  after the next  SNEXML conversion. In addition to transferring the files generated by the application itself, the transfer application will also attempt to transfer files that were generated by the IRF. It checks for any XML files located in the folder defined by the IRFDirectory parameter in the [OUTPUT] section of the SNEXML.ini file.</p>
+<h3 id="ChannelNameFormat">Channel Name Format</h3>
+<p>SNEXML converts all channel data in the log and reformats the channel name to conform with the following standard:</p>
+<ul>
+  <li>the channel name is truncated to a maximum of 10 characters</li>
+  <li>the channel name starts with a letter or underscore</li>
+</ul>
+<h2 id="SampleSNEXMLFiles">Sample SNEXML Files</h2>
+<h3 id="SampleEXE">Sample EXE File </h3>
+<p>&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;<br>
+  &lt;configuration&gt;<br>
+  &lt;appSettings&gt;<br>
+  &lt;add key=&quot;TraceFile&quot; value=&quot;C:\ProDAS\Data\Trace\Snexml.txt&quot; /&gt;<br>
+  &lt;add key=&quot;TraceLevel&quot; value=&quot;MethodID&quot; /&gt;<br>
+  &lt;/appSettings&gt;<br>
+  &lt;/configuration&gt;</p>
+<h3 id="SampleINIfile">Sample INI File</h3>
+<p>[DB]<br>
+  DSN=prodas<br>
+  Username=engineer<br>
+  Password=thehelp</p>
+<p> [LOG]<br>
+  WinPath=\\rtehost\logs\ <br>
+  RTEPath=/users/RTE/logs/ </p>
+<p>[TEMPLATE]<br>
+  TR=C:\proDAS\data\SNEXML\LOG_TEMPLATE.txt<br>
+  SS=C:\proDAS\data\SNEXML\FULLSET_TEMPLATE.txt</p>
+<p> [OUTPUT]<br>
+  Directory=C:\proDAS\Results\SNEXML<br>
+  ErrorLog=C:\prodas\data\trace\SNEXML_Errors.txt<br>
+  ErrorLogAppend=false<br>
+  DataBank=C:\proDAS\data\SNEXML\<br>
+</p>
+<p> [LOOKUP]<br>
+  NPO_26=RYB_26<br>
+  SMES=RYB_26<br>
+  CFM56-7=SaM146</p>
+<p> [UEL]<br>
+  Host=rtehost<br>
+  Source=SNEXML</p>
+<p> [FTP]  ;as defined by Snecma<br>
+  Host = r123456r.wtt.local<br>
+  Userid = testbed1<br>
+  Password = testbed1<br>
+  Folder = /data/moi/TDSES/RYB_26<br>
+  Delay=100</p>
+<h3 id="SampleTemplates">Sample Transient Log Template and Steady State Template</h3>
+<p>Select the  links for a <a href="TransientLogTemplate.pdf">sample transient log template</a> and a <a href="SteadyStateTemplate.pdf">sample steady-state template</a>.</p>
+<h2 id="SNEXMLTags">SNEXML Tags</h2>
+<h3 id="DataBaseTags">Database Tag</h3>
+<p>A Database tag consists of up to four elements: <strong>&lt;!--DB</strong>|<strong>table</strong>|<strong>field</strong>|<strong>default--&gt;</strong>.</p>
+<ul>
+  <li>the <strong>DB</strong> element indicates that data is derived from the data base</li>
+  <li>the <strong>table</strong> element identifies the table that is used, including:
+    <ul>
+      <li>TEST_CELL</li>
+      <li>TEST_HEADER</li>
+      <li>CUSTOMER_SPECIFIC</li>
+      <li>EVENTS</li>
+      <li>FULLSETS</li>
+    </ul>
+  </li>
+  <li>the <strong>field</strong> element identifies the  field to use from the specified table</li>
+  <li>the <strong>default</strong> field identifies a default value to use if there is an error</li>
+</ul>
+<p> Example of Database tags include:</p>
+<ul>
+  <li>&lt;!--DB|TEST_CELL|TEST_CELL_NAME--&gt;</li>
+  <li>&lt;!--DB|TEST_HEADER|ENGINE_STANDARD--&gt;</li>
+  <li>&lt;!--DB|CUSTOMER_SPECIFIC|ID_12C|X23456789012--&gt;</li>
+  <li>&lt;!--DB|EVENTS|EVENT_COMMENT--&gt;</li>
+  <li>&lt;!--DB|FULLSETS|QUALITY--&gt;</li>
+</ul>
+<h3 id="IniTags">INI Tag</h3>
+<p>An INI tag consists of up to four elements: <strong>&lt;!--INI</strong>|<strong>section</strong>|<strong>key</strong>|<strong>default--&gt;</strong>.</p>
+<ul>
+  <li>the <strong>INI</strong> element identifies that data is derived from the INI file </li>
+  <li>the <strong>section</strong> element identifies the section to use from  the INI file</li>
+  <li>the <strong>key</strong> element identifies the key within the INI file section.<br>
+    The key can be replaced with a nested database tag, e.g., [DB;TEST_HEADER;ENGINE_NAME]. In this case, the content of the ENGINE_NAME field of the TEST_HEADER table is used as the key value for lookup in the INI file.</li>
+  <li>the <strong>default</strong> field identifies a default value to use if there is an error</li>
+</ul>
+<p> Examples of INI tags include:</p>
+<ul>
+  <li>&lt;!--INI|FTP|HOST|r123456r.wtt.local--&gt;</li>
+  <li>&lt;!--INI|OUTPUT|DIRECTORY|C:\proDAS\Data\SNEXML\ --&gt;</li>
+  <li>&lt;!--INI|LOOKUP|[DB;TEST_HEADER;ENGINE_NAME]--&gt;</li>
+</ul>
+<h3 id="LogTags">Log Tags</h3>
+<p>The Log data tags include:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Log Data Tag</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td>&lt;!--LOG|START|DAY--&gt;</td>
+    <td>Returns log start as a day integer.</td>
+  </tr>
+  <tr>
+    <td>&lt;!--LOG|START|MONTH--&gt;</td>
+    <td>Returns log start as a month integer.</td>
+  </tr>
+  <tr>
+    <td>&lt;!--LOG|START|YEAR--&gt;</td>
+    <td> Returns log start as a year integer.</td>
+  </tr>
+  <tr>
+    <td>&lt;!--LOG|START|HOUR--&gt;</td>
+    <td> Returns log start as an hour integer.</td>
+  </tr>
+  <tr>
+    <td>&lt;!--LOG|START|MINUTE--&gt;</td>
+    <td> Returns log start as a minute integer.</td>
+  </tr>
+  <tr>
+    <td>&lt;!--LOG|START|SECOND--&gt;</td>
+    <td> Returns log start as a second integer.</td>
+  </tr>
+  <tr>
+    <td>&lt;!--LOG|START|MSEC--&gt;</td>
+    <td> Returns log start as a millisecond integer.</td>
+  </tr>
+  <tr>
+    <td>&lt;!--LOG|END|DAY--&gt;</td>
+    <td> Returns log end as a day integer.</td>
+  </tr>
+  <tr>
+    <td>&lt;!--LOG|END|MONTH--&gt;</td>
+    <td> Returns log end as a month integer.</td>
+  </tr>
+  <tr>
+    <td>&lt;!--LOG|END|YEAR--&gt;</td>
+    <td> Returns log end as a year integer.</td>
+  </tr>
+  <tr>
+    <td>&lt;!--LOG|END|HOUR--&gt;</td>
+    <td> Returns log end as an hour integer.</td>
+  </tr>
+  <tr>
+    <td>&lt;!--LOG|END|MINUTE--&gt;</td>
+    <td> Returns log end as a minute integer.</td>
+  </tr>
+  <tr>
+    <td>&lt;!--LOG|END|SECOND--&gt;</td>
+    <td> Returns log end as a second integer.</td>
+  </tr>
+  <tr>
+    <td>&lt;!--LOG|END|MSEC--&gt;</td>
+    <td> Returns log end as a millisecond integer.</td>
+  </tr>
+  <tr>
+    <td>&lt;!--LOG|DURATION|SECOND--&gt;</td>
+    <td> Returns log duration as seconds integer.</td>
+  </tr>
+  <tr>
+    <td>&lt;!--LOG|DURATION|MSEC--&gt;</td>
+    <td> Returns duration as milliseconds integer.</td>
+  </tr>
+  <tr>
+    <td>&lt;!--LOG|LOG_RATE--&gt;</td>
+    <td>Returns the maximum scan rate of the log.</td>
+  </tr>
+  <tr>
+    <td>&lt;!--LOG|MONO_FREQ--&gt;</td>
+    <td>Returns YES/NO indicating if mono_freq.</td>
+  </tr>
+  <tr>
+    <td>&lt;!--LOG|TEST_CELL_NAME --&gt;</td>
+    <td>Returns the test_cell_name.</td>
+  </tr>
+  <tr>
+    <td>&lt;!--LOG|TEST_ID --&gt;</td>
+    <td>Returns the test_id.</td>
+  </tr>
+  <tr>
+    <td>&lt;!--LOG|CHANNEL_NAME--&gt;</td>
+    <td>Returns the name of a channel.</td>
+  </tr>
+  <tr>
+    <td>&lt;!--LOG|UNIT_NAME--&gt;</td>
+    <td>Returns the unit name for a channel.</td>
+  </tr>
+  <tr>
+    <td>&lt;!--LOG|SCAN_COUNT--&gt;</td>
+    <td>Return the number of scans for a channel.</td>
+  </tr>
+  <tr>
+    <td>&lt;!--LOG|SCAN_RATE--&gt;</td>
+    <td>Returns scan rate of the channel.</td>
+  </tr>
+  <tr>
+    <td>&lt;!--LOG|SS-TYPE--&gt;</td>
+    <td>Returns the subsystem type of the channel.</td>
+  </tr>
+  <tr>
+    <td>&lt;!--LOG|TIME_MEASUREMENT--&gt;</td>
+    <td>Returns time reference channel name.</td>
+  </tr>
+</table>
+<h3 id="SpecialFullsetLogTags">Special Fullset and Log Tags</h3>
+<p>Fullset and Log tags identify the start and end of channel data for fullsets and logs. Any text between the start and end pairs is repeated for each channel.</p>
+<ul>
+  <li>&lt;!--START_FULLSET_DATA--&gt;</li>
+  <li>&lt;!--END_FULLSET_DATA--&gt;</li>
+  <li>&lt;!--START_LOG_DATA--&gt;</li>
+  <li>&lt;!--END_LOG_DATA--&gt;</li>
+</ul>
+<p class="Note">Only the following tags can be  used with the START_LOG and END_LOG tags: <br>
+  &lt;!--LOG|CHANNEL NAME--&gt;<br>
+  &lt;!--LOG| UNIT_NAME--&gt;<br>
+  &lt;!--LOG| SCAN_RATE--&gt;<br>
+  &lt;!--LOG| SCAN_COUNT--&gt;<br>
+  &lt;!--LOG| SS-TYPE--&gt;<br>
+  &lt;!--LOG|TIME_MEASUREMENT--&gt;<br>
+</p>
+<br>
+	<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

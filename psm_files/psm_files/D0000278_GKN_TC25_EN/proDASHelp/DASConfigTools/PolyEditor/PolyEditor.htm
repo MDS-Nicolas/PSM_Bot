@@ -1,0 +1,145 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Polynomial Editor</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="PolynomialEditor">Polynomial Editor<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" >
+</a><div float:right></div></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The Polynomial Editor is used to create and edit polynomials, 
+  defined by a sequence of float coefficients, to define a mathematical function.</p> 
+<p>Polynomials are most comonly used for unit conversions attached to hardware channels.</p>
+<div class="Container"><img src="images/PolynomialEditor.png" alt="Polynomial Editor" width="700" height="423"></div>
+<br>
+<p>The Polynomial Editor provides the following functionality:</p>
+<ul>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuFile">File</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuEdit">Edit</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuView">View</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuConfiguration">Configuration</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#MenuHelp">Help</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#GenCol">columns: Index, Level, Enabled, Active, LastModDate, Name, Description</a></li>
+  <li><a href="PolyEditor.htm?3#Coeff">Modification of the coefficients</a></li>
+  <li><a href="PolyEditor.htm?4#Display">Graphical display of a polynomial</a></li>
+  <li><a href="#Poly2">Specific Properties of a Polynomial</a></li>
+  <li><a href="#ListofCoefficients">List of Coefficients</a></li>
+  <li><a href="#Polynomial">Polynomial</a></li>
+</ul>
+<h2 id="Layout">Layout</h2>
+<p>It is possible to split the main window horizontally or vertically with an entry in the PolynomialEditor.ini file. When split vertically (see sample screen above) the &quot;Selected Data Record&quot; pane and the &quot;Data Records&quot; pane are parallel. When split horizontally (see sample screen below), the &quot;Selected Data Record&quot; pane and the &quot;Data Records&quot; pane are stacked.</p>
+<div class="Container"><img src="images/PolyHorizontal.png" alt="Poly Horizontal" width="700" height="423"></div>
+<br>
+<p>The layout can be selected by setting the following ini properties:</p>
+<blockquote>
+  <pre>[General]
+
+# for horizontal layout:
+WindowLayout=stacked
+
+# for vertical layout:
+WindowLayout=parallel</pre>
+</blockquote>
+<h2 id="Poly2">Specific Properties of a Polynomial</h2>
+<p>The specific properties of a polynomial are displayed in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Degree</td>
+    <td>n/a</td>
+    <td>Degree of the polynomial </td>
+    <td>Integer</td>
+    <td>read-only</td>
+  </tr>
+  <tr>
+    <td>Min</td>
+    <td>Min</td>
+    <td>Minimal x-value for which the polynomial is defined</td>
+    <td>Float</td>
+    <td>Smaller than maximum</td>
+  </tr>
+  <tr>
+    <td>Max</td>
+    <td>Max</td>
+    <td>Maximal x-value for which the polynomial is defined</td>
+    <td>Float</td>
+    <td>Greater than minimum</td>
+  </tr>
+  <tr>
+    <td>X Unit</td>
+    <td>XEngineeringUnit</td>
+    <td>Engineering unit for x values</td>
+    <td>String</td>
+    <td>A defined engineering unit</td>
+  </tr>
+  <tr>
+    <td>Y Unit</td>
+    <td>YEngineeringUnit</td>
+    <td>Engineering unit for y values </td>
+    <td>String</td>
+    <td>A defined engineering unit</td>
+  </tr>
+</table>
+<h2 id="ListofCoefficients">List of Coefficients</h2>
+<p id="Coeff">The list of coefficients of the selected polynomial is displayed either in the right-hand pane or below the Data Records pane of the Polynomial Editor depending on the selected layout. For each coefficient, the list contains the following properties:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>X Power</td>
+    <td>n/a</td>
+    <td>X power with which the coefficient is multiplied</td>
+    <td>Integer</td>
+    <td>read-only</td>
+  </tr>
+  <tr>
+    <td>Coefficient</td>
+    <td>Value</td>
+    <td>Value of the coefficient</td>
+    <td>Float</td>
+    <td>arbitrary</td>
+  </tr>
+</table>
+<p>These coefficient values can be modified directly.</p>
+
+<h2 id="Polynomial">Polynomial</h2>
+<p>The Polynomial menu allows the user to edit polynomial coefficients and graph the results.</p>
+<h3>Modification of the Coefficients</h3>
+<p>The coefficients can be modified using the Polynomial menu.</p>
+<p>The item Add Coefficient adds a coefficient at the bottom. As well, the user can position the cursor in the last row and select the down arrow button.</p>
+<p>The item Delete Coefficient deletes a coefficient at the current cursor position by setting the value to zero. Leading zero coefficients are deleted.</p>
+<h3 id="Display">Graphical Display of a Polynomial</h3>
+<p>The polynomials can be displayed graphically by selecting Display Polynomial from the Polynomial menu or by selecting Display Graphics.</p>
+<div class="Container"><img src="images/Poly.png" alt="Poly" width="577" height="368"></div>
+<br>
+<br> 
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

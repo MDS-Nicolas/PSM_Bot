@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>How To &ndash; Troubleshoot Trigger Problems with Pressure Scanners</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left>
+  <h1>How To &ndash; Troubleshoot Trigger Problems with Pressure Scanners<a href="#" onClick="window.print(); return false;"><img src="../../../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<p>This <strong>How To</strong> provides the steps required to troubleshoot trigger problems with pressure scanners.</p>
+<p>Pressure scanners use either hardware or software triggers to control the flow of data to the Host Computer. MDS usually uses a hardware trigger to ensure that the Host Computer receives  a snapshot of data sent  at the same time. </p>
+<p class="Note">Trigger problems with pressure scanners result in a loss of communication between the scanners and proDAS. The most common time for this error to occur is during the <strong>Start Scan</strong> process. A trigger problem is indicated if the Unified Event Log (UEL) shows a loss of communication message for all scanners.</p>
+<p>Scanners using hardware triggers may be configured to use software triggering as a temporary solution to the problem. However, software triggering does not ensure time synchronization of the data.</p>
+<h2>To Troubleshoot Trigger Problems with Pressure Scanners:</h2>
+<p class="Caution">To prevent injury and damage to equipment, the operation and or maintenance should be carried out by a qualified technician. Observe the manufacturer's maintenance and repair guidelines and precautions.</p>
+<ol>
+  <li>Verify the power supply to the trigger circuit as shown on drawings:  
+    <ul>
+      <li>A-0000277, Assembly, Wiring, GKN, Test Cell 25, Scanner Interfaces</li>
+    </ul>
+  </li>
+<li>Verify the 5V green LED light on the scanner interface, located in equipment rack CM4, is on.  </li>
+  <li>Ensure  the DIO channel for the pressure scanner trigger is configured correctly.
+  </li>
+  <ul>
+    <li>In the Channel  Editor, confirm that the calculated trigger channel is defined with the same  acquisition rate as the GASSDIO trigger channel. </li>
+    <li>Confirm that the equation for the calculated trigger channel causes it to change state. For example:  PBSTrigger_Ref=! PBSTrigger_Ref</li>
+  </ul>
+  <blockquote>
+    <p class="Note">The calculated trigger channel must have a different name than the GASSDIO trigger channel.</p>
+  </blockquote>
+  <ul>
+    <li>In the Channel  Editor, confirm that the GASSDIO trigger channel is defined with the proper  acquisition rate and set the channel to an output channel. The output channel  references the calculated trigger channel (e.g. &lsquo;PBSTrigger_Ref&rsquo;)</li>
+  </ul>
+  <blockquote>
+    <p class="Note"> The proper acquisition rate for the GASSDIO trigger channel is normally 2 times  the required scanner scan rate. For example, if the scan rate for the scanner is 100 samples per second,  define the acquisition rate for the trigger channel as 200 samples per second. This is because each time the channel is scanned, it toggles ON and OFF and therefore its acquisition rate must be at least two times the scan rate, as the channel must toggle ON and OFF in order to complete one trigger cycle.<br>
+      <br>
+      If the scanner rate is 200 samples per second then the trigger channel rate should be 200 samples per second as well. 
+    </p>
+    <p class="Note">A &lsquo;PurgeEnable&rsquo; calculated channel with an acquisition rate of 0 (settable channel) should be configured in the channel editor as well. The name  of the channel should match the name in the PBS section of the MgtGUI.ini file -PBS section - EnablePurgeChan.</p>
+  </blockquote>
+</ol>
+<br>
+
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

@@ -1,0 +1,232 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>OMRON PLC Subsystem</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="OMRONplc">OMRON PLC Subsystem (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+
+<h2 id="Overview">Overview</h2>
+<p>The OMRON PLC Subsystem communicates with the OMRON C200H PLC System through a RS232 serial connection to get the digital input channels and to set the digital output channels. The OMRON PLC Subsystem scans all its channels at the maximum scan rate of the configured channels. The OMRON PLC Subsystem output channels are transmitted to the PLC when they change state.</p>
+<p class="Note">The scan rate is limited by the speed of the serial connection.</p>
+<h2 id="ConfigFCSChannel">Configuring an OMRON PLC Channel</h2>
+<p>To configure an OMRON PLC Channel:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</li>
+  <li>Select the name of the OMRON PLC Subsystem from the list of available subsystems.
+    <div class="Container"><img src="images/SelectSubsystemName.png" alt="SelectSubsystemName" width="387" height="317"></div>
+  </li>
+  <br>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a><a href="../ConfigEditors/ConfigEditors.htm#GenCol"></a>.</li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.</li>
+  <li>Set the <strong>Address</strong> column.
+    <div class="Container"><img src="images/ChannelEditor.png" alt="ChannelEditor" width="700" height="424"></div>
+  </li>
+</ol>
+<h2 id="ConfigFileStructure">Configuration File Structure</h2>
+<p>Channel configuration information (e.g. hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu">Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import an <strong>OPLC</strong> channel, see <a href="?10#XMLFileStructure"> XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import an <strong>OPLC</strong> channel, see <a href="?11#TabDelimitFileStructure"> Tab-Delimited File Structure</a>.</p>
+<h3 id="XMLFileStructure">XML File Structure</h3>
+<h4 id="ChannelsXML">Channels</h4>
+<p>The channels are stored in <em>Channels.xml</em> files in the configuration directories.</p>
+<p>An OMRON PLC Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor - Generic Channel Parameters - XML File Structure</a>, and the specific attribute <strong>Address</strong>. The attribute is explained in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Address</td>
+    <td>Address</td>
+    <td>ADDRESS</td>
+    <td>The physical memory address of the data item on the PLC</td>
+    <td>Integer</td>
+    <td>An Integer between 1 and the maximum address defined in the OMRON PLC Subsystem representing the hardware address. A two digit integer between 0-16 representing the bit number.
+      <p class="Note">Address is xxxxyy<br>
+        where<br>
+        xxxx = 1-9999<br>
+        yy = 01-16 (bit number)<br>
+        ie. 136401</p></td>
+  </tr>
+</table>
+<p>The structure of an OMRON PLC Channel complies with the following example:</p>
+<blockquote><code>&lt;Channels LastModificationDate=&quot;<strong>2015-06-11 11:03:06</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;<br>
+  &lt;Channel Name=&quot;ZZPLComron1&quot; <br>
+  Description=&quot;&quot; <br>
+  Enabled=&quot;true&quot; <br>
+  LastModificationDate=&quot;2015-06-11 11:03:06&quot; <br>
+  SubsystemName=&quot;ZZPLCOMRON&quot; <br>
+  SubsystemType=&quot;PLCOMRON&quot; <br>
+  AlternateName=&quot;&quot; <br>
+  DataType=&quot;Boolean&quot; <br>
+  InitialValue=&quot;-999999&quot; <br>
+  Format=&quot;False/True&quot; <br>
+  UpdateRate=&quot;1&quot; <br>
+  QualityCeiling=&quot;GOOD&quot; <br>
+  Critical=&quot;false&quot; <br>
+  EngineeringUnit=&quot;-&quot; <br>
+  DisplayMin=&quot;0&quot; <br>
+  DisplayMax=&quot;100&quot; <br>
+  DeadBand=&quot;0&quot; <br>
+  Output=&quot;false&quot; <br>
+  ReferenceChannel=&quot;&quot; <br>
+  Group=&quot;&quot; <br>
+  SignalId=&quot;&quot; <br>
+  CalSensor=&quot;&quot; <br>
+  CalGroup=&quot;&quot; <br>
+  FixedSensor=&quot;&quot; <br>
+  CustomerSensor=&quot;&quot; <br>
+  FullsetStability=&quot;false&quot; <br>
+  ContinuousLog=&quot;true&quot; <br>
+  Address=&quot;11902&quot;/&gt;<br>
+  &lt;/Channels&gt;<br>
+</code></blockquote>
+<h4 id="SubsystemsXML">Subsystems</h4>
+<p>The subsystems are stored in <em>Subsystems.xml</em> files in the configuration directories.</p>
+<p>An OMRON PLC Subsystem contains generic information, described in <a href="../SubsystemEditor/SubsystemEditor.htm#XMLFileStructure"> </a><a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor - Generic Subsystem Parameters - XML File Structure</a>, and the specific attributes:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Max Boolean Input Address</td>
+    <td>MaxBooleanInAddress</td>
+    <td>DISC_IN_ADD</td>
+    <td>Maximum address available for the Boolean data traveling from the PLC to the RTE</td>
+    <td>Integer</td>
+    <td>1-9999</td>
+  </tr>
+  <tr>
+    <td>Max Boolean Output Address</td>
+    <td>MaxBooleanOutAddress</td>
+    <td>DISC_OUT_ADD</td>
+    <td>Maximum address available for the float data traveling from the RTE to the PLC</td>
+    <td>Integer</td>
+    <td>1-9999</td>
+  </tr>
+</table>
+<p>The structure of an OMRON PLC Subsystem is shown in the following example:</p>
+<blockquote>
+  <pre>&lt;Subsystems   LastModificationDate=&quot;<strong>2008-09-04   14:13:03</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Subsystem Name=&quot;ZZPLCOMRON&quot;
+Description=&quot;&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2008-09-04 14:13:03&quot;
+Id=&quot;0&quot;
+Type=&quot;PLCOMRON&quot;
+CreationDate=&quot;2008-09-04 14:12:48&quot;
+MaxFloatInAddress=&quot;0&quot;
+MaxBooleanInAddress=&quot;1&quot;
+MaxFloatOutAddress=&quot;0&quot;
+MaxBooleanOutAddress=&quot;1&quot; /&gt;
+&lt;/Subsystems&gt;</pre>
+</blockquote>
+<h3 id="TabDelimitFileStructure">Tab-Delimited File Structure</h3>
+<p>The OMRON PLC channel configuration contains both the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic channel definition columns</a> and the specific OMRON PLC input parameters defined in the tab-delimited configuration file.</p>
+<p>The rules, syntax and guidelines for creating OPLC channels are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>ADDRESS</td>
+    <td>Specifies physical memory address of the data item on the PLC.
+      <p class="Note">Address is xxxxyy<br>
+        where<br>
+        xxxx = 1-9999<br>
+        yy = 01-16 (bit number)<br>
+        ie. 136401</p></td>
+    <td>Number 0-999</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single line of the spread sheet.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is always optional.</p></td>
+  </tr>
+</table>
+<h2 id="SubSysEditorFCS">Subsystem Editor for OMRON PLC Channels</h2>
+<p>To edit the OMRON PLC Subsystem, the Subsystem Editor must be selected from within the Configuration Administrator.</p>
+<p>The tool bar in the Configuration Administrator allows the various configuration editors available for proDAS to be selected.</p>
+<p>The Subsystem Editor allows new subsystems to be added to the current configuration.</p>
+<div class="Container"><img src="images/SubsystemEditor.png" alt="SubsystemEditor" width="700" height="423"></div>
+<p>To add a new subsystem:</p>
+<ol>
+  <li>From the Edit menu, select <strong>Append Data Record</strong> or, in the left pane of the splitter window and then click the right mouse button and select <strong>Append Data Record</strong> from the context sensitive menu.</li>
+  <li>Select <strong>OPLC</strong> in the dialogue box to select the type of subsystem.<br>
+    A new line in Subsystem Editor is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to <strong>OPLC</strong>. The user must then assign a name and description to the subsystem.</li>
+</ol>
+<h3 id="SetMaxNmbrAddress">Setting the Maximum Addresses</h3>
+<p>The maximum Float and Boolean Addresses required for the <a href="OMRONPLC.htm?2#SubsystemsXML">Subsystem</a> can be edited in the right pane of the splitter window of the Subsystem Editor screen.</p>
+<p>Since these addresses are defined using textbox dialogues, the EditSpecific menu item is greyed out and the textboxes are edited directly.</p>
+<h2 id="RTEInitialiseFile">RTE Initialisation File</h2>
+<p>The OMRON PLC Subsystem is configured by the RTE, along with all the other subsystems, as a request from the Management Interface GUI. For legacy purposes, the configuration request can also be specified in the command line of the RTE.</p>
+<p>A typical RTE initialisation file would include the following OMRON PLC (OPLC) Subsystem information:</p>
+<table width="95%" border="0" cellspacing="1" cellpadding="2">
+  <tr>
+    <td width="100%">#--------------------------------------------------------------------------<br>
+      # OMRON PLC Subsystem<br>
+      #--------------------------------------------------------------------------<br>
+      <br>
+      SS OPLC TRUE<br>
+      CI oplc_dev_name /dev/ttyM1<br>
+      #The time out of the device in seconds <br>
+      CI oplc_time_out 5 <br>
+      #RS-232-C device baud rate<br>
+      CI oplc_baud_rate 9600<br>
+      #RS-232-C device stop bits<br>
+      CI oplc_stop_bits 2<br>
+      #RS-232-C device data bits<br>
+      CI oplc_data_bits 7<br>
+      #RS-232-C device parity <br>
+      CI oplc_parity 2<br>
+      #Name of the Interrupt triggering channel<br>
+      CI oplc_trig_chan PLC_trig<br>
+      #Name of the Acknowledgement channel<br>
+      CI oplc_ack_chan PLC_ack</td>
+  </tr>
+</table>
+<br>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click here to see the RTE Initialisation file.</a></p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

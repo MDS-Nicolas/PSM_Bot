@@ -1,0 +1,10 @@
+<table class="Table-Grey">
+  <tr>
+    <th width="159" class="row-DwgNumber">Drawing Number</th>
+    <th width="586" class="row-DwgTitle">Drawing Title</th>
+  </tr>
+  <tr>
+    <td><a href="../References/MDSDrawings/A0000364.pdf">A-0000364</a></td>
+    <td>Assembly-Wiring, DDAS, Subsystem, Timing, IRIGB</td>
+  </tr>
+</table>

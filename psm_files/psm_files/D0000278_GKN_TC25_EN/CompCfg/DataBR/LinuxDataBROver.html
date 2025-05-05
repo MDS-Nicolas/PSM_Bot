@@ -1,0 +1,84 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Data Backup & Recovery for Linux Host Computer</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left><h1>Data Backup & Recovery for Linux Host Computer<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<h2>Overview</h2>
+<p>Proper data backup is key to preventing loss of information and reducing facility down-time.</p>
+<p>All data on the Linux Host Computer is automatically protected with Acronis Backup and Recovery Server for Linux software.</p>
+<p>Acronis allows the user to perform the following functions:</p>
+<ul>
+  <li><a href="#LinuxDBRS">Linux Data Backup</a></li>
+  <li><a href="DataBROperL.html">Data Recovery</a></li>
+  <li><a href="DataBROperL.html">Disaster Recovery</a></li>
+  <li><a href="#RescueCD">Create a Bootable Media for Acronis Backup and Recovery</a></li>
+</ul>
+<p>This overview also discusses:</p>
+<ul>
+  <li><a href="#BUFailure">Backup Failures</a></li>
+  <li><a href="#BUImages">Backup Images</a></li>
+  <li><a href="#BULogs">Backup Logs</a></li>
+  <li><a href="#ManualB">Manual Backups</a></li>
+  <li><a href="#Storage">Storage Medium</a></li>
+</ul>
+<p class="Caution">MDS recommends reviewing the backup log files weekly to verify successful completion of the backup operation. Failing to do so could result in permanent loss of data.</p>
+<h3 id="LinuxDBRS">Linux Data Backup</h3>
+<p>Backups of the Linux Host Computer are created automatically with the Acronis True Image Echo Server for Linux. The scheduling of the backup jobs is handled via the Linux&nbsp;<em>cron</em>&nbsp;job, rather than using the scheduler provided with Acronis. Before an automatic backup starts, the&nbsp;<em>cron</em>&nbsp;job performs a check to see if proDAS is scanning. If proDAS is scanning, the backup job is terminated and does not make another attempt until the next scheduled time. MDS has set up three&nbsp;<em>cron</em>&nbsp;jobs that maximize protection from data loss, and highly recommends that these&nbsp;<em>cron</em>&nbsp;jobs not be changed. The three <em>cron</em> jobs are:</p>
+<ol>
+  <li>Full backup, Saturday &ndash; full image backup of the Linux Host Computer.</li>
+  <li>Full backup, Sunday &ndash; full image backup of the Linux Host Computer.</li>
+  <li>Incremental backups, Monday through Friday &ndash; incremental backups of the Linux Host Computer based on the full image backup performed on Sunday.</li>
+</ol>
+<p>Full backups are typically performed once a week and are part of an overall backup plan. For increased safety, MDS has configured a second full backup on Sunday. This prevents a failure of the Saturday backup from invalidating the Monday through Friday incremental backup files which reference the Sunday backup.</p>
+<p>Each Saturday, the full backup replaces the backup image created the previous Saturday. Similarly, the full backup on Sunday replaces the backup image that was  created on the previous Sunday.</p>
+<p>The incremental backup  saves time and disk space by only backing up changed files. The incremental backups scheduled Monday to Friday only backup the data that has changed since the last full backup or last incremental backup. On Monday, the differences between the disk on Monday and Sunday are backed-up. Tuesday's image is the difference between the disk on Tuesday and Monday. Incremental backups are scheduled through the week until Friday.</p>
+<p class="Note">The Linux Host Computer backup task is configured to start at 1:00 a.m. using a cron job which detects if proDAS is scanning or not. If it is scanning, the Linux Host Computer backup does not start.</p>
+<p class="Note">Do not leave proDAS scanning at night if it is not required for engine testing or system checks as this prevents the Linux Host Computer backups from being performed.</p>
+<h3 id="RescueCD">Rescue Bootable Media CD</h3>
+<p>As part of the backup strategy, a <a href="../../References/HowTos/CompCfgHT/DataBackup/LinuxAcronisBootMedia.html">Rescue Bootable Media CD</a> must be created with Rescue Media Builder before testing begins for the first time.</p>
+<p class="Caution">A Rescue Bootable Media CD MUST be created BEFORE using the Linux Host Computer for the first time. The Rescue Bootable Media CD is an integral part of the recovery process. Failure to create the Rescue Bootable Media CD could result in permanent loss of data.</p>
+<p>For further information on using Rescue Media Builder to create a Rescue Bootable Media CD, see the <a href="../HostPC/HostPCVDocs.html">Acronis True Image Echo Server for Linux User Guide</a>.</p>
+<p class="Note">The User should review the backup log files weekly to verify successful completion of the backup operation. This file is located in /usr/local/backup/&lt;-rte folder&gt;.</p>
+<h3 id="BUFailure">Backup Failures</h3>
+<p class="Caution">Acronis can fail to create backups if the NAS gets disconnected from the Linux Host Computer. Error messages can be found in the backup log files.</p>
+<p>If the Network Attached Storage (<a href="#NAS">NAS</a>) is disconnected from the Linux Host Computer it must be reconnected and properly mounted. See <a href="../../References/HowTos/CompCfgHT/DataBackup/LinuxNASDrive.html">How to Mount a NAS</a>.</p>
+<h3 id="BULogs">Backup Logs</h3>
+<p>A log of all backups is stored in the following directory: <strong>/usr/local/backup/&lt;-rte folder&gt;</strong></p>
+<p>A log is created whether or not a backup is successful.</p>
+<p class="Note">The backup log files are configured to over-write themselves on a weekly basis.</p>
+<p>The Saturday full backup log file is called <strong>Full_backup.Sat</strong> and the Sunday full backup log file is called <strong>Full_backup.Sun</strong>.</p>
+<p>The incremental backup log files are called <strong>Incr_backup </strong>with the extension naming the applicable day of the week (i.e. .<strong>Mon, .Tue, .Wed, .Thu, .Fri</strong>).</p>
+<h3 id="BUImages">Backup Images</h3>
+<p>All backup images are stored on a NAS and are listed under the following directory:<strong>/mnt/NASbackup/RTE</strong></p>
+<p class="Note">The backup images are configured to over-write themselves on a weekly basis.</p>
+<h3 id="ManualB">Manual Backups</h3>
+<p>Manual backups can be performed if desired. For details, see the <a href="../HostPC/HostPCVDocs.html">Acronis True Image Echo Server for Linux User Guide</a>.</p>
+<h3 id="Storage">Storage Medium</h3>
+<p>As part of the backup strategy, either <a href="#USB">USB</a> drives or <a href="#NAS">NAS</a> (Network Attached Storage) are used to store the backup images.</p>
+<h4 id="USB">USB Drives</h4>
+<p>USB hard drives can be used as a storage medium. One external USB hard drive is connected to the Linux Host Computer while a second USB drive is stored off-site. The drives are swapped on a designated day every week, allowing for a full week of data to be stored on the drive prior to moving it to an off-site location.</p>
+<p class="Caution">To prevent loss of data (for example, in the event of a Test Cell fire), MDS recommends off-site storage of one of the USB drives.</p>
+
+<h4 id="NAS">Network Attached Storage (NAS)</h4>
+<p>The NAS is a network storage device with multiple hard drives. The hard drives are arranged as a mirrored RAID 1 disk set. The NAS is connected to the user switch.</p>
+<p class="Caution">To prevent loss of data (for example, in the event of a Test Cell fire), MDS recommends off-site storage of one of the NAS devices.</p>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

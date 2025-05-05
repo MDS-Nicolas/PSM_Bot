@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>How To &ndash; Recover Data on the Linux Host Computer</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left><h1>How To &ndash; Recover Data on the Linux Host Computer<a href="#" onClick="window.print(); return false;"><img src="../../../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<p>This <strong>How To</strong> provides the steps required to perform  data recovery on the Linux Host Computer.</p>
+<h2>Recover Data Files</h2>
+<p>In the  event that  a file is accidently deleted, use the following procedure to recover the  data.</p>
+<p class="Note">This procedure should be repeated for every group of files that is located in a different target directory.</p>
+<ol>
+  <li>Log in as the <strong>root</strong> user on the Linux Host Computer.</li>
+  <li>Start  <strong>Acronis True Image Echo Server for Linux</strong> by one of the following  methods: </li>
+  <ul>
+    <li>click  the Acronis icon shortcut located on the main display</li>
+    <li>from the command prompt, type <strong>trueimage</strong></li>
+  </ul>
+   <p>The Acronis GUI starts.</p>
+  <li>Select the <strong>Recovery</strong> task from the Acronis main window. <br>
+    This launches the <em>Acronis Restore Data Wizard</em>.</li>
+  <li>Navigate to the archive files for the missing data.</li>
+  <li>Select the <strong>Sunday</strong> full backup archive file from where the data files need to be restored.</li>
+
+<p class="Note">If the file to be recovered was deleted between Saturday and Sunday, select the Saturday full backup. If the file was deleted at another time during the week, select the Sunday full    backup to obtain the list of available files.</p>
+
+  <p class="Note">The <em>Acronis Restore Data Wizard</em> lets you select the full backup  or any of the associated incremental backup archives from which to restore the  data.</p>
+  <li>Select the option to restore <strong>specific files</strong> or <strong>folders</strong>.</li>
+  <li>Select the <strong>target</strong> directory to restore to.</li>
+  <li>Select the <strong>specific files</strong> to restore.</li>
+  <li>Select the remaining task options based on user preference and then select the <strong>Restore Data</strong> job.<br>
+    The data is restored.</li>
+</ol>
+<p class="Note">To restore a file from an incremental backup, the referenced full backup is also required.</p>
+<p class="Note">An error is reported by Acronis if an incremental backup archive is selected but the corresponding full backup archive is no longer available. For example, once a new full backup is performed on Sunday, all the previous incremental backup archives become invalid.</p>
+<p>For more information see,  the&nbsp;<a href="../../../../CompCfg/HostPC/HostPCVDocs.html">Acronis  True Image Echo Server for Linux User Guide</a>.</p>
+
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

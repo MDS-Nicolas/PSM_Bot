@@ -1,0 +1,2182 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Creating and Modifying Display Pages</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1>Creating and Modifying Display Pages<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" >
+</a><div float:right></div></h1></div>
+
+<h2 id="Overview">Overview</h2>
+<p>Display pages are created, administrated and modified by the RTD Editor and displayed in the <a href="../../TestwithDAS/RunEngineTest/RunEngineTest.htm#RTDDriver"> RTD Driver.</a></p>
+<h2 id="RTDEditor">The RTD Editor</h2>
+<p>The RTD Editor is an extension of the DV-Draw editor.</p>
+<p>Since the RTD Editor (displayed below) is based on the DV-Draw editor, which exists only in an English version, there is only an English version of the editor.</p>
+<p class="Note">The static text option and the alternate channel names support non-English characters.</p>
+<div class="Container"><img src="images/RTDEditor2.png" alt="RTD Editor 2" width="788" height="694"></div>
+<p>For more information, see the DataViews documentation. The DataViews documentation can be accessed through the Properties context menu entry, which is accessed by right-clicking any active display object.</p>
+<p class="Note">The Undo and Redo functions within the DataViews software do not apply to properties of the ActiveX Controls. The effects of these functions are inconsistent. If these functions are used, it is recommended that the user monitor their effects.</p>
+<h3 id="DisplayObjects">Display Objects</h3>
+<p>A display page is a rectangle containing a number of rectangular objects. The following types of objects are available:</p>
+<ul>
+  <li>drawings, including text</li> 
+  <li>DataViews Graph objects</li> 
+  <li>external images</li> 
+  <li><a href="?2#ActiveX">RTD ActiveX Controls</a></li>
+  <li>other ActiveX Controls</li>
+</ul>
+<h3>Predefining Edit Areas</h3>
+<p>When a display page is opened in a view window, the Real-Time Display Driver automatically maximizes its size WITHOUT changing the Aspect Ratio (AR) of the display page (to prevent distortion of the display page).</p>
+
+<table>
+  <tr>
+    <td width="39" rowspan="2">AR =</td>
+    <td width="145"><u>page width</u></td>
+  </tr>
+  <tr>
+    <td>page height</td>
+  </tr>
+</table>
+<br>
+<p>The available display space is optimized when the AR of the display page matches the AR of the view window. The AR of the display page is calculated from the Edit Area. Based on the particular system, a display template is available for each view window size and location.</p>
+<p class="Note">When creating pages, care should be taken to use the appropriate template and ensure that all objects on the page are within the boundaries of the Edit Area</p>
+
+<h4>Preparation</h4>
+<p>Insert a section <strong>[EditArea]</strong> into the initialization file <em>RTDEditor.ini</em> of the RTD Editor and add one to ten paragraphs (groups of three rows each) containing the following entries:</p>
+<ul>
+  <li>Desc0=description of monitor with number 0</li>
+  <li>Width0=&lt;width of this monitor in pixels&gt;</li>
+  <li>Height0=&lt;height of this monitor in pixels&gt;</li>
+</ul>
+<p>This paragraph may be repeated with varying numbers indicating the respective monitor. This enables the user to use different Edit Areas for individual monitors that vary in size or for individual setting of toolbars and status bar. For details, see the sample below:</p>
+<blockquote>
+  <p> [EditArea]<br>
+    Desc0=monitor 1 (1280*1024) full screen, status bar + primary toolbar<br>
+    Width0=1270<br>
+    Height0=900</p>
+  <p>Desc1=monitor 1 (1280*1024) full screen, status bar + toolbar page selection<br>
+    Width1=1270<br>
+    Height1=902</p>
+  <p>Desc2=monitor 1 (1280*1024) full screen, primary toolbar only<br>
+    Width2=1270<br>
+    Height2=918</p>
+  <p>Desc3=monitor 1 (1280*1024) full screen, toolbar page selection only<br>
+    Width3=1270<br>
+    Height3=920</p>
+  <p>Desc4=monitor 1 (1280*1024) full screen, status bar only<br>
+    Width4=1270<br>
+    Height4=930</p>
+  <p>Desc5=monitor 1 (1280*1024) full screen, neither status bar nor any tool bars<br>
+    Width5=1270<br>
+    Height5=948</p>
+  <p>Desc6=monitor 7<br>
+    Width6=700<br>
+    Height6=420</p>
+  <p>Desc7=monitor 8<br>
+    Width7=800<br>
+    Height7=480</p>
+  <p>Desc8=monitor 9<br>
+    Width8=900<br>
+    Height8=540</p>
+  <p>Desc9=monitor 10<br>
+    Width9=1000<br>
+    Height9=600</p>
+</blockquote>
+<h4>Creating an Edit Area in the RTD  Editor</h4>
+<p>To create an edit area in the RTD Editor:</p>
+<ol>
+  <li>From the Edit menu, select Edit Area, <strong>Create</strong>. The Size of EditArea window is displayed.</li>
+  <li>Select one of the preconfigured groups. The  aspect ratio height/width is calculated automatically.</li>
+  <li>Once selected, an Edit Area with the given size is created and indicated on the canvas. This object is named &lsquo;EditArea&rsquo; automatically.
+  <p class="Note">Only a single Edit Area can be created.</p>
+  </li>
+</ol>
+<h4>Working with the Edit Area</h4>
+<p>The Edit Area cannot be selected using the mouse. To select the Edit Area:</p>
+<ol>
+  <li>From the Edit menu, select Edit Area, <strong>Select</strong>.</li>
+</ol>
+<p>The Edit Area can be modified (resized) or deleted.</p>
+<h4>Changing the aspect ratio of the  Edit Area</h4>
+<p>If a given aspect ratio for the Edit Area is required, either change its width and keep the height or change the height and keep its width. To change the aspect ratio:</p>
+<ol>
+  <li>From the Edit menu, select Edit Area, <strong>Adapt Width</strong> or <strong>Adapt Height</strong>.</li>
+</ol>
+<h4>Measuring the view size using the RTD Driver</h4>
+<p>The View window of the RTD Driver enables you to measure the actual size of the view. To measure the view size:</p>
+<ol>
+  <li>From the View menu, select <strong>Size</strong>. A message window is displayed indicating the width and height of the view in pixels.<br>
+    These numbers can be entered into the <em>RTDEditor.ini</em> file to reach the required Edit Area size.</li>
+</ol>
+<h3 id="DataVariables">Data Variables</h3>
+<p>The data variables serve as a source of values to be displayed. The types of data variables are:</p>
+<ul>
+  <li>Channels</li> 
+  <li>2D Break Point Tables</li> 
+  <li>3D Break Point Tables</li> 
+  <li>Polynomials</li> 
+  <li>Test (data describing the test)</li> 
+  <li>Fullset (channels)</li>
+</ul>
+<div class="Container"><img src="images/DataVariables.PNG" alt="Data Variables"  width="604" height="533"></div>
+<p>To use the data variables, the data variables must be connected with either a property of an ActiveX control or of a DataViews Graph object.</p>
+<p>A dialogue box, showing which data variables are available, can be displayed by selecting <strong>Data Variables</strong> from the <strong>View</strong> menu. The same dialogue box is displayed when a data variable is connected to a property of an object. </p>
+<p>The type of data variable, that can be connected to a property, depends on the type of object.</p>
+<p>If a <em>Channel</em> is connected to a property, the value to be displayed is taken from the Current Value Table at runtime.</p>
+<p>If a <em>2D Break Point Table</em> is connected to a property, either the x or the y coordinate must be chosen. The remaining coordinate must then be connected to a corresponding property.</p>
+<p>If a <em>3D Break Point Table</em> is connected to a property, the object displays a curve for each x value of the table formed by the (y,z) pairs of the respective x value.</p>
+<p>If a <em>Polynomial</em> is connected to a property, either the x or the y coordinate must be chosen. The remaining coordinate must then be connected to a corresponding property<em>.</em></p>
+<p><em>Test</em> data is only connected to string properties. If the test data is connected to such a property, then the corresponding string is displayed.</p>
+<p>To connect a Fullset channel to a property, such that for each new fullset acquired during the test run the channel value is displayed (instead of the Current Value Table), select the Channels icon in the data variables dialogue and create a new data variable. The name of the data variable must then be defined by typing into the appropriate text field on the right side of the dialogue box.</p>
+<p>If all fullset values of this channel are to be displayed regardless of the name of the respective test steps, name the new data variable</p>
+<blockquote>
+  <p> fullset/&lt;channel name&gt;</p>
+</blockquote>
+<p>where &lt;channel name&gt; stands for the name of the affected channel.</p>
+<p>If the channel values of a certain test step only are to  be displayed, then name the new data variable</p>
+<blockquote>
+  <p> &lt;test step name&gt;/&lt;channel name&gt;</p>
+</blockquote>
+<p>Where &lt;test step name&gt; stands for the name of the selected test step.</p>
+<p class="Note">There is no support to select a correct channel name when using this method to connect a property with a fullset value</p>
+
+<h3 id="FindVar">Finding Data Variables</h3>
+<p>The pages on which a channel, a 2D break point table, or a polynomial is used can be determined via the Find variable in display pages dialogue box (below). The dialogue box is invoked by selecting <em><strong>Find in Files</strong></em> from the <em><strong>File</strong></em> menu.</p>
+<div class="Container"><img src="images/EditorFind.PNG" alt="EditorFind" width="350" height="338"></div>
+<p>To find the pages on which a specific variable is used:</p>
+<ol>
+  <li>Select the variable (e.g.: <strong>Channel</strong>) from the ProDas Variable drop list.</li>
+  <li>Select the item to searched for (e.g.: <strong>fCalc2i</strong>) from the ProDas Variable drop list.</li>
+  <li>Select <strong>Find</strong>.<br>
+    All display pages in the directory of the current engine type are searched and the pages containing the selected item are displayed in the list box.<br>
+  </li>
+</ol>
+<p>Since the dialogue is non-modal, the display pages may be modified with the dialogue still visible. After such changes, the dialogue may be updated using the <strong>Refresh</strong> button. Selecting
+a file in the list box and selecting <strong>Open</strong> causes the selected page to be read and displayed in a new view.</p>
+<p>The <strong>Hide</strong> button hides the dialogue box, allowing the same information to be displayed the next time the dialogue box is invoked. The <strong>Close</strong> button closes the dialogue box without saving the contained information.</p>
+<h3 id="Preferences">Preferences</h3>
+<p>The User Preferences dialogue box, invoked by selecting <strong>Preferences</strong> from the <strong>File</strong> menu, contains a subset of the corresponding dialogue described in the DataViews documentation.</p>
+<div class="Container"><img src="images/EditorPreferences.PNG" alt="EditorPreferences" width="383" height="286"></div>
+<p>The default background and grid colors are displayed and may be edited via color selection dialogues. These colors are used when a new display page is created.</p>
+<p> Dragging and rubberbanding let the user see the effect of reshaping an object while moving the control point. Dragging and rubberbanding can be turned on or off. When dragging and rubberbanding are off, the effect cannot be seen until the control point is released. The default setting is <em>On</em>.</p>
+<p>Objects may be difficult to see while dragging if the object color is very close to the drawing background color, or if the colors are complementary. The available options set various color masks which result in different sets of colors being used for dragging. If the drag color is hard to see, try a different option. The default setting is <em>From Object</em>, which tries to maintain the color of the object during dragging.</p>
+<p>The user can toggle between ASCII and binary format for saving files. Binary files load faster than ASCII files. Binary format is host-dependent so files in binary format may not be readable on another host. ASCII format is host-independent so if views are to be ported to another platform, save them as ASCII files. If a view is saved in ASCII, the view comment can be edited using the text editor. Do not edit any other part of the view file directly. Valid delimiters are &quot;, ', $, !, and @.</p>
+<h3 id="PrintObjList">Printing the Object List</h3>
+<p>The list of all objects of the active view can be printed by selecting <strong>Print</strong><strong><em> </em></strong><strong>Object</strong><strong><em> </em></strong><strong>List</strong> from the <strong>File</strong> menu. Printing is done via the Print Server.</p>
+<h3 id="RTDESecurity">Security</h3>
+<p>The RTD Editor requires at least security level 1 to save a display page. Users can either specify their username and password in the command line or be prompted for their username and password when the application starts.</p>
+<p>Each user can write to any other directory, regardless of privileges. Therefore, a user without write privileges for the appropriate Engine Type level is able to configure display pages and save them elsewhere for later use in the Display Driver.</p>
+<h3 id="RTDERules">Rules</h3>
+<p>Rules specify the behaviour of an object or a view by describing the actions or changes which occur depending on specified events and conditions.</p>
+<p>An action can be changing to another view, pause and resume reading the data and updating the display, redrawing the screen, turning off the rule engine or erasing views. Several actions that affect data are offered, such as:</p>
+<ul>
+  <li>setting a data variable to a specified value</li>
+  <li>setting the value of a destination data variable to the value of a source variable</li>
+  <li>increasing / decreasing the value of a data variable by a specified amount</li>
+</ul>
+<p>This can be used to modify the value of a channel during runtime. However, only zero hertz scan rate channels may be modified during runtime.</p>
+<p><em>Do Nothing</em> is the default action selection and can be used to disable a rule for testing purposes or as a place holder when there is no action for the rule.</p>
+<p>Each rule can be tied to a specific event such as a mouse click or a key push.</p>
+<p>A condition can be which mouse button was clicked, which keyboard key was pushed, or whether or not data values meet specified criteria. </p>
+<p>The rules are specified in the property dialogue which is displayed after a click with the right mouse button in the object or view, selecting the <em>Properties</em> entry and the <em>Rules</em> tab. In the following example, the <em>Vector Text</em> object named <em>Equation</em> (i.e.: VectorText:Equation) sets the value of the data variable <em>fCalc1i</em> to 1000 every time the user clicks with the mouse button.</p>
+<div class="Container"> <img alt="Rules" src="images/Rules.PNG"></div>
+<p>The following action types are not supported by the RTD Driver and should not be used:</p>
+<ul>
+  <li>Faster</li> 
+  <li>Slower</li> 
+  <li>Execute Command</li> 
+  <li>Execute Function in Script</li> 
+  <li>Write Data Variable to Data Variable</li> 
+  <li>Call Generated Handler</li> 
+  <li>Overlay View</li> 
+  <li>Erase Overlay View</li> 
+  <li>Overlay Object</li> 
+  <li>Erase Overlay Object</li> 
+  <li>Erase Visible Overlays</li> 
+  <li>Popup Object at Cursor</li> 
+  <li>Erase Popup Object</li> 
+  <li>Erase Visible Popups</li>
+</ul>
+<p>For more information, see Using Rules in the DataView documentation.</p>
+<h3 id="RTDEDynamics">Dynamics</h3>
+<p>Dynamic components may be added to an object so that changes occur to the object when the data changes.<br>
+  The dynamic components, also called dynamic features, are listed in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Components</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Attribute dynamics</td>
+    <td>Changes properties such as color, line type, line width, curve type and arc direction.</td>
+  </tr>
+  <tr>
+    <td>Motion dynamics</td>
+    <td>Changes position, rotation, and scale.</td>
+  </tr>
+  <tr>
+    <td>Subdrawing dynamics</td>
+    <td>Displays different subdrawings depending on a data value.</td>
+  </tr>
+  <tr>
+    <td>Visibility dynamics</td>
+    <td>Changes whether or not the object is visible.</td>
+  </tr>
+  <tr>
+    <td>Text dynamics</td>
+    <td>Changes the content of a text object to display the data value.</td>
+  </tr>
+  <tr>
+    <td>Blinking dynamics</td>
+    <td>Alternates the colors of an object between two sets of colors to make the object blink. An object can blink or not blink, or blink in different colors, depending on a data value.</td>
+  </tr>
+  <tr>
+    <td>Fill dynamics</td>
+    <td>Changes fill effects of a filled graphical object.</td>
+  </tr>
+</table>
+<p>Dynamic features that do not apply to the type of the currently selected object are disabled.</p>
+<p>The dynamic features are specified in the property dialogue which is displayed after clicking with the right mouse button in the object and selecting the <strong>Properties</strong> entry and the <strong>Dynamic</strong> tab. In the example, the text of the Vector Text object named <em>Equation</em> is set to x = &lt;data value of channel <em>fCalc1i</em>&gt;. At the same time, the object rotates according to the value of this channel.</p>
+<div class="Container"> <img alt="Dynamics" src="images/Dynamics.PNG"></div>
+<div class="Container"> <img alt="Dynamics Example" src="images/DynamicsExample.PNG"></div>
+<p>For more information, see Using Object Dynamics in the DataView documentation.</p>
+<h3 id="RTDEError">Error Window</h3>
+<p>The error window displays all errors which have occurred in the application since it was called and which have not yet been cleared. Errors are listed in chronological order with the time when they occurred. The latest error is at the bottom.</p>
+<p>When an error occurs, the error window pops into the foreground. The Errors window can also be displayed by selecting <strong>Show Errors</strong> from the <strong>Window</strong> menu.</p>
+<p>The selection in the window or the complete content can be cleared using the corresponding button. The window can be hidden by clicking the <em>Hide</em> button.</p>
+<div class="Container"><img alt="Error Window" src="images/ErrorWindow.png"></div>
+<h3 id="RTDEPageAdmin">Page Administration</h3>
+<p>Page sequences serve to navigate quickly through sequences of related pages at runtime (i.e.: using the RTD Driver). A dialogue to administrate these sequences can be invoked by selecting <strong>Page Sequence</strong> from the <strong>File</strong> menu.</p>
+<div class="Container"><img alt="PageSequence" src="images/PageSequence.PNG"></div>
+<p>In the dialogue, all existing page sequences are displayed in a list box. A new page sequence can be created by clicking the <em>New</em> button in the dialogue. The selected page sequence can be renamed, copied or deleted by clicking the corresponding button.</p>
+<p>The display pages of the selected page sequence are displayed in the second list box. The third list box shows the available pages of the current engine type which are not contained in the page sequence. If a page is selected in one of these list boxes, it may be moved to the other by clicking the appropriate arrow button.</p>
+<h3 id="RTDENavBar">Navigation Bar</h3>
+<p>The navigation bar displays the default configuration as the current configuration.</p>
+<div class="Container"><img alt="NavigationBar" src="images/NavigationBar.png" width="700" height="18"></div>
+<p>To change the current configuration, close all open Views/Pages/Subdrawings and use the Configuration menu.</p>
+<h3 id="RTDEGenProp">The General Properties Dialogue</h3>
+<p>The general properties dialogue is invoked via the <strong>Context</strong> menu. If an object is selected, the properties of the object are displayed. In the case of multiple selection, the dialogue of the first object is displayed. If no object is selected, the property dialogue of the page is displayed. The property dialogue of the page can also be invoked by selecting <em>Properties</em> from the <em>View menu</em>. The general property page of an object can also be invoked by double clicking the object. </p>
+<div class="Container"> <img alt="PropertiesActiveX" src="images/PropertiesActiveX.PNG" ></div>
+<p>The <em>ActiveX</em> tab is only available for ActiveX controls and serves to connect DataViews variables with properties exposed by ActiveX controls. The properties that are exposed depends on the type of the control. The data variables dialogue is invoked by clicking the check box in the <em>Map</em> column or by clicking the three dots in the <em>Variable Name</em> column.</p>
+<h3 id="RTDEContextMenu">The Context Menu</h3>
+<p>A context menu is displayed by right clicking a view. The Context Menu (with selection and without selection are displayed and described in the table below).</p>
+<div><img src="images/ContextEditor.PNG" alt="Context Editor" width="210" height="302">   <img src="images/ContextEditorNoselect.PNG" alt="Context Editor Noselect" width="160" height="176"></div>
+ 
+<table class="Table-Grey">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Properties...</td>
+    <td>Context menu entry invokes the general properties dialogue for the selected object.</td>
+  </tr>
+  <tr>
+    <td>Map Channels...</td>
+    <td>Displays the <a href="?120#MapChannels">Map Channels to ActiveX Control</a> window.</td>
+  </tr>
+  <tr>
+    <td><em>Additional Properties...</em></td>
+    <td>Context menu entry invokes a specialised property dialogue for the selected object. Some Active x controls also support editing properties of multiple objects.
+    <p class="Note">The Additional Properties dialogue is only accessible if a channel has been mapped to the ActiveX Control.</p></td>
+  </tr>
+  <tr>
+    <td>Duplicate</td>
+    <td>Duplicates the selected object(s).</td>
+  </tr>
+  <tr>
+    <td>Cut</td>
+    <td>Cuts the selected object to the clipboard.</td>
+  </tr>
+  <tr>
+    <td><em>Copy</em></td>
+    <td>Copies the selected object to the clipboard.
+    <p class="Note">When copying/pasting text content, the font formatting does not stay the same. As required, it will have to be edited when pasted to the desired location.</p></td>
+  </tr>
+  <tr>
+    <td><em>Paste</em></td>
+    <td>Pastes the content of the clipboard. The selected object is irrelevant in this case.
+    <p class="Note">When copying/pasting text content, the font formatting does not stay the same. As required, it will have to be edited when pasted to the desired location.</p></td>
+  </tr>
+  <tr>
+    <td><em>Delete</em></td>
+    <td>Deletes the selected object.</td>
+  </tr>
+  <tr>
+    <td>Select All</td>
+    <td>Selects all objects.</td>
+  </tr>
+  <tr>
+    <td>Save Selection... </td>
+    <td>Enables saving the selected objects as a separate page or subdrawing via a <em>Save</em> dialogue.</td>
+  </tr>
+  <tr>
+    <td>Add to Palette...</td>
+    <td>Adds the selected objects to the palette.</td>
+  </tr>
+  <tr>
+    <td>Open Subdrawing</td>
+    <td>Opens the selected subdrawing in a separate view and is only enabled if a subdrawing is selected.</td>
+  </tr>
+</table>
+<p class="Note">Ensure the context menu is properly closed (by clicking any empty space on the screen) before opening the context menu for a different display object. The context menu changes if the selection changes, but the functions may not work properly.</p>
+<h3 id="RTDESimulation">Simulation</h3>
+<p>The behaviour of a display page during runtime can be simulated. Simulation mode is entered by selecting <em>Run</em> from the <em>Test </em> menu. If a graphical DataViews object or an RTD ActiveX Control is connected with a data variable, values for this data variable are simulated. In most cases, a <em>sine</em>-like function is used.</p>
+<p>There is a control panel (i.e.: a small window), which is always on top of the Preview and Simulation window, that allows the following manipulations:</p>
+<ul>
+  <li>zoom in and out</li> 
+  <li>zoom/pan reset (i.e.: restore the original size)</li> 
+  <li>pan in a direction (i.e.: move the visible part in one of four directions)</li> 
+  <li>drag rectangular area to zoom</li> 
+  <li>choose point to pan (i.e.: the clicked point becomes the middle of the drawing area)</li> 
+  <li>show a thumbnail of the page</li>
+</ul>
+<div class="Container"><img alt="Simulation" src="images/Simulation.png" ></div>
+<p>If the control panel is hidden, it can be made visible by clicking the <em>Show control panel</em> button. The simulated page can be printed with the <em>Print</em> button. The frequency of the simulated data can be changed in the frequency spin control. The simulation can be paused by releasing the <em>Run</em> button. In pause mode, a step can be made by clicking the <em>Step</em> button. Finally, the window can be closed with the <em>Close</em> button.</p> 
+<p class="Note">The display simulation  displays the changing values for all controls, whether the channel associated with this control has a scan rate above zero or not.</p>
+<h3 id="Groups">Object Groups</h3>
+<p>It is possible to combine several objects into a group. Groups can be used to move or resize objects while keeping the relationship to  each other. The following is possible:</p>
+<ul>
+  <li>create a new group (&quot;Group&quot;)</li>
+  <li>dissolve a group (&quot;Ungroup&quot;)</li>
+  <li>recreate the most recently dissolved group (&quot;Regroup&quot;)</li>
+</ul>
+<p>A group can be defined by:</p>
+<ul>
+  <li>selecting objects and groups to be combined to a new group</li>
+  <li>selecting <strong>Group</strong> from the <strong>Object</strong> menu</li>
+</ul>
+<p>A group can be dissolved by:</p>
+<ul>
+  <li>selecting  the group that to be dissolved</li>
+  <li>selecting <strong>UnGroup</strong> from the <strong>Object</strong> menu</li>
+</ul>
+<p>The most recently dissolved group can be restored by (if there elements are still available):</p>
+<ul>
+  <li>selecting <strong>ReGroup</strong> from the <strong>Object</strong> menu</li>
+</ul>
+<p>A group can be moved selecting one element of the group so that the whole group is selected (the surrounding rectangle is displayed). Once selected, the surrounding rectangle can be moved.</p>
+<h2 id="ActiveX">RTD ActiveX Controls</h2>
+<p>Even though the DataViews software package is shipped with a large variety of display objects, additional display objects within the RTD Editor and RTD Driver are offered to meet the special needs of the proDAS display system and provide the user with a maximum degree of flexibility in configuring these objects.</p>
+<p>Since ActiveX controls are widely application independent display objects, the RTD ActiveX Controls available within the proDAS RTD environment can also be used in other software packages with a minimum effort for adaptation.</p>
+<p>It is also possible to insert other ActiveX Controls (aside from the RTD ActiveX Controls) into a display page within the RTD Editor and display this page in the RTD Driver during runtime. However, such a control  has no special support in connecting to a proDAS channel or to reference data, such as breakpoint tables and polynomials.</p>
+<p>The RTD ActiveX Controls provide the following functionalities:</p>
+<ul>
+  <li><a href="?32#MapChannels">Map Channels to ActiveX Control</a></li>
+  <li><a href="?3#GeneralControlProp">RTDValue Properties Dialogue</a></li>
+  <li><a href="?4#GeneralContext">Context Menus</a></li>
+  <li><a href="?5#RTDValDisplayControl">RTD Value Display Control</a></li>
+  <li><a href="?6#TimeControl">RTD Time Display Control</a></li>
+  <li><a href="?7#InputControl">RTD Input Control</a></li>
+  <li><a href="?32#MultiSwitchControl">RTD Multi Switch Control</a></li>
+  <li><a href="?8#YXPlotControl">RTD Y/X Plot Control</a></li>
+  <li><a href="?9#ProfilePlotControl">RT Profile Plot Control</a></li>
+  <li><a href="?10#StripchartControl">RTD Strip Chart Control</a></li>
+  <li><a href="#CircularGaugeControl">RTD Circular Gauge Control</a></li>
+  <li><a href="#DigitalGaugeControl">RTD Digital Gauge Control</a></li>
+  <li><a href="#LinearGaugeControl">RTD Linear Gauge Control</a></li>
+  <li><a href="#HexControl">RTD Hex Control</a></li>
+  <li><a href="#StateIndicatorControl">RTD State Indicator Control</a></li>
+  <li><a href="#SwitchControl">RTD Switch Control</a></li>
+  <li><a href="#PolarPlot">RTD Polar Plot Control</a></li>
+</ul>
+<p class="Note">If two or more ActiveX controls are over-lapped, the first ActiveX control added to the Display page always appears on top.</p>
+<p>For detailed information on the COM interface(s), refer to <a href="../../References/ICDs/ICD2802ActiveXcontrols.PDF"> ICD78022.2802 Active X Controls</a>.</p>
+<h3 id="MapChannels">Map Channels to ActiveX Control</h3>
+<p>For any ActiveX Control, another dialogue can be launched to map the required channels to the properties of the ActiveX Control. This Channel Mapping Dialogue can be displayed by double-clicking the ActiveX Control or by selecting the menu item <strong>Map Channels&hellip;</strong> from the context menu or from the main <strong>Object</strong> menu.</p>
+<p class="Note">Channels cannot be mapped to the bevel control. The Map Channels option in the bevel context menu is disabled.</p>
+<div class="Container"><img src="images/MapChannels.png" alt="Map Channels" width="700" height="542"></div>
+<p>To map a channel to an ActiveX Control:</p>
+<p class="Note">The channel mapping dialogue supports filtering by subsystem type and subsystem name.</p>
+<p class="Note">The General Properties Dialogue must be used to map a 3D breakpoint table to an ActiveX Control. Within the ActiveX tab of the dialogue, select the CurveArray property, select a 3D Break Point Table as a variable name, and click Close.</p>
+<ol>
+  <li>From the Subsystem type, select the desired subsystem.</li>
+  <li>From the Subsystem name, select the desired subsystem.</li>
+  <li>From the Select a Channel panel, select the desired channel.</li>
+  <li>Select the Map To button to map the selected channel to the respective property.</li>
+  <li>If the control is to display fullset values only, check the Fullset box.</li>
+  <li>If the fullset values are to be restricted to certain test steps only, enter the name of the test step in the Test Step Name field or select a test step from the drop-down list.<br>
+    <br>
+    <p class="Note">The drop-down list contains all used names of test steps.</p>
+  </li>
+  <li>If an ActiveX Control only has a single mappable property, double-clicking a channel in the Select a Channel panel selects the channel, maps it to the single property and closes the dialogue.<br>
+    If an ActiveX Control has more mappable properties than can be displayed simultaneously, the currently invisible properties can be displayed by using the vertical scroll bar on the right hand side.</li>
+  <li>To remove any mapping, select <strong>Clear</strong>.</li>
+  <li>To discard all modifications and close the Map Channels to ActiveX Controls window, select <strong>Cancel</strong>.</li>
+  <li>To accept and process all modifications and close the Map Channels to ActiveX Controls window, select <strong>OK</strong>.</li>
+</ol>
+<p class="Note">Mapping any data variable other than a channel can only be achieved using the data variables dialogue.</p>
+<h3 id="GeneralControlProp">The RTDValue Properties Dialogue</h3>
+<p>Each RTD ActiveX control has a properties dialogue to define the layout and behaviour of the control. This properties dialogue is available in the RTD Editor and in the RTD Driver, but in the driver only a subset of the properties may be changed. The property dialogue may be invoked by:</p>
+<ul>
+  <li>selecting <i><em>Additional Properties ... </em></i> from the context menu</li>
+  <li>double clicking in the RTD Driver</li>
+  <li>selecting the <em>More Properties</em> button in the generic property dialogue of the RTD Editor</li>
+</ul>
+<p> The RTDValue Properties dialogue has the following buttons:</p>
+<ul>
+  <li><em>OK</em> to apply the changes and terminate the dialogue</li>
+  <li><em>Cancel</em> to finish the dialogue without any further change</li>
+  <li><em>Apply</em> to apply the pending changes (the <em>Apply</em> button is only enabled if the user has made changes)</li>
+  <li><em>Help</em> to invoke the online help</li>
+</ul>
+<p class="Note">It may be required to click the OK or Cancel buttons more than once to close the dialogue box.</p>
+<h4 id="ColorTab">Color Tab</h4>
+<p>The Color tab of the RTDValue Properties dialogue (below) is described in the following table.</p>
+<div class="Container"><img src="images/PropColor.PNG" alt="PropColor" width="574" height="511"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>BackgroundColor</td>
+    <td>Background color of the control</td>
+  </tr>
+  <tr>
+    <td>BarBkColor</td>
+    <td>Background color of the bar (Value Control only)</td>
+  </tr>
+  <tr>
+    <td>FontColor</td>
+    <td>Font color for static text</td>
+  </tr>
+  <tr>
+    <td>NumericBkColor</td>
+    <td>Background color for numeric display</td>
+  </tr>
+  <tr>
+    <td>NumericFontColor</td>
+    <td>Font color for numeric display</td>
+  </tr>
+</table>
+<p>A color can either be set by selecting a color from the list of predefined colors of a color group or by defining another color via a color dialogue.</p>
+<h4 id="FontTab">Font Tab</h4>
+<p>The Font tab of the RTDValue Properties Dialogue (below) is described in the following table.</p>
+<p class="Note">The Font tab is only available for graphical RTD displays. When options are chosen in this tab, they are applied to all text in the graphical display. To apply different text options to each text section, use the Properties tab.</p>
+<div class="Container"><img src="images/YXPlotFont.png" alt="YX Plot Font" width="434" height="332"></div>
+<br>
+<table class="Table-Grey">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Properties</td>
+    <td>Category of text the options apply to.</td>
+  </tr>
+  <tr>
+    <td>Font</td>
+    <td>Font chosen for selection.</td>
+  </tr>
+  <tr>
+    <td>Size</td>
+    <td>Font size for selection.</td>
+  </tr>
+  <tr>
+    <td>Effects</td>
+    <td>Effects for selection: Bold, Underline, Italic, Strikeout.</td>
+  </tr>
+  <tr>
+    <td>Sample Text</td>
+    <td>Sample of text with the options selected.</td>
+  </tr>
+</table>
+<h3 id="GeneralContext">The Context Menus</h3>
+<p>The context menu of the RTD ActiveX Controls in the RTD Editor is described above. At runtime, there are different context menus for the graphical and non-graphical controls. For the non-graphical controls there is only a subset of commands available.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Non-Graphical Controls</th>
+    <th>Y/X Plot and Profile Plot Controls</th>
+    <th>Strip Chart Control</th>
+  </tr>
+  <tr>
+    <td><img src="images/ContextRuntimeNonGraphic2.png" alt="Context Runtime NonGraphic 2" width="257" height="72"></td>
+    <td><img src="images/ContextRuntimeGraphic2.png" alt="Context Runtime Graphic 2" width="259" height="280"></td>
+    <td><img src="images/ContextStripchart2.png" alt="Context Stripchart 2" width="259" height="302"></td>
+  </tr>
+</table>
+<br>
+<table class="Table-Grey">
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><em>Additional Properties ...</em></td>
+    <td>Displays the respective property dialogue (the name has been chosen to keep it the same as in the editor).</td>
+  </tr>
+  <tr>
+    <td><em>Information on Data Variables ...</em></td>
+    <td>Gives information on the data variables assigned to the control. Data variables are mostly channels, but may also be break point tables or polynomials.</td>
+  </tr>
+  <tr>
+    <td><em>Reset properties</em> ...</td>
+    <td>Resets all properties of the control to the persistently stored values or, if it has not been saved yet, to the default values.</td>
+  </tr>
+  <tr>
+    <td><em>Refresh Control</em></td>
+    <td>Removes all dynamic data from the graphic and resets the drawing ranges, if there has been an automatic range increase.</td>
+  </tr>
+  <tr>
+    <td><em>Pause</em></td>
+    <td>Pauses the update of the control. The pause mode is indicated by displaying a check mark beside the menu entry. In this mode, the control continues to buffer data. If the pause state is released, by clicking the entry again, the data buffered in-between are displayed.</td>
+  </tr>
+  <tr>
+    <td><em>Cross hair cursor</em></td>
+    <td>This menu entry <em></em>is only available if the control is paused. This mode is indicated by displaying a check mark beside the menu entry. If activated, the mouse cursor changes to a cross. In this state, the position of the cursor is displayed, either in the numeric display or, if there is no numeric display in the control, in a tooltip. To end this mode, the menu entry must be clicked again.</td>
+  </tr>
+  <tr>
+    <td><em>Vertical Line Cursor</em></td>
+    <td>This menu entry is only available if the control is paused. This mode is indicated displaying a check mark beside the menu entry. If activated, the mouse cursor changes to a vertical line. In this state, the position of the intersection of the cursor with each curve of the diagram is displayed in the numeric display. To end this mode, the menu entry must be clicked again.</td>
+  </tr>
+  <tr>
+    <td><em>Trap closest curve point</em></td>
+    <td>This menu entry is only available if the control is paused. This mode is indicated by displaying a check mark beside the menu entry. If the user clicks on the diagram in this mode the position of the point which is closest to the clicked position is displayed in a tooltip. To end this mode, the menu entry must be clicked again. </td>
+  </tr>
+  <tr>
+    <td><em>Print Diagram</em></td>
+    <td>Causes the display of the control to be printed. On a black and white printer, symbols are added to curves if they are displayed without, in order to distinguish them from each other. </td>
+  </tr>
+  <tr>
+    <td><em>Save Diagram</em></td>
+    <td>Causes the display of the control to be saved in enhanced metafile (emf) format. The name of the file is automatically generated.</td>
+  </tr>
+  <tr>
+    <td><em>Copy Diagram</em></td>
+    <td>Copies the diagram (as it is currently shown) as a metafile, which can be pasted into any word processing or image editing application.</td>
+  </tr>
+  <tr>
+    <td><em>Zoom/Pan Diagram</em></td>
+    <td>Starts the zoom/pan mode. The mode is indicated by displaying a check mark beside menu entry. The following zoom/pan options are available:
+      <ul>
+        <li>Hold down CTRL and left-click to drag the viewing area to a desired location on the graph.</li>
+        <li>Hold down SHIFT and left-click  an area on the graph to zoom in.</li>
+        <li>Scroll using the mouse Scroll Wheel to zoom in and out of the graph, with the cursor being the focal point of the zoom.</li>
+      </ul>
+      To end the zoom mode, the menu entry must be clicked again.</td>
+  </tr>
+</table>
+<h3 id="RTDValDisplayControl">The RTD Value Display Control</h3>
+<p>A RTD Value Control displays the current value of a channel, either numerically, or as a bar graph, or both. </p>
+<p>The numerical display consists of the name, the value and the engineering unit display. All these elements are optional. If there is no bar graph, they may be arranged horizontally or vertically. Fonts, sizes, colors and alignment for these elements can be selected separately. The quality may be displayed together with the value.</p>
+<p>The bar graph may be horizontal, vertical or circular. It is filled or displays an indicator according to the current value relative to the given minimum and maximum values. A scale and a thin bar indicating the corresponding limit values may be displayed next to the bar. </p>
+<p>The alarm state of the channel can be indicated in several ways. If there is a bar which is filled, the filling color indicates the alarm state. The numeric display can indicate the alarm state either by the background color or by the text color. </p>
+<p class="Note">The RTD Value Control  displays integer type channels in both binary and hexadecimal representation; provided the format is specified appropriately.</p>
+<div class="Container"> <img alt="ValueSamples" src="images/ValueSamples.PNG" ></div>
+<h4 id="ValueControlProp">General and Bar Graph Properties Tab</h4>
+<p>The General and Bar Graph Properties tab of the RTD Value Properties dialogue (below) is described in the following table.</p>
+<div class="Container"><img  src="images/ValuePropBar.PNG" alt="Value Prop Bar" width="574" height="511"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Layout</td>
+    <td>There are five choices for the principal layout:
+      <ul>
+        <li>horizontal numeric display without bar</li>
+        <li>vertical numeric display without bar</li>
+        <li>horizontal bar and numeric display</li>
+        <li>vertical bar and numeric display</li>
+        <li>circular bar and numeric display </li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Background</td>
+    <td>The flag can be set to indicate whether the control is transparent or not. If the control is transparent, the background color is the background color of the page. If control is not transparent, the selected background color is used.</td>
+  </tr>
+  <tr>
+    <td>Bar Display Range</td>
+    <td>The minimum and maximum value of the bar range can be defined. Either the default range, as defined in the Channel Editor, or a user defined range is used (only relevant for bar layout).</td>
+  </tr>
+  <tr>
+    <td>Source</td>
+    <td>Either raw values or values converted to engineering units can be selected. In most cases, the second is appropriate.</td>
+  </tr>
+  <tr>
+    <td>Bar Scale</td>
+    <td>It can be selected whether or not a scale is displayed next to the bar. (Only relevant for bar layout.)</td>
+  </tr>
+  <tr>
+    <td>Bar Limits</td>
+    <td>It is possible to display a thin bar indicating the limits next to the main bar. Either no such bar, a limit bar with the non-alarm range in green or a limit bar with the non-alarm range in background color can be selected. (Only relevant for bar layout.)</td>
+  </tr>
+  <tr>
+    <td>Value Indication Bar</td>
+    <td>It can be selected whether the current value in the bar is displayed by filling the bar or by an indicator. (Only relevant for bar layout.)</td>
+  </tr>
+  <tr>
+    <td>Extension of Elements</td>
+    <td>The extensions of the elements of the display can be defined. For a horizontal layout, these are horizontal extensions, for a vertical layout, vertical extensions. All extensions must be positive. Extensions are only relevant for visible elements. Only the relative size of the extensions matter because the whole rectangle of the control is always used for display.</td>
+  </tr>
+</table>
+<h4 id="NumProp">Numeric Display Properties Tab</h4>
+<p>The Numeric Display Properties tab of the RTDValue Properties dialogue (below) exposes the Value properties that are connected with a channel or a fullset channel. The Numeric Display Properties tab of the RTD Value Properties dialogue (below) is described in the following table.</p>
+<div class="Container"><img src="images/ValuePropNumeric.PNG" alt="Value Prop Numeric" width="574" height="511" ></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Name</td>
+    <td>It can be selected whether a name is displayed and whether the name or the alternate name is to be used. The name can be aligned left, right or in the centre. The size in points can be selected or it can be variable (i.e.: the maximum possible size is used).</td>
+  </tr>
+  <tr>
+    <td>Value</td>
+    <td>It can be specified whether the value is displayed. The value can be aligned left, right or in the centre. The size in points can be selected or it can be variable (i.e.: the maximum possible size is used). Alarms can be indicated by the background or by the text color or not at all. The output format can be either scientific or fixed point with a definable number of digits before and after the comma.</td>
+  </tr>
+  <tr>
+    <td>Quality</td>
+    <td>Either all qualities, only SUSPECT and BAD qualities or no qualities at all can be displayed. </td>
+  </tr>
+  <tr>
+    <td>Engineering Unit</td>
+    <td>It can be determined whether the engineering unit is displayed. The engineering unit can be aligned left, right or in the centre. The size, in points, can be selected or it can be variable (i.e.: the maximum possible size is used).</td>
+  </tr>
+</table>
+<h3 id="TimeControl">The RTD Time Display Control</h3>
+<p>The RTD Time Display Control displays the time and date numerically. Normally, its properties <em>Time</em> and <em>Date</em> should be connected to the channels <em>Time</em> and <em>Date</em> respectively, which are automatically generated channels. If this is done, the time and date of the online data are displayed. </p>
+<p>A control can display either time, or date, or both. If both are displayed, they can be arranged horizontally or vertically. Optionally, the channel names are shown. But this is only recommended, if special channels are used for time and date information. For both date and time a variety of formats is available. </p>
+<p>Internally, the date and time are represented as float values. The date value is the number of days since the 30th of December 1899. The time value is the fraction of the day (i.e.: it is number between 0 and 1). </p>
+<div class="Container"><img alt="TimeSamples" src="images/TimeSamples.PNG" ></div>
+<h4 id="TimeControlProp">The RTDTime Properties Dialogue</h4>
+<p>The RTDTime Properties dialogue (below) exposes the Time and Date properties that are connected with a channel or a fullset channel, if they are to be displayed.</p>
+<p>The RTD Time Display Control dialogue has two tabs. The first tab, Properties of RTD Time Control, is for general properties that are described in the following table. The second tab is the <a href="?11#ColorTab"><em>Color</em></a><a href="#ColorTab"><em></em></a> tab. All properties can be modified at runtime.</p>
+<div class="Container"><img src="images/TimeProp2.png" alt="Time Prop 2" width="463" height="572"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Displayed Values</td>
+    <td>It can be set to display the date, the time, or both date and time.</td>
+  </tr>
+  <tr>
+    <td>Arrangement</td>
+    <td>The arrangement can be set to arrange the name and value horizontally or vertically (only relevant if both name and value are displayed). In a horizontal arrangement, the names and the date and time may be displayed above and in a vertical arrangement, to the left of the display of values.</td>
+  </tr>
+  <tr>
+    <td>Transparency</td>
+    <td>It can be selected to make the name transparent.</td>
+  </tr>
+  <tr>
+    <td>Date</td>
+    <td>The font size of the date display, in points, can be set specifically or as a variable (i.e. the maximum possible size is used).<br>
+      The alignment of the date display can be set as left, center, or right.<br>
+      A date format can be selected from the Date Format list, where:<br>
+      <ul>
+        <li>yyyy is a four digit year</li>
+        <li><em>yy</em> is a two digit year</li>
+        <li><em>mm</em> is the two digit ordinal number of the month</li>
+        <li><em>dd</em> is the two digit day of the month</li>
+      </ul>
+      The font size and the alignment of the Name can be set.
+      <p class="Note">The Name will only be visible if the Transparent checkbox is not selected.</p></td>
+  </tr>
+  <tr>
+    <td>Time</td>
+    <td>The font size of the time display, in points, can be set specifically or as a variable (i.e. the maximum possible size is used). <br>
+      <br>
+      The alignment of the time display can be set as left, center, or right.<br>
+      <br>
+      A time format can be selected from the Time Format list, where:
+      <ul>
+        <li>HH is the two digit hour</li>
+        <li>MM is the two digit minute</li>
+        <li>SS is the two digit second</li>
+        <li>sss is the three digit millisecond</li>
+      </ul>
+      The font size and the alignment of the Name can be set.
+      <p class="Note">The Name will only be visible if the Transparent checkbox is not selected.</p></td>
+  </tr>
+</table>
+<h3 id="InputControl">The RTD Input Control</h3>
+<p>A RTD Input Control allows the user to enter a value for float, integer and Boolean channels.</p>
+<p class="Note">The RTD Input Control can only alter channel values if the channel values are settable. If the channel values are not settable, use <a href="#StateIndicatorControl">RTD State Indicator Control</a>.</p>
+<p>For <em>float</em> channels, the value is entered in a text field and applied by clicking the Apply button next to it.</p>
+<p>For <em>integer</em> channels, a text field, a combo box, a radio group, or a push button group is used. In the text field, the user can enter the value and apply it by clicking the <em>Apply</em> button next to the text field (exactly the same as for a float channel).</p>
+<p>For Boolean channels, either a check box or a button can be selected. The value is applied immediately when the element is selected.</p>
+<p>The combo box, the radio group, and the push button group are only used if there is an enumeration format defined for the channel. The enumeration format is defined in the Channel Editor. The possible choices, extracted from the enumeration format, are then presented to the user. The value is applied as soon as it is selected.</p>
+<div class="Container"> <img alt="Input Samples" src="images/InputSamples.PNG" ></div>
+<h4 id="InputControlProp">The RTDInput Properties Dialogue</h4>
+<p>The RTDTime Properties dialogue (below) exposes the property values that are connected with a channel or a fullset channel, if they are to be displayed.</p>
+<p>The RTDInput Properties dialogue for the RTD Input Control has two tabs. The first tab, Properties of RTD Input Control, is for general properties that are described in the following table. The second tab is the <a href="?12#ColorTab"><em>Color</em></a> tab.</p>
+<div class="Container"><img src="images/InputProp2.png" alt="Input Prop 2" width="736" height="474"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Enumeration Format</td>
+    <td>If an integer channel is assigned and an enumeration format is selected, the user can chose whether the texts of the enumeration format are displayed in a radio group, in a combo box or in a group of push buttons.</td>
+  </tr>
+  <tr>
+    <td>Boolean Format</td>
+    <td>If a Boolean channel is assigned, it can be displayed by selecting either a check box, a latched button or a push button. When the push button is selected, it appears in a pressed position.</td>
+  </tr>
+  <tr>
+    <td>Arrangement</td>
+    <td>The arrangement of the display elements can be set horizontally or vertically.</td>
+  </tr>
+  <tr>
+    <td>Background</td>
+    <td>The flag can be set to indicate whether the control is transparent or not. If the control is transparent, the background color is the background color of the page. If control is not transparent, the selected background color is used.</td>
+  </tr>
+  <tr>
+    <td>Appearance of Input Element </td>
+    <td>Used to set the appearance of the input element. For Boolean channels using a button appearance the user is given the choice of displaying either text/numerical values or two different bitmaps.</td>
+  </tr>
+  <tr>
+    <td>Name</td>
+    <td>The Name panel allows the user to determine whether to display the name or not and whether the name or the alternate name is to be displayed. The name can be aligned left, right, or centered. The font size, in points, can be set or it can be variable (i.e.: the maximum possible size is used).</td>
+  </tr>
+  <tr>
+    <td>Engineering Unit</td>
+    <td>Engineering units can be displayed by selecting the Display Eng. Unit. The engineering unit can be aligned left, right, or centered. The font size, in points, can be set or it can be variable (i.e.: the maximum possible size is used).</td>
+  </tr>
+  <tr>
+    <td>Extension of Elements</td>
+    <td>The extensions of the elements of the display can be defined. For a horizontal arrangement, these are horizontal extensions. For a vertical arrangement, these are vertical extensions. All extensions must be positive. Extensions are only relevant for visible elements. Only the relative size of the extensions matters because the whole rectangle of the control is always used for display.</td>
+  </tr>
+</table>
+<h3 id="MultiSwitchControl">The RTD Multi Switch Control</h3>
+<p>The RTD Multi Switch Control allows a user to set boolean values for multiple channels, using a radio (or latched push) button group. Each single button (radio or latched push button) is mapped to a channel of type boolean.</p>
+<p>The user can choose between two different visual layouts:</p>
+<ul>
+  <li>radio buttons</li>
+  <li>latched  buttons</li>
+</ul>
+<div class="Container"><img src="images/MultiSwitchControl.png" alt="Multi Switch Control" width="304" height="193"></div>
+<h4 id="MultiSwitchProp">The RTDMultiSwitch Properties Dialogue</h4>
+<p>The RTDMultiSwitch Properties dialogue (below) exposes the properties, which define the visual layout of the control.</p>
+<p>The RTDMultiSwitch Properties dialogue for the RTD Multi Switch Control has two tabs. The first tab, Properties of RTD Multi Switch Control, is for general properties that are described in the following table. The second tab is the <a href="?30#ColorTab"><em>Color</em></a> tab. In addition to the text and background color, the color tab allows to specify one specific text color for the <strong>true state</strong> (button is latched) of the push button and another for the <strong>false state</strong> (button is released) of the button.</p>
+<div class="Container"><img src="images/MultiSwitchControlProp.png" alt="Multi Switch Control Prop" width="700" height="460"></div>
+<br>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="2" >Properties of RTD Multi Switch Control</th>
+  </tr>
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Button Type</td>
+    <td>Can be set to either <strong>Radio Buttons</strong> or <strong>Latched Buttons</strong>.</td>
+  </tr>
+  <tr>
+    <td>Arrangement</td>
+    <td>The arrangement of the display elements can be set to either <strong>Horizontal</strong> or <strong>Vertical</strong>.</td>
+  </tr>
+  <tr>
+    <td>Background</td>
+    <td>The flag can be set to indicate whether the control is transparent or not. If the control is transparent, the background color is the background color of the page. If the control is not transparent, the selected background color is used.</td>
+  </tr>
+  <tr>
+    <td>Appearance of Latched Buttons</td>
+    <td><p class="Note">Only enabled for Latched Buttons.</p>
+      The user can define  the buttons appearance using the following options:
+      <ul>
+        <li><strong>Channel Names:</strong> For each push button (associated with a channel) the corresponding <em>Channel Name</em> is displayed on the buttons surface. The font size can be set to a fixed size in points or it can be defined as being <em>variable</em>, in which case it is dynamically scaled with the button size.</li>
+        <li><strong>User Defined Button Text:</strong> For each push button (associated with a channel) it can be selected a pair of user defined text strings, one for the <em>true state</em> (button is latched), and one for the <em>false state</em> (button is released). The font size can be set to a fixed size in points or it can be defined as being <em>variable</em>, in which case it is dynamically scaled with the button size.</li>
+        <li><strong>Bitmap Image:</strong> For each push button (associated with a channel) it can be selected a pair of bitmap images, one for the <em>true state</em> (button is latched), and one for the <em>false state</em> (button is released).</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Label Text</td>
+    <td>The effect of the settings in this property group depend on the chosen <em>Button Type</em>.<br>
+      <br>
+      <strong>For Radio Buttons:</strong><br>
+      The user can determine whether the Label Text (caption text) is taken from the <em>Channel Name</em> or the <em>Alternative Channel Name</em>. (These names can be defined by using the Channel Editor application). The  name can be aligned left, right, or centered. The font size can be set to a fixed size in points or it can be defined as being <em>variable</em>, in which case it is dynamically scaled with the button size.<br>
+      <br>
+      <strong>For Latched Buttons:</strong><br>
+      It can be specified whether a Label Text is displayed beside each Latched Push Button. It can be chosen between displaying the <em>Channel Name</em> or the <em>Alternative Channel Name</em> (These names can be defined by using the Channel Editor application). The name can be aligned left, right, or centered. The font size can be set to a fixed size in points or it can be defined as being <em>variable</em>, in which case it is dynamically scaled with the button size.</td>
+  </tr>
+  <tr>
+    <td>Extension of Elements</td>
+    <td><p class="Note">Only enabled for Latched Buttons.</p>
+      Allows to user to:
+      <ul>
+        <li>define the size of the <strong>margin</strong> around each latched button</li>
+        <li>to set the <strong>width/height</strong> (depending on whether horizontal or vertical alignment is chosen) <strong>ratio</strong> of the text label area in relation to the push button area inside the entire controls rectangle</li>
+      </ul></td>
+  </tr>
+</table>
+<h3 id="YXPlotControl">The RTD Y/X Plot Control</h3>
+<p>A RTD Y/X Plot Control displays one channel over another in a diagram. Up to 50 such pairs can be displayed in the same diagram. </p>
+<p>A separate y axis may be displayed for each y value, but there is only one common x axis and therefore, it is recommended that only channels with the same engineering unit and similar ranges be used as x values.</p>
+<p class="Note">The x values may be the same for several curves.</p>
+<p>A legend may be displayed, to the right of the diagram, that shows the current value, name, and engineering unit for each x and y value of the diagram. If a y value does not have a y axis, then the range of the y value is also displayed.</p>
+<p class="Note">If the values on the chart go outside the displayed x or y range, then the display ranges are resized automatically to display all the data points.</p>
+<div class="Container"><img src="images/YXPlotSample.PNG" alt="YXPlotSample" width="635" height="375"></div>
+<h4 id="PropConCurveArr">The RTDYXPlot Properties Dialogue</h4>
+<p>The RTDYXPlot Properties dialogue exposes the properties <em>XValuen</em> and <em>YValuen</em> which may be connected with a channel, a fullset channel, a coordinate of a 2D break point table, or a coordinate of a polynomial. Here, <em>n</em> is a two digit number ranging from 01 to 50. To define a curve, <em>both XValuen</em> and <em>YValuen</em> must be connected. The type of data variable must be the same for both. For 2D break point tables and polynomials, the corresponding coordinates of the same 2D break point table or polynomial, respectively, must be selected.</p>
+<p>The RTDYXPlot Properties dialogue also exposes the <em>CurveArray</em> property, which may be connected with a 3D break point table. If so, then for each x value of the 3D break point table, a curve is displayed. The y parameter of the table serves as the x value and the z parameter as the y value in the diagram.</p>
+<p>The RTDYXPlot Properties dialogue for the RTD Y/X Plot Control has three tabs. The first tab, Properties of RTD Y/X Plot Control, is for general properties that are described in the Properties of the Y/X Plot Control table. The second tab is the <a href="?13#ColorTab"><em>Color</em></a> tab.</p>
+<div class="Container"><img src="images/YXPlotProp.png" alt="YX Plot Properties" width="700" height="509"></div>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="2" >Properties of the Y/X Plot Control</th>
+  </tr>
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Table of Curves</td>
+    <td>Each row of this table corresponds to a curve. A maximum of 50 curves can be defined. The meaning of the columns is described in the <a href="?14#TableofYXplotCurves">Columns in the Table of YX Plot Curves table </a>below.</td>
+  </tr>
+  <tr>
+    <td>X Axis</td>
+    <td>The properties of the common x axis for all curves can be defined. The range can be defined by giving the minimum and maximum values. The maximum value must be greater than the minimum value.<br>
+      <br>
+      It can be selected whether or not the minor ticks are displayed as part of the x axis. A label for the x axis can be defined.<br>
+      <br>
+      <p class="Note">If Automatic Range Increase is selected under &quot;General Properties&quot; the software automatically increases the scale as required independently of the selected Min and Max values.</p>
+      <br>
+      The Labels font corresponds to the font of the numbers on the graph. The size of the text can be defined, and the text can either be bold or not bold.<br>
+      <br>
+      The Caption Text corresponds to the text titling of the axis on the graph. The size of the text can be defined, and the text can either be bold or not bold.</td>
+  </tr>
+  <tr>
+    <td>Default Y Axis</td>
+    <td>The default y axis is used for all curves which have no separate y axis defined in the table of curves at the top. The range of the default y axis can be defined by giving the minimum and maximum values. The maximum value must be greater than the minimum value.<br>
+      <br>
+      It can be selected whether or not the minor ticks are displayed as part of the default y axis. A label for the default y axis can be defined. The user can assign the range of the default y axis to all y values by clicking the corresponding button.<br>
+      <p class="Note">If Automatic Range Increase is selected under &quot;General Properties&quot; the software automatically increases the scale as required independently of the selected Min and Max values.</p>
+      <br>
+      The Labels font corresponds to the font of the numbers on the graph. The size of the text can be defined, and the text can either be bold or not bold.<br>
+      <br>
+      The Caption Text corresponds to the text titling of the axis on the graph. The size of the text can be defined, and the text can either be bold or not bold.<br>
+      <br>
+      The orientation of the caption can be selected between Bottom to Top or Top to Bottom.</td>
+  </tr>
+  <tr>
+    <td>General Properties</td>
+    <td>The curves can be reset to their default styles by clicking the corresponding button.<br>
+      <br>
+      It can be selected whether or not the x and y ranges are automatically increased when a value outside of the current range is to be displayed. It can be selected whether or not a grid is displayed. The grid lines  correspond with the major ticks of the corresponding axis.<br>
+      <p class="Note">No horizontal grid lines are displayed if more than one y axis is visible.</p>
+      The width of the legend can be set as percentage of the control width. <br>
+      <br>
+      The flag can be set whether the control is transparent or not. If the control is transparent, the background color is the background color of the page. If the control is not transparent, the selected background color is used.<br>
+      <br>
+      It can be selected to use alternate names instead of the names.<br>
+      <p class="Note">The Automatic Range Increase under &quot;General Properties&quot; automatically increases the scale as required independently of the selected Min and Max values.</p>
+      The maximum number of points can be entered, and annotations can be placed on the diagram itself. </td>
+  </tr>
+  <tr>
+    <td>Curve Array Properties</td>
+    <td>In this group, the properties of a curve array created from a 3-dimensional break point table can be set. It can be selected whether the curves are represented by lines, dots, symbols, or lines and symbols. The shape of the symbols can be selected. The line width can be selected with the special value Min. (i.e.: the minimum width is to be used). Finally, the color of the curves can be selected by a color dialogue<i>.</i></td>
+  </tr>
+  <tr>
+    <td>Alarm Indication</td>
+    <td>It can be selected whether alarms are indicated by the background, the text color, or not at all.</td>
+  </tr>
+  <tr>
+    <td>Legend Item (Curve<span class="Body"> </span><i><span class="CellBody">n, <em class="CellBody">a</em> Value</span></i><span class="CellBody"><i>)</i></span></td>
+    <td>The legend item group refers to the x or y value of one of the curves as displayed in the label of the group. To switch it to another x or y value, the appropriate  x or y value cell must be selected in the curve list. If another cell is selected  in the Table of Curves, then the control of this group is made not active.<br>
+      <br>
+      The font size can be selected for name, value,  and range of the legend items. The font size (in points) can be selected or it  can be a variable (i.e.: the maximum possible size is used). Either raw values  or values converted to engineering units can be selected. The output format can  be either scientific or fixed point with a definable number of digits before  and after the comma.</td>
+  </tr>
+  <tr>
+    <td>Quality</td>
+    <td>The display of Quality levels can be selected.</td>
+  </tr>
+</table>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="2" ><a name="TableofYXplotCurves"></a>Columns in the Table of YX Plot Curves</th>
+  </tr>
+  <tr>
+    <th width="108">Group</th>
+    <th width="781">Description</th>
+  </tr>
+  <tr>
+    <td>No.</td>
+    <td>This column is generated automatically. It labels the row n as Curve n<i>.</i></td>
+  </tr>
+  <tr>
+    <td>X Value</td>
+    <td>This read-only column displays the channel name assigned to <em>XValuenn</em> in the main property dialogue of the RTD Editor, where <i>nn is a two digit number, between 1 and 50, representing the x value of the curve. When undefined, it displays </i>My name<i><i>.</i></i></td>
+  </tr>
+  <tr>
+    <td>Eng. Unit X</td>
+    <td>This read-only column displays the engineering unit of the x channel.</td>
+  </tr>
+  <tr>
+    <td>Y Value</td>
+    <td>This read-only column displays the channel name assigned to <em>YValuenn</em> in the main property dialogue of the RTD Editor, where nn is a two digit number between 1 and 50. It represents the y value of the curve. When it is undefined it displays My name.</td>
+  </tr>
+  <tr>
+    <td>Eng. Unit Y</td>
+    <td>This read-only column displays the engineering unit of the y channel.</td>
+  </tr>
+  <tr>
+    <td>Curve Style</td>
+    <td>The curve style can be selected as lines, dots, symbols or lines and symbols.</td>
+  </tr>
+  <tr>
+    <td>Line Width</td>
+    <td>If the curve has lines the line width can be selected, with the special value Min. (i.e.: the minimum width is to be used).</td>
+  </tr>
+  <tr>
+    <td>Symbol</td>
+    <td>The symbol of the curve can be selected.</td>
+  </tr>
+  <tr>
+    <td>Color</td>
+    <td>The color of the curve can be selected via a color dialogue.</td>
+  </tr>
+  <tr>
+    <td>Max. # Points</td>
+    <td>The maximum number of points of the curve can be selected. When this number is reached the oldest points are deleted.</td>
+  </tr>
+  <tr>
+    <td>Fullsets</td>
+    <td>It can be selected whether fullsets from the test results database can be displayed in the control with the same x and y channels as defined for the curve. At runtime, the user must select the fullsets.</td>
+  </tr>
+  <tr>
+    <td>Y Min</td>
+    <td>The minimum value of of the current display range of the y value can be defined, if Default Range is not selected. Otherwise, the minimum display value as defined in the channel definition is displayed read-only.</td>
+  </tr>
+  <tr>
+    <td>Y Max</td>
+    <td>The maximum value of of the current display range of the y value can be defined, if Default Range is not selected. Otherwise, the maximum display value as defined in the channel definition is displayed read-only.</td>
+  </tr>
+  <tr>
+    <td>Default Range</td>
+    <td>It can be selected whether the range of the default y axis is to be used for the curve. Otherwise the range defined by Y Min and Y Max is used.</td>
+  </tr>
+  <tr>
+    <td>Minor Ticks</td>
+    <td>It can be selected whether minor ticks are to be displayed for the separate y axis, if it is visible.</td>
+  </tr>
+  <tr>
+    <td>Scale Visible</td>
+    <td>It can be selected whether the separate y axis is visible.</td>
+  </tr>
+</table>
+<h3 id="ProfilePlotControl">The RTD Profile Plot Control</h3>
+<p>An RTD Profile Plot Control displays pairs of channel values in a diagram. Up to 50 pairs of one time points form a curve. As soon as the maximum number of curves is reached, the oldest curve disappears.</p>
+<p>The RTD Profile Plot Control can also display the data from fullsets (one fullset correspond to one curve).</p>
+<p>It is recommended that only channels with the same engineering unit and similar range be selected as x and as y values so that only one x and one y axis is displayed.</p>
+<div class="Container"><img alt="Profile Plot Sample" src="images/ProfilePlotSample.PNG" id="IMG1"></div>
+<h4 id="PropConProfile">The RTDProfilePlot Properties Dialogue</h4>
+<p>The RTDProfilePlot Properties dialogue (below) exposes the properties <em>XValuen</em> and <em>YValuen</em> which may be connected with a channel or a fullset channel. Here, <em>n</em> is a two digit number ranging from 01 to 50. To define a point in each curve, <em>XValuen</em> and <em>YValuen</em> must both be connected with the same type of data variable.</p>
+<p>The RTDProfilePlot Properties dialogue for the RTD Profile Plot Properties has three tabs. The first tab, Properties of RTD Profile Plot Control, is for general properties that are described in the following table. The second tab is the <a href="?15#ColorTab"><em>Color</em></a> tab.</p>
+<div class="Container"><img src="images/ProfilePlotProp.PNG" alt="ProfilePlotProp" width="625" height="645"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>X Axis</td>
+    <td>The properties of the common x axis for all curves can be defined. The range can be defined by giving the minimum and maximum values. The maximum value must be greater than the minimum value. It can be selected whether the minor ticks are displayed as part of the x axis or not. A label for the x axis can be defined.</td>
+  </tr>
+  <tr>
+    <td>Y Axis</td>
+    <td>The properties of the common y axis for all curves can be defined. The range can be defined by giving the minimum and maximum values. The maximum value must be greater than the minimum value. <br>
+      <br>
+      It can be selected whether minor ticks are displayed as part of the y axis or not. <br>
+      <br>
+      A label for the y axis can be defined. <br>
+      <br>
+      The orientation of the caption can be selected between Bottom to Top or Top to Bottom.</td>
+  </tr>
+  <tr>
+    <td>Fullsets</td>
+    <td>It can be selected whether or the fullsets are displayed statically. There is one curve per fullset. Since the number of curves is restricted for technical reasons, the number of fullsets must also be restricted.</td>
+  </tr>
+  <tr>
+    <td>General Properties</td>
+    <td>It can be selected whether or not the x and y ranges are automatically increased when a value outside the current range is to be displayed. It can be selected whether or not a grid is displayed. The grid lines correspond with the major ticks of the corresponding axis. <br>
+      <br>
+      The flag can be set whether the control is transparent or not. If the control is transparent, the background color is the background color of the page. If the control is not transparent, the selected background color is used. <br>
+      <br>
+      It can be selected to use alternate names instead of the names.</td>
+  </tr>
+  <tr>
+    <td>Online Curve Properties</td>
+    <td>The maximum number of online curves can be set. When this number is exceeded, the oldest curve generated from the oldest fullset is deleted. The shape of the symbols can be selected. The line width can be selected with the special value <i>Min.</i> (i.e.: the minimum width is to be used). Finally, the color of the curves can be selected by a color dialogue.</td>
+  </tr>
+</table>
+<h3 id="StripchartControl">The RTD Strip Chart Control</h3>
+<p>The RTD Strip Chart Control displays up to 10 values over the time. The time used is the data time, which is the current time during data acquisition. The display starts at the left side of the diagram. When the time reaches the right side of the diagram, the time range is shifted to the left as much as necessary. The curves move in the same way. </p>
+<p>The time range is the same for all curves. The y range may be different for all curves. A separate y axis may be displayed for each curve.</p>
+<p>A legend may be displayed, to the right of the diagram, that shows the current value, name, and engineering unit and, if there is no y axis, the ranges for each y value of the diagram. </p>
+<p class="Note">The RTD Strip Chart enables the user to set the automatic range increase property.</p>
+<div class="Container"> <img alt="Strip Chart Sample" src="images/StripChartSample.png" ></div>
+<h4 id="PropConStrip">The RTDStripChart Properties Dialogue</h4>
+<p>The RTDStripChart Properties dialogue (below) exposes the properties <em>Valuen</em> which may be connected with a channel or a fullset channel. Here, <em>n</em> is a two digit number ranging from 01 to 10. To define a curve, <em>Valuen</em> must be connected.</p>
+<p>The RTDStripChart Properties dialogue for the RTD Strip Chart Control has three tabs. The first tab, Properties of RTD Strip Chart Control, is for general properties that are described in the following table. The second tab is the <a href="?16#ColorTab"><em>Color</em></a> tab.</p>
+<div class="Container"> <img src="images/StripChartProp.png" alt="StripChartProp" width="700" height="511" ></div>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="2" >Properties of the Strip Chart Control</th>
+  </tr>
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><a name="TableOfCurves"></a>Table of Curves</td>
+    <td>Each row of this table corresponds to a curve. A maximum of 10 curves can be defined. The meaning of the columns is described in the <a href="?17#StripChartCurvesTable">Columns in the Table of Strip Chart Curves</a> below. </td>
+  </tr>
+  <tr>
+    <td>Time axis</td>
+    <td>The properties of the common time axis for all curves can be defined. <br>
+      <br>
+      The range can be defined in seconds. <br>
+      <br>
+      It can be selected whether minor ticks are displayed as part of the time axis. <br>
+      <br>
+      A label for the time axis can be defined. </td>
+  </tr>
+  <tr>
+    <td>Default Y Axis</td>
+    <td>The default y axis is used for all curves which have no separate y axis defined in the <a href="?18#TableOfCurves">table of curves</a>. The range of the default y axis can be defined by giving the minimum and maximum values. The maximum value must be greater than the minimum value. <br>
+      <br>
+      It can be selected whether or not the minor ticks are displayed as part of the default y axis. <br>
+      <br>
+      A label for the default y axis can be defined. <br>
+      <br>
+      The orientation of the caption can be selected between Bottom to Top or Top to Bottom. <br>
+      <br>
+      The user can assign the range of the default y axis to the display ranges of all y values by clicking the corresponding button. </td>
+  </tr>
+  <tr>
+    <td>General Properties</td>
+    <td>The curves can be reset to their default styles by clicking the corresponding button. <br>
+      <br>
+      It can be selected whether or not the limit curves are flooded. If this is active, the diagram is filled with the appropriate color (red or yellow) from an upper limit curve to the top or from a lower limit curve to the bottom. Red takes precedence over yellow. The curves are drawn on top of the flooding colors. <br>
+      <br>
+      It can be selected whether or not a grid is displayed. The grid lines  correspond with the major ticks of the corresponding axis. <br>
+      <br>
+      The width of the legend can be set as percentage of the control width. <br>
+      <br>
+      The flag can be set to determine whether the control is transparent or not. <br>
+      <br>
+      If the control is transparent, the background color is the background color of the page. If the control is not transparent, the selected background color is used. <br>
+      <br>
+      It can be selected to use alternate names instead of the names. </td>
+  </tr>
+  <tr>
+    <td>Alarm Indication</td>
+    <td>It can be selected whether or not the alarms are indicated by the background, the text color, or not at all.</td>
+  </tr>
+  <tr>
+    <td>Legend Item</td>
+    <td>The legend item group refers to the y value of one of the curves, as displayed in the label of the group. To switch it to another item, this item must be selected in the curve list. <br>
+      <br>
+      The font sizes for the name, value, and range of the legend items can be selected. The font size, in points, can be selected or it can be variable (meaning that the maximum possible size is used). Either raw values or values converted to engineering units can be selected. The output format can be either scientific or fixed point with a definable number of digits before and after the comma. </td>
+  </tr>
+</table>
+<br>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="2"><a name="StripChartCurvesTable"></a>Columns in the Table of Strip Chart Curves</th>
+  </tr>
+  <tr>
+    <th width="14%">Column</th>
+    <th width="86%">Description</th>
+  </tr>
+  <tr>
+    <td>No.</td>
+    <td>This column is automatically generated. It labels the row n as <i>Curve n.</i></td>
+  </tr>
+  <tr>
+    <td>Value</td>
+    <td>This read-only column displays the channel name assigned to <em>Valuenn</em> in the main property dialogue of the RTD Editor, where <i>nn</i> is a two digit number between 1 and 10. It represents the y value of the curve. When it is undefined it displays <i>My name</i>.</td>
+  </tr>
+  <tr>
+    <td>Eng. Unit</td>
+    <td>This read-only columns displays the engineering unit of the channel. </td>
+  </tr>
+  <tr>
+    <td>Curve Style</td>
+    <td>The curve style can be selected as lines, dots, symbols or lines and symbols. </td>
+  </tr>
+  <tr>
+    <td>Line Width</td>
+    <td>If the curve has lines, the line width can be selected with the special value <i class="CellBody">Min. (i.e.: the minimum width is to be used).</i></td>
+  </tr>
+  <tr>
+    <td>Symbol</td>
+    <td>The symbol of the curve can be selected. </td>
+  </tr>
+  <tr>
+    <td>Color</td>
+    <td>The color of the curve can be selected via a color dialogue. </td>
+  </tr>
+  <tr>
+    <td>Limits</td>
+    <td>It can be selected whether limit curves are displayed for that curve. This is only allowed for one curve. It is determined automatically at runtime which limits exist. </td>
+  </tr>
+  <tr>
+    <td>Min</td>
+    <td>The minimum value of the current display range of the y value can be defined, if Default Range is not selected. Otherwise, the minimum display value as defined in the channel definition is displayed as read-only<i>.</i></td>
+  </tr>
+  <tr>
+    <td>Max</td>
+    <td>The maximum value of of the current display range of the y value can be defined, if <i>Default Range</i> is not selected. Otherwise, the maximum display value, as defined in the channel definition, is displayed as read-only.</td>
+  </tr>
+  <tr>
+    <td>Default Range</td>
+    <td>It can be selected whether or not the range of the default y axis is to be used for the curve. Otherwise, the range defined by min and Max is used.</td>
+  </tr>
+  <tr>
+    <td>Minor Ticks</td>
+    <td>It can be selected whether or not the minor ticks are to be displayed for the separate y axis, if it is visible.</td>
+  </tr>
+  <tr>
+    <td>Scale Visible</td>
+    <td>It can be selected whether the separate y axis is visible.</td>
+  </tr>
+</table>
+<h3 id="CircularGaugeControl">The RTD Circular Gauge Control</h3>
+<p>The RTD Circular  Gauge Control is a component that represents a channel's values on a circular or numerical scale. The display consists of the channel name label, the value label, the  engineering unit label, the scale, the range bar, major/minor tick marks, the needle and the spindle cap. The circular gauge indicates a value with a needle that is fixed via a spindle.</p>
+<div class="Container"><img src="images/CircularGauge.png" alt="Circular Gauge" width="400" height="396"></div>
+<p>The circular gauge may be displayed as:</p>
+<ul>
+  <li>full circular</li>
+  <li>half-circular</li>
+  <li>quarter-circular</li>
+  <li>three-fourth circular</li>
+  <li>wide circular</li>
+</ul>
+<p>The alarm state of the channel can be indicated by the label that displays the channel name or by the label that displays the value, either by the background color or by the text color.<br>
+</p>
+<p>The following circular gauge controls are configurable to customise the appearance:</p>
+<ul>
+  <li>style</li>
+  <li>scale (tickmarks, angles)</li>
+  <li>range</li>
+  <li>needle</li>
+  <li>spindle cap</li>
+  <li>background</li>
+  <li>effects</li>
+  <li>labels (channel name, engineering unit, value)</li>
+  <li>state indicator (displays quality)</li>
+</ul>
+<p>To edit the RTD Circular Gauge Control properties, open the<strong> RTD Circular Gauge Control Properties</strong> dialogue box by right clicking the control and selecting <strong>Additional Properties</strong>.</p>
+<h4>General Properties Tab</h4>
+<p>The General Properties Tab of the RTD Circular Gauge Control Properties dialogue allows the user to define the general properties of the Circular Gauge Control.</p>
+<div class="Container"><img src="images/CircGGenPropTab2.png" alt="Circular Gauge Control Proerties Tab 2" width="659" height="532"></div>
+<br>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Layout</td>
+    <td>There are 2 choices for the principal layout:
+      <ul>
+        <li>Default &ndash; dependant on the linear gauge style, which can be changed in the <strong>Appearance Properties</strong> tab</li>
+        <li>Customize &ndash; the position and size of channel name label, engineering unit label, and value label are defined by the user</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Outside Background</td>
+    <td>Indicates whether the control is transparent or not. If the control is transparent, the background color is the background color of the page. If the control is not transparent, the selected background color is used.</td>
+  </tr>
+  <tr>
+    <td>Alarm Indication by Name</td>
+    <td>Alarms can be indicated by the Name Background Color, by the Name Text Color or not at all.</td>
+  </tr>
+  <tr>
+    <td>State Indicator</td>
+    <td>The state indicator is used to visualise the value quantity (see <a href="#StateIndicatorControl">RTD State Indicator Control</a>). It can be displayed or not displayed.</td>
+  </tr>
+  <tr>
+    <td>Scale</td>
+    <td>The following parameters of the scale text can be defined by the user:
+      <ul>
+        <li>amount of major/minor tickmarks</li>
+        <li>using the default scale range from the Configuration Server or a user defined range</li>
+        <li>angle and radius of the circular scale</li>
+        <li>the number of digits after the decimal point to be displayed on the scale text</li>
+        <li>the shape of the tickmarks (default, line, box, diamond)</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Scale Font</td>
+    <td>The following font parameters of the scale text can be defined by the user:
+      <ul>
+        <li>font family</li>
+        <li>font size</li>
+        <li>italic style</li>
+        <li>bold style</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Needle</td>
+    <td>The size of the needle can be determined using start and end radius parameters or the default style.</td>
+  </tr>
+  <tr>
+    <td>Spindle Cap</td>
+    <td>The style of the spindle cap can be selected.</td>
+  </tr>
+</table>
+<h4>Range Bar and Value Properties Tab</h4>
+<p>The Range Bar and Value Properties Tab of the RTD Circular Gauge Control Properties dialogue allows the user to define the Range Bar and Value properties of the Circular Gauge Control.</p>
+<div class="Container"><img src="images/CircGRBVPropTab2.png" alt="Circular Gauge Control Properties" width="660" height="532"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Range Bar</td>
+    <td>The user can determine whether the Range Bar is displayed or not and the size of the Range Bar. If the <strong>Use Default Size</strong> checkbox is not selected, the start radius and end radius can be defined by the user.</td>
+  </tr>
+  <tr>
+    <td>Value</td>
+    <td>The value label can be displayed or not displayed.</td>
+  </tr>
+  <tr>
+    <td>Value Font</td>
+    <td>The following font parameters of the value label can be defined by the user:
+      <ul>
+        <li>font family</li>
+        <li>font size (in points or as a variable)</li>
+        <li>italic style</li>
+        <li>bold style</li>
+        <li>alignment</li>
+        <li>orientation</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Alarm Indication by Value</td>
+    <td>Alarms can be indicated by the Value Background Color, by the Value Text Color or not at all.</td>
+  </tr>
+  <tr>
+    <td>Value Format</td>
+    <td>The format of the displayed value can be taken from Configuration Server or defined by the user. The output format (Number of Digits) can be fixed point with a definable number of digits before and after the decimal point.</td>
+  </tr>
+  <tr>
+    <td>Position of Value <br>
+      <br>
+      Size of Value</td>
+    <td>These fields are active when the <strong>Customize Layout</strong> option is selected in the <strong>General Properties</strong> tab. The position, width, and height of the label can be defined by the user. All values are expressed as percentages, where 100% is the maximum size of the control in the X or Y axis.</td>
+  </tr>
+</table>
+<h4>Label Properties Tab</h4>
+<p>The Label Properties Tab of the RTD Circular Gauge Control Properties dialogue allows the user to define the label properties of the Circular Gauge Control.</p>
+<div class="Container"><img src="images/CircGLabPropTab2.png" alt="Circular Gauge Control Label Properties" width="660" height="532"></div>
+<br>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Name</td>
+    <td>The existing name can be displayed or not displayed, or an alternate display name can be used.</td>
+  </tr>
+  <tr>
+    <td>Name Font</td>
+    <td>The following font parameters of the name label can be defined by the user:
+      <ul>
+        <li>font family</li>
+        <li>font size (in points or as a variable)</li>
+        <li>italic style</li>
+        <li>bold style</li>
+        <li>alignment</li>
+        <li>orientation</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Engineering (Eng.) Unit</td>
+    <td>The engineering unit can be chosen by the user, and can either be displayed or not displayed.</td>
+  </tr>
+  <tr>
+    <td>Engineering (Eng.) Unit Font</td>
+    <td>The following font parameters of the engineering unit label can be defined by the user:
+      <ul>
+        <li>font family</li>
+        <li>font size (in points or as a variable)</li>
+        <li>italic style</li>
+        <li>bold style</li>
+        <li>alignment</li>
+        <li>orientation</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Position of Name<br>
+      <br>
+      Size of Name<br>
+      <br>
+      Position of Eng. Unit<br>
+      <br>
+      Size of Eng. Unit</td>
+    <td>These fields are active when the <strong>Customize Layout </strong>option is selected in the <strong>General Properties</strong> tab. The position and size of the name and engineering unit can be defined by the user. All values are expressed as a percentage, where 100% is the maximum size of the control in the X or Y axis.</td>
+  </tr>
+</table>
+<h4>Appearance Properties Tab</h4>
+<p>The Appearance Properties Tab of the RTD Circular Gauge Control Properties dialogue allows the user to define the appearance properties of the Circular Gauge Control.</p>
+<div class="Container"><img src="images/CircGAppPropTab2.png" alt="Circular Gauge Control Appearance Properties" width="660" height="532"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Color Settings</td>
+    <td>The following colors in the RTD Digital Gauge Control can be defined by clicking the appropriate <strong>Open palette</strong> button:
+      <ul>
+        <li>Outside Background &ndash; the background color of the control, used only when the <strong>Transparent </strong>checkbox in the <strong>General Properties </strong>tab is not selected</li>
+        <li>Control Background 1 and 2 &ndash; colors of the digital display, used only when the checkbox in the <strong>Use Default Colors </strong>group is not selected.</li>
+        <li>Channel Name Label text &ndash; font color for channel name</li>
+        <li>Unit Label text &ndash; font color for engineering unit</li>
+        <li>Value Label text &ndash; font color for value</li>
+        <li>Value Label Background &ndash; background color for value</li>
+        <li>Major/Minor Tickmarks &ndash; color of tickmarks on the scale; can only be defined when the <strong>Default Range</strong> checkbox in the <strong>Scale</strong> group of the <strong>General Properties</strong> tab is not selected</li>
+        <li>Scale text &ndash; font color for scale text</li>
+        <li>Needle Shader 1 and 2 &ndash; the color of the needle; can only be defined when the <strong>Needle</strong> checkbox in the <strong>Use Default Colors</strong> group is not selected</li>
+        <li>Spindle Cap Shader 1 and 2 &ndash; the color of the spindle cap; can only be defined when the <strong>Spindle Cap</strong> checkbox in the <strong>Use Default Colors</strong> group is not selected</li>
+        <li>Range Bar Limits &ndash; colors for special range bar limits: HiHi, Hi, Prim, Lo, LoLo</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Style</td>
+    <td>Click the <strong>Run Style Manager</strong> button to start the Style Manager in a new window. The Style Manager allows the user to change the style to one of the listed predefined styles. To arrange the gauge in a different way (e.g. quarter circular), the <strong>Show only styles with the same shape</strong> checkbox must not be selected. The currently selected style is shown below the button.
+      <p class="Note">After clicking the Apply button (in the Style Manager), the Cancel button is used to exit the Style Manager.</p></td>
+  </tr>
+  <tr>
+    <td>Use Default Colors</td>
+    <td>If the checkbox is selected, the default color of the original style is used when the gauge is displayed. If the checkbox is not selected, the user defined color is used.</td>
+  </tr>
+  <tr>
+    <td>Special Effects</td>
+    <td>A special effect layer can be added (e.g. a flare effect) to the digital gauge. Any added effect layer is displayed fore of all other elements.</td>
+  </tr>
+</table>
+<h3 id="DigitalGaugeControl">The RTD Digital Gauge Control</h3>
+<p>The  RTD Digital Gauge Control numerically displays the current value of a channel. The display consists of the name, the value and the engineering unit. It may be arranged horizontally or vertically.</p>
+<div class="Container"><img src="images/DigitalGauge.png" alt="Digital Gauge" width="400" height="326"></div>
+<p>The alarm state of the channel can be indicated by the label that displays the channel name either by the background color or by the text color.</p>
+<p>The following digital gauge controls are  configurable to customise the appearance:</p>
+<ul>
+  <li>display type (7-segment, 14-segment, 5x8-matrix, 8x14-matrix)</li>
+  <li>style</li>
+  <li>digit count</li>
+  <li>spacing between digits</li>
+  <li>background</li>
+  <li>effects</li>
+  <li>labels (channel name, engineering unit)</li>
+  <li>colour of segments switched on/switched off</li>
+</ul>
+<p>To edit the RTD Digital Gauge Control properties, open the<strong> RTD Digital Gauge Control Properties</strong> dialogue box by right-clicking the control and selecting <strong>Additional Properties</strong>.</p>
+<h4>General Properties Tab</h4>
+<p>The General Properties Tab of the RTD Digital Gauge Control Properties dialogue allows the user to define the general properties of the Digital Gauge Control.</p>
+<div class="Container"><img src="images/GenPropTab2.png" alt="Digital Gauge Control General Properties" width="658" height="529"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td width="15%">Type of Display</td>
+    <td width="80%">The following display types are available:
+      <ul>
+        <li>7-segment</li>
+        <li>14-segment</li>
+        <li>5x8-matrix</li>
+        <li>8x14-matrix</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Layout</td>
+    <td>There are 3 choices for the principal layout:
+      <ul>
+        <li>Horizontal numeric display</li>
+        <li>Vertical numeric display</li>
+        <li>Customise display (the position and size of the channel name label and engineering unit label are set in the Label Properties tab)</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Format</td>
+    <td>The format of the displayed value can be taken from Configuration Server or defined by the user. The output format can be fixed point with a definable number of digits before and after the decimal point. Spaces between digits can also be defined.</td>
+  </tr>
+  <tr>
+    <td>Alarm Indication</td>
+    <td>Alarms can be indicated by the Background Color, by the Text Color of the channel name label or not at all.</td>
+  </tr>
+  <tr>
+    <td>Outside Background</td>
+    <td>This indicates whether the control is transparent or not. If the control is transparent, the background color is the background  color of the page. If the control is not transparent, the selected background color is used.</td>
+  </tr>
+  <tr>
+    <td>Extension of Elements</td>
+    <td>The extensions of the elements of the display can be defined. For a horizontal layout they are horizontal extensions and for a vertical layout they are vertical extensions. All extensions must be positive. Extensions are only relevant for visible elements. Only the relative size of the extensions are relevant because the whole rectangle of the control is always used for display.</td>
+  </tr>
+</table>
+<h4>Label Properties Tab</h4>
+<p>The Label Properties Tab of the RTD Digital Gauge Control Properties dialogue allows the user to define the label properties of the Digital Gauge Control.</p>
+<div class="Container"><img src="images/LabPropTab2.png" alt="Digital Gauge Control Label Properties" width="658" height="530"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Name</td>
+    <td>The existing name can be displayed or not displayed, or an alternate display name can be used.</td>
+  </tr>
+  <tr>
+    <td>Name Font</td>
+    <td>The following font parameters of the name label can be defined by the user:
+      <ul>
+        <li>font family</li>
+        <li>font size (in points or as a variable)</li>
+        <li>italic style</li>
+        <li>bold style</li>
+        <li>alignment</li>
+        <li>orientation</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Engineering (Eng.) Unit</td>
+    <td>The engineering unit can be chosen by the user, and can either be displayed or not displayed.</td>
+  </tr>
+  <tr>
+    <td>Engineering (Eng.) Unit Font</td>
+    <td>The following font parameters of the engineering unit label can be defined by the user:
+      <ul>
+        <li>font family</li>
+        <li>font size (in points or as a variable)</li>
+        <li>italic style</li>
+        <li>bold style</li>
+        <li>alignment</li>
+        <li>orientation</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Position of Name<br>
+      <br>
+      Size of Name<br>
+      <br>
+      Position of Eng. Unit<br>
+      <br>
+      Size of Eng. Unit</td>
+    <td>These fields are active when the <strong>Customize Layout</strong> option is selected in the <strong>General Properties</strong> tab. The position and size of the name and engineering unit can be defined by the user. All values are expressed as a percentage, where 100% is the maximum size of the control in the X or Y axis.</td>
+  </tr>
+</table>
+<h4>Appearance Properties Tab</h4>
+<p>The Appearance Properties Tab of the RTD Digital Gauge Control Properties dialogue allows the user to alter the appearance of the Digital Gauge Control.</p>
+<div class="Container"><img src="images/AppProbTab2.png" alt="Digital Gauge Control Appearance Properties" width="660" height="531"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Color Settings</td>
+    <td>The following colors in the RTD Digital Gauge Control can be defined by clicking the appropriate <strong>Open palette</strong> button:
+      <ul>
+        <li>Outside Background &ndash; the background color of the control; can only be defined when the <strong>Transparent </strong>checkbox in the <strong>General Properties </strong>tab is not selected</li>
+        <li>Control Background 1 and 2 &ndash; colors of the digital display; can only be defined when the checkbox in the <strong>Use Default Colors </strong>group is not selected</li>
+        <li>Segments switched On &ndash; segments that are active</li>
+        <li>Segments switched Off &ndash; segments that are not active</li>
+        <li>Channel Name label text &ndash; font color for channel name</li>
+        <li>Engineering Unit Label text &ndash; font color for engineering unit</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Style</td>
+    <td>Click the <strong>Run Style Manager</strong> button to start the Style Manager in a new window. The Style Manager allows the user to change the style to one of the listed predefined styles. The currently selected style is shown below the button.
+      <p class="Note">After clicking the Apply button (in the Style Manager), the Cancel button is used to exit the Style Manager.</p></td>
+  </tr>
+  <tr>
+    <td>Use Default Colors</td>
+    <td>If the checkbox is selected, the default color of the original style is used when the gauge is displayed. If the checkbox is not selected, the user defined color is used.</td>
+  </tr>
+  <tr>
+    <td>Special Effects</td>
+    <td>A special effect layer can be added (e.g. a flare effect) to the digital gauge. Any added effect layer is displayed fore of all other elements.</td>
+  </tr>
+</table>
+<h3 id="LinearGaugeControl">The RTD Linear Gauge Control</h3>
+<p>The  RTD Linear Gauge Control displays the current value of a channel on a linear scale, with an option to display it numerically. The display  consists of the channel name label, the value label, the engineering unit label, the scale, the range bar, major/minor tick marks and the level bar. It may be arranged horizontally or vertically. </p>
+<div class="Container"><img src="images/LinearGauge.png" alt="Linear Gauge" width="400" height="338"></div>
+<p>The alarm state of the channel can be indicated by the label that displays the channel name or by the label that displays the value, either by the background color or by the text color.</p>
+<p>The following linear gauge controls are configurable to customise the appearance:</p>
+<ul>
+  <li>style</li>
+  <li>scale (tick marks)</li>
+  <li>range</li>
+  <li>level (e.g. the mercury glass of a thermometer)</li>
+  <li>background</li>
+  <li>effects</li>
+  <li>labels (channel name, engineering unit, value)</li>
+  <li>state indicator (displays quality)</li>
+</ul>
+<p>To edit the RTD Linear Gauge Control properties, open the<strong> RTD Linear Gauge Control Properties</strong> dialogue box by right-clicking the control and selecting <strong>Additional Properties</strong>.</p>
+<h4>General Properties Tab</h4>
+<p>The General Properties Tab of the RTD Linear Gauge Control Properties dialogue allows the user to define the general properties of the RTD Linear Gauge Control.</p>
+<div class="Container"><img src="images/LGCGenPropTab2.png" alt="Linear Gauge Control General Properties" width="659" height="531"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Layout</td>
+    <td>There are 2 choices for the principal layout:
+      <ul>
+        <li>Default &ndash; dependant on the linear gauge style, which can be changed in the <strong>Appearance Properties</strong> tab</li>
+        <li>Customize &ndash; the position and size of channel name label, engineering unit label, and value label are defined by the user</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Outside Background</td>
+    <td>Indicates whether the control is transparent or not. If the control is transparent, the background color is the background color of the page. If the control is not transparent, the selected background color is used.</td>
+  </tr>
+  <tr>
+    <td>Alarm Indication by Name</td>
+    <td>Alarms can be indicated by the Name Background Color, by the Name Text Color or not at all.</td>
+  </tr>
+  <tr>
+    <td>Scale</td>
+    <td>The following parameters of the scale text can be defined by the user:
+      <ul>
+        <li>font family</li>
+        <li>font size</li>
+        <li>italic style</li>
+        <li>bold style</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Level</td>
+    <td>The Level shape can be selected.</td>
+  </tr>
+  <tr>
+    <td>State Indicator</td>
+    <td>The state indicator is used to visualise the value quantity (see <a href="#StateIndicatorControl">RTD State Indicator Control</a>). It can be displayed or not displayed.</td>
+  </tr>
+</table>
+<h4>Range Bar and Value Properties Tab</h4>
+<p>The Range Bar and Value Properties Tab of the RTD Linear Gauge Control Properties dialogue allows the user to define the Range Bar and Value properties of the Linear Gauge Control.</p>
+<div class="Container"><img src="images/LGCRBValPropTab2.png" alt="Linear Gauge Control Properties" width="658" height="532"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Range Bar</td>
+    <td>The user can determine whether the Range Bar is displayed or not, and the size of the Range Bar. If the default width is not selected, the start point and width can be defined.</td>
+  </tr>
+  <tr>
+    <td>Alarm Indication by Value</td>
+    <td>Alarms can be indicated by the Value Background Color, by the Value Text Color or not at all.</td>
+  </tr>
+  <tr>
+    <td>Value</td>
+    <td>The value label can be displayed or not displayed.</td>
+  </tr>
+  <tr>
+    <td>Value Font</td>
+    <td>The following font parameters of the value label can be defined by the user:
+      <ul>
+        <li>font family</li>
+        <li>font size (in points or as a variable)</li>
+        <li>italic style</li>
+        <li>bold style</li>
+        <li>alignment</li>
+        <li>orientation</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Value Format</td>
+    <td>The format of the displayed value can be taken from Configuration Server or defined by the user. The output format (Number of Digits) can be fixed point with a definable number of digits before and after the decimal point.</td>
+  </tr>
+  <tr>
+    <td>Position of Value <br>
+      <br>
+      Size of Value</td>
+    <td>These fields are active when the <strong>Customize Layout</strong> option is selected in the <strong>General Properties</strong> tab. The position, width, and height of the label can be defined by the user. All values are expressed as percentages, where 100% is the maximum size of the control in the X or Y axis.</td>
+  </tr>
+</table>
+<h4>Label Properties Tab</h4>
+<p>The Label Properties Tab of the RTD Linear Gauge Control Properties dialogue allows the user to define the Label Properties of the Linear Gauge Control.</p>
+<div class="Container"><img src="images/LGCLabPropTab2.png" alt="Linear Gauge Control Label Properties" width="658" height="531"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Name</td>
+    <td>The existing name can be displayed or not displayed, or an alternate display name can be used.</td>
+  </tr>
+  <tr>
+    <td>Name Font</td>
+    <td>The following font parameters of the name label can be defined by the user:
+      <ul>
+        <li>font family</li>
+        <li>font size (in points or as a variable)</li>
+        <li>italic style</li>
+        <li>bold style</li>
+        <li>alignment</li>
+        <li>orientation</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Engineering (Eng.) Unit</td>
+    <td>The engineering unit can be chosen by the user, and can either be displayed or not displayed.</td>
+  </tr>
+  <tr>
+    <td>Engineering (Eng.) Unit Font</td>
+    <td>The following font parameters of the engineering unit label can be defined by the user:
+      <ul>
+        <li>font family</li>
+        <li>font size (in points or as a variable)</li>
+        <li>italic style</li>
+        <li>bold style</li>
+        <li>alignment</li>
+        <li>orientation</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Position of Name<br>
+      <br>
+      Size of Name<br>
+      <br>
+      Position of Eng. Unit<br>
+      <br>
+      Size of Eng. Unit</td>
+    <td>These fields are active when the <strong>Customize Layout</strong> option is selected in the <strong>General Properties</strong> tab. The position and size of the name and engineering unit can be defined by the user. All values are expressed as a percentage, where 100% is the maximum size of the control in the X or Y axis.</td>
+  </tr>
+</table>
+<h4>Appearance Properties Tab</h4>
+<p>The Appearance Properties Tab of the RTD Linear Gauge Control Properties dialogue allows the user to define the Appearance Properties of the Linear Gauge Control.</p>
+<div class="Container"><img src="images/LGCAppPropTab2.png" alt="Linear Gauge Control Appearance Properties" width="658" height="532"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Color Settings</td>
+    <td>The following colors in the RTD Digital Gauge Control can be defined by clicking the appropriate <strong>Open palette</strong> button:
+      <ul>
+        <li>Outside Background &ndash; the background color of the control, used only when the <strong>Transparent</strong> checkbox in the <strong>General Properties </strong>tab is not selected</li>
+        <li>Control Background 1 and 2 &ndash; colors of the digital display; can only be defined when the checkbox in the <strong>Use Default Colors</strong> group is not selected</li>
+        <li>Channel Name Label text &ndash; font color for channel name</li>
+        <li>Unit Label text &ndash; font color for engineering unit</li>
+        <li>Value Label Text &ndash; font color for value</li>
+        <li>Value Label Background &ndash; background color for value</li>
+        <li>Major/Minor Tickmarks &ndash; color of tickmarks on the scale; can only be defined when the <strong>Default Range</strong> checkbox in the <strong>Scale</strong> group of the <strong>General Properties</strong> tab is not selected</li>
+        <li>Scale text &ndash; font color for scale text</li>
+        <li>Level-Liquid/Level-Glass &ndash; color of level; can only be defined when the checkbox in the <strong>Use Default Colors</strong> group is not selected</li>
+        <li>Range Bar Limits &ndash; colors for special range bar limits: HiHi, Hi, Prim, Lo, LoLo</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Style</td>
+    <td>Click the <strong>Run Style Manager</strong> button to start the Style Manager in a new window. The Style Manager allows the user to change the style to one of the listed predefined styles. To arrange the gauge horizontally or vertically, the <strong>Show only styles with the same shape</strong> must not be selected. The currently selected style is shown below the button.
+      <p class="Note">After clicking the Apply button (in the Style Manager), the Cancel button is used to exit the Style Manager.</p></td>
+  </tr>
+  <tr>
+    <td>Use Default Colors</td>
+    <td>If the checkbox is selected, the default color of the original style is used when the gauge is displayed. If the checkbox is not selected, the user defined color is used.</td>
+  </tr>
+  <tr>
+    <td>Special Effects</td>
+    <td>A special effect layer can be added (e.g. a flare effect) to the digital gauge. Any added effect layer is displayed fore of all other elements.</td>
+  </tr>
+</table>
+<h3 id="HexControl">The RTD Hex Control</h3>
+<p>The RTD Hex Control displays values in hexadecimal or binary format whereby it is possible to display only a portion (bit range) of the values. Items can be ordered horizontally or vertically.</p>
+<div class="Container"><img src="images/HexControl.png" alt="Hex Control" width="400" height="349"></div>
+<p>The display consists of:</p>
+<ul>
+  <li>channel name (or alternate name)</li>
+  <li>selected bit range</li>
+  <li>channel value</li>
+  <li>quality of channel value</li>
+</ul>
+<p>The RTD Hex Control is able to process channel values ranging from 262144 (lowest signed/negative 19-bit-value) up to 524287 (highest unsigned/positive 19-bit-value) as integer numbers. Values outside the range of 262144&ndash;524287 are considered invalid values and cannot be properly displayed.</p>
+<p>To edit the RTD Hex Control properties, open the <strong>RTD Hex Control Properties</strong> dialogue box by right-clicking the control and selecting <strong>Additional Properties</strong>..</p>
+<h4>General Properties Tab</h4>
+<p>The General Properties Tab of the RTD Hex Control Properties dialogue allows the user to define the general properties of the Hex Control.</p>
+<div class="Container"><img src="images/HexGenPropTab2.png" alt="Hex Control General Properties" width="660" height="532"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Layout</td>
+    <td>There are 2 choices for the principal layout:
+      <ul>
+        <li>Horizontal display</li>
+        <li>Vertical display</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Outside Background</td>
+    <td>Indicates whether the control is transparent or not. If the control is transparent, the background color is the background color of the page. If the control is not transparent, the selected background color is used.</td>
+  </tr>
+  <tr>
+    <td>Quality</td>
+    <td>Determines whether the Quality is displayed or not.</td>
+  </tr>
+  <tr>
+    <td>Format</td>
+    <td>The format of the displayed value can be taken from Configuration Server or defined by the user. If the format is defined by the user, the following options can be defined:
+      <ul>
+        <li>Number format: Binary or Hexadecimal</li>
+        <li>Range of displayed bits: bits from 18 to 0 can be displayed; the most significant bit cannot be less than the least significant bit</li>
+        <li>Size of the group of bits</li>
+        <li>If Hexadecimal format is chosen, lowercase letters can be used for the format</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Value Font</td>
+    <td>The following Value Font parameters can be defined by the user:
+      <ul>
+        <li>font family</li>
+        <li>font size (in points or as a variable)</li>
+        <li>italic style</li>
+        <li>bold style</li>
+        <li>alignment</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>User Format Preview</td>
+    <td>Not a definable field. Previews the format as defined by the user.</td>
+  </tr>
+  <tr>
+    <td>Extension of Elements</td>
+    <td>For a horizontal layout these are horizontal extensions and for a vertical layout these are vertical extensions. All extensions must be positive. Extensions are only relevant for visible elements. Only the relative size of the extensions is important because the whole rectangle of the control is always used for the display.</td>
+  </tr>
+</table>
+<h4>Label Properties Tab</h4>
+<p>The Label Properties Tab of the RTD Hex Control Properties dialogue allows the user to define the Label Properties of the Hex Control.</p>
+<div class="Container"><img src="images/HexLabPropTab2.png" alt="Hex Control Label Properties" width="660" height="532"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Name</td>
+    <td>The existing name can be displayed or not displayed, or an alternate display name can be used.</td>
+  </tr>
+  <tr>
+    <td>Name Font</td>
+    <td>The following Name Font parameters of the name label can be defined by the user:
+      <ul>
+        <li>font family</li>
+        <li>font size (in points or as a variable)</li>
+        <li>italic style</li>
+        <li>bold style</li>
+        <li>alignment</li>
+        <li>orientation</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Bit Range</td>
+    <td>The bit range can be displayed or not displayed.</td>
+  </tr>
+  <tr>
+    <td>Bit Range Font</td>
+    <td>The following Bit Range Font parameters can be defined by the user:
+      <ul>
+        <li>font family</li>
+        <li>font size (in points or as a variable)</li>
+        <li>italic style</li>
+        <li>bold style</li>
+        <li>alignment</li>
+        <li>orientation</li>
+      </ul></td>
+  </tr>
+</table>
+<h4>Appearance Properties Tab</h4>
+<p>The Appearance Properties Tab of the RTD Hex Control Properties dialogue allows the user to define the appearance properties of the Hex Control.</p>
+<div class="Container"><img src="images/HexAppPropTab2.png" alt="Hex Control Appearance Properties" width="659" height="532"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Color Settings</td>
+    <td>The following colors in the RTD Hex Control can be defined by clicking the appropriate <strong>Open palette</strong> button:
+      <ul>
+        <li>Background &ndash; the background color of the control; can only be defined when the <strong>Transparent</strong> checkbox in the <strong>General Properties</strong> tab is not selected</li>
+        <li>Value Text &ndash; the font color for the value text</li>
+        <li>Value Background &ndash; the color of the value background</li>
+        <li>Channel Name Label text &ndash; the font color for the channel name</li>
+        <li>Bit Range Text &ndash; the font color for the bit range</li>
+      </ul></td>
+  </tr>
+</table>
+<h3 id="StateIndicatorControl">The RTD State Indicator Control</h3>
+<p>The RTD State Indicator Control displays the state of a single channel, through received data of a single floating point, integer, or discrete proDAS channel, in a bitmap. The State Indicator Control supports up to twenty sub-ranges</p>
+<p>The RTD State Indicator Control is resizable. When the control is resized, the bitmap is always displayed completely (i.e. the bitmap is shrunken or enlarged, thereby changing its aspect ratio).</p>
+<p>Right-click the control and select <strong>Additional Properties</strong> to launch a dialogue box adapted to the type of the mapped channel (the General Properties dialogue box is specific to the type of mapped channel, while the Display Properties and Appearance Properties tabs are the same for all types):</p>
+<ul>
+  <li>Boolean/discrete</li>
+  <li>Enumerated Integer (a channel with a finite set of possible values)</li>
+  <li>Float/Not Enumerate Integer</li>
+</ul>
+<p class="Note">The default bitmap location must be defined in the RTDActivexControl.ini file in order for the control to function properly.</p>
+<p class="Note">If no channel has been mapped to the control or a channel with a different type than the 3 listed above has been mapped already, a message will appear stating that the control will not allow the user to configure it. During runtime, an appropriate default bitmap will be displayed.</p>
+<h4>Boolean/Discrete Channel</h4>
+<p>The Boolean/Discrete channel General Properties dialogue box enables the user to select a pair of bitmap files and assign them to each sub-range. Both will be displayed by the control.</p>
+<div class="Container"><img src="images/StateIndDiscreteGen.png" alt="State Indicator Discrete General Properties" width="528" height="776"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Predefined Sub-range Entries</td>
+    <td>The number of sub-ranges for the channel. The number of bitmap thresholds must be equal to this sub-range count. This is not definable and is for information only.</td>
+  </tr>
+  <tr>
+    <td>Sub-Ranges</td>
+    <td>The user can select the pre-defined number of bitmap files by clicking the <img src="images/StatIndBitmapButton.png" alt="State Indicator Bitmap Button" width="30" height="25"> button to launch the <strong>Open File</strong> dialogue box. The full path of the selected bitmap file and the bitmap image will be displayed to the right of this button. The threshold is undefinable.</td>
+  </tr>
+</table>
+<h4>Enumerated Integer Channel</h4>
+<p>The Enumerated Integer Channel configuration dialogue box allows the user to assign a bitmap file to each of the predefined states of the selected channel.</p>
+<div class="Container"><img src="images/StatIndEnumInt.png" alt="Enumerated Integer Channel" width="526" height="776"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Predefined Sub-range Entries</td>
+    <td>The number of sub-ranges for the channel. The number of bitmap thresholds must be equal to this sub-range count. This is not definable and is for information only.</td>
+  </tr>
+  <tr>
+    <td>Sub-Ranges</td>
+    <td>The user can select the pre-defined number of bitmap files by clicking the <img src="images/StatIndBitmapButton.png" alt="State Indicator Bitmap Button" width="30" height="25"> button to launch the <strong>Open File</strong> dialogue box. The full path of the selected bitmap file and the bitmap image will be displayed to the right of this button. The threshold is undefinable.</td>
+  </tr>
+</table>
+<h4>Float/Non-Enumerated Integer Channel</h4>
+<p>The Float/Non-Enumerated Integer Channel dialogue box allows the user to define the number of states and the respective threshold values.</p>
+<div class="Container"><img src="images/StateIndNonEnum.png" alt="State Indictor Non-Enumerated Integer Channel" width="528" height="778"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Create Sub-range Entries</td>
+    <td>The user can define the overall display range by the minimum and maximum display value of the channel and the number of sub-ranges. The number of sub-ranges must be greater than 1. The <strong>Empty/New</strong> button is used to create a number of rows with user input controls equal to the number of sub-ranges. The <strong>Equidistant Thresholds</strong> button is used to redefine the threshold values and subdivide the overall display range into intervals of equal size.</td>
+  </tr>
+  <tr>
+    <td>Sub-ranges</td>
+    <td>The user can select the pre-defined number of bitmap files by clicking the <img src="images/StatIndBitmapButton.png" alt="State Indicator Bitmap Button" width="30" height="25"> button to launch the <strong>Open File</strong> dialogue box. The full path of the selected bitmap file and the bitmap image will be displayed to the right of this button. The user can specify threshold values or have them automatically specified by clicking the <strong>Equidistant Thresholds</strong> button.</td>
+  </tr>
+</table>
+<h4>Display Properties Tab</h4>
+<p>The Display properties Tab of the State Indicator Properties dialogue allows the user to define the Display Properties of the State Indicator control.</p>
+<div class="Container"><img src="images/StateIndDisplayProp.png" alt="State Indicator Display Properties" width="527" height="775"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Name Position</td>
+    <td>The position of the name can be selected.</td>
+  </tr>
+  <tr>
+    <td>Outside Background</td>
+    <td>The transparency of the outside background can be selected.</td>
+  </tr>
+  <tr>
+    <td>Extension of Elements</td>
+    <td>The extension of the elements of the display can be defined. Extensions are only relevant for visible elements. All extensions must be positive.</td>
+  </tr>
+  <tr>
+    <td>Name</td>
+    <td>The existing name can be displayed or not displayed, or an alternate display name can be used.</td>
+  </tr>
+  <tr>
+    <td>Name Font</td>
+    <td>The following Name Font parameters of the name label can be defined by the user:
+      <ul>
+        <li>font family</li>
+        <li>font size (in points or as a variable)</li>
+        <li>italic style</li>
+        <li>bold style</li>
+        <li>alignment</li>
+      </ul></td>
+  </tr>
+</table>
+<h4>Appearance Properties Tab</h4>
+<p>To edit the RTD State Indicator properties, open the<strong> RTD State Indicator Properties</strong> dialogue box.</p>
+<div class="Container"><img src="images/StateIndAppProp.png" alt="State Indicator Properties" width="527" height="776"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Color Settings</td>
+    <td>The following colors in the RTD State Indicator can be defined by clicking the appropriate <strong>Open palette</strong> button.
+      <ul>
+        <li>Background &ndash; the background color of the control; can only be defined when the <strong>Transparent</strong> checkbox in the <strong>General Properties</strong> tab is not selected</li>
+        <li>Channel Name Label text &ndash; the font color for the channel name</li>
+      </ul></td>
+  </tr>
+</table>
+<h3 id="SwitchControl">RTD Switch Control</h3>
+<p>The RTD Switch Control allows users to set a new Boolean value for a Boolean channel (e.g. on/off, yes/no, true/false etc.). The user is able to switch between the two states of control by clicking the button. Clicking the button switches the state of control and keeps the new status. If the state of the Boolean channel has been changed by a background event in another application, the control immediately displays the new state of the channel.</p>
+<div class="Container"><img src="images/SwitchControl.png" width="247" height="99" alt=""/></div>
+<p>To edit the RTD Switch Control properties, open the <strong>RTD Switch Control Properties</strong> dialogue box by right-clicking the control and selecting <strong>Additional Properties</strong>.</p>
+<h4>General Properties Tab</h4>
+<p>The General Properties tab of the RTD Switch Control properties dialogue allows the user to define the general properties of the switch control.</p>
+<div class="Container"><img src="images/SwitchControlGenProperties.png" width="493" height="397" alt=""/></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Style</td>
+    <td>Defines the style of the switch.</td>
+  </tr>
+  <tr>
+    <td>Outside Background</td>
+    <td>Defines whether the outside background of the switch is transparent or not.</td>
+  </tr>
+  <tr>
+    <td>Name</td>
+    <td>Defines the name to be displayed in the switch.</td>
+  </tr>
+  <tr>
+    <td>Name Font</td>
+    <td>Defines the font characteristics for the name displayed.</td>
+  </tr>
+  <tr>
+    <td>Switch Format</td>
+    <td>Defines the checked and unchecked positions of the switch.</td>
+  </tr>
+  <tr>
+    <td>Feedback</td>
+    <td>Defines the feedback displayed when the value of the associated channel has not been set successfully within one second.</td>
+  </tr>
+  <tr>
+    <td>Animation of Latency</td>
+    <td>Displays the defined latency, and whether to show the animation. The latency is defined in the INI file.</td>
+  </tr>
+  <tr>
+    <td>Extension of Elements</td>
+    <td>Defines how much of the display box each element occupies.</td>
+  </tr>
+</table>
+<h4>Appearance Properties Tab</h4>
+<p>The Appearance Properties tab of the RTD Switch Control properties dialogue allows the user to define the appearance properties of the switch control.</p>
+<div class="Container"><img src="images/SwitchControlAppProperties.png" width="493" height="397" alt=""/></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Color Settings</td>
+    <td>Colors in the RTD Switch Control can be defined by clicking the appropriate&nbsp;<strong>Open palette</strong>&nbsp;button.</td>
+  </tr>
+  <tr>
+    <td>Use Default Colors for</td>
+    <td>If the checkbox is selected, the default color of the original style is used when the plot is displayed. If the checkbox is not selected, the user defined color is used.</td>
+  </tr>
+</table>
+<h3 id="PolarPlot">The RTD Polar Plot Control</h3>
+<p>The RTD Polar Plot Control allows users to display the values of one or multiple pairs of parameters as polar coordinates in a (circular) polar grid versus constant axes.</p>
+<div class="Container"><img src="images/PolarPlot.png" width="700" height="739" alt=""/></div>
+<p>To edit the RTD Polar Plot properties, open the <strong>Polar Plot Title Color Properties</strong> dialogue box by right-clicking the control and selecting <strong>Additional Properties</strong>.</p>
+<h4>General Properties Tab</h4>
+<p>The General Properties tab of the RTD Polar Plot properties dialogue allows the user to define the general properties of the Polar Plot control.</p>
+<div class="Container"><img src="images/PolarPlotPropertiesGen.png" width="656" height="533" alt=""/></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Radius Settings</td>
+    <td>If the&nbsp;<strong>User Defined Radius </strong>checkbox is not selected, the start radius and end radius can be defined by the user.</td>
+  </tr>
+  <tr>
+    <td>Last Point</td>
+    <td>Determines whether the last data point is displayed or not.</td>
+  </tr>
+  <tr>
+    <td>Angle Axis</td>
+    <td>Root Direction: North, East<br>
+      Rotation: CCW, CW</td>
+  </tr>
+  <tr>
+    <td>Visible Plot Region</td>
+    <td>Full, Left, Top, Bottom, N/A</td>
+  </tr>
+  <tr>
+    <td>LegendPosition</td>
+    <td>TopRight, BottomRight</td>
+  </tr>
+  <tr>
+    <td>Visual Settings</td>
+    <td>Plot TYpe: Linear Series, Profile Series</td>
+  </tr>
+  <tr>
+    <td>Grid Settings</td>
+    <td>The grid settings for magnitude and angle.</td>
+  </tr>
+  <tr>
+    <td>Plot Settings</td>
+    <td>The settings of the plot.</td>
+  </tr>
+</table>
+<h4>Appearance Properties Tab</h4>
+<p>The Appearance Properties tab of the RTD Polar Plot properties dialogue allows the user to define the appearance properties of the Polar Plot control.</p>
+<div class="Container"><img src="images/PolarPlotAppearance.png" width="652" height="527" alt=""/></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Group</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Color Settings</td>
+    <td>Colors in the RTD Polar Plot Control can be defined by clicking the appropriate&nbsp;<strong>Open palette</strong>&nbsp;button.</td>
+  </tr>
+  <tr>
+    <td>Style</td>
+    <td>Click the&nbsp;<strong>Run Style Manager</strong>&nbsp;button to start the Style Manager in a new window. The Style Manager allows the user to change the style to one of the listed predefined styles. To arrange the gauge in a different way (e.g. quarter circular), the&nbsp;<strong>Show only styles with the same shape </strong>checkbox must not be selected. The currently selected style is shown below the button.<br>
+      <p class="Note"><br>
+        After clicking the Apply button (in the Style Manager), the Cancel button is used to exit the Style Manager.</p></td>
+  </tr>
+  <tr>
+    <td>Use Default Colors for</td>
+    <td>If the checkbox is selected, the default color of the original style is used when the plot is displayed. If the checkbox is not selected, the user defined color is used.</td>
+  </tr>
+  <tr>
+    <td>Special Effects</td>
+    <td>A special effect layer can be added (e.g. a flare effect) to the polar plot. Any added effect layer is displayed fore of all other elements.</td>
+  </tr>
+</table>
+<h2 id="PaletteItem">Creating a Palette Item for an ActiveX Control</h2>
+<p>There are two types of sub-drawings (or palette items) available:</p>
+<ul>
+  <li>sub-drawings based on image, text control, other sub-drawings, lines, etc. (created using  DV-Draw or the RTD Editor)</li>
+  <li>sub-drawings based on external ActiveX component (created using DV-Draw only)</li>
+</ul>
+<p>The RTD Editor can be used to initially create a palette item with an ActiveX Control with the proper ini file setting.</p>
+<p>DV-Draw must be used to create a palette item for an ActiveX Control. Each palette item is represented by a subdrawing, (i.e. there is a respective subdrawing file and a bitmap file with an image of the subdrawing). For further details, refer to the DV-Draw Help menu.</p>
+<p>To begin creating a palette item for an ActiveX Control, start DV-Draw with an empty view.</p>
+<h3>Creating the Data Source</h3>
+<p>Although it is possible to create a sub-drawing that is not mapped to any data object (constant, variable, etc), an ActiveX Control looks better if it is bound to some data variables.</p>
+<p>To create the data source:</p>
+<ol>
+  <li>From the Edit menu (DV-Draw) or the View menu (RTD Editor), select <strong>Data Variables...</strong>. The Data Selection window is displayed.
+    <div class="Container"><img src="images/DataSelection.png" alt="Data Selection" width="604" height="530"></div>
+  </li>
+  <li>Remove all data sources. From the Data Source List, select all data sources and push the delete button.
+    <p class="Note">If this step is skipped, the sub-drawing file contains information about all data sources (i.e. channels, breakpoint tables, polynomials, etc.) which is useless for a generic palette item. Since this may sum up to thousands of records, it is recommended for RTD Editor users to use an empty configuration when creating or modifying a palette item.</p>
+  </li>
+  <li>From the New Data Source drop-down list, select <strong>Constant</strong>.</li>
+  <li>Create a new data source by selecting the <strong>Add New Data Source</strong> button.</li>
+  <li>Enter the string &quot;Channels&quot; in the <strong>File Origin:</strong> textbox.</li>
+  <li>To close the Data Selection window, select <strong>Close</strong>.
+    <p class="Note">The RTD Editor uses another data source named Channels for the proDAS channels; the type of this data source is Files as opposed to the Constant data source created herein.</p>
+  </li>
+</ol>
+<h3>Customizing DV-Draw: Option &ldquo;Insert an ActiveX Control&rdquo;</h3>
+<p>This option is not displayed by default when DV-Draw starts. To display the &ldquo;Create an ActiveX Control&rdquo; option: Add the button ActiveX to the Object Creation toolbar:</p>
+<ol>
+  <li>From the Tools menu, select Customize. The Customize window is displayed.
+    <div class="Container"><img src="images/Customize.png" alt="Customize" width="422" height="342"></div>
+  </li>
+  <li>Select the <strong>Commands</strong> tab.</li>
+  <li>From the Categories: list select the toolbar <strong>Object Creation</strong>.</li>
+  <li>From the Commands: panel, click-and-drag <img src="images/BtnActiveX.png" alt="Button ActiveX" width="24" height="24"> (ActiveX button) onto the Object Creation toolbar.</li>
+  <li>To close the Customize window, select <strong>Close</strong>.</li>
+</ol>
+<h3>Inserting an ActiveX Control into a View</h3>
+<p>To create an ActiveX control object:</p>
+<ol>
+  <li>From the Create Object toolbar, select <img src="images/BtnActiveX.png" alt="Button ActiveX" width="24" height="24">. The Insert Control window is displayed.
+    <div class="Container"><img src="images/InsertControl.png" alt="Insert Control" width="452" height="344"></div>
+  </li>
+  <li>From the Control: list, select the desired control type and select <strong>OK</strong>.
+    <p class="Note">The fastest way to reach the RTD ActiveX Controls is by entering the letter &quot;s&quot;.</p>
+  </li>
+  <li>Click and drag to define a rectangle for the location of the ActiveX Control.</li>
+</ol>
+<h3>Configuring the ActiveX Control</h3>
+<h4>Properties and Variable Mapping</h4>
+<p>You can now configure the ActiveX Control as desired (i.e. create appropriate data variables and map them to the ActiveX Control and define its properties). Since configuring the ActiveX Control is best achieved using the RTD Editor, save the view to a file and  open it again in the RTD Editor.</p>
+<p>Whether using DV-Draw or the RTD Editor, make sure that there is no other data source than the Constant data source named Channels. If any variables are to be mapped to the ActiveX Control, create new variables in this Constant data source named Channels.</p>
+<p>Since some ActiveX Controls may look quite differently depending on the configured properties, it may be worth while creating multiple instances of the ActiveX Control displaying different properties.</p>
+<h4>Position of the ActiveX Control</h4>
+<p>To ensure the center point of the ActiveX Control or graphical object is identical with the origin of the coordinates used in the view:</p>
+<ol>
+  <li>From the View menu, select Grid to display the grid. The origin is indicated by a cross.</li>
+  <li>Move the AcitveX Control so that its center is over the origin.
+    <p class="Note">Not positioning the control's center to the origin  results in a wrong position of the control once dragged from the palette and placed onto a view.</p>
+  </li>
+</ol>
+<h3>Adding an Item to the Palette</h3>
+<p>Adding an item to the palette takes the currently selected object and creates a sub-drawing file containing a copy of the object in the palette directory structure.</p>
+<h4>Adding a Palette Item</h4>
+<p>To add a subdrawing item to the palette:</p>
+<ol>
+  <li>Go to the appropriate tab in the palette.<br>
+    The new item is added to the current palette tab. If you have not yet created a tab for this item, see Adding Tabs to the Palette in the DV-Draw documentation.</li>
+  <li>Select the ActiveX Control.</li>
+  <li>Right click and select &ldquo;Add to Palette&rdquo; from the context menu.
+    <p class="Note">A sub-drawing might be added to the palette by saving it directly into the palette folder. However, in this case it  appears on the palette window only after restarting DV-Draw or the RTD Editor. The subsequent step is not required in this case.</p>
+  </li>
+</ol>
+<h4>Renaming the Palette Item</h4>
+<p>The new item is given a default name of Group#.sd, where # is the next number not already used. The first item you add using this method is named <em>Group0.sd</em>, the second is <em>Group1.sd</em>, etc. If you change these default names, their numbers are used again. Therefore, the palette item should be renamed. To rename the palette item:</p>
+<ol>
+  <li>Open the palette directory (defined in the <em>RTDEditor.ini</em> file in the section <strong>General</strong> as item <strong>DVPaletteDir</strong>) and its subdirectory named identically to the palette tab into which the new item has been inserted.</li>
+  <li>Rename the file (e.g. rename <em>Group#.sd</em> to <em>MultiSwitch.sd</em>).</li>
+</ol>
+<h3>Creating a Bitmap</h3>
+<p>Create a bitmap using an appropriate tool (e.g. MS Paint, or by capturing a screen shot of the ActiveX Control) and store this bitmap in a file in the same palette subdirectory as the respective sub-drawing file under the same name as the sub-drawing file (the extension of the bitmap file must be &ldquo;.gif&rdquo;, &ldquo;.bmp&rdquo; or &ldquo;.dib&rdquo;). Using  Windows Explorer, make the bitmap file hidden.</p>
+<h3>Testing the Palette Item</h3>
+<p>The palette displays the newly added ActiveX Control, indicated by the bitmap image and the name of the sub-drawing file.</p>
+<p>If the preview window of the palette is activated, clicking on the palette item  shows the ActiveX Control in the preview window as it is configured in the sub-drawing file. When the palette item is dragged and dropped onto the view, it is displayed at the dropping location; its visual appearance is defined by the configuration of the ActiveX Control in the sub-drawing file.</p>
+<p>The appropriate proDAS channels, breakpoint tables or polynomials must be mapped to the ActiveX Control and the properties of the ActiveX Control can be adapted.</p>
+<br>
+
+<br>
+
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

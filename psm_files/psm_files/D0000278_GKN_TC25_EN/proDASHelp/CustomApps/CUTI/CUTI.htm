@@ -1,0 +1,320 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Configure User Test Information (Option*)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="CUTI">Configure User Test Information (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" >
+</a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>Configuration User Test Information (CUTI) is a single step method of configuring proDAS (including RTE, PLC, and other hardware). The CUTI Graphical User Interface (GUI) can perform the following functions:</p>
+<ul>
+ <li>configuration</li>
+ <li>editing sensor information</li>
+</ul>
+<p class="Note">CUTI is not applicable to every customer. The execution of CUTI depends on Customer Configuration Procedures. Please refer to the &quot;Home&quot; section of the Docstation to check if CUTI is applicable for your system.</p>
+
+<p>CUTI coordinates all of the activities required to configure the system so that the configuration can be completed in one manual step by the user. The CUTI GUI is common for both Production and Experimental engines.</p>
+<p>On starting CUTI, a check is made to determine whether proDAS is already configured. If configured, CUTI starts the Management GUI and terminates.</p>
+<p>If proDAS is not configured the following options are available:</p>
+<ul>
+ <li>use an existing configuration</li>
+ <li>import a new configuration</li>
+ <li>export an existing configuration</li>
+ <li>import a saved configuration</li>
+</ul>
+<p>After selecting from the above options (excluding the import saved configuration option), the User is prompted to select one of the following engine types:</p>
+<ul>
+ <li>Production Engine</li>
+ <li>Enhanced Production Engine</li>
+ <li>Experimental Engine</li>
+</ul>
+<p>CUTI prompts the user to load either an existing configuration or generate a new configuration.</p>
+<p>After selecting the Import Saved Configuration option, the user is prompted to select directly the configuration from the provided list of saved configurations.</p>
+<div class="Container"><img src="images/DeploymentDiagram.gif" alt="Deployment Diagram" width="669" height="522"></div>
+
+<p class="Note">The file paths (one path for each type) are pre-defined in the system configuration details (configurable by a system administrator).</p>
+
+<p>The user is required to confirm the test header information prior to starting the configuration sequence.</p>
+<p>As a minimum, the Engine Serial Number, Engine Build Number, Engine Type, Test Name (Test ID) and Test Description are displayed for any selected  configuration.</p>
+<p class="Note">An individual configuration number or test id is not required to identify the PLC configuration.</p>
+
+<p>If the engine is an existing configuration, a list of the last three months of configurations is displayed by default, however an option to show all configurations is also available.</p>
+<p>Once an engine type has been selected, the system automatically configures all subsystems required to carry out an engine test, including the PLC interfaces. proDAS identifies the required PLC ladder logic and WonderWare configuration automatically.</p>
+<p><span class="Body">Production base level configurations are stored so that there is one set of configuration files per Engine Type. </span>&ldquo;Master&rdquo; Production base level configuration files are stored on a central computer. A remote distribution script is used to copy these files to the proDAS test bed.</p>
+<p>In addition, for each Production Engine Type, there is a pylon configuration file identifying the available pylons for that engine, including the list of SCUTR boxes, pressure scanners, and telemetry units currently installed on each pylon. This file is stored in the PYLON configuration folder for the specific engine.</p>
+<p>If a new Production Engine is selected, a prompt to enter the Engine Serial and Build Numbers, and select the specific engine pylon is required. Otherwise, the user is provided with a list of available engine configurations.</p>
+<p>If the user chooses to import a new Experimental Engine or Enhanced Production Engine configuration, the list of available engine configurations is retrieved and displayed from the Experimental Analyser (EA). The EA is a customer supplied downstream system accessible via NTFS mount or a url link to a network folder.</p>
+<p>The system copies a base level configuration for that Engine Type, updates the sensor information based on the selected pylon, and then follows the start up process for a new configuration.</p>
+<p>The start up process for a new configuration includes the following automated tasks:</p>
+<ul>
+ <li> If the engine is a Production Engine, the Test Name Generation utility is run. </li>
+ <li> If the engine is a Production Engine, the Test Name, Engine Serial Number and Engine Build Number are updated in the Test Header file of the configuration. </li>
+ <li> If the engine is a Production Engine or an Enhanced Production Engine, the utility to allow editing of the sensor information is called.</li>
+ <li>The Configuration data is imported via the <a href="../CIE/CIE.htm">Configuration Import / Export Utility</a>. Any errors on import are displayed to the user and will abort the start up process.</li>
+ <li>If the Wonderware software is in &ldquo;run mode&rdquo;, it is automatically stopped, and the display software for the currently selected engine is loaded.</li>
+ <li>The PLC Ladder Logic image file is uploaded to the PLC.</li>
+ <li>If no errors have occurred in the previous configuration steps, the command to configure proDAS is sent. The Test Name, Engine Serial Number and Engine Build Number is written to the UEL.</li>
+ <li>The Management GUI Control Panel is opened. </li>
+</ul>
+<p>If an error occurs within CUTI such that the configuration process cannot be completed, a pop-up message box informs the User of the error(s). The error(s) are written as UEL warning messages (yellow box), only if UEL is available.</p>
+<h3 id="TestNameGen">Test Name (Test ID) Generation</h3>
+<p>For Experimental Engines and Enhanced Production Engines, the Test Name stored in the Test Header file on the EA is uploaded to the database using <a href="../CIE/CIE.htm">Configuration Import / Export Utility</a>.</p>
+<p>For Production Engines, a utility is available to run a script on the EA to generate a Test Name. This utility shall be run whenever a new Production Engine configuration is generated.</p>
+<p>Each time this utility is run, it generates test names until 10 (ten) test names have been stored for the current facility.</p>
+<p>When a new Production Engine is selected for configuration, the system allocates the lowest value Test Name available for the facility to the Test Header file in the new configuration folder.</p>
+<p>If no Test Name is available, the User is prompted to manually enter a Test Name or abort the configuration process.</p>
+<p>The Test Name allocated to the current configuration can be  used for all processes that require a test name (identification of recorded logs, transferring of logs to the EA, transferring/generation of diaries and reports, exporting of test header files, etc).</p>
+<p class="Note">When a saved configuration is imported, a new test name may be generated in some  special cases (i.e.: in the case of multiple test beds; when you carry a configuration from one test bed to another test bed via the export/import options in CUTI.</p>
+
+<h3 id="EditSensorInfo">Edit Sensor Information</h3>
+<p>For Production and Enhanced Production Engine tests, an interface is provided to allow the User to edit the Sensor fields of the configuration tab-delimited text files.</p>
+<p>The Edit Sensor Information interface is displayed during the configuration process, after updating the sensor to reflect the current pylon and prior to importing the configuration data.</p>
+<p>This interface allows the user to see the parameter (channel) name as well as the data to be modified.</p>
+<p>The Edit Sensor Information feature is not available if the Engine Type selected is Experimental.</p>
+<h2 id="StartEDASusingCUTI">Starting proDAS using CUTI</h2>
+<p>To start CUTI on the Management Interface Computer:</p>
+<ol>
+  <li>Double-click the CUTI icon.<br>
+    The CUTI login window is displayed.
+    <div class="Container"><img src="images/Login.png" alt="Login" width="407" height="272"></div>
+  </li>
+  <li>Enter the user name in the <strong>Username:</strong> field.</li>
+  <li>Enter the user password in the <strong>Password:</strong> field and select <strong>OK</strong>.<br>
+    <p class="Note">The User has three attempts to login. After a failed attempt an error is displayed on the Login Dialogue box. At which time the User selects the OK button and starts again. After the third attempt CUTI is terminated.</p>
+    The <strong>CUTI - Configuration User Test Interface</strong> screen is displayed.<br>
+    <div class="Container"><img src="images/StartupScreen.png" alt="StartupScreen" width="500" height="500"></div>
+    <p class="Note">If proDAS is not running, a CUTI Error &quot;Unable to connect to proDAS&quot; is displayed.<br>
+      <br>
+      <img src="images/Error.gif" alt="Error" width="206" height="133"><br>
+      <br>
+      To acknowledge the message window and exit CUTI, select OK.</p>
+  </li>
+  <li>To configure using an existing configuration, see <a href="#SelectExistingConfig">Use Existing Configuration</a>.</li>
+  <li>To configure importing a new configuration, see <a href="#ImportNewConfig">Import New Configuration</a>.<br>
+    For further details on importing options, see <a href="#ProdConfig">Production Engine Configuration</a>, <a href="#EnhancedProdConfig">Enhanced Production Engine Configuration</a> and <a href="#ExperimentalConfig">Experimental Engine Configuration</a>.</li>
+  <li>To export an existing configuration, see <a href="#ExpExConfig">Export Existing Configuration</a>.</li>
+  <li>To configure by Importing a saved configuration, see <a href="#ImpSavConfig">Import Saved Configuration</a>.</li>
+</ol>
+<h2 id="SelectExistingConfig">Use Existing Configuration</h2>
+<p>To select an existing configuration:</p>
+<ol>
+  <li>From the <strong>CUTI - Configuration User Test Interface</strong> screen Select Existing / Import / Export menu, select <strong>Use Existing Configuration</strong>.
+    <div class="Container"><img src="images/UseExistingUser.png" alt="Use Existing User" width="500" height="500"></div>
+    The Select Engine Type menu is displayed and the Review panel <strong>Config Type:</strong> field displays <strong>Existing</strong>.
+    <div class="Container"><img src="images/SelectEngineTypeMenu.png" alt="Select Engine Type Menu" width="500" height="500"></div>
+  </li>
+  <li>From the Select Engine Type menu, select <strong>Production</strong>, <strong>Enhanced Production</strong> or <strong>Experimental</strong> according to the type of engine being tested.
+    <div class="Container"><img src="images/SelectProduction.png" alt="SelectProduction" width="500" height="500"></div>
+    The Select an Engine Type panel is displayed and the Review panel <strong>Engine Type:</strong> field displays <strong>Production</strong>, <strong>Enhanced Production</strong> or <strong>Experimental</strong> depending on the previous selection (i.e. <strong>Production</strong>).
+    <div class="Container"><img src="images/SelectEngineTypePanel.png" alt="SelectEngineTypePanel" width="500" height="500"></div>
+  </li>
+  <li>Select an engine type from the <strong>Select an Engine Type</strong> panel (i.e. T700PRD).
+    <div class="Container"><img src="images/SelectT700PRD.png" alt="SelectT700PRD" width="500" height="500"></div>
+    <p class="Note">The Select button is enabled only after an engine has been selected (highlighted).</p>
+  </li>
+  <li>Click <strong>Select</strong> to accept the selected engine type.<br>
+    The Select Configuration panel is displayed and the Review panel <strong>Engine Type:</strong> field displays <strong>Production Engine Type (i.e. T700PRD)</strong>.
+    <div class="Container"><img src="images/SelectConfiguration.png" alt="SelectConfiguration" width="500" height="500"></div>
+  </li>
+  <li id="SelectConfig">Select a configuration from the <strong>Select Configuration</strong> panel. A list of the last three months of configurations is displayed by default.
+    <div class="Container"><img src="images/ConfigurationSelected.png" alt="Configuration Selected" width="500" height="500"></div>
+    The User can toggle the Filter Mode for existing configurations:
+    <ul>
+      <li>click the <strong>Last three months</strong> radio button to display only those configurations created between current date and three months prior to the current date</li>
+      <li>click the <strong>All available</strong> radio button to display all available configurations</li>
+    </ul>
+    <p class="Note">The Select button is enabled only after a configuration has been selected (highlighted).</p>
+    <p class="Note">As a minimum, the Engine Serial Number, Engine Build Number, Engine Type, Test ID and Test Description are displayed for any selected configuration. This information is retrieved from the database.</p>
+  </li>
+</ol>
+<ol start="6">
+  <li>Click <strong>Select</strong> to accept the selected configuration and display the finish sequence.<br>
+    The <strong>Configuration Status</strong> panel is displayed.
+    <div class="Container"><img src="images/ConfigStatus.png" alt="Config Status" width="500" height="499"></div>
+  </li>
+  <li>Click <strong>Configure</strong>.<br>
+    A backup/export confirmation window is displayed.
+    <div class="Container"><img src="images/Warning.png" alt="Warning" width="473" height="244"></div>
+  </li>
+  <li>If a backload or export of the currently selected engine has been performed, click <strong>Yes</strong>.<br>
+    <br>
+    <p class="Note">If the operator clicks No, the Use Existing Configuration is rejected and CUTI terminates.</p>
+    The <strong>Configuration Status</strong> panel displays different tasks (i.e. <strong>Uploading Ladder Logic</strong> and <strong>Starting WonderWare</strong>) with results either being <strong>OK</strong> or <strong>Failed</strong>.
+    <div class="Container"><img src="images/ConfigStatus2.png" alt="Config Status 2" width="500" height="500"></div>
+  </li>
+  <li>If the results are <strong>OK</strong> CUTI closes and the Management GUI Control Panel is displayed.</li>
+</ol>
+<h2 id="ImportNewConfig">Import New Configuration</h2>
+<p>To import a new configuration:</p>
+<ol>
+  <li>From the <strong>CUTI - Configuration User Test Interface</strong> screen Select Existing / Import / Export menu, select <strong>Import New Configuration</strong>.
+    <div class="Container"><img src="images/ImportNewConfig.png" alt="Import New Config" width="500" height="500"></div>
+    The Select Engine Type menu is displayed and the Review panel <strong>Config Type:</strong> field displays <strong>Import</strong>.
+    <p class="Note">If a new configuration was selected, this information is retrieved from files stored on the EA (Experimental Analyser).</p>
+    <p class="Note">If User selects to import a new Experimental engine or Enhanced Production Engine configuration, a list of available engine configurations is retrieved and displayed from the Experimental Analyser (EA).</p>
+  </li>
+  <li>From the Select Engine Type menu, select <strong>Production</strong>, <strong>Enhanced Production</strong> or <strong>Experimental</strong> according to the type of engine being tested.</li>
+</ol>
+<p>For details on selecting a Production engine, see <a href="?8#ProdConfig">Production Engine Configuration</a>.</p>
+<p>For details on selecting an Enhanced Production engine, see <a href="?9#EnhancedProdConfig">Enhanced Production Engine Configuration</a>.</p>
+<p>For details on selecting an Experimental engine, see <a href="?10#ExperimentalConfig">Experimental Engine Configuration</a>.</p>
+<h3 id="ProdConfig">Production Engine Configuration</h3>
+<p>To configure a Production engine:</p>
+<ol>
+  <li>From the Select Engine Type menu, select <strong>Production</strong>.<br>
+    The Select an Engine Type panel is displayed.
+    <div class="Container"><img src="images/ProdSelectEng.png" alt="Prod Select Eng" width="500" height="499"></div>
+  </li>
+  <li>Select an engine type and click <strong>Select</strong>.<br>
+    The <strong>Import Production Engine Options</strong> panel is displayed.
+    <div class="Container"><img src="images/ImportNewP3.png" alt="ImportNewP3" width="500" height="500"></div>
+  </li>
+  <li>Select an Engine Pylon from the <strong>Import Production Engine Options</strong> panel (i.e. P3 Tay).
+    <div class="Container"><img src="images/ImportNewP3Selected.png" alt="ImportNewP3Selected" width="500" height="500"></div>
+  </li>
+  <li>Fill out the Engine Number, Engine Build and Test Description fields with appropriate data.
+    <p class="Note">The Test ID is automatically populated.</p>
+    <div class="Container"><img src="images/ImportP3FilledOut.png" alt="ImportP3FilledOut" width="500" height="500"></div>
+    The <strong>Save &amp; Continue</strong> button is enabled.</li>
+  <li>Click <strong>Save &amp; Continue</strong>.<br>
+    The <strong>Edit Sensor Fields</strong> menu and <strong>Available Subsystems</strong> panel is displayed.
+    <div class="Container"><img src="images/SelectSensorFields.png" alt="SelectSensorFields" width="500" height="500"></div>
+  </li>
+  <li>Select a sensor for editing from the <strong>Available Subsystems</strong> panel.
+    <div class="Container"><img src="images/SelectSensor.png" alt="Select Sensor" width="500" height="500"></div>
+  </li>
+  <li>Select <strong>Apply primary to all channels</strong>, <strong>Save &amp; Continue</strong> or <strong>Save Changes</strong> (in the left panel).<br>
+    If <strong>Save &amp; Continue</strong> is selected, the <strong>Configuration Status</strong> panel is displayed.
+    <div class="Container"><img src="images/ImportingConfiguration.png" alt="Importing Configuration" width="500" height="500"></div>
+  </li>
+  <li>Select <strong>Configure</strong>.<br>
+    A backup/export confirmation window is displayed.
+    <div class="Container"><img src="images/Warning.png" alt="Warning" width="473" height="244"></div>
+  </li>
+  <li>If a backload or export of the currently selected engine has been performed, click <strong>Yes</strong>.
+    <p class="Note">If the operator clicks No, the Use Existing Configuration is rejected.</p>
+    The configuration is imported, the PLC is configured, proDAS is configured, CUTI closes and the Management GUI Control Panel is displayed.</li>
+</ol>
+<h3 id="EnhancedProdConfig">Enhanced Production Engine Configuration</h3>
+<p>To configure an Enhanced Production engine:</p>
+<ol>
+  <li>From the Select Engine Type menu, select <strong>Enhanced Production</strong>.<br>
+    The <strong>Select Configuration</strong> panel is displayed.</li>
+  <li>Select a configuration from the <strong>Select Configuration</strong> panel. A list of all available configurations is displayed by default.
+    <p class="Note">When importing a new configuration the three month time filter is not available.</p>
+  </li>
+  <li>Click <strong>Select</strong>.<br>
+    The <strong>Edit Sensor Fields</strong> menu and <strong>Available Subsystems</strong> panel is displayed.<br>
+    The user has the ability to edit the Sensor Fields of the relevant configuration tab-delimited text files.<br>
+    The channel name and subsystem specific information are displayed.<br>
+    User is presented with a list of subsystems as the top level of a tree view.<br>
+    <p class="Note">The second levels of the tree view are sensors specific to the subsystem. The third levels of the tree view are channels specific to the sensors. Based the subsystem, there may be a fourth level of the tree view, which includes subsystem specific information.</p>
+  </li>
+  <li>Apply modifications to the PBS Sensor Name, TDM Unit ID and SCUTR Serial numbers to all channels in a selected subsystem as required.</li>
+  <li>Save modifications to the test folder (without importing the configuration).</li>
+  <li>Select <strong>Save and Continue</strong>.<br>
+    The <strong>Configuration Status</strong> panel is displayed.</li>
+  <li>Select <strong>Configure</strong>.<br>
+    The configuration is imported, the PLC is configured, proDAS is configured, CUTI closes and the Management GUI Control Panel is displayed.</li>
+</ol>
+<h3 id="ExperimentalConfig">Experimental Engine Configuration</h3>
+<p>To configure an Experimental engine:</p>
+<ol>
+  <li>From the Select Engine Type menu, select <strong>Experimental</strong>.<br>
+    The <strong>Select Configuration</strong> panel is displayed.</li>
+  <li>Select a configuration from the <strong>Select Configuration</strong> panel. A list of all available configurations is displayed by default.
+    <p class="Note">When importing a new configuration the three month time filter is not available.</p>
+  </li>
+  <li>Select <strong>Configure</strong>.<br>
+    The configuration is imported, the PLC is configured, proDAS is configured, CUTI closes and the Management GUI Control Panel is displayed.</li>
+</ol>
+<h2 id="ExpExConfig">Export Existing Configuration</h2>
+<p>To export an existing configuration:</p>
+<ol>
+  <li>From the <strong>CUTI - Configuration User Test Interface</strong> screen,  select the Select Existing/ Import/Export menu, select <strong>Export Existing Configuration</strong>.<br>
+    The Select Engine Type menu is displayed and the Review panel <strong>Config Type:</strong> field displays <strong>Export</strong>.
+    <div class="Container"><img src="images/ExportExisting.png" alt="ExportExisting" width="500" height="499"></div>
+  </li>
+  <li>From the <strong>Select Engine Type</strong> menu, select <strong>Production</strong>, <strong>Enhanced Production</strong> or <strong>Experimental</strong> according to the type of engine being  tested.
+    <div class="Container"><img src="images/ExportExistingProd.png" alt="ExportExistingProd" width="500" height="499"></div>
+    The Select an Engine Type panel is displayed and the Review  panel <strong>Engine Type:</strong> field displays <strong>Production</strong>, <strong>Enhanced Production</strong> or <strong>Experimental</strong> depending  on the previous selection (i.e. <strong>Production</strong>).
+    <div class="Container"><img src="images/ExportSelectEngineType1.png" alt="ExportSelectEngineType1" width="500" height="500"></div>
+  </li>
+  <li>Select an engine type from the <strong>Select an Engine Type</strong> panel  (i.e. T700PRD).
+    <div class="Container"><img src="images/ExportSelectEngineType.png" alt="ExportSelectEngineType" width="500" height="500"></div>
+    <p class="Note">The Select button is enabled only after  an engine has been selected (highlighted).</p>
+  </li>
+  <li>Click <strong>Select</strong> to accept the selected engine type.<br>
+    The Select Configuration panel is displayed and the Review panel <strong>Engine Type:</strong> field displays <strong>Production Engine Type (i.e. T700PRD)</strong>.
+    <div class="Container"><img src="images/ExportSelectTest1.png" alt="ExportSelectTest1" width="500" height="500"></div>
+  </li>
+  <li>Select a configuration from the <strong>Select Configuration</strong> panel.
+    <div class="Container"><img src="images/ExportSelectTest.png" alt="ExportSelectTest" width="500" height="500"></div>
+    The User can toggle the Filter Mode for existing configurations:
+    <ul>
+      <li>click the <strong>Last three months</strong> radio button to display only those configurations created between the current date and three months prior to  the current date</li>
+      <li>click the <strong>All available</strong> radio button to display all available configurations</li>
+    </ul>
+    <p class="Note">The Select button is enabled only after a configuration has been selected (highlighted).</p>
+    <p class="Note">As a minimum, the Engine Serial Number, Engine Build Number, Engine Type, Test ID and Test Description are displayed for any selected configuration. This information is retrieved from the database.</p>
+  </li>
+</ol>
+<ol start="6">
+  <li>Click <strong>Select</strong> to accept the selected configuration.<br>
+    The configuration is exported and the status is displayed.</li>
+  <div class="Container"><img src="images/ExportStatus.png" alt="ExportStatus" width="500" height="500"></div>
+  <li>Click <strong>OK</strong>.</li>
+</ol>
+<h2 id="ImpSavConfig">Import Saved Configuration</h2>
+<p>To import a saved configuration:</p>
+<ol>
+  <li>From the <strong>CUTI - Configuration User Test Interface</strong> screen, select the Select Existing/ Import/Export menu, select <strong>Import Saved Configuration</strong>.<br>
+    The Select Configuration menu is displayed and the Review panel <strong>Config Type:</strong> field displays <strong>ImportSaved</strong>.
+    <div class="Container"><img src="images/ImportSavedSelectionScreen.png" alt="Import Saved Selection Screen" width="500" height="500"></div>
+  <li>Select a configuration from the <strong>Select Configuration</strong> panel.<br>
+    The <strong>All available</strong> radio button is automatically selected to display all available configurations.</li>
+  <p class="Note">The Select button is enabled only after a configuration has been selected (highlighted).</p>
+  <p class="Note">As a minimum, the Engine Serial Number, Engine Build Number, Engine Type, Test ID and Test Description are displayed for any selected configuration. This information is retrieved from the database.</p>
+  <div class="Container"><img src="images/ImportSavedConfigSelected.png" alt="Import Saved Config Selected" width="500" height="500"></div>
+  <li>Click <strong>Select</strong> to accept the selected configuration.<br>
+    Details of the configuration are displayed.</li>
+  <div class="Container"><img src="images/ViewsFolder.png" alt="Views Folder" width="500" height="500"></div>
+  <p class="Note">In the Test ID field, if a new ID appears next to the test ID (i.e. Test ID: 22) "26792" indicates that a new Test ID has been generated for the Configuration. For details, see <a href="CUTI.htm?#TestNameGen">Test Name (Test ID) Generation</a>.</p>
+  <p class="Note">The content in the views and log_defs folder are for the selected configuration. The operator can view the content in the folders and decide whether the folders need to be deleted or not before importing the saved configuration. If the folders are not deleted, when the saved configuration is imported, all files with a matching name to those contained in the saved configuration are overwritten. Files without a matching  name are not overwritten. The default is to delete the folders.</p>
+  <li>Click <strong>Import</strong>.<br>
+    The Configuration Status panel is displayed.</li>
+  <div class="Container"><img src="images/ImportSavedConfigurationStatus.png" alt="Import Saved Configuration Status" width="500" height="500"></div>
+  <li>Click <strong>Configure</strong>.<br>
+    A backup/export confirmation window is displayed.</li>
+  <div class="Container"><img src="images/Warning.png" alt="Warning" width="473" height="244"></div>
+  <li>If a backload or export of the currently selected engine has been performed, click <strong>Yes</strong>.<br>
+    <p class="Note">If the operator clicks No, the Import  Saved Configuration is rejected and CUTI terminates.</p>
+    The <strong>Configuration Status</strong> panel displays different tasks (i.e. <strong>Uploading Ladder Logic</strong> and <strong>Starting WonderWare</strong>) with results either being <strong>OK</strong> or <strong>Failed</strong>.</li>
+  <div class="Container"><img src="images/ImportSavedStatus.png" alt="Import Saved Status" width="500" height="500"></div>
+  <br>
+  If the results are OK, CUTI closes and the Management GUI Control Panel is displayed.
+  </li>
+</ol>
+<br>
+  <br>
+
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

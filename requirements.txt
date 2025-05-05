@@ -1,0 +1,4 @@
+pip install --extra-index-url https://download.pytorch.org/whl/cu121 torch torchvision torchaudio langchain langchain-community chromadb sentence-transformers transformers python-dotenv pillow easyocr opencv-python-headless tiktoken pypdf unstructured rank-bm25 wheel sentencepiece FlagEmbedding
+
+pip uninstall torch torchvision torchaudio
+pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu118

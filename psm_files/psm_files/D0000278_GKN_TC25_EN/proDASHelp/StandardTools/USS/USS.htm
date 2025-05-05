@@ -1,0 +1,720 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>User Security System (USS)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="UserSecuritySystem">User Security System (USS)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>proDAS controls access to each of the proDAS applications via the User Security System (USS), ensuring that only an authorised user can login to a proDAS  application. A common graphical user interface (GUI) login control is used to log in to the  various proDAS applications.</p>
+<p>The USS has a graphical interface that allows an administrator to manage the permissions and account information of proDAS users, resources, and resource users.</p>
+<h2 id="LaunchproDASapplication">Launching a proDAS Application</h2>
+<p>When a proDAS application is launched, the USS login window is displayed.</p>
+<div class="Container"><img src="images/Login.gif" alt="Login" width="407" height="272"></div>
+<p>The user must enter their username and password and then click <strong>Login</strong>. The login information (i.e.: Username  and Password) and the identification name of the proDAS application is passed  to the USS Server for validation. If the login information has been entered  correctly, the USS Server validates the information, returns the login validation  as true, and provides the security level (from 1 to 5) of the user. The security level of the user is extracted and the proDAS  application is configured and started.</p>
+<h3 id="LaunchOtherproDASapps">Launching Additional proDAS Applications</h3>
+<p>Once a user successfully logs into a proDAS application, they  may be able to launch additional proDAS applications.</p>
+<p>When an additional proDAS application is launched, the username  and password are obtained from the login for the current proDAS application, and passed to the USS Server for validation. </p>
+<p>The USS Server validates the information, returns the login validation  as true, and provides the security level (from 1 to 5) of the user.</p>
+<p>The second proDAS application extracts the security level of the user (the security level of the user  determines the configuration of the application). The second proDAS application  is configured and started.</p>
+<p>If the USS Server is not available, any login, validation, or resource data attempt will fail.</p>
+<p class="Note">proDAS applications can be launched from the command line. Launching from the command line accepts both encrypted passwords (/ep) and unencrypted passwords.<br>
+  <br>
+  When an application is launched from an open application, the login information is  encrypted and the .ini file reflects the encryption (/ep). When an application is launched from a shortcut or the command line, the login information is not automatically encrypted.</p>
+<p class="Note">If the application does not start, contact the system administrator.</p>
+<h2 id="UserAccountsPasswords">User Accounts and Passwords</h2>
+<p>The system administrator creates and modifies user accounts and passwords for the proDAS applications on the Management GUI Computer using the USS executable. Only personnel with the User Security System (USS) administrator password can add, edit or remove users, assign access levels, and perform system maintenance.</p>
+<p> The system administrator assigns the appropriate access level to the different members of the engine test team. The password is case-sensitive. </p>
+<p> There are six access levels, numbered from 0 to 5. The access levels determine what functions the user can or cannot use when interacting with the proDAS Applications. The security levels, in all proDAS applications, are  structured so that the rights (permissions) of a specific security level include  the rights (permissions) of all lower security levels. Each user is assigned a permission level for each proDAS application they have access to.</p>
+<p class="Note">Users can have different access levels for the different applications they use.</p>
+<h3>Resource Users</h3>
+<p>Resource users manage the passwords for different categories of resources:</p>
+<ul>
+  <li>DSN &ndash; for accessing the Oracle database</li>
+  <li>Computer &ndash; for accessing the Linux PC or an SFTP site</li>
+  <li>Config Server &ndash; for accessing the config server</li>
+</ul>
+<p>Resource users are created in the USS application. When a resource user record is added, the user can be tied to a regular user in proDAS or created as just a resource user.</p>
+<h3>Access Levels</h3>
+<p>The access levels of each application determine what functions each user can or cannot use when interacting with it. The USS is used to assign access levels to individual users, while the Management GUI is used to determine what each access level has permission to do within each application. Users with administrator privileges can use Management GUI to alter what the access levels for each application.</p>
+<p>The following applications have default functions that each access level has permission to do.</p>
+<h4>Thrust Calibration Application</h4>
+<table class="Table-Grey">
+  <tr>
+    <th>TCA Function</th>
+    <th>Default User Level</th>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>View thrust calibration specific data</td>
+    <td>1</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Generate thrust audit or master calibration report</td>
+    <td>1</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Exercise thrust frame</td>
+    <td>2</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Perform automatic audit or master calibration</td>
+    <td>2</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Perform manual audit or master calibration</td>
+    <td>2</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Accept single point master calibration</td>
+    <td>3</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Modify the target tolerance and SD limits</td>
+    <td>4</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Zero working thrust measurement</td>
+    <td>4</td>
+  </tr>
+</table>
+<p class="Note">A level 5 user can execute any function and modify the security level associated to each TCA function above.</p>
+<h4>Sensor Calibration Application</h4>
+<table class="Table-Grey">
+  <tr>
+    <th>SCA Function</th>
+    <th>Default User Level</th>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Create reports</td>
+    <td>1</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Perform manual calibration/audit</td>
+    <td>3</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Perform automatic calibration/audit</td>
+    <td>3</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Save steps into files (e.g. SCDF, group .ini)</td>
+    <td>3</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Activate another valid calibration</td>
+    <td>4</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Change sensor data</td>
+    <td>4</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Change order of generated polynomials</td>
+    <td>4</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Change percentage of extrapolation</td>
+    <td>4</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Activate an invalid calibration</td>
+    <td>5</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Store failed audit or calibration</td>
+    <td>5</td>
+  </tr>
+</table>
+<h4>Sensor Editor</h4>
+<table class="Table-Grey">
+  <tr>
+    <th>TCA Function</th>
+    <th>Default User Level</th>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>View all the sensors</td>
+    <td>1</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Create sensor report</td>
+    <td>1</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Activate active sensor calibration</td>
+    <td>2</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Add new sensor</td>
+    <td>2</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Clone sensor</td>
+    <td>2</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Update existing sensor</td>
+    <td>2</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Add/update calibration record</td>
+    <td>2</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Edit sensor part</td>
+    <td>3</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Import/export sensor</td>
+    <td>3</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Delete sensor</td>
+    <td>4</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Edit calibration equipment</td>
+    <td>4</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Editor sensor type</td>
+    <td>4</td>
+  </tr>
+</table>
+<p>The following applications have no security levels:</p>
+<ul>
+  <li>Alarm Summary Display</li>
+  <li>Unified Event Log (UEL) Display</li>
+  <li>ARINC Channel List (ACL)</li>
+  <li>Onboard Maintenance System (OMS) GUI</li>
+  <li>Configure User Test Information (CUTI)</li>
+  <li>Automated CITS Import (ACI)</li>
+  <li>Configuration Import/Export (CIE)</li>
+  <li>Experimental Analyzer Interface (EASIFIT) GUI</li>
+  <li>Sensor Calibration Report Generator</li>
+</ul>
+<p class="Note">Users in the RTD Editor may be able to perform tasks  of higher levels (e.g. a user at level sl1 can save display pages in the engine folder), depending on whether they are an admitted user for the selected engine type, as defined in the Configuration Administrator.<br>
+</p>
+<h2 id="AddDeleteModify">How to Add, Remove, or Modify User Accounts on proDAS</h2>
+<p>The following procedures detail the primary functions of the User Security System GUI. For more information on further functions of the system, see the descriptions in User Security System GUI.</p>
+<ul>
+  <li><a href="?2#AddnewUser">Adding a New User to proDAS</a></li>
+  <li><a href="?3#RemoveUser">Removing a User from proDAS</a></li>
+  <li><a href="?4#ChangeUserPassword">Changing a User's Password on proDAS</a></li>
+  <li><a href="?5#ChangeAccessLevel">Changing a User's Access Level</a></li>
+</ul>
+<h3 id="AddnewUser">Adding a New User to proDAS</h3>
+<p class="Note">Only the System Administrator (permission level 5 for the USS) can add new users to proDAS and assign user access levels for the proDAS applications. </p>
+<p>To add a new user to proDAS: </p>
+<ol>
+  <li>From the <a href="USS.htm#UsersTab">Users tab</a> in the User Security System GUI, click <strong>Add</strong> (<img src="images/AddUser.png" width="31" height="31" alt=""/>). A new line item appears in the list of users.</li>
+  <li>Type in a username in the Name field and any  notes required for the user.</li>
+  <p class="Note">The user name must be at least three characters long. </p>
+  <li>If the new user is to be a resource user, select the <strong>Resource User</strong> checkbox. If this checkbox is selected, the checkbox in the <strong>Resource User?</strong> column in the user list is automatically selected.</li>
+  <li>Input the password for the new user in both <strong>Password</strong> fields. Ensure the passwords are identical. Click <strong>Set Password</strong>. The checkbox in the <strong>Password Set?</strong> column is automatically selected.</li>
+  <li>Save the changes. The checkbox in the <strong>Password Set?</strong> column is deselected when changes are saved. </li>
+</ol>
+<h3 id="RemoveUser">Removing a User from proDAS</h3>
+<p class="Note">User accounts should be removed if the users no longer need access to the system. Only the System Administrator (permission level 5 for the USS) can remove a user from proDAS.</p>
+<p align="left">To remove a user from proDAS:</p>
+<ol>
+  <li>From the <a href="USS.htm#UsersTab">Users tab</a> in the USS GUI, select the user to be removed in the user list.</li>
+  <li>Click <strong>Remove</strong> (<img src="images/DeleteUser.png" width="32" height="31" alt=""/>). The user is deleted from the system. </li>
+  <li>Save the changes when required.</li>
+  <p class="Note">The user will remain in the user list until the next save.</p>
+  <p class="Note">When a user is deleted from the USS, all related user-application records are also removed from the Application Users tab. </p>
+</ol>
+<h3 id="ChangeUserPassword">Changing a User's Password on proDAS</h3>
+<p class="Note">Only the System Administrator (permission level 5 for the USS) can change a user's access level on proDAS.</p>
+<p>To change a user's password on proDAS:</p>
+<ol>
+  <li>From the <a href="USS.htm#UsersTab">Users tab</a> in the USS GUI, select the required user in the user list.</li>
+  <li>Change the password as necessary in the password fields. Click <strong>Set Password</strong>.</li>
+  <li>Save the changes when required. The checkboxes in the<strong> Password Set?</strong> columns are deselected when changes are saved.</li>
+</ol>
+<h3 id="ChangeAccessLevel">Changing a User's Access Level</h3>
+<p class="Note">Only the System Administrator (permission level 5 for the USS) can change a user's access level on proDAS.</p>
+<p>To change a user's access (permission) level on proDAS:</p>
+<ol>
+  <li>From the <a href="USS.htm#ApplicationUsersTab">Application Users tab</a> in the USS GUI, select the requisite user in the user list. </li>
+  <li>Use the slider bar to change the permission level of the user.</li>
+  <p class="Note">The permission level is only applicable to the application selected for that user. If the user requires permission for a different application, a new record must be created. To create a new record, click Add (<img src="images/AddUser.png" width="31" height="31" alt=""/>). A new record must be created for each application the user requires permission for. </p>
+  <li>Save the changes.</li>
+</ol>
+<h2 id="USSGUI">User Security System GUI</h2>
+<p>The User Security System (USS) provides an account management GUI where the user can view, create, and modify user accounts. The account management GUI is the primary user interface for the USS.</p>
+<p>To access the USS account management GUI, navigate to <strong>C:/proDAS/bin</strong> and open the <strong>USS.exe</strong> executable file.</p>
+<h3 id="LogInScreen">Log In Screen</h3>
+<p>The log in screen allows the user to enter the requisite username and password to log in to the USS account management system.</p>
+<div class="Container"><img src="images/LoginScreen.png" width="700" height="355" alt=""/></div>
+<p>The user can remain logged in to the USS for 60 minutes. When there are four minutes or less remaining in the session, the user can extend the session by selecting <strong>File</strong> &gt; <strong>Extend Session</strong>. The extend session window opens and the user can enter their username and password to extend the session for another 60 minutes.</p>
+<div class="Container"><img src="images/ExtendSession.png" width="700" height="355" alt=""/></div>
+<h3 id="MenuOptions">Menu Options</h3>
+<p>The following menu options are present in the USS account management GUI</p>
+<ul>
+  <li>File Menu</li>
+  <li>Edit Menu</li>
+  <li>Tools Menu</li>
+  <li>Help Menu</li>
+</ul>
+<h4>File Menu</h4>
+<div class="Container"><img src="images/FileMenu.png" width="212" height="178" alt=""/></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu Option</th>
+    <th>Description</th>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Save</td>
+    <td>Save the current state and all changes made.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Discard All</td>
+    <td>Discard all changes made since last save.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Extend Session</td>
+    <td>Allows the user to extend the session. Selecting this menu option opens the Extend Session window.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Log Off</td>
+    <td>Log the user out of the USS</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Exit</td>
+    <td>Exit the USS GUI.</td>
+  </tr>
+</table>
+<h4>Edit Menu</h4>
+<div class="Container"><img src="images/EditMenu.png" width="179" height="226" alt=""/></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu Option</th>
+    <th>Description</th>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Undo</td>
+    <td>Undo the last change.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Redo</td>
+    <td>Redo the last change that was undone.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Cut</td>
+    <td>Cut the selected text.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Copy</td>
+    <td>Copy the selected text.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Paste</td>
+    <td>Paste text that has been cut or copied.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Delete</td>
+    <td>Delete the selected text.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Select All</td>
+    <td>Select all text within a textually editable field.</td>
+  </tr>
+</table>
+<h4>Tools Menu</h4>
+<div class="Container"><img src="images/ToolsMenu.png" width="273" height="97" alt=""/></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu Option</th>
+    <th>Description</th>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Import</td>
+    <td>Import data from an existing Microsoft Database (MDB) file from a previous version of the USS. This is also accessible from the Import tab.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Cross join Users + Applications</td>
+    <td>Join all users from the users list to all applications in the applications list.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Validate</td>
+    <td>Validate all changes (e.g. the system checks if there are users who do not have their password set yet) to ensure no errors are present. The validation results are displayed in the log table in the Log tab.</td>
+  </tr>
+</table>
+<h4>Help Menu</h4>
+<div class="Container"><img src="images/HelpMenu.png" width="179" height="113" alt=""/></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu Option</th>
+    <th>Description</th>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Getting Started</td>
+    <td>Opens the first page of the proDAS Integrated Help.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Topics</td>
+    <td>Contains all specific help topics referring to the User Security System.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>About</td>
+    <td>Displays information about the User Security System, comprising the name, version number, and copyright.</td>
+  </tr>
+</table>
+<h3>Tool Bar</h3>
+<div class="Container"><img src="images/ToolBar.png" width="214" height="37" alt=""/></div>
+<p>The tool bar provides further user options:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Option</th>
+    <th>Description</th>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Save <img src="images/SaveButton.png" width="34" height="37" alt=""/></td>
+    <td>Save the current state and all changes made.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Undo <img src="images/Undo.png" width="34" height="31" alt=""/></td>
+    <td>Undo the last change.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Redo <img src="images/RedoButton.png" width="33" height="37" alt=""/></td>
+    <td>Redo the last change that was undone.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Cut <img src="images/CutButton.png" width="34" height="37" alt=""/></td>
+    <td>Cut the selected text.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Copy <img src="images/CopyButton.png" width="34" height="37" alt=""/></td>
+    <td>Copy the selected text.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td>Paste <img src="images/PasteButton.png" width="30" height="37" alt=""/></td>
+    <td>Paste text that has been cut or copied.</td>
+  </tr>
+</table>
+<h3 id="UsersTab">Users Tab</h3>
+<p>The Users tab allows the administrator to add and modify user accounts.</p>
+<div class="Container"><img src="images/UserTab.png" width="700" height="512" alt=""/></div>
+<p>The following table describes the features of the Users tab:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Feature</th>
+    <th>Description</th>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/AddUser.png" width="31" height="31" alt=""/>(Add)</td>
+    <td>Add new user.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/DeleteUser.png" width="32" height="31" alt=""/>(Remove)</td>
+    <td>Remove selected user.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/Undo.png" width="34" height="31" alt=""/>(Revert)</td>
+    <td>Undo last action.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/SearchUser.png" width="230" height="31" alt=""/></td>
+    <td>Search for a user in the list. Click the clear button to clear search results.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/UserList.png" width="400" height="161" alt=""/></td>
+    <td>Displays the list of users with the inputted notes for each. The <strong>Resource User?</strong> column indicated whether a user is selected as a resource user since the last save. The <strong>Password Set?</strong> column displays if the password for the user has been changed since the last save.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/UserInfo.png" width="283" height="305" alt=""/></td>
+    <td>Displays editable information for the selected user:<br>
+      <br>
+      <strong>ID</strong>: An automatically generated ID for each user.<br>
+      <strong>Name</strong>: User name.<br>
+      <strong>Notes</strong>: A field for inputting notes. Any inputted notes are shown in the user list.<br>
+      <strong>Resource User?</strong>: Check box to be selected if the user is to be a resource user.<br>
+      <strong>Password</strong>: Two fields for inputting the user's password. Both fields must be inputted and be identical. Click the Set Password button to set the user's password.</td>
+  </tr>
+</table>
+<h3 id="ApplicationsTab">Applications Tab</h3>
+<p>The Applications tab allows the administrator to add new applications, remove existing applications, or modify the information of existing applications (e.g. application name and description).</p>
+<div class="Container"><img src="images/ApplicationsTab.png" width="700" height="512" alt=""/></div>
+<p>The following table describes the features of the Applications tab:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Feature</th>
+    <th>Description</th>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/AddUser.png" width="31" height="31" alt=""/>(Add)</td>
+    <td>Add new application.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/DeleteUser.png" width="32" height="31" alt=""/>(Remove)</td>
+    <td>Remove selected application.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/Undo.png" width="34" height="31" alt=""/>(Revert)</td>
+    <td>Undo last action.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/SearchUser.png" width="230" height="31" alt=""/></td>
+    <td>Search for an application in the list. Click the clear button to clear search results.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/ApplicationsList.png" width="400" height="349" alt=""/></td>
+    <td>Displays the list of applications and the inputted description of each.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/ApplicationInfo.png" width="287" height="171" alt=""/></td>
+    <td>Displays editable information for the selected user:<br>
+      <br>
+      <strong>ID</strong>: An automatically generated ID for each application.<br>
+      <strong>Name</strong>: Application name.<br>
+      <strong>Description</strong>: A field for inputting a description of the application. Any inputted descriptions are shown in the user list.</td>
+  </tr>
+</table>
+<h3 id="ApplicationUsersTab">Application Users Tab</h3>
+<p>The Application Users tab allows the administrator to define which applications can be used by which users and the permission level for the user for the specific application.</p>
+<div class="Container"><img src="images/ApplicationUsersTab.png" width="700" height="492" alt=""/></div>
+<p>The following table describes the features of the Applications Users tab:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Feature</th>
+    <th>Description</th>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/AddUser.png" width="31" height="31" alt=""/>(Add)</td>
+    <td>Add new record of user associated with an application.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/DeleteUser.png" width="32" height="31" alt=""/>(Remove)</td>
+    <td>Remove selected record.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/Undo.png" width="34" height="31" alt=""/>(Revert)</td>
+    <td>Undo last action.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/SearchUser.png" width="230" height="31" alt=""/></td>
+    <td>Search for a record in the list. Click the clear button to clear search results.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/ApplicationUserFIlter.png" width="268" height="32" alt=""/></td>
+    <td>Allows the user to filter the results in the tab. The drop-down menus allow the user to select the filter parameters. Clicking <img src="images/FilterButton.png" width="31" height="32" alt=""/> shows the results. Clicking <img src="images/X.png" width="32" height="32" alt=""/> clears the filter.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/ApplicationUserList.png" width="400" height="285" alt=""/></td>
+    <td>Displays the list of applications, the associated users, the user's permission level value (0 &ndash; 5) and a visual representation of the permission level.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/ApplicationUserInfo.png" width="228" height="152" alt=""/></td>
+    <td>Displays editable information for the selected user:<br>
+      <br>
+      <strong>ID</strong>: An automatically generated ID for each application.<br>
+      <strong>Application</strong>: Application name.<br>
+      <strong>User</strong>: The user being defined for the application-user connection.<br>
+      <strong>Permission</strong>: A slide bar ranging from 0 &ndash; 5 dictating the permission level for the selected user in the selected application.</td>
+  </tr>
+</table>
+<h3 id="ResourcesTab">Resources Tab</h3>
+<p>The Resources tab allows the administrator to add new resources, delete existing resources, or modify the information of existing resources (e.g. resource name, description, type).</p>
+<div class ="Container"><img src="images/ResourcesTab.png" width="700" height="512" alt=""/></div>
+<p>The following table describes the features of the Resources tab:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Feature</th>
+    <th>Description</th>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/AddUser.png" width="31" height="31" alt=""/>(Add)</td>
+    <td>Add new resource.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/DeleteUser.png" width="32" height="31" alt=""/>(Remove)</td>
+    <td>Remove selected resource.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/Undo.png" width="34" height="31" alt=""/>(Revert)</td>
+    <td>Undo last action.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/SearchUser.png" width="230" height="31" alt=""/></td>
+    <td>Search for a resource in the list. Click the clear button to clear search results.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/ResourceList.png" width="400" height="72" alt=""/></td>
+    <td>Displays the list of resources, the inputted description, the type, and any inputted data.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/ResourceInfo.png" width="278" height="288" alt=""/></td>
+    <td>Displays editable information for the selected user:<br>
+      <br>
+      <strong>ID</strong>: An automatically generated ID for each application.<br>
+      <strong>Name</strong>: Resource name.<br>
+      <strong>Description</strong>: Description of the resource.<br>
+      <strong>Type</strong>: A drop-down menu to select the type. Types available are Computer, Config Server, and DSN. <br>
+      <strong>Data</strong>: Data for the resource.</td>
+  </tr>
+</table>
+<h3 id="ResourceUsersTab">Resource Users Tab</h3>
+<p>The Resource Users tab allows the administrator to add new resource users, delete existing resource users, or modify the information of existing resource users.</p>
+<div class="Container"><img src="images/ResourceUserTab.png" width="700" height="512" alt=""/></div>
+<p>The following table describes the features of the Resource Users tab:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Feature</th>
+    <th>Description</th>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/AddUser.png" width="31" height="31" alt=""/>(Add)</td>
+    <td>Add new resource user.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/DeleteUser.png" width="32" height="31" alt=""/>(Remove)</td>
+    <td>Remove selected resource user.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/Undo.png" width="34" height="31" alt=""/>(Revert)</td>
+    <td>Undo last action.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/SearchUser.png" width="230" height="31" alt=""/></td>
+    <td>Search for a resource user in the list. Click the clear button to clear search results.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/ResourceUserList.png" width="400" height="92" alt=""/></td>
+    <td>Displays the list of resources and the attached users. The <strong>Password Set?</strong> column displays if the password for the user has been changed since the last save.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/ResourceUserInfo.png" width="274" height="255" alt=""/></td>
+    <td>Displays editable information for the selected user:<br>
+      <br>
+      <strong>ID</strong>: An automatically generated ID for each application.<br>
+      <strong>Resource</strong>: Resource name.<br>
+      <strong>USS User?</strong>: Check box to be selected if the user is to be a USS user.<br>
+      <strong>User</strong>: Name of user.<br>
+      <strong>Password</strong>: Two fields for inputting the user's password. Both fields must be inputted and be identical. Click <strong>Set Password</strong> to set the user's password.
+      <p class="Note">If the USS User? check box is selected, the User field is a drop-down menu to select a USS user that is defined as a resource user. In this case, the Password fields are disabled because the password of the USS user is used.</p>
+      <p class="Note">If the USS User? check box is not selected, the User field is an editable field. In this case, the Password fields are enabled to set the password for the Resource User. </p></td>
+  </tr>
+</table>
+<h3 id="ReportingTab">Reporting Tab</h3>
+<p>The Reporting tab allows the administrator to generate reports. The navigation buttons allow the user to navigate through pages of the report. Generated reports are printable.</p>
+<div class="Container"><img src="images/ReportsTab.png" width="700" height="576" alt=""/></div>
+<p>The following table describes the features of the Reporting tab:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Feature</th>
+    <th>Description</th>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/ReportsCreate.png" width="146" height="544" alt=""/></td>
+    <td>Displays the different reports available to create. Clicking <strong>Create</strong> under the report displays the report in the report window. Clicking <strong>Print</strong> prints the report.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/ReportsReport.png" width="400" height="325" alt=""/></td>
+    <td>Displays the created report. Navigation buttons allow the user to search the contents of the report (<img src="images/ReportSearch.png" width="22" height="23" alt=""/>), navigate between the pages (<img src="images/ReportNavigate.png" width="68" height="19" alt=""/>), change the preview style (<img src="images/ReportPreviewStyle.png" width="75" height="24" alt=""/>), and zoom in and zoom out (<img src="images/ReportZoom.png" width="139" height="22" alt=""/>).</td>
+  </tr>
+</table>
+<h3 id="LogTab">Log Tab</h3>
+<p>The Log tab displays all log records related to accounts. Logs provide basic information on activities within the USS. For more detailed information, see <a href="#AuditTab">Audit Tab</a>. This tab is accessible for all users without signing into the USS.</p>
+<div class="Container"><img src="images/LogTab.png" width="700" height="526" alt=""/></div>
+<p>The following table describes the features of the Log tab:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Feature</th>
+    <th>Description</th>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/SearchUser.png" width="230" height="31" alt=""/></td>
+    <td>Search for a log in the list.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/Arrow.png" width="31" height="27" alt=""/></td>
+    <td>Navigate to the selected log event.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/RemoveAll.png" width="28" height="27" alt=""/></td>
+    <td>Remove all logs.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/LogInfo.png" width="400" height="46" alt=""/></td>
+    <td>Displays a list of logs with the following information:<br>
+      <br>
+      <strong>Date</strong>: The date of the log.<br>
+      <strong>Type</strong>: The type of log.<br>
+      <strong>Description</strong>: A description of the log (as entered by the user).<br>
+      <strong>Error?</strong>: Check boxes showing whether or not the log is connected to an error.</td>
+  </tr>
+</table>
+<h3 id="AuditTab">Audit Tab</h3>
+<p>The Audit tab displays all audit records. Audits are similar to logs in that they provide information on activities within the USS server, but audits provide more detailed information.</p>
+<div class="Container"><img src="images/AuditTab.png" width="700" height="390" alt=""/></div>
+<p>The following table describes the features of the Audit tab:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Feature</th>
+    <th>Description</th>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/AuditSearch.png" width="400" height="17" alt=""/></td>
+    <td>Allows the user to search for specific audits. The user can enter text or an ID to search, and input date parameters for the search.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/AuditList.png" width="400" height="214" alt=""/></td>
+    <td>Displays a searchable list of audits.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/AuditInfo.png" width="243" height="270" alt=""/></td>
+    <td>Displays information of the selected audit:<br>
+      <br>
+      <strong>ID</strong>: An automatically generated ID for each audit.<br>
+      <strong>Session ID</strong>: ID entered by user.<br>
+      <strong>Area</strong>: Area of the USS the audit is describing.<br>
+      <strong>Message</strong>: Message entered by user.<br>
+      <strong>Error?</strong>: Check box displaying if the audit is regarding an error.<br>
+      <strong>Date</strong>: Date of the audit.</td>
+  </tr>
+</table>
+<h3 id="ImportTab">Import Tab</h3>
+<p>The Import tab allows the administrator to browse and select existing Microsoft Database (MDB) database files from old versions of the USS and import the data into the new database.</p>
+<p class="Note">The Import tab is initially hidden in the USS GUI. It becomes visible when the user selects Tools &gt; Import.</p>
+<div class="Container"><img src="images/ImportTab.png" width="700" height="526" alt=""/></div>
+<p>The following table describes the features of the Import tab:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Feature</th>
+    <th>Description</th>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/DatabaseField.png" width="400" height="29" alt=""/></td>
+    <td>Database name field. Click <img src="images/...button.png" width="78" height="28" alt=""/> to search for and select the database to be imported.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/PasswordField.png" width="400" height="29" alt=""/></td>
+    <td>Password field. Enter the required password for the database to be imported. The field is initially filled with a default password.</td>
+  </tr>
+  <tr align="left" valign="middle">
+    <td><img src="images/ImportButton.png" width="80" height="29" alt=""/></td>
+    <td>Import button. Click to import the selected database. Upon a successful import, a message confirming the successful import is displayed.</td>
+  </tr>
+</table>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

@@ -1,0 +1,187 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>ARINC Channel List (Option*)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="ArincChanList">ARINC Channel List (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" >
+</a><div float:right></div></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The ARINC Display shows the ARINC information being transmitted to and received from the EEC (Electronic Engine Control) and provides controls for saving and printing the ARINC information.</p>
+<div class="Container"><img src="images/ArincDisplay1.png" alt="ARINC Display" width="674" height="350"></div>
+
+<p class="Note">If a customer has the ARINC Subsystem the start scan script will be set up to automatically start the ARINC Display.</p>
+
+<p>The following information is displayed for each channel:</p>
+<p class="Note">An icon in the Type column of the ARINC Display identifies the CHANNEL data type (i.e.: Parameter Data, Maintenance and Status Data, and Transmitted Data).</p>
+
+<ul>
+  <li> Data Type
+    <ul>
+      <li>Parameter Data (analogue received data) <img height="12" src="images/iconLeftYellowArrow.gif" alt="Icon Left Yellow Arrow" width="12" ></li>
+      <li>Maintenance and Status Data (discrete received data) <img height="14" src="images/iconHammer.gif" alt="Hammer Icon" width="13"></li>
+      <li>Transmitted Data <img height="12" src="images/iconRightGreenArrow.gif" alt="Icon Right Green Arrow" width="12"></li>
+      <li>All Data</li>
+    </ul>
+  </li>
+<li> Channel Name </li>
+  <li> Sign/Status Matrix (SSM) </li>
+  <li> Transmit Receive Indication (TRI) </li>
+  <li> Message  </li>
+</ul>
+<p>The channel list can be sorted by type or channel name and in ascending or descending order by clicking on the column header (i.e.: Type or Channel Name) or selecting a sort option from the <strong>View</strong> menu. A small triangle indicates the selected column (i.e.: Type or Channel Name) and the sort order (i.e.: ascending or descending). To toggle the sort order, click on the column header with the triangle.</p>
+<table class="Table-Grey">
+  <tr>
+    <th colSpan="2" rowSpan="1"> ARINC Display</th>
+  </tr>
+  <tr >
+    <th>Buttons Panels and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td><img src="images/MenuFile.png" alt="Menu File" width="173" height="107"></td>
+    <td>The <strong>File</strong> menu and the application tool bar provide options for saving the ARINC Channel List or printing the ARINC Channel List to a file. </td>
+  </tr>
+  <tr>
+    <td><img src="images/MenuEdit.png" alt="Menu Edit" width="194" height="91"></td>
+    <td>The <strong>Edit</strong> menu options allow the operator to search for a channel.<br>
+      <br>
+    If <strong>Find...</strong> is selected, the <a href="?65#FindDialogBox" >Find dialogue box</a> is displayed.<br>
+    <br>
+    Select <strong>Find Next</strong> to search forward, from the currently selected channel, to find a channel that matches the last specified search criteria.<br>
+    <br>
+    Select <strong>Find Previous</strong> to search backward, from the currently selected channel, to find a channel that matches the last specified search criteria.</td>
+  </tr>
+  <tr>
+    <td><img src="images/FontSettings.png" alt="Font Settings" width="437" height="347"></td>
+    <td id="FontDialogBox">The Font dialogue box is displayed if Font Settings is selected from the <strong>View</strong> menu.</td>
+  </tr>
+  <tr>
+    <td><img height="161" src="images/FindDlg.png" alt="Find DLG" width="437" ></td>
+    <td id="FindDialogBox">The Find dialogue box is displayed if <strong>Find...</strong> is selected from the <strong>Edit</strong> menu.<br>
+      <br>
+      The Find dialogue box search options allow the user to:
+        <ul>
+          <li>specify an ARINC Label</li>
+          <li>specify a Channel Name</li>
+          <li>set the search direction (i.e.: Next or Previous)</li>
+        </ul>
+        <p class="Note">The ARINC Label and Channel Name are case sensitive.</p>
+        <p class="Note">Only the currently displayed filtered list is searched, not the entire ARINC channel list.</p>
+      <p class="Note">If both the Channel Name and the Label are specified, a logical OR is used to find the matching channels.</p>
+      <p class="Note">After the search has been completed, the number of occurrences is indicated in the status bar and the first matching channel is marked as selected in the channel list.</p>
+    </td>
+ </tr>
+ 
+ <tr>
+    <td width="20%">
+    <img src="images/MenuView.png" alt="Menu View" width="234" height="247">
+    
+    </td>
+<td>The <strong>View</strong> menu options allow the user to:
+<ul>
+        <li><a href="?66#FontDialogBox">change font settings</a></li>
+          <li>filter the channel list to include:
+            <ul>
+              <li> all lists</li>
+              <li> parameter data</li>
+              <li> maintenance and status data</li>
+              <li>transmitted data </li>
+            </ul>
+          </li>
+<li> sort the channel list by:
+  <ul>
+    <li> type</li>
+    <li> channel name</li>
+    <li>ascending order </li>
+    <li>descending order </li>
+  </ul>
+</li>
+<li> adjust the column settings</li>
+          <li> show or hide the Toolbar for the application</li>
+          <li> show or hide the Status Bar</li>
+    </ul>If <strong>Column Settings...</strong> is selected from the <strong>View</strong> menu, the <a href="?67#ColumnSettingsDBox" >Column Settings dialogue box</a> is displayed.</td>
+  </tr>
+  <tr>
+    <td><img src="images/ColumnSettingsDialogBox.png" alt="Column Setting Dialog Box" width="350" height="270"></td>
+    <td id="ColumnSettingsDBox">The Column Settings dialogue box is displayed if <strong>Column Settings ...</strong> is selected from the <strong>View</strong> menu.<br>
+      <br>
+      The Column Settings dialogue box options allow the user to:
+        <ul>
+          <li>show or hide any column</li>
+          <li>change the order of the columns displayed in the channel list with the up and down arrows</li>
+    </ul></td>
+  </tr>
+  <tr>
+    <td><img src="images/MenuHelp.png" alt="Menu Help" width="211" height="99"></td>
+    <td>From the <strong>Help</strong> menu, the user can:
+<ul>
+        <li> access the first page of the proDAS Integrated Help 
+        (i.e.: select <span class="bold">Getting Started</span>)</li>            
+        <li> access all specific help topics referring to the ARINC Display
+          (i.e.: select <span class="bold">Topic</span>)</li>
+        <li> displays the application information,comprising the name, version number, and copyright<br>
+        (i.e.: select <span class="bold">About ARINC Display</span>)</li>
+    </ul></td>
+  </tr>
+  <tr>
+    <td><img height="14" src="images/IconSave.gif" alt="Icon Save" width="14" > </td>
+    <td>Select the <span class="bold">Save</span> button to save the Channel List to a file. The user has the option of defining the file location.</td>
+  </tr>
+  <tr>
+    <td><img height="14" src="images/IconPrint.gif" alt="Icon Print" width="16" ></td>
+    <td>Select the <strong>Print</strong> button to print the Channel List using the Continuous Print Server.</td>
+  </tr>
+  <tr>
+    <td><img height="13" src="images/IconFind.gif" alt="Icon Find" width="15" ></td>
+    <td>Select the <strong>Find</strong> button to search for a channel by channel name and/or label.</td>
+  </tr>
+  <tr>
+    <td><img height="15" src="images/IconFindNext.gif" alt="Icon Find Next" width="13" ></td>
+    <td>Select the <strong>Find Next</strong> button to search forward, from the currently selected channel, to find a channel that matches the last specified search criteria.</td>
+  </tr>
+  <tr>
+    <td><img height="15" src="images/IconFindPrevious.gif" alt="Icon Find Previous" width="13" ></td>
+    <td>Select the <strong>Find Previous</strong> button to search backward, from the currently selected channel, to find a channel that matches the last specified search criteria.</td>
+  </tr>
+  <tr>
+    <td><img height="23" src="images/IconViewAllLists.gif" alt="Icon View All Lists" width="23" ></td>
+    <td>Select the <strong>View All Lists</strong> button to view all the channel lists.</td>
+  </tr>
+  <tr>
+    <td><img height="16" src="images/IconViewParameterData.gif" alt="Icon View Parameter Data" width="16" ></td>
+    <td>Select the <strong>View Parameter Data</strong> button to filter the channel list and view only the parameter data (i.e.: analogue data received from the EEC).</td>
+  </tr>
+  <tr>
+    <td><img height="16" src="images/IconViewMaintStatusData.gif" alt="Icon View Maint Status Data" width="16" ></td>
+    <td>Select the <strong>View Maintenance and Status Data</strong> button to filter the channel list and view only the maintenance data (i.e.: discrete data received from the EEC).</td>
+  </tr>
+  <tr>
+    <td><img height="16" src="images/IconViewTransmittedData.gif" alt="Icon View Transmitted Data" width="16" ></td>
+    <td>Select the <strong>View Transmitted Data</strong> button to filter the channel list and view only the data transmitted to the EEC.</td>
+  </tr>
+  <tr>
+    <td><img src="images/Connected2RTE.png" alt="Connected 2 RTE" width="215" height="29"><br>
+      <br>
+      <img src="images/NotConnected2RTE.png" alt="Not Connected 2 RTE" width="215" height="29"></td>
+    <td>The Connection Status Indicator displays connection status information (as shown).</td>
+  </tr>
+</table>
+<br>
+	<br>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

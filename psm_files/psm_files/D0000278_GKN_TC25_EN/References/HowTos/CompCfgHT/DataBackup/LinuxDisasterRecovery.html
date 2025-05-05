@@ -1,0 +1,73 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>How To &ndash; Perform a Crash Recoveryon the Linux Host Computer</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left><h1>How To &ndash; Perform a Crash Recovery on the Linux Host Computer<a href="#" onClick="window.print(); return false;"><img src="../../../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<p>This <strong>How To</strong> provides the steps required to perform a crash recovery on the Linux Host Computer.</p>
+<h2>Perform a Crash Recovery on a Linux Host Computer</h2>
+<p>In the  event that the local hard drive containing the operating system fails, use the following  procedure to recover the data.</p>
+<p>During a single session, you can restore several partitions or disks, one by one, by selecting one disk and setting its parameters first and then repeating these actions for every partition or disk to be restored.</p>
+<ol>
+  <li>Power <strong>off</strong> the computer.</li>
+  <li>Replace the damaged hard drive with a hard drive that has the same  capacity as, or greater capacity than, the damaged hard drive.</li>
+  <li>Power <strong>on</strong> the computer.</li>
+  <li>Insert the <strong>Acronis Bootable Rescue Media</strong> (CD or DVD) into the  Linux Host Computer and <strong>reboot</strong> the  system.</li>
+  <li>Select the <strong>Recovery</strong> task from the Acronis main window.<br>
+  This launches the <em>Acronis Restore Data Wizard</em>.</li>
+  <li>Using the <em>Acronis Restore Data Wizard</em> GUI, navigate to  the back-up NAS or USB directory.</li>
+  <li>Select the most recent image file.<br>
+  <p class="Note"> Acronis reports an error if an incremental backup archive is selected but the corresponding full backup archive is no longer available. For example, once a new full backup is performed on Sunday, all the previous incremental backup archives become invalid.</p>  </li>
+  <li>Select <strong>Restore Disk/partitions</strong>.</li>
+  <li>Select the <strong>Disk</strong> to restore.</li>
+  <li>Select a target <strong>Disk/partition</strong> to restore data to using one of the following locations:</li>
+  <ul>
+    <li>its initial location</li>
+    <li> another disk/partition</li>
+    <li>an unallocated area</li>
+  </ul>
+<p class="Note" >When restoring an entire disk, the <em>Acronis Restore Data Wizard</em> analyses the target disk structure to verify the disk.</p>
+ <li>If you have multiple restore tasks:
+   <ul>
+     <li>Select <strong>Yes, I want to restore another partition or hard disk drive</strong><br>
+       The application returns to the disk/partition selection window.</li>
+     <li>Repeat steps 5 to 9 for each partition or disk drive</li>
+   </ul>
+ </li>
+ <li>Select the <strong>restore</strong> option:</li>
+ <ul>
+   <li><em>use default options</em></li>
+   <li><em>set the options manually</em></li>
+ </ul>
+  
+  The Restoration Summary is displayed showing all selected options.
+  <li>In the Restoration Summary, choose one of the following options:
+    <ul>
+      <li>Click <strong>Back</strong> to make changes in the created restore task</li>
+      <li>Click <strong>Cancel</strong> to cancel the operation. No changes will be made to the disk(s)</li>
+      <li>Click <strong>Proceed</strong> to restore the disk/partition</li>
+    </ul>
+    <p>The disk/partition is restored.</p>
+  </li>
+</ol>
+
+<p>For more information see, the <a href="../../../../CompCfg/HostPC/HostPCVDocs.html">Acronis True Image Echo Server for Linux User Guide</a>.</p>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

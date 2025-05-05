@@ -1,0 +1,2371 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Calibrating Channels</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1>Calibrating Channels<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+
+<h2 id="Overview">Overview</h2>
+<p>Analogue channels are calibrated by injecting simulated signals from a calibrated source. A variety of techniques are then used to calculate the relationship between the input and output of the channel. This relationship is called the calibration function.</p>
+<p>Analogue channels are calibrated periodically. The time between calibrations is dependent on the stability of the signal conditioning, test environment and transducers (if applicable). </p>
+<p>Input signals are injected into the channel, and the calibration function calculated is displayed on the Calibration screen. Once a channel calibration has been completed, the signals are monitored, and by comparing the expected values to the recorded values on the screen, the operator can confirm that the calibration was successful. This step is called auditing and is performed after a calibration is complete.</p>
+<p> When calibrating channels, a calibration reference source is used to simulate the input. For example: </p>
+<ul>
+  <li>a frequency channel requires a precision frequency signal from a source such as the HP 3245A Universal Source or Agilent 8904 Frequency Source</li>
+  <li>a general analogue input channel requires a precision DC voltage signal from a source such as the HP 3245A Universal Source, or Time DC voltage Source</li>
+  <li>a Resistive Temperature Detector (RTD) channel requires a precision resistance from a decade box</li>
+</ul>
+<p>A polynomial calibration produces a &quot;Best Fit&quot; linearisation conversion of raw signals into engineering units. The polynomial coefficients of the &quot;Best Fit&quot; line are calculated by the <a href="CalibrateChannels.htm">Sensor Calibration Application</a> (see the Multi-point  Linear Calibration Calculation illustration below) and are stored in the proDAS database.</p>
+<div class="Container"><img src="images/MultiPointLinear.gif" alt="Multi Point Linear" width="655" height="392"></div>
+<p>End-to-End Calibrations are used when the measurement chain is not expected to vary from test to test over a period of time. If a nonlinear  correction is necessary, then End-to-End Calibration is required. End-to-End Calibrations can result in polynomial or breakpoint calibrations. In an End-to-End Calibration, a signal is injected at the start of the measurement chain and calibrated via proDAS (see the End-to-End Calibration illustration below).</p>
+<div class="Container"><img src="images/EndtoEndCalibration.gif" alt="EndtoEnd Calibration" width="702" height="89"></div>
+<p>The calibration function is calculated by SCA and the values are stored in the proDAS database. At run time, the values stored in the database are loaded into proDAS, providing the operator with the EU converted and corrected equivalent of the signal being measured. The incoming sensor calibration function is combined with the facility calibration function. proDAS uses the resulting calibration function to produce the value that is displayed on the operator screens (the figure below illustrates transducer outputs on proDAS).</p>
+ <div class="Container"><img src="images/EndtoEndCal.png" alt="EndtoEnd Cal" width="697" height="229"></div>
+<p>The following two calibration utilities are available:</p>
+<ul>
+  <li><a href="#SCA">Sensor Calibration Application (SCA)</a></li>
+  <li><a href="#AutoCalUtility">Auto Calibration Utility (ACU)</a></li>
+</ul>
+<h2 id="SCA">Sensor Calibration Application (SCA)</h2>
+<p>The Sensor Calibration Application (SCA) acquires, processes, and stores data for one or more sensor calibrations at the same time.</p>
+<p>The SCA allows any number of sensors to be calibrated simultaneously, although the screen can only display a maximum of 32 sensors at once. Sensors that are calibrated simultaneously must belong to the same group and use the same set of applied target points.</p>
+<p>The Sensor Calibration Application (SCA) can perform the following functions:</p>
+<ul>
+  <li>display sensor calibration information</li>
+  <li>perform single sensor calibration</li>
+  <li>perform multiple sensor calibrations</li>
+  <li>audit sensor calibrations</li>
+  <li>activate a previous calibration</li>
+  <li>print calibration reports</li>
+  <li>display a graph of calibration data</li>
+  <li>offset adjustment </li>
+</ul>
+<p class="Note">Calibrations must be performed by a qualified technician trained in instrumentation calibration and in the use of calibrated signal sources.</p>
+<p>The SCA can be launched:</p>
+<ul>
+  <li>from proDAS through the Management GUI Control Panel, where the username and password are automatically passed </li>
+  <li>as a stand-alone application where the username and password are not automatically passed</li>
+</ul>
+<p>The Sensor Calibration Application (SCA) is used for the calibration and auditing of sensors in proDAS. SCA performs the following functions:</p>
+<ul>
+  <li><a href="CalibrateChannels.htm#OPmanCal">manual calibration</a></li>
+  <li><a href="CalibrateChannels.htm#ManualAudit">manual audit</a></li>
+  <li><a href="CalibrateChannels.htm#OffsetAdjustment">offset adjustment </a></li>
+  <li><a href="CalibrateChannels.htm#PerformAutoCal">automatic calibration/audit</a></li>
+  <li><a href="CalibrateChannels.htm#VariableTargetCal">variable target calibration</a></li>
+  <li><a href="CalibrateChannels.htm#customisation">customisation </a></li>
+</ul>
+<h4>Colour Definitions</h4>
+<p>The colour definitions differ between calibration and audit. The table below indicates the defined colour and it's description.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Colour</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Green text on a black background</td>
+    <td>Value is good, stable and in tolerance (for calibration, the previous sensor curve is used).</td>
+  </tr>
+  <tr>
+    <td>Yellow text on a dark blue background</td>
+    <td>Calibration mode.</td>
+  </tr>
+  <tr>
+    <td>Blue text on a red background</td>
+    <td>Audit mode.</td>
+  </tr>
+</table>
+<h3 id="ViewsForms">Views and Forms</h3>
+<p>The Sensor Calibration Application (SCA) consists of the following views and forms:</p>
+<ul>
+  <li><a href="#SensorCalMain">Sensor Calibration (Main Window) </a></li>
+  <li><a href="#Sensors">Sensors</a></li>
+  <li><a href="#Channels">Channels</a></li>
+  <li><a href="#CalData">Calibration Data</a></li>
+  <li><a href="#SelSenToCalAudit">Select Sensors To Calibrate/Audit</a></li>
+  <li><a href="#SelSenForCalAudit">Selected Sensors for Calibration/Audit</a></li>
+  <li><a href="#AlternateTestConfig">Alternate Test Configuration</a></li>
+  <li><a href="#ResultsCheckChan">Results of Checking Channels</a></li>
+  <li><a href="#EditSensorData">Edit Sensor Data</a></li>
+  <li><a href="#CreateCalReport">Create Calibration Report</a></li>
+  <li><a href="#ManualCal">Manual Calibration</a></li>
+  <li><a href="#EditCalEquip">Edit Calibration Equipment</a></li>
+  <li><a href="#AutoCal">Automatic Calibration </a></li>
+</ul>
+<h4 id="SensorCalMain">Sensor Calibration (Main Window)</h4>
+<p>The Sensor Calibration main window (displayed below) is used to:</p>
+<ul>
+  <li>make other views visible/invisible</li>
+  <li>start calibration</li>
+  <li>save/restore standard layout</li>
+  <li>load sensor or configuration data</li>
+</ul>
+<div class="Container"><img src="images/MainWindow.PNG" alt="Main Window" width="384" height="290"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Button or Field</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>File</td>
+    <td>Allows the user to exit the Sensor Calibration Application (SCA).</td>
+  </tr>
+  <tr>
+    <td>View</td>
+    <td>Allows the user to make views visible or invisible. For saving or restoring a standard layout, see <a href="CalibrateChannels.htm?#SetRestoreLayout">Setting or Restoring a Standard Layout</a>.</td>
+  </tr>
+  <tr>
+    <td>Data</td>
+    <td>Allows the user to:<br>
+      <br>
+      &nbsp;&nbsp;&bull; &nbsp;reload data from the database<br>
+      &nbsp;&nbsp;&bull; &nbsp;read the current test configuration from the proDAS Configuration Server<br>
+      &nbsp;&nbsp;&bull; &nbsp;view data of any test configuration (For details, see <a href="#AlternateTestConfig">Alternate Test Configuration</a>.)<br>
+      &nbsp;&nbsp;&bull; &nbsp;verify a .NET script  compiles and has certain entry points<br></td>
+  </tr>
+  <tr>
+    <td>Calibration</td>
+    <td>Allows the user to:<br>
+      <br>
+      &nbsp;&nbsp;&bull; &nbsp;start an automatic calibration/audit<br>
+      &nbsp;&nbsp;&bull; &nbsp;start a manual calibration<br>
+      &nbsp;&nbsp;&bull; &nbsp;start a manual audit<br>
+      &nbsp;&nbsp;&bull; &nbsp;start an offset adjustment </td>
+  </tr>
+  <tr>
+    <td>Help</td>
+    <td>Displays information about the Sensor Calibration Application and provides access to the online help system.</td>
+  </tr>
+  <tr>
+    <td>proDAS RTE State</td>
+    <td>The state of the proDAS Real-Time Engine.</td>
+  </tr>
+  <tr>
+    <td>Test Cell</td>
+    <td>The current test cell.</td>
+  </tr>
+  <tr>
+    <td>Configuration ID</td>
+    <td>The current test configuration ID.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnManualCal.png" alt="Btn Manual Cal" width="114" height="40"></td>
+    <td>Starts a manual calibration.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnAutoCalAudit.png" alt="Btn Auto Cal Audit" width="114" height="40"></td>
+    <td>Starts an automatic calibration/audit.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnManAudit.png" alt="Btn Man Audit" width="114" height="40"></td>
+    <td>Starts a manual audit.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnOffsetAdjust.png" alt="Btn Offset Adjust" width="114" height="40"></td>
+    <td>Starts an offset adjustment.</td>
+  </tr>
+  <tr>
+    <td>User:</td>
+    <td>Displays the current user and user level.</td>
+  </tr>
+</table>
+<h4 id="Sensors">Sensors</h4>
+<p>The Sensors window (displayed below) displays all sensors defined in the database. It is possible to investigate sensors that are not referenced by the current test configuration. To access the Sensors window, from the Sensor Calibration window View menu, select <strong>Sensors</strong>.</p>
+<div class="Container"><img src="images/Sensors.PNG" alt="Sensors" width="617" height="384"></div>
+<p>Selecting a row displays the selected sensor information in the Calibration Data window.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Button or Field </th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>View</td>
+    <td>Allows the user to view or hide the filter panel and splitters. The filter panel allows the user to specify which sensor is to be displayed. Regular expressions are used.</td>
+  </tr>
+  <tr>
+    <td>Help</td>
+    <td>Displays information about the Sensor Calibration Application and provides access to the online help system.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnDisableFilter.png" alt="Btn Disable Filter" width="95" height="27"></td>
+    <td>Turns the filter off displaying all available sensors and corresponding data in the table. </td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnApplyFilter.png" alt="Btn Apply Filter" width="84" height="27"></td>
+    <td>Apply Filter is used to display results based on partial or full information entered in one or more of the fields.<br>
+      <br>
+      <p class="Note">When entering information into the fields regular expressions can be used to affect the filter results. For further details, see <a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm">Regular Expressions</a>.</p>
+      As an example, enter ATP in the Sensor Name field and 9 in the Aux. Address field and select <strong>Apply Filter</strong>. Only results with ATP in the Sensor Name field and 9 in the Aux. Address field are displayed in the table.</td>
+  </tr>
+</table>
+<h4 id="Channels">Channels</h4>
+<p>The Channels window (displayed below) displays all channels of the current test configuration to which a calibration sensor is assigned. To access the Channels window, from the  Sensor Calibration window View menu, select <strong> Channels</strong>.</p>
+<div class="Container"><img src="images/Channels.PNG" alt="Channels" width="528" height="239"></div>
+<p>Selecting a row displays the selected sensor information in the Calibration Data window.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Button or Field</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>View</td>
+    <td>Allows the user to view or hide the filter panel and splitters. The filter panel allows the user to specify which sensor is to be displayed. Regular expressions are used.</td>
+  </tr>
+  <tr>
+    <td>Data</td>
+    <td>Allows the user to verify the consistency of the configuration concerning the calibration data.</td>
+  </tr>
+  <tr>
+    <td>Help</td>
+    <td>Displays information about the Sensor Calibration Application and provides access to the online help system.</td>
+  </tr>
+</table>
+<h4 id="CalData">Calibration Data</h4>
+<p>The Calibration Data window (displayed below) displays selected sensor data whenever the user selects a sensor or channel respectively from the Sensor window or Channels window or Sensors to Calibrate/Audit window. To access the Calibration Data window, from the Sensor Calibration window View menu, select <strong>Sensor Calibration Data</strong>.</p>
+<div class="Container"><img src="images/CalibrationData.PNG" alt="Calibration Data" width="664" height="384"></div>
+<p>It is possible to view:</p>
+<ul>
+  <li>general information about a sensor such as units or the range</li>
+  <li>the calibration state of the active calibration record</li>
+  <li>the result of the currently selected calibration</li>
+  <li>additional general information</li>
+  <li> conversion tables (as a table or graphically)</li>
+  <li>sensor properties (depending on the hardware)</li>
+</ul>
+<p>Some of the displayed data depends on the selected calibration record. The current calibration record is selected using the Cal. Date drop-down list. A calibration record can be selected by date and time.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Button or Field</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>View</td>
+    <td>Allows the user to display or hide splitters.</td>
+  </tr>
+  <tr>
+    <td>Data</td>
+    <td>Allows the user to change sensor data (see <a href="#EditSensorData">Edit Sensor Data</a>) and create a calibration report of the currently selected calibration record (see <a href="#CreateCalReport">Create Calibration Report</a>).</td>
+  </tr>
+  <tr>
+    <td>Help</td>
+    <td>Displays information about the Sensor Calibration Application and provides access to the online help system.</td>
+  </tr>
+</table>
+<h4 id="SelSenToCalAudit">Select Sensors to Calibrate/Audit</h4>
+<p>The Select Sensors to Calibrate/Audit window (displayed below) displays the available sensors according to subsystem, calibration group and calibration type. As each sensor is selected/deselected, the information for that sensor is updated in the Calibration Data window. To access the  Select Sensors to Calibrate/Audit window, from the Sensor Calibration window View menu, select <strong>Select Sensors To Calibrate</strong>.</p>
+<div class="Container"><img src="images/SelectSensor2Cal.png" alt="Select Sensor 2 Cal" width="331" height="290"></div>
+<p class="Note">For manual calibration, only sensors from the same group can be selected for calibration. If sensors from more than one group are selected, only automatic calibration is available.</p>
+<p>Subgroups of groups can be defined using the period character in the names of calibration groups. The period character is interpreted as a delimiter between group levels (i.e.: the calibration group name &quot;A.B&quot; is interpreted as subgroup B of group A). It is possible to have multiple levels of groupings.</p>
+<h4 id="SelSenForCalAudit">Selected Sensors for Calibration/Audit</h4>
+<p>The Selected Sensors for Calibration/Audit window (displayed below) displays the selected sensors for calibration/audit. Each time a sensor is selected, the information for that sensor is displayed in the <a href="#CalData">Calibration Data</a> window. To access the  Selected Sensors for Calibration/Audit window, from the  Sensor Calibration window View menu, select <strong>Selected Sensors</strong>.</p>
+<div class="Container"><img src="images/SelectedSensor.PNG" alt="Selected Sensor" width="700" height="193"></div>
+<h4 id="AlternateTestConfig">Alternate Test Configuration</h4>
+<p>The Alternate Test Configuration window (displayed below) allows the user to read data from any test configuration in the database, check the currently loaded configuration for due dates and filter the channels of the test configuration.  After a configuration is checked, the <a href="#ResultsCheckChan">Results of Checking Channels window</a> is displayed. To access the Alternate Test Configuration window, from the  Calibration Data window Data menu, select <strong>View Alternate Test Configuration...</strong>.</p>
+<p class="Note">Only channels having a calibration sensor assigned are displayed.</p>
+<div class="Container"><img src="images/AltTestConfig.PNG" alt="Alt Test Config" width="696" height="554"></div>
+<br>
+<h4 id="ResultsCheckChan">Results of Checking Channels</h4>
+<p>The Results of Checking Channels window (displayed below) displays only channels whose calibration data are invalid. To access the Results of Checking Channels window, from the  Channels window Data menu, select <strong>Check Configuration</strong>.</p>
+<div class="Container"><img src="images/ResultChanCheck.PNG" alt="Result Chan Check" width="416" height="300"></div>
+<h4 id="EditSensorData">Edit Sensor Data </h4>
+<p>The Edit Sensor Data window (displayed below) allows the user to edit sensor data units and range. To access  the Edit Sensor Data window, from the Calibration Data window Data menu, select <strong>Edit Sensor Data...</strong>.</p>
+<div class="Container"><img src="images/EditSensorData.PNG" alt="Edit Sensor Data" width="568" height="220"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Button or Field </th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><img src="images/BtnUpdateData.png" alt="Btn Update Data" width="134" height="32"></td>
+    <td>Stores any sensor data units and range modifications.</td>
+  </tr>
+</table>
+<h4 id="CreateCalReport">Create Calibration Report</h4>
+<p>The Create Calibration Report window (displayed below) allows the user to create a calibration report for the selected calibration record. To access the Create Calibration Report window, from the Calibration Data window Data menu, select <strong>Create Report...</strong>.</p>
+<div class="Container"><img src="images/CreateCalRep.PNG" alt="Create Cal Rep" width="696" height="422"></div>
+<p>The following items must be specified prior to creating a calibration report:</p>
+<ul>
+  <li>data source - either calibration log (recommended) or database</li>
+  <li>report format - Excel format (as a minimum; available formats depend on installation)</li>
+  <li>report target - printer or file or both</li>
+</ul>
+<table class="Table-Grey">
+  <tr>
+    <th>Button or Field </th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><img src="images/BtnCreate2.png" alt="Btn Create 2" width="128" height="48"></td>
+    <td>Creates the calibration report.</td>
+  </tr>
+</table>
+<h4 id="ManualCal">Manual Calibration </h4>
+<p>Manual Calibration  is used to control and visualize the process of calibration, audit or offset adjustment. A special tab is available for each step of the manual calibration process allowing the user to browse backwards to see information from previous steps. The tabs consist of:</p>
+<ul>
+  <li><a href="#TabPreCal">Pre-Calibration Settings</a></li>
+  <li><a href="#TabCal">Calibration</a></li>
+  <li><a href="#TabCalResults">Calibration Results</a></li>
+  <li><a href="#TabAuditSettings">Audit Settings</a></li>
+  <li><a href="#TabAudit">Audit</a></li>
+  <li><a href="#TabAuditResults">Audit Results</a></li>
+  <li><a href="#TabStoreData">Store Data</a></li>
+</ul>
+<h4 id="TabPreCal">Pre-Calibration Settings</h4>
+<p>The Pre-Calibration Settings tab (displayed below) is described in the following table.</p>
+<div class="Container"><img src="images/MCPreCalSet.PNG" alt="MC PreCal Set" width="700" height="482"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Button or Field</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Sensor Calibration Definition File</td>
+    <td>Used to select the Sensor Calibration Definition File. Supported formats include:<br>
+      <br>
+      &nbsp;&nbsp;&bull; &nbsp;Calibration Definition File (SCDF) &ndash; an XML file format<br>
+      &nbsp;&nbsp;&bull; &nbsp;group INI file &ndash; a text format used by Multiple Channel Calibration<br>
+      <br>
+      Sensor Calibration tries to pre select the correct file. It first looks for an SCDF file that is named according to the calibration group. That file must be located in a folder specified in the application INI file. If an SCDF file cannot be found it looks for a group INI file. For details on how search paths are specified, see <a href="CalibrateChannels.htm?#CalDefns">Calibration Definitions</a>.
+      <p class="Note">If an Excel report was previously saved, its location will become the default directory path for selecting SCDF files. Locating the SCDF file will require navigating away from the default path.</p></td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnDelete.png" alt="Btn Delete" width="30" height="30"></td>
+    <td>Used to clear the Sensor Calibration Definition File field when no file is required.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnFolder.png" alt="Btn Folder" width="30" height="30"></td>
+    <td>Opens a browse window for selecting a Sensor Calibration Definition File.</td>
+  </tr>
+  <tr>
+    <td>Calibration Equipment</td>
+    <td>Displays the referenced equipment for calibration (upper table) and the available equipment stored in the database (lower table). The available equipment can be filtered for the type of equipment.
+      <p class="Note">Columns can be resized and the table size can be adjusted by moving the splitter between the two tables.</p>
+      Double-click a row from the Available table and the equipment is added to the Selected table for calibration. Double-click a row from the Selected table and the equipment is removed from calibration.<br>
+      <br>
+      For details on how to change the table data or define new calibration equipment, see <a href="#EditCalEquip">Edit Calibration Equipment</a>.</td>
+  </tr>
+  <tr>
+    <td>Ambient Conditions </td>
+    <td>Ambient conditions are either specified manually or automatically measured using proDAS channels.<br>
+      <br>
+      To specify the ambient conditions manually, select the <strong>Manual Override</strong> checkbox and enter the value and unit in the appropriate fields.<br>
+      <br>
+      If ambient conditions are automatically measured, see <a href="CalibrateChannels.htm?#ChanReadAmbCond">Channels for reading ambient conditions</a> to see how to specify the appropriate proDAS channels. The ambient conditions are read if the <strong>Manual Override</strong> checkbox is unchecked.</td>
+  </tr>
+  <tr>
+    <td>EU Conversion (only applicable for offset adjustment)</td>
+    <td>Select to apply the fixed sensor for offset adjustment.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnNext.png" alt="Btn Next" width="90" height="30"></td>
+    <td>Proceeds to the next step or tab.</td>
+  </tr>
+</table>
+<h4 id="TabCal">Calibration</h4>
+<p>The Calibration tab (displayed below) is used to control the measurement used as a basis for curve generation.</p>
+<p class="Note">The calibration type can be either fixed target calibration or variable target calibration. For variable target calibration additional fields are available.</p>
+<div class="Container"><img src="images/MCCalibration.PNG" alt="MC Calibration" width="700" height="482"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Button or Field</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Target Value</td>
+    <td>Used to specify the target value in engineering units. The target value can be either read from file or set by the user.
+      <p class="Note">If the target value is set by the user it is possible to define an increment that is used to propose a next target value after accepting the current one.</p></td>
+  </tr>
+  <tr>
+    <td>Test Value</td>
+    <td><p class="Note">Only available when performing a variable target calibration.</p>
+      Used to specify the test value in engineering units.</td>
+  </tr>
+  <tr>
+    <td>Measured Value </td>
+    <td>Used to specify the measurement (averaging, determining standard deviation), the tolerance and the display format. The tolerance is used for information purposes allowing a comparison of the current measurement against the previous calibration.<br>
+      <br>
+      The measured values are displayed in the lower pane. The upper controls display values of the currently selected row in the table of measured data whereby the group name contains the name of the selected sensor. Measured values are displayed as:<br>
+      <br>
+      &nbsp;&nbsp;&bull; &nbsp;green - within tolerance using the previous calibration<br>
+      &nbsp;&nbsp;&bull; &nbsp;yellow - previous calibration is outside the tolerance<br>
+      &nbsp;&nbsp;&bull; &nbsp;in parenthesis - when exceeding standard deviation<br>
+      <br>
+      For each measured test point a column is displayed. The current measurement is displayed in the last column.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnAccept.png" alt="Btn Accept" width="90" height="30"></td>
+    <td>Accepts the measured data of a test point.
+      <p class="Note">A test point can be suspended via the headers of the table. A suspended test point can be activated again.</p></td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnNext.png" alt="Btn Next" width="90" height="30"></td>
+    <td>Proceeds to the next step or tab.</td>
+  </tr>
+</table>
+<h4 id="TabCalResults">Calibration Results</h4>
+<p>The Calibration Results tab (displayed below) is used to specify parameters for curve generation and display the measured data for calibration and the generated curves based on the measurement.</p>
+<div class="Container"><img src="images/MCCalResults.PNG" alt="MC Cal Results" width="700" height="401"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Button or Field </th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Calibration Functions Settings </td>
+    <td>Used to specify the maximum degree of polynomials and the percentage of extrapolation for breakpoints. Selecting <strong>Apply Settings</strong> generates new curves. Selecting <strong>Reset Settings</strong> sets the controls back to the settings used to generate the currently displayed curves.</td>
+  </tr>
+  <tr>
+    <td>Calibration Results</td>
+    <td>The left pane is used to select a sensor whose associated data is displayed on the right pane.<br>
+      <br>
+      The Show Tables checkbox can hide the tables to have more space for the graphically displayed data. The Same Range for All Sensors checkbox assigns a range that fits for all measured data and generated curves allowing the ability to select another sensor without changing the scaling.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnOverwriteRange.png" width="116" height="25" alt=""/></td>
+    <td>Allows the range minimum and range maximum values to be changed after the calibration is complete to reflect new values from the calibration. The new minimum and maximum values are saved in the database and used as the default values in subsequent audit cycles. Clicking the button makes the fields editable. <br>
+      <br>
+      When the fields have been edited, the button changes to &quot;Default Range&quot;, allowing the user to change the range to the default value.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnNext2.png" width="88" height="28" alt=""/></td>
+    <td>Proceeds to the next step or tab.
+      <p class="Note">Next is disabled if settings are changed in the Calibration Functions Settings panel without selecting either the Apply or Reset Settings buttons.</p></td>
+  </tr>
+</table>
+<h4 id="TabAuditSettings">Audit Settings</h4>
+<p>The Audit Settings tab (displayed below) is used to specify the audit settings. Selecting the Apply Fixed Sensors checkbox specifies whether or not the calibration sensor should be combined with the fixed sensor for the audit measurement.</p>
+<div class="Container"><img src="images/MCAuditSettings.PNG" alt="MC Audit Settings" width="700" height="482"></div>
+<h4 id="TabAudit">Audit</h4>
+<p>The Audit tab (displayed below) is used to control the measurement used as a basis for the audit.</p>
+<p class="Note">The calibration type can be either fixed target calibration or variable target calibration. For variable target calibration additional fields are available.</p>
+<div class="Container"><img src="images/MCAudit.png" alt="MC Audit" width="700" height="482"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Button or Field</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Target Value</td>
+    <td>Used to specify the target value in engineering units. The target value can be either read from file or set by the user.
+      <p class="Note">If the target value is set by the user it is possible to define an increment that is used to propose a next target value after accepting the current one.</p></td>
+  </tr>
+  <tr>
+    <td>Test Value</td>
+    <td><p class="Note">Only available when performing a variable target calibration.</p>
+      Used to specify the test value in engineering units.</td>
+  </tr>
+  <tr>
+    <td>Measured Value</td>
+    <td>Used to specify the measurement (averaging, determining standard deviation), the tolerance and the display format. The tolerance is used to check whether a sensor passes or fails the audit.<br>
+      <br>
+      The measured values are displayed in the lower pane. The upper controls display values of the currently selected row in the table of measured data whereby the group name contains the name of the selected sensor. Measured values are displayed as: <br>
+      <br>
+      &nbsp;&nbsp;&bull; &nbsp;green - within tolerance using the previous calibration<br>
+      &nbsp;&nbsp;&bull; &nbsp;red background  - outside the tolerance<br>
+      <br>
+      For each measured test point a column is displayed. The current measurement is displayed in the last column.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnAccept.png" alt="Btn Accept" width="90" height="30"></td>
+    <td>Accepts the measured data of a test point. A test point can be suspended via the headers of the table. A suspended test point can be activated again.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnNext.png" alt="Btn Next" width="90" height="30"></td>
+    <td>Proceeds to the next step or tab.</td>
+  </tr>
+</table>
+<h4 id="TabAuditResults">Audit Results</h4>
+<p>The Audit Results tab (displayed below) is used to display the measured data for audit and the results (either passed or failed) based on the measurement.</p>
+<div class="Container"><img src="images/MCAuditResults.PNG" alt="MC Audit Results" width="700" height="482"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Button or Field</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Calibration Results</td>
+    <td>The left pane is used to select a sensor whose associated data is displayed on the right pane.<br>
+      <br>
+      The Show Tables checkbox can hide the tables to have more space for the graphically displayed data. The Same Range for All Sensors checkbox assigns a range that fits for all measured data and generated curves allowing the ability to select another sensor without changing the scaling. </td>
+  </tr>
+  <tr>
+    <td><img src="images/IconPass.png" alt="Icon Pass" width="48" height="48"></td>
+    <td>Indicates the sensor passed the audit.</td>
+  </tr>
+  <tr>
+    <td><img src="images/IconFail.png" alt="Icon Fail" width="48" height="48"></td>
+    <td>Indicates the sensor failed the audit.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnNext.png" alt="Btn Next" width="90" height="30"></td>
+    <td>Proceeds to the next step or tab. </td>
+  </tr>
+</table>
+<h4 id="TabStoreData">Store Data</h4>
+<p>The Store Data tab (displayed below) is used to store calibration data (respective audit data) into the database and activate them.</p>
+<div class="Container"><img src="images/MCStoreData.PNG" alt="MC Store Data" width="700" height="482"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Button or Field</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td colspan="2">Save Data to Database</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnSave.png" alt="Btn Save" width="90" height="30"></td>
+    <td>Stores the calibration data into the database so the curves are activated. If <strong>Print Report When Saving</strong> checkbox is selected reports for each sensor are sent to the printer. If <strong>Save Only Passed Calibrations</strong> checkbox is selected only successful audits are saved.</td>
+  </tr>
+  <tr>
+    <td colspan="2">Calibration Report</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnCreate.png" alt="Btn Create" width="90" height="30"></td>
+    <td>Creates calibration reports without storing the  data into the database.
+      <p class="Note">If selected prior to storing data to the database the calibration report won't contain database information. If selected after storing data to the database the same reports are created as when storing.</p></td>
+  </tr>
+  <tr>
+    <td colspan="2">Store Calibration Steps to File </td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnSave.png" alt="Btn Save" width="90" height="30"></td>
+    <td>Creates calibration definition files or group INI files based on the data of the latest calibration/audit.</td>
+  </tr>
+</table>
+<h4 id="EditCalEquip">Edit Calibration Equipment</h4>
+<p>The Edit Calibration Equipment window (displayed below) is used to modify existing calibration equipment or add new calibration equipment to the database. To access the Edit Calibration Equipment window, from the Manual Calibration window Pre-Calibration Settings tab, Calibration Equipment panel, right-click in the available list and select <strong>New...</strong>(to add new equipment) or <strong>Edit...</strong> (to modify existing equipment).</p>
+<table class="Table-Grey">
+  <tr>
+    <td><img src="images/InsertCalEquip.png" alt="Insert Cal Equip" width="300" height="368"></td>
+    <td>&nbsp;</td>
+    <td><img src="images/UpdateCalEquip.png" alt="Update Cal Equip" width="300" height="368"></td>
+  </tr>
+</table>
+<table class="Table-Grey">
+  <tr>
+    <th>Button or Field</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Insert</td>
+    <td>Adds new calibration equipment to the database.
+      <p class="Note">When adding new equipment the database ID field is blank.</p></td>
+  </tr>
+  <tr>
+    <td>Update</td>
+    <td>Updates existing calibration equipment in the database.
+      <p class="Note">When updating existing equipment the database ID is displayed.</p></td>
+  </tr>
+</table>
+<h4 id="AutoCal">Automatic Calibration</h4>
+<p>The Automatic Calibration window is used to perform an automatic calibration. The Automatic Calibration tabs consist of:</p>
+<ul>
+  <li><a href="#ACTabPreCal">Pre-Calibration Settings</a></li>
+  <li><a href="#ACTabAutoCal">Automatic Calibration</a></li>
+  <li><a href="#ACTabViewGroupCal">View Current Group Calibration</a></li>
+</ul>
+<p class="Note">Automatic calibration does not accept the input of out of tolerance values.</p>
+<h4 id="ACTabPreCal">Pre-Calibration Settings</h4>
+<p>The Pre-Calibration Settings tab is identical to that of the Manual Calibration process. For details, see <a href="#TabPreCal">Pre-Calibration Settings in the Manual Calibration section</a>.</p>
+<h4 id="ACTabAutoCal">Automatic Calibration</h4>
+<p>The Automatic Calibration tab (displayed below) is used to start/stop an automatic calibration.</p>
+<div class="Container"><img src="images/AutoCal.PNG" alt="Auto Cal" width="700" height="525"></div>
+<h4 id="ACTabViewGroupCal">View Current Group Calibration</h4>
+<p>The View Current Group Calibration tab (displayed below) is used to control the progress of an automatic calibration.</p>
+<div class="Container"><img src="images/ACViewGroup.png" alt="AC View Group" width="700" height="525"></div>
+<br>
+<h2 id="OPmanCal">Performing a Manual Calibration</h2>
+<p class="Note">Calibration is used to determine new conversion curves called calibration functions.</p>
+<p>Manual calibration can only be performed when the RTE is scanning. Before a manual calibration can be started, sensors from the same group must be selected. Each step of a manual calibration consists of a special tab. For details on each tabs function, see <a href="CalibrateChannels.htm?#ManualCal">Manual Calibration window</a>.</p>
+<p>To perform a manual calibration:</p>
+<ol>
+  <li>From the Sensor Calibration window View menu, select <strong>Select Sensors To Calibrate</strong>.
+    <div class="Container"><img src="images/ViewMenu.png" alt="View Menu" width="384" height="290"></div>
+    The Select Sensors To Calibrate/Audit window is displayed.
+    <div class="Container"><img src="images/SelectSensor2Cal.png" alt="Select Senso 2 Cal" width="331" height="290"></div>
+  </li>
+  <li>Select the sensors to calibrate by either double-clicking on the sensors or right-clicking on the calibration type node and selecting all sensors under that node. Once the sensors have been selected the calibration process can be started.
+    <p class="Note">Only sensors from the same group can be selected for calibration.</p>
+  </li>
+  <li>From the Sensor Calibration  window Calibration menu, select <strong>Manual Calibration...</strong> or <br>
+    select the <strong>Manual Calibration</strong> button.
+    <div class="Container"><img src="images/CalibrationMenu.png" alt="Calibration Menu" width="384" height="290"></div>
+    <p class="Note">If the menu item or button is disabled (greyed out) then  either no sensor is selected or sensors from different groups are selected. Ensure that only sensors from the same group are selected.</p>
+    Depending on the subsystem of the sensors and the application configuration, a startup check message may be displayed. For details on configuring startup checks, see <a href="CalibrateChannels.htm?#StartupChecks">Startup Checks</a>.
+    <div class="Container"><img src="images/StartupCheck.PNG" alt="Startup Check" width="281" height="126"></div>
+  </li>
+  <li>To confirm the startup check, select <strong>Yes</strong>. The Manual Calibration window is displayed.
+    <p class="Note">When opened, the Pre-Calibration Settings tab is displayed. If a default calibration definition file for the selected calibration group is defined, that file is automatically selected. Depending on the application configuration the ambient conditions may have been read from the corresponding proDAS channels.</p>
+    <div class="Container"><img src="images/MCPreCalSet.PNG" alt="MC Pre Cal Set" width="700" height="482"></div>
+  </li>
+  <li>From the Sensor Calibration Definition File panel, select the correct file or (if no file is to be used for calibration) make sure no file is selected. For details on how to select a calibration definition file, see <a href="CalibrateChannels.htm?#TabPreCal">Pre-Calibration Settings</a>.
+    <p class="Note">A Sensor Calibration Definition File is used to store the settings from the previous calibration of the current sensor type, to enable the same settings to be used automatically for repetitive calibrations.</p>
+  </li>
+  <li>From the Calibration Equipment panel, select the calibration equipment that is to be used for the calibration. For details on how to select calibration equipment, see <a href="CalibrateChannels.htm?#TabPreCal">Pre-Calibration Settings</a>. For details on how to edit calibration equipment, see <a href="CalibrateChannels.htm?#EditCalEquip">Edit Calibration Equipment</a>.</li>
+  <li>From the Ambient Conditions panel, specify the ambient conditions.
+    <div class="Container"><img src="images/PnlAmbientCond.png" alt="Pn lAmbient Cond" width="450" height="131"></div>
+    <p class="Note">If the values read from proDAS channels are incorrect or if the values cannot be read, select the Manual Override checkbox and insert values and units for the ambient conditions. For details on how to specify ambient conditions, see <a href="CalibrateChannels.htm?#TabPreCal">Pre-Calibration Settings</a>.</p>
+    <p class="Note">Ambient condition channels are specified in the Sensor Calibration ini file.</p>
+  </li>
+  <li>To accept the settings and proceed to the Calibration tab, select <strong>Next</strong>. The Calibration tab is displayed.
+    <p class="Note">The target value is set automatically if a calibration definition file is used. The example screen below is for a fixed target calibration.</p>
+    <div class="Container"><img src="images/MCCalibration.PNG" alt="MC Calibration" width="700" height="482"></div>
+  </li>
+  <li>From the Measured Value panel, check the Sampling Average and if necessary, correct using the up/down arrows.</li>
+  <li>From the Measured Value panel, check the Display Format and if necessary, correct using the up/down arrows.
+    <p class="Note">The left box displays the resulting display format. The middle box displays the number before the decimal and the right box displays the number of digits after the decimal.</p>
+  </li>
+  <li>From the Measured Value panel, check the Tolerance and if necessary, correct using the drop-down box for selecting the type of tolerance, and the text box to specify the corresponding value.</li>
+  <li>From the Measured Value panel, check the Standard Deviation and if necessary, correct.
+    <p class="Note">The time must be specified in seconds.</p>
+  </li>
+  <li id="Step13">From the Target Value panel, specify the target in the EU Value field.
+    <p class="Note">The target value can  be  read from the calibration definition file or directly inserted by the  user. If the values are to be read from the file, use the arrow keys to browse  forward or backward. By default, the first value of the file is used.</p>
+    When the measurement is accepted, the Increment value is used to calculate the next EU Value. </li>
+  <li>Inject the signal to be measured and wait until the signal is stable.</li>
+  <li>To accept the measurement, select <strong>Accept</strong>. If a new value is required, <a href="#Step13">go to step 13</a>. The Next button is available when at least two measured values are accepted.</li>
+  <li>To complete the calibration measurement, select <strong>Next</strong>. The Calibration Results tab is displayed.
+    <div class="Container"><img src="images/MCCalResults.PNG" alt="MC Cal Results" width="700" height="482"></div>
+    <p class="Note">For details on specifying how curves are generated, see <a href="CalibrateChannels.htm?#TabCalResults">Calibration Results</a>.</p>
+    <p class="Note">For details on viewing the measured data and the generated curves, see <a href="CalibrateChannels.htm?#TabCalResults">Calibration Results</a>.</p>
+  </li>
+  <li>To use the calibration results, select <strong>Next</strong>. The Audit Settings tab is displayed.
+    <div class="Container"><img src="images/MCAuditSettings.PNG" alt="MC Audit Settings" width="700" height="482"></div>
+    <p class="Note">An initial audit of the generated curves is required after a calibration.</p>
+    <p class="Note">It is possible to include a second conversion (defined by the fixed sensor) when performing an audit (i.e. a channel that is calibrated to convert volts to Ohms, could then have a PT100 fixed sensor attached to display the audit results as a temperature).</p>
+  </li>
+  <li>To apply the fixed sensor to the audit, check the Apply Fixed Sensors checkbox.</li>
+  <li>To apply the audit settings, select <strong>Next</strong>. The Audit tab is displayed.
+    <div class="Container"><img src="images/MCAudit.png" alt="MC Audit" width="700" height="482"></div>
+  </li>
+  <li>From the Measured Value panel, check the Sampling and if necessary, correct using the up/down arrows.</li>
+  <li>From the Measured Value panel, check the Display Format and if necessary, correct using the up/down arrows.
+    <p class="Note">The left  box displays the resulting display format. The middle box displays the number before the decimal and the right  box displays the number of digits after the decimal.</p>
+  </li>
+  <li>From the Measured Value panel, check the Tolerance and if necessary, correct using the drop-down box for selecting the type of tolerance, and the text box to specify the corresponding value.</li>
+  <li>From the Measured Value panel, check the Standard Deviation and if necessary, correct.
+    <p class="Note">The time must be specified in seconds.</p>
+  </li>
+  <li id="Step24">From the Target Value panel, specify the target value.
+    <p class="Note">The target value can be read from the calibration definition file or directly inserted by the user. If the values are to be read from the file, use the arrow keys to browse forward or backward. By default, the first value of the file is used.<br>
+      <br>
+      <img src="images/TargetValue.png" alt="Target Value" width="198" height="133"></p>
+  </li>
+  <li>Inject the signal to be measured and wait until the signal is stable.</li>
+  <li>To accept the measurement, select <strong>Accept</strong>. If a new value is required, <a href="#Step24">go to step 24 </a>. The Next button is available when at least one measured value is accepted.
+    <p class="Note">Measurements within tolerance are displayed in green and measurements out of tolerance are displayed in red. To redo an audit point, right-click on the result and select Reject Point from the context menu. <a href="#Step24">Go to step 24</a> and re-enter the target value.</p>
+  </li>
+  <li>To finish the Audit measurement, select <strong>Next</strong>. The Audit Results tab is displayed.
+    <div class="Container"><img src="images/MCAuditResults.PNG" alt="MC Audit Results" width="700" height="482"></div>
+    <p class="Note">For details on how to view the measured data and audit results, see <a href="CalibrateChannels.htm?#TabAuditResults">Audit Results.</a></p>
+  </li>
+  <li>To apply the audit results, select <strong>Next</strong>. The Store Data tab is displayed.
+    <div class="Container"><img src="images/MCStoreData.PNG" alt="MC Store Data" width="700" height="482"></div>
+    For details on saving calibration and audit results to the database, see <a href="CalibrateChannels.htm?#TabStoreData">Store Data</a>. </li>
+  <li>From the Save Data to Database panel, check the Calibration Date, Due Date and if the calibration is not permanent, check the Calibration Expires checkbox.</li>
+  <li>From the Save Data to Database panel, verify the name of the calibrator and the calibration comment. Correct or update the information as required.</li>
+  <li>To store only valid calibrations to the database, select Save Only Passed Audits checkbox.</li>
+  <li>To get a printout when saving the data, select Print Report When Saving checkbox.</li>
+  <li>From the Save Data to Database panel, select <strong>Save</strong> to store the calibration and audit data. Confirm the confirmation question and success messages. The Print window is displayed.
+    <div class="Container"><img src="images/Print.png" alt="Print" width="438" height="334"></div>
+  </li>
+  <li>Select the printer to print the reports and select <strong>OK</strong>. The reports are generated and printed.</li>
+  <li>Confirm the message that the reports were sent to the printer. The Finish button is now available.</li>
+  <li>To save the calibration and audit settings for future use, specify the filename in the Save Calibration Steps to File panel. The file is used for all sensors in the same group.</li>
+  <li>To finish the manual calibration, select <strong>Finish</strong>. A confirmation message is displayed confirming the manual calibration is finished, the data are stored to the database and reports have been generated. </li>
+</ol>
+<h2 id="ManualAudit">Performing a Manual Audit</h2>
+<p class="Note">Audit is used to check conversion curves and extend the due date.</p>
+<p>Performing a manual audit has a similar workflow as performing a manual calibration with the following differences:</p>
+<ul>
+  <li>calibration is skipped</li>
+  <li>certain labels are different (i.e. &ldquo;Calibration&rdquo; is replaced with &ldquo;Audit&rdquo;)</li>
+</ul>
+<p>To perform a manual audit:</p>
+<ol>
+  <li>From the Sensor Calibration window View menu, select <strong>Select Sensors To Calibrate</strong>.
+    <div class="Container"><img src="images/ViewMenu.png" alt="View Menu" width="384" height="290"></div>
+    The Select Sensors To Calibrate/Audit window is displayed.
+    <div class="Container"><img src="images/SelectSensor2Cal.png" alt="Select Sensor 2 Cal" width="331" height="290"></div>
+  </li>
+  <li>Select the sensors to calibrate by either double-clicking on the sensors or right-clicking on the calibration type node and selecting all sensors under that node. Once the sensors have been selected the calibration process can be started.
+    <p class="Note">Only sensors from the same group can be selected for calibration.</p>
+  </li>
+  <li>From the Sensor Calibration window Calibration menu, select <strong>Manual Audit...</strong> or <br>
+    select the <strong>Manual Audit</strong> button.
+    <div class="Container"><img src="images/CalMenuManAudit.png" alt="Cal Menu Man Audit" width="384" height="290"></div>
+    <p class="Note">If the menu item or button is disabled (greyed out) then either no sensor is selected or sensors from different groups are selected. Ensure that only sensors from the same group are selected.</p>
+    Depending on the subsystem of the sensors and the application configuration, a startup check message may be displayed. For details on configuring startup checks, see <a href="CalibrateChannels.htm?#StartupChecks">Startup Checks</a>.
+    <div class="Container"><img src="images/StartupCheck.PNG" alt="Startup Check" width="281" height="126"></div>
+  </li>
+  <li>To confirm the startup check, select <strong>Yes</strong>. The Manual Audit window is displayed.
+    <p class="Note">When opened, the Pre-Calibration Settings tab is displayed. If a default calibration definition file for the selected calibration group is defined, that file is automatically selected. Depending on the application configuration the ambient conditions may have been read from the corresponding proDAS channels.</p>
+    <div class="Container"><img src="images/MAPreCalSet.png" alt="MA Pre Cal Set" width="700" height="482"></div>
+  </li>
+  <li>From the Sensor Calibration Definition File panel, select the correct file or (if no file is to be used for calibration) make sure no file is selected. For details on how to select a calibration definition file, see <a href="CalibrateChannels.htm?#TabPreCal">Pre-Calibration Settings</a>.
+    <p class="Note">A Sensor Calibration Definition File is used to store the settings from the previous calibration of the current sensor type, to enable the same settings to be used automatically for repetitive calibrations.</p>
+  </li>
+  <li>From the Calibration Equipment panel, select the calibration equipment that is used. For details on how to select calibration equipment, see <a href="CalibrateChannels.htm?#TabPreCal">Pre-Calibration Settings</a>. For details on how to edit calibration equipment, see <a href="CalibrateChannels.htm?#EditCalEquip">Edit Calibration Equipment</a>.</li>
+  <li>From the Ambient Conditions panel, specify the ambient conditions.
+    <div class="Container"><img src="images/PnlAmbientCond.png" alt="Pnl Ambient Cond" width="450" height="131"></div>
+    <p class="Note">If the values read from proDAS channels are incorrect or if the values cannot be read, select the Manual Override checkbox and insert values and units for the ambient conditions. For details on how to specify ambient conditions, see <a href="CalibrateChannels.htm?#TabPreCal">Pre-Calibration Settings</a>.</p>
+    <p class="Note">Ambient condition channels are specified in the Sensor Calibration ini file.</p>
+  </li>
+  <li>To accept the settings and proceed to the Audit Settings tab, select <strong>Next</strong>. The Audit Settings tab is displayed.
+    <div class="Container"><img src="images/MAAuditSettings.png" alt="MA Audit Settings" width="700" height="482"></div>
+    <p class="Note">An initial audit of the generated curves is required after a calibration.</p>
+    <p class="Note">It is possible to include a second conversion (defined by the fixed sensor) when performing an audit (i.e. a channel that is calibrated to convert volts to Ohms, could then have a PT100 fixed sensor attached to display the audit results as a temperature).</p>
+  </li>
+  <li>To apply the fixed sensor to the audit, check the <strong>Apply Fixed Sensors</strong> checkbox.</li>
+  <li>To apply the audit settings, select <strong>Next</strong>. The Audit tab is displayed.
+    <div class="Container"><img src="images/MAAudit.png" alt="MA Audit" width="700" height="482"></div>
+  </li>
+  <li>From the Measured Value panel  check the Sampling Average and if necessary, correct using the up/down arrows.</li>
+  <li>From the Measured Value panel, check the Display Format and if necessary, correct using the up/down arrows.
+    <p class="Note">The left  box displays the resulting display format. The middle box displays the number before the decimal and the right box displays the number of digits after the decimal.</p>
+  </li>
+  <li>From the Measured Value panel, check the Tolerance and if necessary, correct using the drop-down box for selecting the type of tolerance, and the text box to specify the corresponding value.</li>
+  <li>From the Measured Value panel, check the Standard Deviation and if necessary, correct.
+    <p class="Note">The time must be specified in seconds.</p>
+  </li>
+  <li id="Step15">From the Target Value panel, specify the target value.
+    <p class="Note">The target value can be read from the calibration definition file or directly inserted by the  user. If the values are to be read from the file, use the arrow keys to browse forward or backward. By default, the first value of the file is used.<br>
+      <img src="images/TargetValue.png" alt="Target Value" width="198" height="133"></p>
+  </li>
+  <li>Inject the signal to be measured and wait until the signal is stable.</li>
+  <li>To accept the measurement, select <strong>Accept</strong>. If a new value is required, <a href="#Step15">go to step 15 </a>. The Next button is available when at least one measured value is accepted.
+    <p class="Note">Measurements  within tolerance are displayed in green and measurements out of tolerance are displayed in red. To redo an audit point, right-click on the result and select Reject Point from the context menu. <a href="#Step15">Go to step 15 </a> and re-enter the target value.</p>
+  </li>
+  <li>To finish the Audit measurement, select <strong>Next</strong>. The Audit Results tab is displayed.
+    <div class="Container"><img src="images/MAAuditResults.png" alt="MA Audit Results" width="700" height="482"></div>
+    <p class="Note">For details on how to view the measured data and audit results, see <a href="CalibrateChannels.htm?#TabAuditResults">Audit Results</a>.</p>
+  </li>
+  <li>To apply the audit results, select <strong>Next</strong>. The Store Data tab is displayed.
+    <div class="Container"><img src="images/MAStoreData.png" alt="MA Store Data" width="700" height="482"></div>
+    For details on saving calibration and audit results to the database, see <a href="CalibrateChannels.htm?#TabStoreData">Store Data</a>. </li>
+  <li>From the Save Data to Database panel, check the Calibration Data, Due Date and if the calibration is not permanent, check the Calibration Expires checkbox.</li>
+  <li> From the Save Data to Database panel, verify the name of the calibrator and the calibration comment. Correct or update the information as required.</li>
+  <li>To store only valid calibrations to the database, select Save Only Passed Audits checkbox.</li>
+  <li>To get a printout when saving the data, select Print Report When Saving checkbox.</li>
+  <li> From the Save Data to Database panel, select <strong>Save</strong> to store the calibration and audit data. Confirm the confirmation question and success messages. The Print window is displayed.
+    <div class="Container"><img src="images/Print.png" alt="Print" width="438" height="334"></div>
+  </li>
+  <li>Select the printer to print the reports and select <strong>OK</strong>. The reports are generated and printed.</li>
+  <li>Confirm the message that the reports were sent to the printer. The Finish button is now available.</li>
+  <li>To save the calibration and audit settings for future use, specify the filename in the Save Calibration Steps to File panel. The file is used for all sensors in the same group.</li>
+  <li>To finish the manual calibration, select <strong>Finish</strong>. A confirmation message is displayed confirming the manual calibration is finished, the data are stored to the database and reports have been generated.</li>
+</ol>
+<h2 id="OffsetAdjustment">Performing an Offset Adjustment</h2>
+<p class="Note">Offset adjustment is used to reduce the offset of measured channels. The offset is measured and the conversion curves are shifted by the measured offset.</p>
+<p>Performing an offset adjustment has a similar workflow as performing a manual calibration with the following differences:</p>
+<ul>
+  <li>the user can specify if fixed sensors are to be applied (via Pre-Calibration Settings tab)</li>
+  <li>instead of a calibration measurement there is an offset measurement</li>
+  <li>only one measured value is accepted for offset measurement</li>
+  <li>audit is skipped</li>
+  <li>no new record is created when saving data, instead the existing tables are changed (no due date changes)</li>
+</ul>
+<p>To perform an offset adjustment:</p>
+<ol>
+  <li>From the Sensor Calibration window View menu, select <strong>Select Sensors To Calibrate</strong>.
+    <div class="Container"><img src="images/ViewMenu.png" alt="View Menu" width="384" height="290"></div>
+    The Select Sensors To Calibrate/Audit window is displayed.
+    <div class="Container"><img src="images/SelectSensor2Cal.png" alt="Select Sensor 2 Cal" width="331" height="290"></div>
+  </li>
+  <li>Select the sensors to calibrate by either double-clicking on the sensors or right-clicking on the calibration type node and selecting all sensors under that node. Once the sensors have been selected the calibration process can be started.
+    <p class="Note"> Only sensors from the same group can be selected for calibration.</p>
+  </li>
+  <li>From the Sensor Calibration window Calibration menu, select <strong>Offset Adjustment...</strong> or <br>
+    select the <strong>Offset Adjustment</strong> button.
+    <div class="Container"><img src="images/CalMenuOffset.png" alt="Cal Menu Offset" width="384" height="290"></div>
+    <p class="Note">If the menu item or button is disabled (greyed out) then either no sensor is selected or sensors from different groups are selected. Ensure that only sensors from the same group are selected.</p>
+    Depending on the subsystem of the sensors and the application configuration, a startup check message may be displayed. For details on configuring startup checks, see <a href="CalibrateChannels.htm?#StartupChecks">Startup Checks</a>.
+    <div class="Container"><img src="images/StartupCheck.PNG" alt="Startup Check" width="281" height="126"></div>
+  </li>
+  <li>To confirm the startup check, select <strong>Yes</strong>. The Offset Adjustment window is displayed.
+    <p class="Note"> When opened, the Pre-Calibration Settings tab is displayed. If a default calibration definition file for the selected calibration group is defined, that file is automatically selected. Depending on the application configuration the ambient conditions may have been read from the corresponding proDAS channels.</p>
+    <p class="Note">When opened, the Pre-Calibration Settings tab contains an additional option where the user can specify whether or not a fixed sensor is to be applied.</p>
+    <div class="Container"><img src="images/OAPreCalSet.png" alt="OA Pre Cal Set" width="700" height="482"></div>
+  </li>
+  <li>From the Sensor Calibration Definition File panel, select the correct file or (if no file is to be used for calibration) make sure no file is selected. For details on how to select a calibration definition file, see <a href="CalibrateChannels.htm?#TabPreCal">Pre-Calibration Settings</a>.
+    <p class="Note">A Sensor Calibration Definition File is used to store the settings from the previous calibration of the current sensor type, to enable the same settings to be used automatically for repetitive calibrations.</p>
+  </li>
+  <li>From the Calibration Equipment panel, select the calibration equipment that is used. For details on how to select calibration equipment, see <a href="CalibrateChannels.htm?#TabPreCal">Pre-Calibration Settings</a>. For details on how to edit calibration equipment, see <a href="CalibrateChannels.htm?#EditCalEquip">Edit Calibration Equipment</a>.</li>
+  <li>From the Ambient Conditions panel, specify the ambient conditions.
+    <div class="Container"><img src="images/PnlAmbientCond.png" alt="Pnl Ambient Cond" width="450" height="131"></div>
+    <p class="Note"> If the values read from proDAS channels are incorrect or if the values cannot be read, select the Manual Override checkbox and insert values and units for the ambient conditions. For details on how to specify ambient conditions, see <a href="CalibrateChannels.htm?#TabPreCal">Pre-Calibration Settings</a>.</p>
+    <p class="Note">Ambient condition channels are specified in the Sensor Calibration ini file.</p>
+  </li>
+  <li>From the EU Conversion panel, select the <strong>Apply Fixed Sensors</strong> checkbox to specify whether or not fixed sensors are to be applied.</li>
+  <li>To accept the settings, select <strong>Next</strong>. The Offset Measurement tab is displayed.
+    <div class="Container"><img src="images/OAOffsetMeas.png" alt="OA Offset Meas" width="700" height="482"></div>
+  </li>
+  <li>From the Measured Value panel, check the Sampling Average and if necessary, correct using the up/down arrows.</li>
+  <li>From the Measured Value panel, check the Display Format and if necessary, correct using the up/down arrows.
+    <p class="Note">The left  box displays the resulting display format. The middle box displays the number before the decimal and the right box displays the number of digits after the decimal.</p>
+  </li>
+  <li>From the Measured Value panel, check the Tolerance and if necessary, correct using the drop-down box for selecting the type of tolerance, and the text box to specify the corresponding value.</li>
+  <li>From the Measured Value panel, check the Standard Deviation and if necessary, correct.
+    <p class="Note">The time must be specified in seconds.</p>
+  </li>
+  <li id="Step14">From the Target Value panel, specify the target in the EU Value field.
+    <p class="Note">The target value can be read from the calibration definition file or directly inserted by the user. If the values are to be read from the file, use the arrow keys to browse forward or backward. By default, the first value of the file is used.<br>
+      <img src="images/TargetValue.png" alt="Target Value" width="198" height="133"></p>
+    When the measurement is accepted, the Increment value is used to calculate the next EU Value. </li>
+  <li>Inject the signal to be measured and wait until the signal is stable.</li>
+  <li>To accept the measurement, select <strong>Accept</strong>. If a new value is required, <a href="#Step14">go to step 14</a>. The Next button is available when a measurement has been accepted.
+    <p class="Note">When new values are accepted the previously accepted values are overwritten because only one value is used for determining the offset of a channel.</p>
+  </li>
+  <li>To finish the offset measurement, select Next. The Adjust Curves tab is displayed.
+    <p class="Note">For details on how to view shifted curves, see <a href="CalibrateChannels.htm?#TabCalResults">Calibration Results</a>.</p>
+    <div class="Container"><img src="images/OAAdjustCurv.png" alt="OA Adjust Curv" width="700" height="482"></div>
+  </li>
+  <li>To use the offset adjustment results, select <strong>Next</strong>. The Store Data tab is displayed.
+    <div class="Container"><img src="images/OAStoreData.png" alt="OA Store Data" width="700" height="482"></div>
+  </li>
+  <li>From the Save Offset Adjustment panel, select the <strong>Print Report When Saving</strong> checkbox to get a printout when saving the data.</li>
+  <li>From the Save Offset Adjustment panel, select <strong>Save</strong> to shift the tables in the database. Confirm the confirmation question and success messages. The Print window is displayed.
+    <div class="Container"><img src="images/Print.png" alt="Print" width="438" height="334"></div>
+  </li>
+  <li>Select the printer to print the reports and select <strong>OK</strong>. The reports are generated and printed.</li>
+  <li>Confirm the message that the reports were sent to the printer. The Finish button is now available.</li>
+  <li>To save the calibration and audit settings for future use, specify the filename in the Save Calibration Steps to File panel. The file is used for all sensors in the same group.</li>
+  <li>To finish the manual calibration, select <strong>Finish</strong>. A confirmation message is displayed confirming the manual calibration is finished, the data are stored to the database and reports have been generated.</li>
+</ol>
+<h2 id="PerformAutoCal">Performing an Automatic Calibration/Audit</h2>
+<p>Performing an automatic calibration requires a calibration definition file (either SCDF or group INI) that contains or references a script. To perform an automatic calibration/audit:</p>
+<ol>
+  <li>Select the sensors from the same group.</li>
+  <li>From the Sensor Calibration window Calibration menu, select <strong>Automatic Calibration / Audit...</strong> or <br>
+    select the <strong>Automatic Calibration/Audit</strong> button.
+    <div class="Container"><img src="images/CalMenuAutoCal.png" alt="Cal Menu Auto Cal" width="384" height="290"></div>
+    <br>
+    The Pre-Calibration Settings tab is displayed.
+    <div class="Container"><img src="images/ACPreCalSet.png" alt="AC Pre Cal Set" width="700" height="525"></div>
+  </li>
+  <li>From the Calibration Equipment panel, select the calibration equipment that is used. For details on how to select calibration equipment, see <a href="CalibrateChannels.htm?#TabPreCal">Pre-Calibration Settings</a>. For details on how to edit calibration equipment, see <a href="CalibrateChannels.htm?#EditCalEquip">Edit Calibration Equipment</a>.</li>
+  <li>From the Ambient Conditions panel, specify the ambient conditions.
+    <div class="Container"><img src="images/PnlAmbientCond.png" alt="Pnl Ambient Cond" width="450" height="131"></div>
+    <p class="Note">If the values read from proDAS channels are incorrect or if the values cannot be read, select the Manual Override checkbox and insert values and units for the ambient conditions. For details on how to specify ambient conditions, see <a href="CalibrateChannels.htm?#TabPreCal">Pre-Calibration Settings</a>.</p>
+    <p class="Note">Ambient condition channels are specified in the Sensor Calibration ini file.</p>
+  </li>
+  <li>When complete, select <strong>Next</strong>. The Automatic Calibration tab is displayed.
+    <div class="Container"><img src="images/AutoCal.PNG" alt="Auto Cal" width="700" height="525"></div>
+  </li>
+  <li>To begin automatic calibration, select <strong>Start</strong>. The automatic calibration window displays progress of the calibration process.</li>
+  <li>To stop automatic calibration, select <strong>Terminate</strong>.</li>
+  <li>When automatic calibration is complete the View Current Group Calibration tab is displayed with the results of the automatic calibration. Select tabs to view calibration and audit results for each sensor.
+    <div class="Container"><img src="images/ACViewGroup.png" alt="AC View Group" width="700" height="525"></div>
+  </li>
+</ol>
+<p><a href="images/SampleSCDF.pdf">Click here for a sample SCDF file referencing the script &quot;Calibrate.vbs&quot;.</a></p>
+<p><a href="images/SampleVBS.pdf">Click here for a sample of the Calibrate.vbs.</a></p>
+<h2 id="VariableTargetCal">Performing a Variable Target Calibration</h2>
+<p>Variable target calibration refers to a calibration process whereby the injected signal (test value) may not be equal to the intended target value and is measured by a trusted device.  In comparison, a fixed target calibration involves a precisely known injected signal (test value) equal to the target value.</p>
+<p>During a variable target calibration, three parameters are recorded for each point:</p>
+<ul>
+  <li>the Target Value (set by the user)</li>
+  <li>the Test Value (injected signal)</li>
+  <li>the Measured Value (measured channel output)</li>
+</ul>
+<p>A variable target calibration is automatically enabled when calibrating sensors containing a Raw Data Table of the type 3-dimensional break point table (3D BPT).</p>
+<p>To perform a variable target calibration:</p>
+<ol>
+  <li>From the Selected Sensors for Calibration/Audit window , select one or multiple sensors to be calibrated by double-clicking on the appropriate entries.
+    <div class="Container"><img src="images/SelectedSensor.PNG" alt="Selected Sensor" width="700" height="193"></div>
+    Once the sensors have been selected the calibration process can be started.
+    <p class="Note">Only sensors from the same group can be selected for calibration.</p>
+  </li>
+  <li>From the Sensor Calibration  window Calibration menu, select <strong>Manual Calibration...</strong> or <br>
+    select the <strong>Manual Calibration</strong> button.
+    <div class="Container"><img src="images/CalibrationMenu.png" alt="Calibration Menu" width="384" height="290"></div>
+    <p class="Note">An automatic variable target calibration can be performed provided the automation script has been defined.</p>
+    The Manual Calibration window is displayed.
+    <div class="Container"><img src="images/VTPreCalSetTab.png" alt="VT Pre Cal Set Tab" width="700" height="506"></div>
+  </li>
+  <li><strong>Pre-Calibration Settings</strong> tab:
+    <ol type="a">
+      <li>If available, select the appropriate Sensor Calibration Definition File (.scdf) and ensure that the Ambient Temperature and Humidity channels are specified.
+        <p class="Note">The ambient temperature and humidity are typically measured directly but can be manually overridden to constant values.</p>
+      </li>
+      <li>Select the Calibration Equipment entry by double clicking on the relevant row in the Available Equipment table. (i.e.: during a thrust calibration, the calibration equipment selected refers to the traceable calibration (master) load cell calibration data.)</li>
+      <li>Select <strong>Next</strong>. The Calibration tab is displayed.</li>
+    </ol>
+    <div class="Container"><img src="images/VTCalTab.png" alt="VT Cal Tab" width="700" height="479"></div>
+  </li>
+  <li><strong>Calibration</strong> tab:
+    <ol type="a">
+      <li>The Test Value is regarded as a trusted value in the calibration. The test value can be set manually, by one channel, by two channels or by a file or script. Set the maximum allowable standard deviation of the test value.</li>
+      <li>From the Measured Value panel, check the sampling average and correct it if necessary by using the up-down-buttons.
+        <div class="Container"><img src="images/VTMeasValPnl.png" alt="VT Meas Val Pnl" width="429" height="203"></div>
+      </li>
+      <li>From the Measured Value panel, check the display format and correct it if necessary by using the up-down-buttons. The left text box shows the resulting display format. The number before the point shows the minimum number of digits before the point. The number after the point  defines the precision of the display format fraction digits.</li>
+      <li>Check the tolerance and correct it if necessary. Use the list box for selecting the type of tolerance used and the text box to specify the according value.</li>
+      <li>From the Measured Value panel, check the Standard Deviation and if necessary, correct. The time has to be specified in seconds.</li>
+      <li>If the first Target Value is 0, the <strong>Zero</strong> button can be selected if it is required to eliminate any residual offset of the Test Value before accepting the first point.
+        <div class="Container"><img src="images/ZeroButton.png" alt="Zero Button" width="700" height="479"></div>
+      </li>
+      <li>Calibration test point:
+        <ol>
+          <li>Inject a test Signal and measure this with a trusted device such that it populates the Test Value (either by using 1 channel, 2 channels or by measuring independently and entering this value manually).</li>
+          <li>At the same time, measure the same signal with the Calibration Sensor (i.e.: Inject the channel associated with the Calibration Sensor with the same signal).</li>
+          <li>Record the intended value of the test signal (Target Value) in the EU Value field, (i.e.: pressure regulator setting, PLC-demanded hydraulic actuator thrust force), wait until the measured value becomes stable and accept the test point.
+            <p class="Note">The Target Value can be entered manually, set by file (if a calibration definition file was specified in step 3a), or set by increment, but should always equal the intended test signal value.</p>
+          </li>
+        </ol>
+      </li>
+      <li>Repeat the above step for the rest of the Target Values and select <strong>Next</strong>. The Calibration Results tab is displayed.
+        <div class="Container"><img src="images/VTCalResultsTab.png" alt="VT Cal Results Tab" width="700" height="479"></div>
+      </li>
+      <li>To use the calibration results, select <strong>Next</strong>. The Audit Settings tab is displayed.
+        <div class="Container"><img src="images/VTCalAudSetTab.png" alt="VT Cal Aud Set Tab" width="700" height="479"></div>
+      </li>
+    </ol>
+  </li>
+  <li><strong>Audit Settings</strong> tab:
+    <ol type="a">
+      <li>To apply the fixed sensor to the audit, check the <strong>Apply Fixed Sensors and Customer Sensors</strong> checkbox in the Audit Settings tab.</li>
+      <li>To apply the audit settings, select <strong>Next</strong>. The Audit tab is displayed.
+        <div class="Container"><img src="images/VTCalAuditTab.png" alt="VT Cal Audit Tab" width="700" height="479"></div>
+      </li>
+      <li><strong>Audit</strong> tab (test point):
+        <ol>
+          <li>Inject a test Signal and measure this with a trusted device such that it populates the Test Value (either by using 1 channel, 2 channels or by measuring independently and entering this value manually).</li>
+          <li>At the same time, measure the same signal with the Calibration Sensor (i.e.: Inject the channel associated with the Calibration Sensor with the same signal).</li>
+          <li>Record the intended value of the test signal (Target Value) in the EU Value field, (i.e.: pressure regulator setting, PLC-demanded hydraulic actuator thrust force), wait until the measured value becomes stable and accept the test point.
+            <p class="Note">The Target Value can be entered manually, set by file (if a calibration definition file was specified in step 3a), or set by increment, but should always equal the intended test signal value.</p>
+            <ol type="a">
+              <li>Once the subset of points have all been accepted, select <strong>Next</strong>. The Audit Results tab is displayed.</li>
+            </ol>
+          </li>
+        </ol>
+        <div class="Container"><img src="images/VTCalAuditResultsTab.png" alt="VT Cal Audit Results Tab" width="700" height="479"></div>
+      </li>
+      <ol>
+        <ol start="2" type="a">
+          <li type="a">From the Audit Results tab, select <strong>Next</strong>. The Store Data tab is displayed. </li>
+        </ol>
+      </ol>
+      <div class="Container"><img src="images/VTCalStoreDataTab.png" alt="VT Cal Store Data Tab" width="700" height="479"></div>
+    </ol>
+  </li>
+</ol>
+<ol start="6">
+  <li><strong>Store Data</strong> tab (save the calibration and audit results to the database):
+    <ol type="a">
+      <li>If the Audit passed (green checkmark at the top of the Audit Results tab); in the Save Data to Database panel, enter the calibrator name, comments and set the calibration due date.<br>
+        If the Audit failed (red cross at the top of the Audit Results tab);  when saving, ensure to enter an Audit Failed comment, the calibrator name, when saving the calibration.</li>
+      <li>Check the calibration due date. If necessary, set the calibration due date and if the calibration is not permanent, select the <strong>Calibration Expires</strong> checkbox.</li>
+      <li>To get a printout when saving the data, select the <strong>Print Report When Saving</strong> checkbox.</li>
+      <li>If <strong>Save Only Passed Audits</strong> is checked, only valid calibrations are saved to the database.</li>
+      <li>To apply the calibration and create a new calibration record in the database, select <strong>Save</strong>.
+        <p class="Note">Without having to save the calibration, in the Calibration Report section you may choose the appropriate report format and select Create to create a report.</p>
+      </li>
+      <li>Store the calibration steps (including the target value increments) to a file for future use. Saving the steps allows the calibrator to use these predefined target values during subsequent calibrations. To save the steps to a file, specify the path and file name in the Store Calibration Steps to File section and select <strong>Save</strong>. This file could be selected in Pre-Calibration Settings to repeat the procedure for future calibrations.
+        <p class="Note">It is possible to update an existing file if changes are made during the calibration that are to be kept for future calibrations.</p>
+      </li>
+      <li>To finish the calibration, select <strong>Finish</strong>.</li>
+    </ol>
+  </li>
+</ol>
+<h2 id="customisation">Customisation</h2>
+<p>The Sensor Calibration Application has the following customised options available:</p>
+<ul>
+  <li><a href="#AdjustLayout">adjusting layout</a></li>
+  <li><a href="#SetRestoreLayout">setting or restoring a standard layout</a></li>
+  <li><a href="#AppINIfile">application INI file</a></li>
+  <li><a href="#ExcelCalReports">Excel calibration reports</a></li>
+</ul>
+<h3 id="AdjustLayout">Adjusting Layout</h3>
+<p>The Sensor Calibration Application views are made visible from the Sensor Calibration window View menu. The views can by resized or moved similarly to that of any standard windows view. The application  maintains the windows positions and sizes and restore them after a restart. The same applies to most controls inside the windows such as column width.</p>
+<h3 id="SetRestoreLayout">Setting or Restoring a Standard Layout</h3>
+<p>The user has the ability to set the standard layout for the Sensor Calibration Application and restore a standard layout.</p>
+<p>To set a standard layout:</p>
+<ol>
+  <li>From the Sensor Calibration View menu, select <strong>Save layout as standard layout</strong>.</li>
+</ol>
+<p>To restore a layout:</p>
+<ol>
+  <li>From the Sensor Calibration View menu, select <strong>Restore standard layout</strong>.</li>
+</ol>
+<p class="Note">Each time a layout is stored or restored, all windows are closed and reopened.</p>
+<h3 id="AppINIfile">Application INI File</h3>
+<p>The application INI file is called SensorCalibration.ini.</p>
+<h4 id="Language">GUI Language</h4>
+<p>The GUI language  is specified in the application INI file. To set the GUI to English use the following:</p>
+<pre>  [Localisation] Language=en-CA</pre>
+<p>To set the GUI to German use the following:</p>
+<pre>  [Localisation] Language=de-DE</pre>
+<h4 id="ChanReadAmbCond">Channels for Reading Ambient Conditions</h4>
+<p>Channels used for reading the ambient conditions are specified in the application INI file in the following section:</p>
+<pre>  [Calibration]
+  &hellip;
+  AmbientConditions.Temperature.ChannelName=<br>  CategoryName.Temperature=Temperature<br>  AmbientConditions.Temperature.Unit=DegC<br>  AmbientConditions.Humidity.ChannelName=<br>  CategoryName.Humidity=Humidity<br>  AmbientConditions.Humidity.Unit=grn
+  &hellip;
+</pre>
+<p>When a channel name is specified, the application obtains the value from that channel and uses the units defined for that channel. When no channel name is defined, the user is prompted to enter the temperature and humidity, and specify the applicable units from a pull-down list based on the EU category name.</p>
+<br>
+<h4 id="ExtendwTriggers">Extending Functionality Using Triggers</h4>
+<p>Sensor Calibration supports triggers whereby for each trigger, scripts can be invoked. The script can be written in either VBScript or VB.NET or C#. For scripts to work the application INI file must specify:</p>
+<ul>
+  <li>the folder where the scripts reside</li>
+  <li>the names of scripts to be invoked</li>
+  <li>the assemblies to be used (required for VB.NET or C#)</li>
+</ul>
+<pre>  [Triggers]
+  RootFolder=D:\proDAS\Data\SensorCalibration\Scripts
+  Invoke_OnProcessStepChanged = AtpSetDueDate.vb;TestTriggers.vb
+
+  [ScriptExecution]
+  NumberOfAssemblyReferences=4
+  AssemblyReference0=C:\Windows\Microsoft.NET\Framework\v4.0.30319\System.dll
+  AssemblyReference1=C:\Windows\Microsoft.NET\Framework\v4.0.30319\System.Data.dll
+  AssemblyReference2=C:\Windows\Microsoft.NET\Framework\v4.0.30319\System.Drawing.dll
+  AssemblyReference3=C:\Windows\Microsoft.NET\Framework\v4.0.30319\System.Windows.Forms.dll </pre>
+<p>To check whether a script can be compiled and executed:</p>
+<ol>
+  <li>From the Data menu, select <strong>Check Script</strong>.</li>
+</ol>
+<h4 id="CalLogsReport">Calibration Logs and Reporting</h4>
+<p>The Sensor Calibration Application INI file can be modified to specify the root path where calibration logs are stored.</p>
+<pre>  [Report.Calibration]
+  XML.RootPath=D:\proDAS\data\SensorCalibration</pre>
+<p class="Note">As a minimum, calibration logs (in a sub folder Logs) are stored under the root path.</p>
+<h4 id="CalDefns">Calibration Definitions</h4>
+<p>The Sensor Calibration Application INI file can be modified to specify the location of:</p>
+<ul>
+  <li>group INI files for Multiple Channel Calibration</li>
+  <li>Sensor Calibration Definition Files</li>
+</ul>
+<pre>  [SensorCalibrationDefinitions]
+  GroupIniPath = D:\proDAS\data\Calibration
+  CalibrationDefinitionsRootPath = D:\proDAS\data\SensorCalibration\Calibration Definitions </pre>
+<h4 id="StartupChecks">Startup Checks</h4>
+<p>Whether a manual or an automatic calibration is being performed, the user can be forced to confirm a startup check prior to  starting the calibration. A startup check is specific for each subsystem type and is configured in the application INI file in the section &ldquo;Calibration&rdquo;. The entry for the according subsystem follows the pattern &ldquo;StartCheck.&lt;Subsystem Type&gt;&rdquo;</p>
+<pre>  [Calibration]
+  &hellip;
+  StartCheck.GASSVXI=Auto calibration performed?
+  StartCheck.HSV=Auto calibration performed?
+  &hellip; </pre>
+<p>The startup checks are used to display a message on screen to remind the calibrator of something that should have been done before proceeding with the calibration. For example, prior to performing a GASSVXI calibration, the calibrator is reminded to calibrate the VXI cards using the ACU utility.</p>
+<h3 id="ExcelCalReports">Excel Calibration Reports</h3>
+<p>The Excel export feature is configured using the ReportGenerator Excel.ini.</p>
+<pre>  [Excel Export]
+  FolderGroupTemplates=D:\proDAS\data\SensorCalibration\Configuration
+  FormatFile_Linear_FixedTarget=D:\proDAS\data\SensorCalibration\Reports\Templates\AtpPolyFixed.xlt
+  FormatFile_Linear_VariableTarget=
+  FormatFile_Polynomial_FixedTarget=D:\proDAS\data\SensorCalibration\Reports\Templates\AtpPolyFixed.xlt
+  FormatFile_Polynomial_VariableTarget=
+  FormatFile_Breakpoint_FixedTarget=D:\proDAS\data\SensorCalibration\Reports\Templates\AtpBpVariable.xlt
+  FormatFile_Breakpoint_VariableTarget=D:\proDAS\data\SensorCalibration\Reports\Templates\AtpBpVariable.xlt
+  FormatFile_Default=D:\proDAS\data\SensorCalibration\Reports\Templates\Default.xlt
+  NameDataSheet=CalData
+  NameAuditSheet=Audit
+  NameAdjustmentSheet=Calibration
+  CreateSheetWithReferences=True<br>  AddSerialNumberToFileNames=True 
+</pre>
+<p class="Note">The AddSerialNumberToFileNames=True parameter determines where the serial number is placed in the report file. Setting it as false places it at the end of the file name. Setting it as true places it at the beginning of the file name.</p>
+<p>When exporting sensor data into an Excel sheet, the &quot;Excel&quot; export uses a template. The template is selected by using the following order:</p>
+<ul>
+  <li>look for group template (name should be Template.&lt;calibration group&gt;.xlt, e.g. Template.NiCrNi.xlt for group NiCrNi) &ndash; the folder of those templates is set by the INI file entry &quot;FolderGroupTemplates&quot;</li>
+  <li>combination of curve type (linear, breakpoint, polynomial) and calibration type (fixed target or variable target)</li>
+  <li>default template</li>
+</ul>
+<p>Specify the default template when  the same template is required for all calibrations.</p>
+<p class="Note">When saving an Excel report file, the default directory for selecting SCDF files to open gets updated to the path where the Excel report is saved.</p>
+<h2 id="DiagnosticMaintRequirements">Diagnostic and Maintenance Requirements</h2>
+<p>The Sensor Calibration Application uses the system.txt file as a trace file to track all necessary information, such as:</p>
+<ul>
+  <li>System Trace - a unified file of all the other logs</li>
+  <li>SQL Trace - records all SQL statements, with return values</li>
+</ul>
+<p>The Sensor Calibration Application incorporates extensive error checking. Wherever possible, the Sensor Calibration Application attempts to continue operation if an error occurs.</p>
+<p>Error checking, in general, is performed when changes are applied.</p>
+<p>All error messages include the time, the module ID, the source of the error and a description of the error. These error messages are logged to the trace file indicated in the calibration.ini of the Management Interface Computer.</p>
+<p>Common Oracle Error messages are mapped to user-friendly English text messages. These text messages are displayed whenever a defined error occurs. If an error message is not mapped to an English text message, then the Oracle Error is displayed.</p>
+<p>A consistency check is done only when changes are applied. Errors, detected during a consistency check, are displayed in a single message box.</p>
+<h2 id="SecurityRequirements">Security Requirements</h2>
+<p>Security for the Sensor Calibration Application is modeled after the security for the Management Interface GUI.</p>
+<p>All functions have unique security keys and associated levels.</p>
+<p>The security key for a function key is not found in the security list, then the item is disabled.</p>
+<p>All users are assigned a security level from 1 to 4, with level 4 providing the highest access.</p>
+<p>If the security level of a user, currently logged into the Sensor Calibration Application, matches or is greater than the security level of an item, then the function is enabled, otherwise the item is disabled for that user.</p>
+<h2 id="AutoCalUtility">Auto Calibration Utility (ACU)</h2>
+<p>The Auto-Calibration Utility (ACU) resides on the Host Computer and communicates with the VXI chassis.</p>
+<p>The utility can either trigger the internal calibration of the reference voltage and resistance on the E1413, E1415 and E1419 VXI cards or, an internal calibration or zero.</p>
+<p>The application is a stand-alone program that does not interface with proDAS and can only be run when proDAS is not configured.</p>
+<p class="Caution">ACU should not be started/used while proDAS is configured.</p>
+<p>The ACU communicates with a multimeter via a IEEE 488 to communication interface. The ACU can command an internal calibration of the multimeter. The date and time of the last internal multimeter calibration is stored.</p>
+<p>The ACU application: </p>
+<ul>
+  <li>detects if a card is being used by proDAS</li>
+  <li>scans the VXI chassis for applicable hardware (VXI Technologies E1413, E1415 and E1419)</li>
+  <li>obtains card type and identification information (serial number) from each E1413, E1415 and E1419</li>
+  <li>allows the user to interact with the utility via selectable menu options</li>
+  <li>provides access to a particular card, or all cards, for calibration and configuration</li>
+  <li>reads the existing calibration data from onboard flash memory</li>
+  <li>allows the user to perform either an auto-zero or full calibration</li>
+  <li>saves the new calibration values into flash memory on each VXI Technologies E1413, E1415 and E1419 cards</li>
+  <li>produces a test report, that is saved on the Host Computer</li>
+</ul>
+<p>The Auto-Calibration Utility (ACU) is located in the standard MDS applications directory (as shown below):</p>
+<blockquote>
+  <p><em>/users/RTE/bin/exe/acu</em></p>
+</blockquote>
+<p>The ACU program also requires an associated configuration file (e.g.: config.acu) representing the VXI hardware configuration (as shown below):</p>
+<blockquote>
+  <p><em>/users/RTE/bin/exe/config.acu</em></p>
+</blockquote>
+<p>Reports and application traces, produced when the program has completed a calibration, are stored in the standard MDS traces directory (e.g.: trace.acu) as shown below:</p>
+<blockquote>
+  <p><em>/users/RTE/bin/tmp/trace.acu</em></p>
+  <p><em>/users/RTE/bin/tmp/cal_report.yyyymmddhhmmss</em></p>
+</blockquote>
+<p>where: </p>
+<ul>
+  <li><strong>yyyy</strong> is the year (e.g.: 2003)</li>
+  <li><strong>mm</strong> is the month of the year (e.g.: 04) </li>
+  <li><strong>dd</strong> is the day of the month (e.g.: 20)</li>
+  <li><strong>hh</strong> is the time in hours - 24-hour clock (e.g.: 15)</li>
+  <li><strong>mm</strong> is the time in minutes (e.g.: 24) </li>
+  <li><strong>ss</strong> is the time in seconds (e.g.: 10)</li>
+</ul>
+<p>For example:</p>
+<blockquote>
+  <p><em>/users/RTE/bin/tmp/cal_report.20030420152410</em></p>
+</blockquote>
+<h3 id="AutoCalConfigFile">ACU Configuration File</h3>
+<p>The ACU application, when run, scans the hardware in the VXI chassis and configures all of the VXI cards with the information contained in the configuration file.</p>
+<p class="Note">The configuration file must match the installed Signal Conditioning Plug-On (SCP) modules on each VXI card.</p>
+<p>For each VXI card in the chassis, the proDAS configuration file must contain the following information:</p>
+<ul>
+  <li>chassis number</li>
+  <li>slot number</li>
+  <li>VXI base addresses for each card (A16 and A24)</li>
+</ul>
+<p class="Note">Do not change the base addresses.</p>
+<p>For each SCP installed on the VXI card, the ACU configuration file must contain:</p>
+<ul>
+  <li>SCP number (0-7)</li>
+  <li>SCP type (HP 1503, HP 1502 or HP 1510)</li>
+  <li>channel gain and filter cutoff frequency (applicable to the HP 1503 and HP 1510 only)</li>
+</ul>
+<h4 id="ExampleACUConfigFile">Example of an ACU Configuration File</h4>
+<p>The ACU configuration file is located in the /user/RTE/bin/exe directory and is called <strong>config.acu</strong> (see the example ACU configuration file below).</p>
+<div class="Container"><img height="1027" src="images/ACUconfigFile.gif" alt="ACU config File" width="500"></div>
+<p>The Report File (e.g.: cal_report) and the Trace File (e.g.: trace.acu) names are defined in the ACU configuration file (e.g.: config.acu). The cal_report and trace.acu files are stored in the tmp directory (see the preceding excerpt of the ACU Configuration File). For example: </p>
+<blockquote>
+  <p>CI report_path/users/RTE/bin/tmp<br>
+    CI report_name cal_report<br>
+    CI trace_dest trace.acu</p>
+</blockquote>
+<h3 id="CalReportFile">Calibration Report File</h3>
+<p>Report names are created using the date and time (e.g.: yyyymmddhhmmss) as the file extension, where:</p>
+<ul>
+  <li>yyyy is the year (e.g.: 2003)</li>
+  <li>mm is the month of the year (e.g.: 04)</li>
+  <li>DD is the day of the month (e.g.: 20)</li>
+  <li>hh is the time in hours - 24-hour clock (e.g.: 15)</li>
+  <li>mm is the time in minutes (e.g.: 24)</li>
+  <li>ss is the time in seconds (e.g.: 10)</li>
+</ul>
+<p>For example:</p>
+<blockquote>
+  <p>/users/RTE/bin/tmp/cal_report.20030420152410 </p>
+</blockquote>
+<h3 id="ViewCalReportFile">Viewing the Calibration Report File</h3>
+<p class="Note">The calibration report file is in a text format and can be viewed using a text editor, for example vi or nedit.</p>
+<p>To view the calibration report using VI:</p>
+<ol>
+  <li>At the prompt, type <strong>tmp</strong> and then press <strong>Enter</strong>.<br>
+    This deposits the user into the correct directory: /users/RTE/bin/tmp/</li>
+  <li>List the file in this directory to determine which calibration report file to view.</li>
+  <li> At the prompt, type <strong>vi cal_report.yyyymmddhhmmss</strong> and then press <strong>Enter</strong>.<br>
+    The calibration report file is displayed.
+    <div class="Container"><img height="367" hspace="0" src="images/ACUReportA.gif" alt="ACU Report A" width="687" border="0"></div>
+  </li>
+</ol>
+<h3 id="UseAutoCal">Using the Auto Calibration Utility</h3>
+<p>To use the Auto Calibration Utility on the Host Computer:</p>
+<ol>
+  <li>Open a winterm command window.</li>
+  <li>Log on as the user &quot;engineer&quot; and enter the corresponding password.</li>
+  <li>At the command prompt, type <strong>exe</strong> and then push <strong>Enter</strong>.<br>
+    This deposits the user into the correct directory.</li>
+  <li>At the command prompt, type <strong>acu config.acu</strong> and push <strong>Enter</strong>.<br>
+    The Auto Calibration Utility is launched and an application banner and the configuration status are displayed (see the example below) on the LINUX Command window.<br>
+    <br>
+    <table cellSpacing="1" cellPadding="2" width="80%" border="0">
+      <tr>
+        <td>&nbsp;</td>
+        <td colSpan="3"><strong>****************************************<br>
+          * Welcome to Auto Calibration Utility * <br>
+          * ACU Version 1.4 * <br>
+          * MDS Aero Support Corporation *<br>
+          ****************************************</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4" height="10"><strong>KL_memlock_init [11]: KL will not use RT features</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>KL_memlock_init [13]: Revoked RT capabilities</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>VMEL_lib, VMEL_init [0]: In function</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>ACU_open: ACU is examining the VXI chassis, please wait...</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Configuration of ch# 0 - ch# 7 succeeded in slot# 4.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4" height="21"><strong>Reference Calibration is disabled</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>open_stat0</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>There are 1 cards found in the configuration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>Slot#</strong></td>
+        <td width="54%"><strong>Serial#</strong></td>
+        <td width="6%"><strong>flash</strong></td>
+        <td width="33%"><strong>Status</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>4</strong></td>
+        <td width="54%"><strong>HEWLETT-PACKARD,E1413B,US36000934,A.06.03,Fri May 2 11:16:51 MDT 1997</strong></td>
+        <td width="6%"><strong>2</strong></td>
+        <td width="33%"><strong>OK</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>77</strong></td>
+        <td width="54%"><strong>Calibrate digitalmeter</strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>88</strong></td>
+        <td width="54%"><strong>All </strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>99</strong></td>
+        <td width="54%"><strong>Exit</strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Select a slot # to calibrate/configure a card.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 77 to calibrate digitalmeter.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 88 to calibrate all cards.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 99 to terminate the program.</strong></td>
+      </tr>
+    </table>
+    <br>
+  </li>
+  <li>The user can now select one of the following four options:</li>
+  <ul>
+    <li>Select a slot # to calibrate/configure a card</li>
+    <li>or select 77 to calibrate the digital meter</li>
+    <li>or select 88 to calibrate all cards</li>
+    <li>or select 99 to terminate the program</li>
+  </ul>
+</ol>
+<h3 id="AutoZeroCal">Auto Zero Calibration</h3>
+<p>To initiate an auto zero calibration of a specific card:</p>
+<ol>
+  <li>Once ACU has been configured, select the slot number (slot #) of the card from the ACU options menu (see example below) and press <strong>Enter</strong>.<br>
+    <br>
+    <table cellSpacing="1" cellPadding="2" width="80%" border="0">
+      <tr>
+        <td colSpan="4"><strong>There are 1 cards found in the configuration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>Slot#</strong></td>
+        <td width="54%"><strong>Serial#</strong></td>
+        <td width="6%"><strong>flash</strong></td>
+        <td width="33%"><strong>Status</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>4</strong></td>
+        <td width="54%"><strong>HEWLETT-PACKARD,E1413B,US36000934,A.06.03,Fri May 2 11:16:51 MDT 1997</strong></td>
+        <td width="6%"><strong>2</strong></td>
+        <td width="33%"><strong>OK</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>77</strong></td>
+        <td width="54%"><strong>Calibrate digitalmeter</strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>88</strong></td>
+        <td width="54%"><strong>All </strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>99</strong></td>
+        <td width="54%"><strong>Exit</strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Select a slot # to calibrate/configure a card.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 77 to calibrate digitalmeter.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 88 to calibrate all cards.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 99 to terminate the program.</strong></td>
+      </tr>
+    </table>
+    <br>
+  </li>
+  <li>For example, to calibrate/configure the HP E1413B card (serial # US36000934) in slot 4, select 4 and press <strong>Enter</strong>.<br>
+    The following menu is displayed:<br>
+    <br>
+    <table cellSpacing="1" cellPadding="2" width="80%" border="0">
+      <tr>
+        <td colSpan="2"><strong>Please select a calibration/configuration option:</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>1</strong></td>
+        <td><strong>Auto Zero Calibration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>2</strong></td>
+        <td><strong>All Channel Calibration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>3</strong></td>
+        <td><strong>Configure a channel.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>4</strong></td>
+        <td><strong>Reference Calibration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>5</strong></td>
+        <td><strong>Manual Reference Calibration</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>6</strong></td>
+        <td><strong>Select another card.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>99</strong></td>
+        <td><strong>Exit</strong></td>
+      </tr>
+    </table>
+    <br>
+  </li>
+  <li>Select <strong>1</strong> (Auto Zero Calibration).<br>
+    The progress of the auto zero calibration is displayed (see example below) and the results are saved to file.<br>
+    <br>
+    <table cellSpacing="1" cellPadding="2" width="80%" border="0">
+      <tr>
+        <td><strong>Zero calibration in progress . . .</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Zero calibration has completed!</strong></td>
+      </tr>
+      <tr>
+        <td><strong>A calibration report /users/RTE/bin/tmp/cal_report.20001220152410 has been generated.</strong></td>
+      </tr>
+    </table>
+  </li>
+</ol>
+<h3 id="AllChanCal">All Channel Calibration</h3>
+<p>To initiate an all channel calibration of a specific card:</p>
+<ol>
+  <li>Select the slot number (slot #) of the card from the Auto Calibration Utility (ACU) options menu (see example below) and press <strong>Enter</strong>.<br>
+    <br>
+    <table cellSpacing="1" cellPadding="2" width="80%" border="0">
+      <tr>
+        <td colSpan="4"><strong>There are 1 cards found in the configuration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>Slot#</strong></td>
+        <td width="54%"><strong>Serial#</strong></td>
+        <td width="6%"><strong>flash</strong></td>
+        <td width="33%"><strong>Status</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>4</strong></td>
+        <td width="54%"><strong>HEWLETT-PACKARD,E1413B,US36000934,A.06.03,Fri May 2 11:16:51 MDT 1997</strong></td>
+        <td width="6%"><strong>2</strong></td>
+        <td width="33%"><strong>OK</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>77</strong></td>
+        <td width="54%"><strong>Calibrate digitalmeter</strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>88</strong></td>
+        <td width="54%"><strong>All</strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>99</strong></td>
+        <td width="54%"><strong>Exit</strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Select a slot # to calibrate/configure a card.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 77 to calibrate digitalmeter.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 88 to calibrate all cards.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 99 to terminate the program.</strong></td>
+      </tr>
+    </table>
+    <br>
+  </li>
+  <li>For example, to calibrate/configure the HP E1413B card (serial # US36000934) in slot 4, select 4 and press <strong>Enter</strong>.<br>
+    The following menu is displayed:<br>
+    <br>
+    <table cellSpacing="1" cellPadding="2" width="80%" border="0">
+      <tr>
+        <td colSpan="2"><strong>Please select a calibration/configuration option:</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>1</strong></td>
+        <td><strong>Auto Zero Calibration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>2</strong></td>
+        <td><strong>All Channel Calibration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>3</strong></td>
+        <td><strong>Configure a channel.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>4</strong></td>
+        <td><strong>Reference Calibration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>5</strong></td>
+        <td><strong>Select another card.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>99</strong></td>
+        <td><strong>Exit</strong></td>
+      </tr>
+    </table>
+    <br>
+  </li>
+  <li>Select <strong>2</strong> (All Channel Calibration).<br>
+    The progress of the all channel calibration is displayed and the results are saved to file (see example below).<br>
+    <br>
+    <table cellSpacing="1" cellPadding="2" width="80%" border="0">
+      <tr>
+        <td colSpan="4"><strong>Calibration of all channels succeeded in slot# 4.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>A calibration report /users/RTE/bin/tmp/cal_report.20030420152410 has been generated.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>There are 1 cards found in the configuration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>Slot#</strong></td>
+        <td width="54%"><strong>Serial#</strong></td>
+        <td width="6%"><strong>flash</strong></td>
+        <td width="33%"><strong>Status</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>4</strong></td>
+        <td width="54%"><strong>HEWLETT-PACKARD,E1413B,US36000934,A.06.03,Fri May 2 11:16:51 MDT 1997</strong></td>
+        <td width="6%"><strong>2</strong></td>
+        <td width="33%"><strong>OK</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>77</strong></td>
+        <td width="54%"><strong>Calibrate digitalmeter</strong></td>
+        <td width="6%">&nbsp;</td>
+        <td width="33%">&nbsp;</td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>88</strong></td>
+        <td width="54%"><strong>All </strong></td>
+        <td width="6%">&nbsp;</td>
+        <td width="33%">&nbsp;</td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>99</strong></td>
+        <td width="54%"><strong>Exit</strong></td>
+        <td width="6%">&nbsp;</td>
+        <td width="33%">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colSpan="4">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Select a slot # to calibrate/configure a card.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 77 to calibrate digitalmeter.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 88 to calibrate all cards.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 99 to terminate the program.</strong></td>
+      </tr>
+    </table>
+  </li>
+</ol>
+<h3 id="ConfigChannel">Configuring a Channel </h3>
+<p>To configure a channel of a specific card:</p>
+<ol>
+  <li>Select the slot number (slot #) of the card from the Auto Calibration Utility (ACU) options menu (see example below) and press <strong>Enter</strong>.<br>
+    <br>
+    <table cellSpacing="1" cellPadding="2" width="80%" border="0">
+      <tr>
+        <td colSpan="4"><strong>There are 1 cards found in the configuration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>Slot#</strong></td>
+        <td width="54%"><strong>Serial#</strong></td>
+        <td width="6%"><strong>flash</strong></td>
+        <td width="33%"><strong>Status</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>4</strong></td>
+        <td width="54%"><strong>HEWLETT-PACKARD,E1413B,US36000934,A.06.03,Fri May 2 11:16:51 MDT 1997</strong></td>
+        <td width="6%"><strong>2</strong></td>
+        <td width="33%"><strong>OK</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>77</strong></td>
+        <td width="54%"><strong>Calibrate digitalmeter</strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>88</strong></td>
+        <td width="54%"><strong>All </strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>99</strong></td>
+        <td width="54%"><strong>Exit</strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Select a slot # to calibrate/configure a card.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 77 to calibrate digitalmeter.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 88 to calibrate all cards.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 99 to terminate the program.</strong></td>
+      </tr>
+    </table>
+    <br>
+  </li>
+  <li>For example, to configure the HP E1413B card (serial # US36000934) in slot 4, select 4 and press <strong>Enter</strong>.<br>
+    The following menu is displayed:<br>
+    <br>
+    <table cellSpacing="1" cellPadding="2" width="80%" border="0">
+      <tr>
+        <td colSpan="2"><strong>Please select a calibration/configuration option:</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>1</strong></td>
+        <td><strong>Auto Zero Calibration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>2</strong></td>
+        <td><strong>All Channel Calibration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>3</strong></td>
+        <td><strong>Configure a channel.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>4</strong></td>
+        <td><strong>Reference Calibration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>5</strong></td>
+        <td><strong>Select another card.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>99</strong></td>
+        <td><strong>Exit</strong></td>
+      </tr>
+    </table>
+    <br>
+  </li>
+  <li>Select <strong>3</strong> (Configure a channel).<br>
+    The following prompt is displayed:<br>
+    <br>
+    <strong>Please select a channel number to configure (0-63) for card on slot 4:</strong><br>
+    <br>
+  </li>
+  <li>Select and enter the number of the channel to be configured (e.g.: 1).<br>
+    The following menu is displayed:<br>
+    <br>
+    <table cellSpacing="1" cellPadding="2" width="80%" border="0">
+      <tr>
+        <td colSpan="2"><strong>Please select a channel gain from the following menu: </strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>1</strong></td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>8</strong></td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>64</strong></td>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+    <br>
+  </li>
+  <li>Select a channel gain (e.g.: 8) from the menu.<br>
+    The following menu is displayed:<br>
+    <br>
+    <table cellSpacing="1" cellPadding="2" width="80%" border="0">
+      <tr>
+        <td colSpan="2"><strong></strong><strong></strong><strong></strong><strong>Please select a channel filter frequency from the following menu:</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>0</strong></td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>2</strong></td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>10</strong></td>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>100</strong></td>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+    <p class="Note">Step 5 can be done for all SCP types but  only affects the 1503 and 1510 SCP's.</p>
+  </li>
+  <li>Select a channel filter frequency (e.g.: 10) from the menu.<br>
+    The result of the channel configuration (e.g.: completed successfully) is displayed and the results are saved to file (see example below).<br>
+    <br>
+    <table cellSpacing="1" cellPadding="2" width="80%" border="0">
+      <tr>
+        <td colSpan="4"><strong>Configuration of ch# 1 - ch# 1 succeeded in slot# 4.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>There are 1 cards found in the configuration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>Slot#</strong></td>
+        <td width="54%"><strong>Serial#</strong></td>
+        <td width="6%"><strong>flash</strong></td>
+        <td width="33%"><strong>Status</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>4</strong></td>
+        <td width="54%"><strong>HEWLETT-PACKARD,E1413B,US36000934,A.06.03,Fri May 2 11:16:51 MDT 1997</strong></td>
+        <td width="6%"><strong>2</strong></td>
+        <td width="33%"><strong>OK</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>77</strong></td>
+        <td width="54%"><strong>Calibrate digitalmeter</strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>88</strong></td>
+        <td width="54%"><strong>All </strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>99</strong></td>
+        <td width="54%"><strong>Exit</strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong></strong><strong></strong><strong></strong><strong>Select a slot # to calibrate/configure a card.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 77 to calibrate digitalmeter.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 88 to calibrate all cards.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 99 to terminate the program.</strong></td>
+      </tr>
+    </table>
+    <p class="Note">Step 6 can be done for all SCP types but  only affects SCP 1503.</p>
+  </li>
+</ol>
+<h3 id="RefCalibration">Reference Calibration</h3>
+<p>To initiate a reference calibration of a specific card:</p>
+<ol>
+  <li>Select the slot number (slot #) of the card from the Auto Calibration Utility (ACU) options menu (example below) and press <strong>Enter</strong>.<br>
+    <br>
+    <table cellSpacing="1" cellPadding="2" width="80%" border="0">
+      <tr>
+        <td colSpan="4"><strong>There are 1 cards found in the configuration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>Slot#</strong></td>
+        <td width="54%"><strong>Serial#</strong></td>
+        <td width="6%"><strong>flash</strong></td>
+        <td width="33%"><strong>Status</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>4</strong></td>
+        <td width="54%"><strong>HEWLETT-PACKARD,E1413B,US36000934,A.06.03,Fri May 2 11:16:51 MDT 1997</strong></td>
+        <td width="6%"><strong>2</strong></td>
+        <td width="33%"><strong>OK</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>77</strong></td>
+        <td width="54%"><strong>Calibrate digitalmeter</strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>88</strong></td>
+        <td width="54%"><strong>All </strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>99</strong></td>
+        <td width="54%"><strong>Exit</strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong></strong><strong></strong><strong></strong><strong>Select a slot # to calibrate/configure a card.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 77 to calibrate digitalmeter.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 88 to calibrate all cards.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 99 to terminate the program.</strong></td>
+      </tr>
+    </table>
+    <br>
+  </li>
+  <li>For example, to calibrate/configure the HP E1413B card (serial #US36000934) in slot 4, select <strong>4</strong> and press <strong>Enter</strong>.<br>
+    The following menu is displayed (example below):<br>
+    <br>
+    <table cellSpacing="1" cellPadding="2" width="80%" border="0">
+      <tr>
+        <td colSpan="2"><strong></strong><strong></strong><strong></strong><strong>Please select a calibration/configuration option: </strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>1</strong></td>
+        <td><strong>Auto Zero Calibration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>2</strong></td>
+        <td><strong>All Channel Calibration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>3</strong></td>
+        <td><strong>Configure a channel.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>4</strong></td>
+        <td><strong>Reference Calibration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>5</strong></td>
+        <td><strong>Select another card.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>99</strong></td>
+        <td><strong>Exit</strong></td>
+      </tr>
+    </table>
+    <br>
+  </li>
+  <li>Select <strong>4</strong> (Reference Calibration).<br>
+    The progress of the reference calibration displayed and the results are saved to file (see example below).<br>
+    <br>
+    <p class="Note">If the Digital Meter has not been calibrated in the last 24 hours it is automatically calibrated.</p>
+    <table cellSpacing="1" cellPadding="2" width="80%" border="0">
+      <tr>
+        <td colSpan="4"><strong>Reference Calibration succeeded in slot# 4.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>A calibration report /users/RTE/bin/tmp/cal_report.20030420152411 has been generated.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>There are 1 cards found in the configuration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>Slot#</strong></td>
+        <td width="54%"><strong>Serial#</strong></td>
+        <td width="6%"><strong>flash</strong></td>
+        <td width="33%"><strong>Status</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>4</strong></td>
+        <td width="54%"><strong>HEWLETT-PACKARD,E1413B,US36000934,A.06.03,Fri May 2 11:16:51 MDT 1997</strong></td>
+        <td width="6%"><strong>2</strong></td>
+        <td width="33%"><strong>OK</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>77</strong></td>
+        <td width="54%"><strong>Calibrate digitalmeter</strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>88</strong></td>
+        <td width="54%"><strong>All </strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>99</strong></td>
+        <td width="54%"><strong>Exit</strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Select a slot # to calibrate/configure a card.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 77 to calibrate digitalmeter.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 88 to calibrate all cards.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 99 to terminate the program.</strong></td>
+      </tr>
+    </table>
+  </li>
+</ol>
+<h3 id="ManRefCalibration">Manual Reference Calibration</h3>
+<p>The Manual Reference Calibration has two options for calibration: resistance calibration and voltage calibration. The resistance calibration is accessed first with the voltage calibration coming after. They can be performed individually or together. To initiate a Manual Reference Calibration of a specific card:</p>
+<ol>
+  <li>Select <strong>Manual Reference Calibration</strong> from the main ACU menu.</li>
+  <li>Select <strong>Calibrate resistance for the module</strong> and press <strong>y</strong> to continue. A 4-wire measurement of the resistor will be made by connecting to the V H, V L, Ohm H and Ohm L terminals on the calibration bus.</li>
+  <p class="Note">Pressing n will bypass the resistance calibration and begin voltage calibration, described starting at step 6.</p>
+  <li>Enter the resistance for the module in ohms.</li>
+  <li>Verify the resistance percentage for the module and press <strong>y</strong> to continue. If the resistance percentage needs to be altered, press <strong>n</strong> to re-enter the value.</li>
+  <p class="Note">The value can be re-entered up to 3 times.</p>
+  <li>Press <strong>y</strong> to continue to the voltage calibration. Press<strong> n</strong> to skip the voltage calibration. If skipping voltage calibration, go to step 9..</li>
+  <p class="Note">Zero and full-scale measurements will automatically be made for the following ranges: 0.0625 V, 0.250 V, 1.000 V, 4.000 V and 16.000 V. The full-scale output voltage of the calibration source will be approximately 90% of the nominal value for each range, except for the 16 V range where the output will be approximately 10 V.</p>
+  <li>Enter the measured zero voltage range for the module (this is measured in V).</li>
+  <li>Verify the zero voltage %f for the module and press <strong>y</strong> to continue. Press <strong>n</strong> to re-enter the measured value.</li>
+  <li>Enter the full-scale voltage range and confirm by pressing<strong> y</strong>. Press <strong>n</strong> to re-enter the measured value.</li>
+  <p class="Note">The value can be re-entered up to 3 times.</p>
+  <li>The ACU will prompt the operator to save the calibration. To save, press <strong>y</strong>. To not save, press <strong>n</strong>.</li>
+</ol>
+<h3 id="CalibrateDigitalMeter">Calibrate Digital Meter</h3>
+<p>To initiate the calibration of the digital meter: </p>
+<ol>
+  <li>Select <strong>77</strong> (Calibrate digitalmeter) from the Auto Calibration Utility (ACU) options menu (see example below) and push <strong>Enter</strong>.<br>
+    <br>
+    <table cellSpacing="1" cellPadding="2" width="80%" border="0">
+      <tr>
+        <td colSpan="4"><strong>There are 1 cards found in the configuration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>Slot#</strong></td>
+        <td width="54%"><strong>Serial#</strong></td>
+        <td width="6%"><strong>flash</strong></td>
+        <td width="33%"><strong>Status</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>4</strong></td>
+        <td width="54%"><strong>HEWLETT-PACKARD,E1413B,US36000934,A.06.03,Fri May 2 11:16:51 MDT 1997</strong></td>
+        <td width="6%"><strong>2</strong></td>
+        <td width="33%"><strong>OK</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>77</strong></td>
+        <td width="54%"><strong>Calibrate digitalmeter</strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>88</strong></td>
+        <td width="54%"><strong>All </strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>99</strong></td>
+        <td width="54%"><strong>Exit</strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Select a slot # to calibrate/configure a card.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 77 to calibrate digitalmeter.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 88 to calibrate all cards.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 99 to terminate the program.</strong></td>
+      </tr>
+    </table>
+    <p class="Note">ACU stores the date and time of the last internal multimeter calibration.</p>
+  </li>
+  <li>The progress of the calibration is displayed and the results are saved to file (see example below).<br>
+    <br>
+    <table cellSpacing="1" cellPadding="2" width="80%" border="0">
+      <tr>
+        <td colSpan="4"><strong>Calibrating digitalmeter</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Calibration of digitalmeter succeeded.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>A calibration report /users/RTE/bin/tmp/cal_report.20030420152412 has been generated.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>There are 1 cards found in the configuration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>Slot#</strong></td>
+        <td width="54%"><strong>Serial#</strong></td>
+        <td width="6%"><strong>flash</strong></td>
+        <td width="33%"><strong>Status</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>4</strong></td>
+        <td width="54%"><strong>HEWLETT-PACKARD,E1413B,US36000934,A.06.03,Fri May 2 11:16:51 MDT 1997</strong></td>
+        <td width="6%"><strong>2</strong></td>
+        <td width="33%"><strong>OK</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>77</strong></td>
+        <td width="54%"><strong>Calibrate digitalmeter</strong></td>
+        <td width="6%"><strong>&nbsp;</strong></td>
+        <td width="33%"><strong>&nbsp;</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>88</strong></td>
+        <td width="54%"><strong>All</strong></td>
+        <td width="6%"><strong>&nbsp;</strong></td>
+        <td width="33%"><strong>&nbsp;</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>99</strong></td>
+        <td width="54%"><strong>Exit</strong></td>
+        <td width="6%"><strong>&nbsp;</strong></td>
+        <td width="33%"><strong>&nbsp;</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Select a slot # to calibrate/configure a card.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 77 to calibrate digitalmeter.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 88 to calibrate all cards.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 99 to terminate the program.</strong></td>
+      </tr>
+    </table>
+  </li>
+</ol>
+<h3 id="CalibrateAllCards">Calibrate All Cards</h3>
+<p>To initiate the calibration of all cards:</p>
+<ol>
+  <li>Select <strong>88 </strong>(All) from the Auto Calibration Utility (ACU) options menu (see example below) and press <strong>Enter</strong>. <br>
+    <br>
+    <table cellSpacing="1" cellPadding="2" width="80%" border="0">
+      <tr>
+        <td colSpan="4"><strong>There are 1 cards found in the configuration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>Slot#</strong></td>
+        <td width="54%"><strong>Serial#</strong></td>
+        <td width="6%"><strong>flash</strong></td>
+        <td width="33%"><strong>Status</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>4</strong></td>
+        <td width="54%"><strong>HEWLETT-PACKARD,E1413B,US36000934,A.06.03,Fri May 2 11:16:51 MDT 1997</strong></td>
+        <td width="6%"><strong>2</strong></td>
+        <td width="33%"><strong>OK</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>77</strong></td>
+        <td width="54%"><strong>Calibrate digitalmeter</strong></td>
+        <td width="6%"><strong>&nbsp;</strong></td>
+        <td width="33%"><strong>&nbsp;</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>88</strong></td>
+        <td width="54%"><strong>All</strong></td>
+        <td width="6%"><strong>&nbsp;</strong></td>
+        <td width="33%"><strong>&nbsp;</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>99</strong></td>
+        <td width="54%"><strong>Exit</strong></td>
+        <td width="6%"><strong>&nbsp;</strong></td>
+        <td width="33%"><strong>&nbsp;</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Select a slot # to calibrate/configure a card.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 77 to calibrate digitalmeter.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 88 to calibrate all cards.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 99 to terminate the program.</strong></td>
+      </tr>
+    </table>
+    <br>
+  </li>
+  <li>Select <strong>2 </strong>(All Channel Calibration) from the Auto Calibration Utility (ACU) options menu (see example below) and press <strong>Enter</strong>.<br>
+    <br>
+    <table cellSpacing="1" cellPadding="2" width="80%" border="0">
+      <tr>
+        <td colSpan="2"><strong>Please select a calibration/configuration option:</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>1</strong></td>
+        <td><strong>Auto Zero Calibration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>2</strong></td>
+        <td><strong>All Channel Calibration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>3</strong></td>
+        <td><strong>Configure a channel.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>4</strong></td>
+        <td><strong>Reference Calibration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>5</strong></td>
+        <td><strong>Select another card.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>99</strong></td>
+        <td><strong>Exit</strong></td>
+      </tr>
+    </table>
+    <br>
+  </li>
+  <li>The progress of the calibration is displayed and the results are saved to file (see example below).<br>
+    <br>
+    <table cellSpacing="1" cellPadding="2" width="80%" border="0">
+      <tr>
+        <td colSpan="4"><strong>Calibrating all cards</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Calibration of all cards succeeded.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>A calibration report /users/RTE/bin/tmp/cal_report.20030420152414 has been generated.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>There are 1 cards found in the configuration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>Slot#</strong></td>
+        <td width="54%"><strong>Serial#</strong></td>
+        <td width="6%"><strong>flash</strong></td>
+        <td width="33%"><strong>Status</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>4</strong></td>
+        <td width="54%"><strong>HEWLETT-PACKARD,E1413B,US36000934,A.06.03,Fri May 2 11:16:51 MDT 1997</strong></td>
+        <td width="6%"><strong>2</strong></td>
+        <td width="33%"><strong>OK</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>77</strong></td>
+        <td width="54%"><strong>Calibrate digitalmeter</strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>88</strong></td>
+        <td width="54%"><strong>All </strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>99</strong></td>
+        <td width="54%"><strong>Exit</strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Select a slot # to calibrate/configure a card.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 77 to calibrate digitalmeter.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 88 to calibrate all cards.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 99 to terminate the program.</strong></td>
+      </tr>
+    </table>
+  </li>
+</ol>
+<h3 id="ZeroAllCards">Zero All Cards</h3>
+<p>To initiate the zero of all cards: </p>
+<ol>
+  <li>Select <strong>88 </strong>(All) from the Auto Calibration Utility (ACU) options menu (see example below) and press <strong>Enter</strong>. <br>
+    <br>
+    <table cellSpacing="1" cellPadding="2" width="80%" border="0">
+      <tr>
+        <td colSpan="4"><strong>There are 1 cards found in the configuration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>Slot#</strong></td>
+        <td width="54%"><strong>Serial#</strong></td>
+        <td width="6%"><strong>flash</strong></td>
+        <td width="33%"><strong>Status</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>4</strong></td>
+        <td width="54%"><strong>HEWLETT-PACKARD,E1413B,US36000934,A.06.03,Fri May 2 11:16:51 MDT 1997</strong></td>
+        <td width="6%"><strong>2</strong></td>
+        <td width="33%"><strong>OK</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>77</strong></td>
+        <td width="54%"><strong>Calibrate digitalmeter</strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>88</strong></td>
+        <td width="54%"><strong>All </strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>99</strong></td>
+        <td width="54%"><strong>Exit</strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Select a slot # to calibrate/configure a card.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 77 to calibrate digitalmeter.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 88 to calibrate all cards.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 99 to terminate the program.</strong></td>
+      </tr>
+    </table>
+    <strong><br>
+    </strong></li>
+  <li>Select <strong>1 </strong>(Auto Zero Calibration) from the Auto Calibration Utility (ACU) options menu (see example below) and press <strong>Enter</strong>.<br>
+    <br>
+    <table cellSpacing="1" cellPadding="2" width="80%" border="0">
+      <tr>
+        <td colSpan="2"><strong>Please select a calibration/configuration option:</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>1</strong></td>
+        <td><strong>Auto Zero Calibration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>2</strong></td>
+        <td><strong>All Channel Calibration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>3</strong></td>
+        <td><strong>Configure a channel.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>4</strong></td>
+        <td><strong>Reference Calibration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>5</strong></td>
+        <td><strong>Select another card.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>99</strong></td>
+        <td><strong>Exit</strong></td>
+      </tr>
+    </table>
+    <br>
+  </li>
+  <li>The progress of the calibration is displayed and the results are saved to file (see example below).<br>
+    <br>
+    <table cellSpacing="1" cellPadding="2" width="80%" border="0">
+      <tr>
+        <td colSpan="4"><strong>Zeroing all cards</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Zeroing of all cards succeeded.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>A calibration report /users/RTE/bin/tmp/cal_report.20030420152414 has been generated.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>There are 1 cards found in the configuration.</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>Slot#</strong></td>
+        <td width="54%"><strong>Serial#</strong></td>
+        <td width="6%"><strong>flash</strong></td>
+        <td width="33%"><strong>Status</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>4</strong></td>
+        <td width="54%"><strong>HEWLETT-PACKARD,E1413B,US36000934,A.06.03,Fri May 2 11:16:51 MDT 1997</strong></td>
+        <td width="6%"><strong>2</strong></td>
+        <td width="33%"><strong>OK</strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>77</strong></td>
+        <td width="54%"><strong>Calibrate digitalmeter</strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>88</strong></td>
+        <td width="54%"><strong>All </strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td width="7%"><strong>99</strong></td>
+        <td width="54%"><strong>Exit</strong></td>
+        <td width="6%"><strong></strong></td>
+        <td width="33%"><strong></strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4">&nbsp;</td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Select a slot # to calibrate/configure a card.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 77 to calibrate digitalmeter.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 88 to calibrate all cards.</strong></td>
+      </tr>
+      <tr>
+        <td colSpan="4"><strong>Or select 99 to terminate the program.</strong></td>
+      </tr>
+    </table>
+  </li>
+</ol>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

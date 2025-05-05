@@ -1,0 +1,116 @@
+<table cellspacing="1" class="Table-Grey">
+   
+    <th width="15%">Manufacturer</th>
+    <th width="50%">Manual Title</th>
+    <th width="15%">Manual Type</th>
+    <th width="15%">Part Number</th>
+  </tr>
+  
+    <td colspan="4"><strong>Throttle Quadrant</strong></td>
+  </tr>
+  
+    <td>Acronis</td>
+    <td><a href="../References/VendorDocs/Acronis/QRAcronis.pdf">Acronis Backup and Recovery 11.5</a></td>
+    <td>Quick Start Guide</td>
+    <td>--</td>
+  </tr>
+  
+    <td>Acronis</td>
+    <td><a href="../References/VendorDocs/Acronis/UGAcronis.pdf">Acronis Backup and Recovery 11.5</a></td>
+    <td>User Guide </td>
+    <td>--</td>
+  </tr>
+  
+    <tr>
+      <td>Acronis </td>
+      <td>Acronis Backup &amp; Recovery 11.5 Advanced Workstation with Universal Restore
+        <ul>
+          <li>License Key: Z2VN6Y9K-TPWD2MB4-XG3K7DFJ-GUFV8CFF-RUN9E9C5-FM8P28V4-TB6E2Q5G-GB2UK38M</li>
+      </ul></td>
+      <td>License Key</td>
+      <td> --</td>
+    </tr>
+    <td>ais</td>
+    <td>Panel PC Recovery DVD</td>
+    <td>DVD-ROM</td>
+    <td>95X00000001L</td>
+  </tr>
+  
+    <td>ais</td>
+    <td><a href="../References/VendorDocs/ais/UGPanelPC.pdf">Panel PC Recovery DVD User Guide</a></td>
+    <td>User Guide</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td colspan="4"><strong>Resolver Chassis</strong></td>
+  </tr>
+  <tr>
+    <td rowSpan="5">Computer Conversions Corporation</td>
+    <td><a href="../References/VendorDocs/CompConvCorp/DWGA7853.pdf">Digital to LVDT Converter Model ST-DLVT-A7853-1E</a></td>
+    <td>Drawing</td>
+    <td>A7853 Rev -</td>
+  </tr>
+  <tr>
+    <td><a href="../References/VendorDocs/CompConvCorp/DWGB7442.pdf">SNAP-TRAK LDS/LDR Motherboard (Digital to Resolver Converter)</a></td>
+    <td>Drawing</td>
+    <td>B7442</td>
+  </tr>
+  <tr>
+    <td><a href="../References/VendorDocs/CompConvCorp/DWGA6510.pdf">14 Bit Digital to 2864Hz 3 Wire LVDT Converter DLVT-A7975-1E</a></td>
+    <td>Drawing</td>
+    <td>A6510-5 Rev -</td>
+  </tr>
+  <tr>
+    <td><a href="../References/VendorDocs/CompConvCorp/DWGA6511.pdf">14 Bit Digital to 3 Wire LVDT Converter Module S3LVDT414-13/26-1</a></td>
+    <td>Drawing</td>
+    <td>A6511</td>
+  </tr>
+  <tr>
+    <td><a href="../References/VendorDocs/CompConvCorp/DWGA6032.pdf">3 Wire LVDT to Digital Converter ST-DLVT-A7975-1E Application Table</a></td>
+    <td>Drawing</td>
+    <td>A6032-42 Rev -</td>
+  </tr>
+  <tr>
+    <td>Corcom</td>
+    <td><a href="../References/VendorDocs/Corcom/CseriesSwitch.pdf">C Series Switch with IEC Connector Compact Size</a></td>
+    <td>Specification</td>
+    <td>1654001 R03-04 </td>
+  </tr>
+  <tr>
+    <td>Phoenix Contact </td>
+    <td><a href="../References/VendorDocs/PhoenixContact/15VPowerSupply.pdf">Power Supply, Primary Switch Mode, Narrow Design MINI-PS-100-240AC/2x15DC/1</a></td>
+    <td>Data Sheets</td>
+    <td>TNR:5107513-03 </td>
+  </tr>
+  <tr valign="top">
+    <td colspan="4"><strong>RVDT Chassis</strong></td>
+  </tr>
+  <tr valign="top">
+    <td>Computer Conversions Corporation</td>
+    <td><a href="../References/VendorDocs/ComputerConversion/CATSTDLVTA82101.pdf">Digital to LVDT Converter Model: &quot;ST-DLVT-A810-1</a></td>
+    <td>Product Data/Drawings</td>
+    <td>--</td>
+  </tr>
+  <tr valign="top">
+    <td colspan="4"><strong>Actuator</strong></td>
+  </tr>
+  <tr>
+    <td>E-Motion</td>
+    <td><a href="../References/VendorDocs/NorthropGrumman/ActuatorMotorAmplifier.pdf">Silencer Series Brushless Controllers<br>
+      BDA-Q4-70-10 4-Quadrant Speed Controller for Brushless Motors</a></td>
+    <td>Instruction Manual</td>
+    <td>MSG90028-1 11/00</td>
+  </tr>
+  <tr>
+    <td>Litton Poly-Scientific</td>
+    <td><a href="../References/VendorDocs/LittonPolyScientific/ActuatorMotorSpec.pdf">Silencer Series Brushless DC Motors</a></td>
+    <td>Specification</td>
+    <td>MSG90022 09/00</td>
+  </tr>
+  <tr>
+    <td>Novotechnik</td>
+    <td><a href="../References/VendorDocs/Novotechnik/Potentiometer.pdf">Series P 6500 Standard Potentiometers</a></td>
+    <td>Data Sheets</td>
+    <td>---</td>
+  </tr>
+</table>

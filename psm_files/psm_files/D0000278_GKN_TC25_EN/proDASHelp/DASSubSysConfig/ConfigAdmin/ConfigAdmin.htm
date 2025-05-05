@@ -1,0 +1,282 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Configuration Administrator</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="ConfigAdmin">Configuration Administrator<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" >
+</a></h1></div>
+
+<h2 id="Overview">Overview</h2>
+<p>The proDAS system is highly flexible and provides the capability to test multiple engine types in endless combinations of test configurations. The test configurations are individually assembled and tailored to meet the test requirements. The test configuration establishes how and from where proDAS acquires and records data.</p>
+<p>All test configurations, referred to as master configurations, are stored in relational tables in the proDAS database. proDAS can load and 
+scan only one master configuration at a time. The operator determines, during the proDAS configuration process, which test configuration proDAS will use to scan, communicate and acquire data.</p>
+<p>Building engine test configurations involves a ground-up approach, meaning that the most fundamental level of definition is identifying the characteristics and purpose of each channel being measured, recorded and/or computed by proDAS. The next level of definition is to group all of the channels needed for a given engine test into the different subsystem configuration files that represent the data acquisition system. The last level of definition is to merge all of the relevant subsystem configuration files into a unique master configuration.</p>
+<div class="Container"><img src="images/MasterConfigLevels.gif" alt="Master Config Levels" width="699" height="241"></div>
+<p>The Configuration Administrator is the tool used to administrate the <a href="../../TestwithDAS/IntrotoproDAS/IntrotoproDAS.htm#ConfigDatabase">Configuration Database</a>.</p>
+<h3 id="WhatisaChannel">What is a Channel</h3>
+<p>A channel is the most fundamental level of the proDAS system. All data scanned, displayed, recorded or calculated is represented in the form of a channel. Channel definitions contain the parameters and criteria that proDAS interprets to collect data from the different types of sensors on the engine.</p>
+<p>The hardware channel definitions are configured by MDS Aero Support Corporation when the proDAS system is being assembled for delivery. Modifications are required only if additional hardware, such as DTS3250, PBS, or VXI components, is/are added or removed. It is important that the hardware definition assigned in the proDAS database matches the corresponding physical components. All subsequent master configurations will reference the basic hardware channel definitions that are established at this level.</p>
+<h2 id="ConfigHierarchy">Configuration Hierarchy</h2>
+<br>
+<div class="Container"><img src="images/Hierarchy.PNG" alt="Hierarchy"></div>
+<br>
+<p>The root configuration, the test cell configurations and the engine configurations will be called <strong>base configurations</strong>. Base configurations enable the user to change configuration data easily, because they consist of data common to several test configurations.</p>
+<p>The boxes in the above diagram correspond to directories of the <a href="../../TestwithDAS/IntrotoproDAS/IntrotoproDAS.htm#ConfigDatabase"> Configuration Database</a> where the data are stored.</p>
+<p>The <strong>root configuration</strong> contains all data which are the same for all tests (e.g. engineering units or constant channels).</p>
+<p>The <strong>test cell configurations</strong> contain all data which are specific for a test cell (e.g. the description of the test cell hardware) and data specific for the testing of a particular engine type in a particular test cell (e.g. the mapping of engine channels to the test cell hardware).</p>
+<p>The <strong>engine configurations</strong> contain all data which refer to classes of engines. They are divided into data specific for a particular engine type, data specific for a particular engine standard and data specific for the engines of a particular customer.</p>
+<p>The <strong>test configurations</strong> contain data which will only be used for one or more test runs.</p>
+<p class="Note">A test configuration can be used for different tests and a test may use different test configurations.</p>
+<p>Test configurations have the following attributes:</p>
+<ul>
+  <li>ID</li>
+  <li>Test cell</li>
+  <li>Engine type</li>
+  <li>Engine standard (optional)</li>
+  <li>Customer (optional)</li>
+</ul>
+<p>Each test configuration is uniquely identified by its ID. Each fullset stored in the test result database refers to a test configuration. A test configuration without a specific customer is represented by a directory below the <em>DefaultCustomer</em> directory (displayed in the Configuration Hierarchy diagram above). Additionally, there is a description (i.e.: a free-form text) for each configuration.</p>
+<p>The following example illustrates the use of the different configurations:</p>
+<ul>
+  <li>universal data like engineering units or channels representing universal constants like <em>Pi</em> or the gas constant are stored in the root configuration</li>
+  <li>hardware definitions representing a measurement system in the test cell are stored in the test cell configuration</li>
+  <li>calculations specific for an engine type are stored in the engine type configuration</li>
+  <li>break point tables, polynomials or constant channels may vary for the engine standards of an engine type. Thus, they are stored in the engine standard configuration</li>
+  <li>different customers for the same engine type and standard may require different print protocols. Therefore, the necessary Text Output Pages are stored in the Customer Configuration</li>
+  <li>if, during a test run, an operator makes a temporary change to the configuration  by adding a calculation which is required in the current situation, the change is stored in the test configuration so that the other test configurations are not affected</li>
+  <li>the thrust correction factor depends on the engine type and the test cell and is stored in the test cell configuration representing the engine type in a test cell</li>
+</ul>
+<h2 id="AdminLayout">Configuration Administrator Layout</h2>
+<p>The Configuration Administrator offers three different views:</p>
+<ul>
+  <li><a href="?2#HierarchyView">Hierarchy View</a> - showing the configuration hierarchy</li>
+  <li><a href="?3#ConfigurationView">Configuration View</a> - displaying information about the configuration currently selected in the hierarchy view</li>
+  <li><a href="?4#MessageView"> Message View</a> - displaying informational and error messages</li>
+</ul>
+<div class="Container"><img src="images/Layout.PNG" alt="Layout" width="693" height="522" ></div>
+<p>The size of the views can be changed by dragging the bar between the views. The sizes of the windows and the views for each user are stored separately in the initialisation file so that the window is displayed with the same layout when it is started again.</p>
+<p>A menu bar at the top of the window enables the user to <a href="#EditorStart">start configuration editors</a> and to call help. The menu bar gives the user access to all available commands. The commands are described in their logical context.</p>
+<div class="Container"><img src="images/MenuHelp.PNG" alt="Menu Help" width="207" height="99"></div>
+<p>The toolbar and status bar may be hidden or displayed by selecting Toolbar or Status Bar from the View menu.</p>
+<div class="Container"> <img src="images/MenuView.PNG" alt="Menu View" width="182" height="173"></div>
+<p>A status bar at the bottom of the window displays currently relevant text, the user name, and the security level of the user.</p>
+<div class="Container"> <img src="images/StatusBar.png" alt="Status Bar" width="677" height="21"></div>
+<h3 id="HierarchyView">Hierarchy View</h3>
+<p>The hierarchy view shows the <a href="?5#ConfigHierarchy">configuration hierarchy</a> in a tree control. Each hierarchy level has its own icon. When the cursor is moved over an item, additional information about the corresponding configuration is displayed in a tooltip.</p>
+<div class="Container"><img src="images/HierarchyView.png" alt="Hierarchy View" width="262" height="416"></div>
+<p>Each node of the tree can be expanded and collapsed by clicking the corresponding plus or minus sign. The complete tree can be expanded and 
+  collapsed by selecting the menu entries Expand All and Collapse All, respectively, in the View menu.</p>
+<div class="Container"><img src="images/MenuView.PNG" alt="Menu View" width="182" height="173"></div>
+<h3 id="ConfigurationView">Configuration View</h3>
+<p>The configuration view displays the following attributes of the selected configuration:</p>
+<ul>
+  <li>Test Cell</li>
+  <li>Engine Type</li>
+  <li>Engine Standard</li>
+  <li>Customer</li>
+  <li>Configuration Id</li>
+  <li>Last Modification Date</li>
+  <li>Data Categories (defined for the configuration with the number of data records in brackets)</li>
+  <li>Description</li>
+  <li>Available Users</li>
+  <li>Inherited Users (i.e. users admitted for a parent configuration)</li>
+</ul>
+<p class="Note">All of these attributes are available for each configuration.</p>
+<p>The description can be changed directly. The change takes effect when the edit field looses the focus.</p>
+<p class="Note">The configuration editor buttons are disabled when entering a description in the description field (or clicking the description field).</p>
+<p>The admitted users can be changed in the following ways:</p>
+<ul>
+  <li>a user can be added by selecting the user in the Available Users list and clicking the -&gt; button</li>
+  <li>a user can be added by typing the user name in the edit field underneath the Admitted Users list and clicking the Add button</li>
+  <li>a user can be removed by selecting the userin the Admitted Users list and clicking the &lt;- button</li>
+</ul>
+<h3 id="MessageView">Message View</h3>
+<p>The message view displays the informational and error messages. A message consists of the following:</p>
+<ul>
+  <li>an icon indicating the severity (information, warning, error, fatal error)</li>
+  <li>the time when the message was generated</li>
+  <li>the message text</li>
+</ul>
+<p>The messages may be printed, if the message view has the focus, by selecting Print Messages in the File menu. The message can be filtered. The filter dialogue is invoked by selecting <a href="../ConfigEditors/ConfigEditors.htm#MenuView">Filter Messages</a> in the View menu.</p>
+<h2 id="SetUsrLevel">Setting Editor User Levels</h2>
+<p>The proDAS Configuration Administrator provides additional functionality whereby users can be specified to have write (save) access at different levels. These settings are not the same as the user security settings and apply to a given user throughout all proDAS editors. Currently, a user level &quot;engineer&quot; can save files only at levels 3, 4, 5 or 6.</p>
+<p>To  give the user level &quot;engineer&quot; the ability to save configuration changes at all levels:</p>
+<ol>
+  <li>Open the Configuration Administrator and log in as user <strong>sl5</strong>.</li>
+  <li>In the top left corner of the Hierarchy window, select <strong>Root</strong>.</li>
+  <li>From the <strong>Available Users</strong> panel highlight <strong>engineer</strong>, select <strong>-&gt;</strong> (right arrow button).
+    <div class="Container"><img src="images/AvailUsers.png" alt="Avail Users" width="693" height="522"></div>
+  </li>
+  <br>
+  <li>The user <strong>engineer</strong> is moved to the <strong>Admitted Users</strong> panel.
+    <div class="Container"><img src="images/AdmitUsers.png" alt="Admit Users" width="693" height="522"></div>
+  </li>
+  <br>
+  <li>Exit the Configuration Administrator.</li>
+  <li>Start the Channel Editor. The user level <strong>engineer</strong> is now be able to save configuration changes at all levels.</li>
+</ol>
+<h2 id="CreateConfig">Creating a Configuration</h2>
+<p>A configuration can be created by selecting Create Configuration in the Edit menu.</p>
+<div class="Container"><img src="images/MenuEdit.PNG" alt="Menu Edit" width="249" height="269"></div>
+<br>
+<p>For example, if an Engine Type is highlighted and Create Configuration is selected from the Edit menu, a new Engine Standard will be created. This Engine Standard will be given a configuration level of 4 (see <a href="?6#ConfigHierarchy">Configuration Hierarchy</a>) and will only be associated with the Engine Type that was highlighted. The new configuration is a child configuration of the selected configuration. If the level of the new configuration is 1, 2, 4 or 5, the user must enter the name of the new configuration. If the level of the new configuration is 6, a new configuration ID is generated automatically. If the level of the new configuration is 3, the user must select one of the possible engine types. The user may enter a description with any level.</p>
+<div class="Container"><img src="images/ConfigCreate.PNG" alt="ConfigCreate" width="285" height="290"></div>
+<br>
+<p id="CopyConfig">The Edit menu allows the user to compare with, and commit to the SVN repository. Selecting <strong>Compare with SVN Repository</strong> will compare the current configuration with the most recent configuration in the repository and show the user any changes and the head revision number. Selecting <strong>Commit to SVN Repository</strong> saves the current configuration to the repository. If no changes have been made this option will not be available.</p>
+<h2 id="RenameConfig">Renaming a Configuration</h2>
+<p>A configuration can be renamed by selecting Rename Configuration in the Edit menu. All attributes of the configuration are displayed, but the user can only change the name corresponding to the level of the configuration. A configuration can also be renamed directly in the hierarchy view by right-clicking the selected configuration and selecting Rename.</p>
+<div class="Container"><img src="images/ConfigRename.PNG" alt="Config Rename" width="285" height="243"></div>
+<br>
+<h2 id="DeleteConfig">Deleting a Configuration</h2>
+<p>A configuration can be deleted by selecting Delete Configuration in the Edit menu. Before the configuration is deleted, the user must confirm the deletion by selecting OK on the Delete Configuration dialogue box (below).</p>
+<div class="Container"><img src="images/ConfigDelete.PNG" alt="Config Delete" width="285" height="243"></div>
+<br>
+<h2 id="ConfigFind">Finding a Configuration</h2>
+<p>A configuration can be found by invoking the appropriate dialogue by selecting Find Configuration in the Edit menu. In the dialogue box, the user may enter a string or a regular expression. When Find Next is selected, the search for the configuration proceeds downward from the currently selected configuration. Invisible configurations are also taken into account. If a matching configuration is found, it becomes the currently selected one. If the configuration is not found, a message is displayed and the currently selected configuration remains the same.</p>
+<div class="Container"><img src="images/DialogFind.PNG" alt="Dialog Find" width="440" height="143" ></div>
+<br>
+<h2 id="ConfigCheck">Checking a Configuration</h2>
+<p>The currently selected configuration may be checked for consistency by selecting Check in the Edit menu. The consistency check confirms the data is suitable for saving. Any error messages are displayed in the <a href="ConfigAdmin.htm?7#MessageView">Message View</a> and a message box is displayed.</p>
+<h2 id="ConfigDefault">The Default Configuration</h2>
+<p>A default configuration is always defined. This default configuration is initially used by all proDAS applications when the applications are started. Some applications (e.g.: the Configuration Editors) are able to change to another configuration which is called in their current configuration.</p>
+<p>The default configuration is shown in bold in the hierarchy view of the Configuration Administrator. The currently selected configuration can be set as default configuration using the Set entry as the Default Configuration in the Edit menu. The change applies only to applications that are started afterwards.</p>
+<h2 id="EditorStart">Starting Configuration Editors</h2>
+<p>All configuration editors can be started from the configuration administrator. The hierarchy view must have the focus when starting an editor. The editor starts with the currently selected configuration and the user identification of the Configuration Administrator.</p>
+<p>The configuration editor can be selected from the list of editors in the File menu or by selecting a button from the toolbar. The File menu selections are:</p>
+<div class="Container"><img src="images/MenuFile.PNG" alt="Menu File" width="263" height="357"></div>
+<p>The button selections for the configuration editors are:</p>
+<ul>
+  <li>Ch (Channel Editor)</li>
+  <li>SS (Subsystem Editor)</li>
+  <li>EU (Engineering Unit Editor)</li>
+  <li>POL (Polynomial Editor)</li>
+  <li>BPT (Break Point Table Editor)</li>
+  <li>LOG (Transient Log Definition Editor)</li>
+  <li>MA (Macro Editor)</li>
+  <li>UF (User Function Editor)</li>
+  <li>TOP (Text Output Pages Editor)</li>
+</ul>
+<div class="Container"><img src="images/EditorStartToolbar.PNG" alt="Editor Start Toolbar" width="244" height="26"></div>
+<p class="Note" id="Import">The configuration editor buttons are disabled when entering a description in the description field (or clicking the description field).</p>
+<h2 id="ImportConfigData">Importing Configuration Data</h2>
+<p>The Configuration Administrator can import several categories of configuration data at a time. The files must have an XML format, as in the <a href="../../TestwithDAS/IntrotoproDAS/IntrotoproDAS.htm#ConfigDatabase"> Configuration Database</a>.</p>
+<p>The import is initiated by selecting Import in the File menu. The Import Configuration Data dialogue box (below) is displayed:</p>
+<div class="Container"><img src="images/Import.PNG" alt="Import" width="479" height="377" ></div>
+<br>
+<p>The attributes of the currently selected configuration are displayed to inform the user which configuration data is imported.</p>
+<p>The user can select the following options for the current data:</p>
+<ul>
+  <li>Append To &ndash; all new data records are added to the configuration, including any instances with identical names; all new data records are enabled</li>
+  <li>Merge With &ndash; all new data records are added to the configuration and any instances with identical names replace the existing instance; all new data records are enabled and the existing instances with identical names are disabled</li>
+  <li>Replace &ndash; replaces the current data with the imported data</li>
+</ul>
+<p>Finally, the user may select which data categories are to be imported.</p>
+<p class="Note">When Merge With is chosen, the existing configuration description will be overwritten with the imported configuration description.</p>
+<p>When the the import has been confirmed, the user is prompted, for each selected data category, to select a file by a normal file selection 
+  dialogue.</p>
+<div class="Container"><img src="images/ImportSelect.PNG" alt="Import Select" width="561" height="413"></div>
+<br>
+<p>After the file selections, the following confirmation dialogue is displayed:</p>
+<div class="Container"><img src="images/ImportConfirm.PNG" alt="Import Confirm" width="700" height="351"></div>
+<br>
+<p>After the confirmation, the import takes place. Data is only imported when the result is consistent (i.e. the selected files contain correct data and they are compatible with the already existing data). After the import, the import summary is displayed. The summary dialogue is essentially the same as the confirmation dialogue.</p>
+<div class="Container"><img src="images/ImportSummary.PNG" alt="Import Summary" width="700" height="351"></div>
+<br>
+<p>For each selected file, the user is informed whether the import succeeded or failed.</p>
+<p>A simplified method to import a single file is initiated by selecting Quick Import in the File menu. In this case, the user just selects a file.</p>
+<div class="Container"><img src="images/QuickImportMerge.png" alt="QuickImportMerge" width="561" height="413"></div>
+<br>
+<p>The data category is deduced from the file name, as used in the <a href="../../TestwithDAS/IntrotoproDAS/IntrotoproDAS.htm#ConfigDatabase"> Configuration Database</a>. The import takes place and the summary dialogue, as for a normal import, is displayed.</p>
+<h2 id="Export">Exporting Configuration Data</h2>
+<p>The Configuration Administrator can export configuration data of several categories at a time.</p>
+<p>The export is initiated by selecting Export in the File menu. The Export Configuration Data dialogue box is displayed.</p>
+<div class="Container"><img src="images/Export.PNG" alt="Export" width="479" height="377" ></div>
+<br>
+<p>The attributes of the currently selected configuration are displayed to inform the user to which configuration the data is exported.</p>
+<p>The user can select the source configuration:</p>
+<ul>
+  <li>Include Parent Configurations &ndash; data from the currently selected configuration in the hierarchy tree and data from the parent configurations are exported</li>
+  <li>Current Configuration Only &ndash; data from the currently selected configuration in the hierarchy tree and the currently selected level are exported</li>
+</ul>
+<p>Finally, the user may select which data categories are to be exported, including the meta data of the configuration.</p>
+<p>When the export has been confirmed, the user is prompted, by a normal file selection dialogue, to select a file for each selected data category. If an already existing file is selected, the user must confirm that this file is to be overwritten.</p>
+<div class="Container"><img src="images/ExportSelect.png" alt="Export Select" width="561" height="413"></div>
+<br>
+<p>After the selection, the export takes place. Data is exported whether the data is consistent or not. After the export, the export summary 
+  is displayed.</p>
+<div class="Container"><img src="images/ExportSummary.PNG" alt="Export Summary" width="700" height="351" ></div>
+<br>
+<p>The user is informed whether the export of each file was successful or not. If the export of the file was successful, a message is displayed that indicates whether the exported data was consistent or inconsistent.</p>
+<p class="Note">It is not possible to export an entire configuration to a .xml file then import it to a separate configuration (to create two identical configurations) at once. To do this, smaller sections of the configuration must be exported and imported individually.</p>
+<h2 id="UserSecurity">User Security</h2>
+<p>The Configuration Administrator manages the user security in the same way as the <a href="../ConfigEditors/ConfigEditors.htm">configuration editors</a>, but with the following relation of user level to permission:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>User Level</th>
+    <th>Permissions</th>
+  </tr>
+  <tr>
+    <td>0</td>
+    <td>Browse, export</td>
+  </tr>
+  <tr>
+    <td>1</td>
+    <td>Change configuration description, create configuration, copy configuration</td>
+  </tr>
+  <tr>
+    <td>2</td>
+    <td>Rename configuration, import</td>
+  </tr>
+  <tr>
+    <td>3</td>
+    <td>Delete configuration, edit configuration access permissions</td>
+  </tr>
+</table>
+<p>It is understood that each higher level comprises the permissions of the lower levels.</p>
+<p class="Note">0 is the lowest level and 3 is the highest level.</p>
+<h2 id="Help">Help</h2>
+<p>The <strong>Help</strong> menu (below) is described in the following table.</p>
+<div class="Container"><img src="images/MenuHelp.PNG" alt="Menu Help" width="207" height="99"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Column</th>
+    <th>Description</th>
+  </tr>
+  <tr valign="top">
+    <td>Getting Started</td>
+    <td> Opens the first page of the proDAS Integrated Help.</td>
+  </tr>
+  <tr valign="top">
+    <td>Topic</td>
+    <td>Contains all specific help topics referring to the Configuration Administrator.</td>
+  </tr>
+  <tr valign="top">
+    <td>About ConfigAdmin</td>
+    <td>Displays information about the Configuration Administrator, comprising the name, version number, and copyright.
+      <div class="Container"><img src="images/AboutConfigAdmin.gif" alt="About Config Admin" width="404" height="276"></div></td>
+  </tr>
+</table>
+<h2 id="ConfigDatabase">Configuration Database</h2>
+<p>For detailed information on the Configuration Database, see <a href="../../TestwithDAS/IntrotoproDAS/IntrotoproDAS.htm#ConfigDatabase">Introduction to proDAS - Configuration Database</a>.</p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

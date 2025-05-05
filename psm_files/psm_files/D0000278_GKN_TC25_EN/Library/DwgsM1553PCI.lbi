@@ -1,0 +1,18 @@
+<table class="Table-Grey">
+  <tr>
+    <th class="row-DwgNumber">Drawing Number</th>
+    <th class="row-DwgTitle">Drawing Title</th>
+  </tr>
+  <tr>
+    <td><a href="../References/MDSDrawings/A0000239.pdf">A-0000239</a></td>
+    <td>Assembly-Wiring, GKN, Test Cell 25, Communication, MIL-STD-1553</td>
+  </tr>
+  <tr>
+    <td><a href="../References/MDSDrawings/A0000246.pdf">A-0000246</a></td>
+    <td>Assembly-Rack-I&amp;C-Panel, MIL-STD-1553B Interface, 2 Channel 50 Ohm, 3V</td>
+  </tr>
+  <tr>
+    <td><a href="../References/MDSDrawings/D0000511.pdf">D-0000511</a></td>
+    <td>Block Diagram, GKN, Test Cell 25, MIL-STD-1553</td>
+  </tr>
+</table>

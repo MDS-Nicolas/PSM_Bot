@@ -1,0 +1,332 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Scanning Uniform Temperature Reference (SCUTR) Subsystem</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="SCUTR">Scanning Uniform Temperature Reference (SCUTR) Subsystem (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The SCanning Uniform Temperature Reference (SCUTR) Subsystem provides proDAS with engine temperature data measured from thermocouples and resistance temperature detectors (RTDs). The temperatures, in millivolts and ohms, respectively, are scanned at a rate of 33 hertz and transmitted to proDAS for engineering unit conversions and storage in the proDAS current value table (CVT).</p>
+<p class="Note">RTDs that are read by the SCUTR Subsystem are only used to calculate thermocouple temperatures. RTDs used for process measurement are not measured on SCUTR.</p>
+<p>proDAS supports the following two configurations:</p>
+<ul>
+  <li><a href="?2#VMERadCard">VME Radstone Card Configuration</a></li>
+  <li><a href="?3#DynEngPCI">DynEng PCI SCUTR Card Configuration</a></li>
+</ul>
+<h3 id="VMERadCard">VME Radstone Card Configuration</h3>
+<p>The typical VME Radstone Card Configuration based SCUTR Subsystem consists of:</p>
+<ul>
+  <li>SCUTR units (each with one SCUTR Card)</li>
+  <li>Radstone 68-44 SCUTR Interface Card (supporting four ports) installed in the VME chassis</li>
+  <li>a 24 VDC power supply for the SCUTR units</li>
+</ul>
+<p>The power supply, distribution panel, and SCUTR interface terminals are mounted in the rack assemblies. The power supply provides 24 vdc through a power distribution panel to interface terminals on the SCUTR units (the power supply is not dedicated to the SCUTR units).</p>
+<p>The SCUTR Subsystem is monitored through the standard proDAS display functions for floating point channels, including digital displays, strip charts, gauges, bar charts, and the Event log. Thermocouple channel and RTD data is transmitted in serial format over a serial cable for each SCUTR unit.</p>
+<p class="Caution">The VME chassis has a power ON/OFF switch (on the back of the chassis) and a RESET switch (on the front of the chassis).    <br><br>
+    Do not push the power OFF switch when proDAS is running as this will cause the Host Computer to crash.<br>
+    <br>Do not push the RESET switch when proDAS is running as this may cause the proDAS and Host Computer to crash.</p>
+<p>The VME Radstone Card configuration is displayed below.</p>
+<div class="Container"><img src="images/scutr.gif" alt="scutr" width="630" height="307"></div>
+<h3 id="DynEngPCI">DynEng PCI SCUTR Card Configuration</h3>
+<p>The typical DynEng PCI SCUTR Card Configuration based SCUTR Subsystem consists of:</p>
+<ul>
+  <li>SCUTR Units (each with one SCUTR Card)</li>
+  <li>PCI SCUTR Card (supports four (4) SCUTR units) installed in the PCI slot of the Host Computer</li>
+  <li>I/O Module, using a SCSI cable to connect to the PCI SCUTR Card</li>
+  <li>a 24 VDC power supply for the SCUTR units</li>
+</ul>
+<p>The DynEng PCI SCUTR Card configuration is displayed below.</p>
+<div class="Container"><img src="images/BlockDiagram.gif" alt="BlockDiagram" width="627" height="315"></div>
+<h2 id="ConfigSCUTRChannel">Configuring a SCUTR Channel</h2>
+<p>To configure a SCUTR Channel:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described 
+    in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a><a href="../ConfigEditors/ConfigEditors.htm#MenuEdit"></a>.</li>
+  <li>Select the name of the SCUTR Subsystem from the list of available subsystems.
+    <div class="Container"><img src="images/SelectSubsystemName.PNG" alt="SelectSubsystemName" width="387" height="317"></div>
+  </li>
+  <br>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a><a href="../ConfigEditors/ConfigEditors.htm#GenCol"></a><a href="../ConfigEditors/ConfigEditors.htm#GenCol"></a>.</li>
+  <li> Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.
+    <div class="Container"><img src="images/ChannelEditor.PNG" alt="ChannelEditor" width="700" height="424"></div>
+  </li>
+  <br>
+  <li>Set the <strong>Serial Number</strong> column.</li>
+  <li>Set the <strong>Measurement Type</strong> column.</li>
+  <li>Set the <strong>Channel Number </strong> column.</li>
+  <li>If the Measurement Type of the channel is &quot;Thermocouple&quot; or &quot;Transient&quot;, then the corresponding Fixed Sensor field in the Channel Specific Columns must be set to the thermocouple sensor name, as defined in the Calibration database.</li>
+</ol>
+<h2 id="ConfigFileStructure">Configuration File Structure</h2>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu">Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import a <strong>SCUTR</strong> channel, see <a href="?10#XMLFileStructure"> XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import a <strong>SCUTR</strong> channel, see <a href="?11#TabDelimitFileStructure"> Tab-Delimited File Structure</a>.</p>
+<h3 id="XMLFileStructure">XML File Structure</h3>
+<h4 id="ChannelsXML">Channels</h4>
+<p>The channels are stored in <em>Channels.xml</em> files in the configuration directories.</p>
+<p>A SCUTR Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor - Generic Channel Parameters - XML File Structure</a>, and the specific attributes <strong>ChannelType</strong>, <strong>SerialNumber</strong>, and <strong>ChannelNumber</strong>. These attributes are explained in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Measurement Type</td>
+    <td>ChannelType</td>
+    <td>CHAN_TYPE</td>
+    <td>The SCUTR channel type</td>
+    <td>String</td>
+    <td><em>TC</em> = Thermocouple <br>
+      <em>TC_RAW</em> = Thermocouple Raw <br>
+      <em>RTD</em> = RTD <br>
+      <em>TRANSIENT</em> = Transient<br>
+      <em>TRANS_RAW</em> = Transient Raw</td>
+  </tr>
+  <tr>
+    <td>Serial Number</td>
+    <td>SerialNumber</td>
+    <td>SERIAL_NO</td>
+    <td>The serial number of the SCUTR box</td>
+    <td>String</td>
+    <td>A name defined in the SCUTR subsystem collection  of Boxes </td>
+  </tr>
+  <tr>
+    <td>Channel Number</td>
+    <td>ChannelNumber</td>
+    <td>CHANNEL_NO</td>
+    <td>The channel number of the thermocouple within the box or the RTD  number:<br>
+      1 &ndash; 60 for thermocouple, transient and raw channels<br>
+      1 &ndash; 2 for RTD  channels</td>
+    <td>Integer</td>
+    <td>An Integer between 1 and 60</td>
+  </tr>
+</table>
+<p class="Note">The thermocouple sensor is defined in the Fixed Sensor of the XML file.</p>
+<p>The structure of a SCUTR Channel complies with the following example:</p>
+<blockquote><code>&lt;Channels LastModificationDate=&quot;<strong>2015-06-11 11:08:03</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;<br>
+  &lt;Channel Name=&quot;Scutr1&quot; <br>
+  Description=&quot;&quot; <br>
+  Enabled=&quot;true&quot; <br>
+  LastModificationDate=&quot;2015-06-11 11:08:03&quot; <br>
+  SubsystemName=&quot;ZZSCUTR&quot; <br>
+  SubsystemType=&quot;SCUTR&quot; <br>
+  AlternateName=&quot;&quot; <br>
+  DataType=&quot;Float&quot; <br>
+  InitialValue=&quot;-999999&quot; <br>
+  Format=&quot;4.2f&quot; <br>
+  UpdateRate=&quot;1&quot; <br>
+  QualityCeiling=&quot;GOOD&quot; <br>
+  Critical=&quot;false&quot; <br>
+  EngineeringUnit=&quot;-&quot; <br>
+  DisplayMin=&quot;0&quot; <br>
+  DisplayMax=&quot;100&quot; <br>
+  DeadBand=&quot;0&quot; <br>
+  Output=&quot;false&quot; <br>
+  ReferenceChannel=&quot;&quot; <br>
+  Group=&quot;&quot; <br>
+  SignalId=&quot;&quot; <br>
+  CalSensor=&quot;&quot; <br>
+  CalGroup=&quot;&quot; <br>
+  FixedSensor=&quot;TK007992.NA&quot; <br>
+  CustomerSensor=&quot;&quot; <br>
+  FullsetStability=&quot;false&quot; <br>
+  ContinuousLog=&quot;true&quot; <br>
+  ChannelType=&quot;TC&quot; <br>
+  SerialNumber=&quot;TZ000028&quot; <br>
+  ChannelNumber=&quot;1&quot;/&gt;<br>
+  &lt;/Channels&gt;<br>
+</code></blockquote>
+<h4 id="SubsystemsXML">Subsystems</h4>
+<p>The subsystem definitions are stored in <em>Subsystems.xml</em> files in the configuration directories.</p>
+<p>A SCUTR Subsystem contains generic information, described in <a href="../SubsystemEditor/SubsystemEditor.htm#XMLFileStructure"> </a><a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor - Generic Subsystem Parameters - XML File Structure</a>, and the specific 
+  attributes:</p>
+<ul>
+  <li><strong>Boxes</strong></li>
+</ul>
+<p>The specific attribute <strong>Boxes</strong> defines a collection of UTR boxes implemented for the SCUTR Subsystem.<br>
+  Each Box has the following properties:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Serial Number</td>
+    <td>SerialNumber</td>
+    <td>SERIAL_NO</td>
+    <td>The serial number of the UTR box (i.e.: SCUTR_XXX where XXX is the serial number of the box)</td>
+    <td>String</td>
+    <td>A case sensitive string</td>
+  </tr>
+  <tr>
+    <td>Transient</td>
+    <td>IsTransient</td>
+    <td>TRANSIENT</td>
+    <td>The transient flag indicating whether transient thermocouples are supported for this box</td>
+    <td>Check Box</td>
+    <td><em>Yes</em> or <em>No</em></td>
+  </tr>
+</table>
+<p>The structure of a SCUTR Subsystem is shown in the following example:</p>
+<blockquote>
+  <pre>&lt;Subsystems   LastModificationDate=&quot;<strong>2008-09-04   14:13:03</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Subsystem Name=&quot;ZZSCUTR&quot;
+Description=&quot;&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2008-04-28 11:23:34&quot;
+Id=&quot;0&quot;
+Type=&quot;SCUTR&quot;
+CreationDate=&quot;2008-04-28 11:21:27&quot;&gt;
+&lt;Boxes&gt;
+&lt;Box
+IsTransient=&quot;true&quot;
+SerialNumber=&quot;SCUTR29&quot; /&gt;
+&lt;/Boxes&gt;
+&lt;/Subsystem&gt;</pre>
+</blockquote>
+<h3 id="TabDelimitFileStructure">Tab-Delimited File Structure</h3>
+<p>The SCUTR analogue inputs channel definition includes all <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic channel definition columns</a> and the specific SCUTR Subsystem analogue input parameters defined in the tab-delimited configuration file.</p>
+<p>The rules, syntax and guidelines for creating SCUTR Subsystem analogue input channels are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th> Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>SERIAL_NO</td>
+    <td>The serial number of the SCUTR box. </td>
+    <td>40 character alphanumeric, (case sensitive)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>CHANNEL_NO</td>
+    <td>The channel number of the thermocouple within the box or RTD number.</td>
+    <td>Number 1-60 for TC, TC_RAW, TRANSIENT, and TRANS_RAW channel types and Number 1 or 2 for RTD channel types.</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>BATCH_WIRE</td>
+    <td>Specifies the batch wire calibration identifier of the thermocouple. This is used to look up a breakpoint table in the calibration database to use for engineering unit conversion.<br>
+      <br>
+      Required for TC and TRANSIENT CHAN_TYPE only.</td>
+    <td>40 character alphanumeric, (case sensitive)</td>
+    <td>No</td>
+    <td>See Description.</td>
+  </tr>
+  <tr>
+    <td>CHAN_TYPE</td>
+    <td>Specifies the channel type as one of TC (Thermocouple), TC_RAW, RTD, TRANSIENT, or TRANS_RAW.</td>
+    <td>TC, TC_RAW, RTD, TRANSIENT, or TRANS_RAW</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single line of the spread sheet.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).</p></td>
+  </tr>
+</table>
+<h2 id="SubSysEditorSCUTR">Subsystem Editor for SCUTR Channels</h2>
+<p>To edit the SCUTR Subsystem, the Subsystem Editor must be selected from within the Configuration Administrator.</p>
+<p>The tool bar in the Configuration Administrator allows the various configuration editors available for proDAS to be selected.</p>
+<p>The Subsystem Editor allows new subsystems to be added to the current configuration.</p>
+<div class="Container"><img src="images/SubsystemEditor.png" alt="SubsystemEditor" width="700" height="423"></div>
+<br>
+<p><strong>To add a new subsystem to the current configuration:</strong></p>
+<ol>
+  <li>Select <strong>Append Data Record</strong> from the Edit menu or click in the left pane of the splitter window and then click the right mouse button and select <strong>Append Data Record</strong> from the context sensitive menu.</li>
+  <li>Select <strong>SCUTR </strong>in the dialogue box to select the type of subsystem.<br>
+    A new line in the Subsystem Editor is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to <strong>SCUTR</strong>. The user must then assign a name and description to the subsystem.</li>
+</ol>
+<h3 id="VMESCUTRinterfaceCard">VME SCUTR Interface Card</h3>
+<p>The Radstone 68-44 SCUTR Interface Card is located in the VME chassis. The card converts SCUTR data to TTL levels and transmits the data with VME protocols to the Host Computer.</p>
+<h3 id="PCISCUTRinterfaceCard">PCI SCUTR Interface Card</h3>
+<p>The DynEng PCI SCUTR Interface Card is installed in the Host Computer. The card converts SCUTR data to TTL levels and transmits the data  to the Host Computer. </p>
+<h3 id="SCUTRUnit">SCUTR Unit</h3>
+<p>Each SCUTR unit serial number is transmitted within the data stream to the card. The card identifies the unit from the serial number. The SCUTR Subsystem applies engineering unit conversions to the data. Conversion is performed at the proDAS level to allow SCUTRs to use various types of thermocouples.</p>
+<p>A serial communication controller within the Radstone SCUTR interface card / PCI SCUTR Interface Card unpacks and decodes the Manchester data. The card transition module converts RS485 levels to TTL levels. The engineering unit converted temperatures are then transmitted to proDAS at a rate of 33 scans-per-second for a maximum of 60 thermocouple channels. During the first proDAS scan, thermocouple temperature data from the SCUTR units is verified for required starting temperature limits.</p>
+<p>The front panel of the card provides:</p>
+<ul>
+  <li>four SCM connectors</li>
+  <li>two serial connectors SC1 and SC2
+    <ul>
+      <li>SC1 connector for normal serial communication with a terminal used for debug purposes (using PLUM) or the Boot Monitor </li>
+      <li>SC1 and SC2 are configured as DTE (9.6 kbaud, 8-bits/character, 1 stop bit, parity disabled)</li>
+    </ul>
+  </li>
+  <li>reset/abort toggle switch for internal reset (RST) or abort interrupt (ABT). The switch is enabled following a power-up or a reset
+    <p class="Caution">Do not use the RESET/ABORT switch when proDAS is running as it may cause the Host computer to reboot.</p>
+  </li>
+</ul>
+<ul>
+  <li>bicolour RUN LED to indicate operation (green), stop (red) or reset (red and green)</li>
+  <li>user-programmable PL bicolour LED</li>
+</ul>
+<p>For the location and switch settings for the Radstone SCUTR Interface card, see the applicable drawing. There are no switch settings for the PCI SCUTR Interface card.</p>
+<h3 id="SCUTRbox">SCUTR Box</h3>
+<p>The SCUTR box (unit) generates temperature data for proDAS by comparing voltages from external thermocouples to reference voltages from two internal RTDs. Two 30-channel UTRs convert up to 60 temperature readings to voltages that are sent to the SCUTR card and transmitted to the Radstone SCUTR Interface card / PCI SCUTR Interface Card. The Radstone card / PCI SCUTR  Card transmits the data to proDAS.</p>
+<div class="Container"><img src="images/SCUTR_unit.gif" alt="SCUTR_unit" width="677" height="321"></div>
+<p>Eight calibration signals (two signals for every 15 thermocouple channels) are generated by the SCUTR card. The card converts the analogue thermocouple voltages, RTD voltages and the calibration voltages to digital values. The values are packaged into a serial string and are Manchester-encoded and transmitted from the SCUTR unit at RS485 levels. The SCUTR unit samples the thermocouple channels at a rate of 33 scans-per-second and transmits the serial data at a rate of 192 kHz to the Radstone SCUTR interface card / PCI SCUTR Interface Card.</p>
+<h3 id="AddAdditionalBox">Adding an Additional SCUTR Box</h3>
+<p>To add an additional SCUTR Box to the <a href="SCUTR.html?4#SubsystemsXML">Subsystem</a>:</p>
+<ol>
+  <li>Select the <strong>Boxes</strong> spreadsheet in the right hand pane of the splitter window.</li>
+  <li>From the <a href="../SubsystemEditor/SubsystemEditor.htm#MenuEdit">Subsystem Editor</a>, select <strong>Subsystem SCUTR/Append</strong>. A new line for a new Box is added to the list of Boxes in the subsystem.</li>
+  <li>Define the Box attributes Serial Number (the serial number of the box in the form SCUTR_XXX where XXX defines the serial number of the box), and Transient (a flag defining whether transient thermocouples are supported for this box. The values are either true or false depending on whether the box is checked or not).</li>
+</ol>
+<h2 id="RTEInitialisationFile">RTE Initialisation File</h2>
+<p>The SCUTR Subsystem is configured by the RTE, along with all the other subsystems, as a request from the Management Interface GUI. For legacy purposes, the configuration request can also be specified in the command line of the RTE.</p>
+<p>A typical RTE initialisation file would include the following SCUTR Subsystem information:</p>
+<table width="95%" border="0" cellspacing="1" cellpadding="2">
+  <tr>
+    <td colspan="2">#--------------------------------------------------------------------------<br>
+      # SCUTR Subsystem<br>
+      #--------------------------------------------------------------------------</td>
+  </tr>
+  <tr>
+    <td width="19%">SS SCUTR</td>
+    <td width="81%">TRUE</td>
+  </tr>
+  <tr>
+    <td width="19%">CI card</td>
+    <td width="81%">1 0x15000000</td>
+  </tr>
+</table>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click here to see the RTE Initialisation file.</a></p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

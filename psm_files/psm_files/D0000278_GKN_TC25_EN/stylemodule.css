@@ -1,0 +1,284 @@
+/* does not require a DOCTYPE - for HTML file only */
+		
+	a:link    { color: #3198D4; font-family: Verdana, Arial, Helvetica, sans-serif; } 		/* unvisited link - Blue */
+	a:visited { color: #23877C; font-family: Verdana, Arial, Helvetica, sans-serif; }		/* visited link - Teal*/
+	a:hover   { color: #D7090D; font-family: Verdana, Arial, Helvetica, sans-serif; }		/* mouse over link - Red*/
+	a:active  { color: #3198D4; font-family: Verdana, Arial, Helvetica, sans-serif; }		/* selected link - Blue*/
+	
+	body {
+		background-color: #fcfdfd; /* very faint grey */
+		color: #4f4f4f; /* dark grey (orig light grey - #6E727A ) */
+		font-family: Verdana, Arial, Helvetica, sans-serif;
+		margin-left: 50px;
+		/*margin-left: 35px;*/ /*old margin*/
+		margin-top: 0px;
+		margin-right: 50px;
+		/*margin-right: 255px;*/ /*old margin*/
+		}
+			
+	table, caption, tr, th, td, h1, h2, h3, h4, h5, p, div, .Indented1, .Indented2, .Indented3 {
+		color: #4f4f4f; /* dark grey */
+		font-family: Verdana, Arial, Helvetica, sans-serif;
+		font-size: 12px;
+		}
+	
+	div.container {
+	  width: 1000px ;
+	  margin-left: auto ;
+	  margin-right: auto ;
+	  margin-top: 25px;
+	  margin-bottom: 25px;
+	}
+		
+	ol, ul {
+		color: #4f4f4f; /* dark grey */
+		font-family: Verdana, Arial, Helvetica, sans-serif;
+		font-size: 14px;
+		}
+		    
+	p {
+		color: #4f4f4f; /* dark grey */
+		font-size: 14px;
+		font-style: normal;
+		font-weight: normal;
+		margin-left: 0em;
+		margin-top: 5px;
+		margin-bottom: 1em;
+		text-align: left;
+		text-indent: 0em;
+		text-decoration: none;
+		white-space: normal;
+		font-family: Verdana, Arial, Helvetica, sans-serif;
+		}
+			          
+	h1
+		{ color: #2D3136; font-size: 25px; font-style: normal; font-weight: bold; margin-left: 0em; margin-top: 1em; 
+		margin-bottom: 0.5em; text-align: left; text-indent: 0em; text-decoration: none; white-space: normal }
+        
+	h2
+		{ color: #3198D4; font-size: 20px; font-style: normal; font-weight: normal; margin-left: 0em; margin-top: 1em; 
+		margin-bottom: 0px; text-align: left; text-indent: 0em; text-decoration: none; white-space: normal }
+       
+	h3
+		{ color: #3198D4; font-size: 16px; font-style: normal; font-weight: bold; margin-left: 0em; margin-top: 2em; 
+		margin-bottom: 0px; text-align: left; text-indent: 0em; text-decoration: none; white-space: normal }
+
+	h4
+		{ color: #3198D4; font-size: 13px; font-style: normal; font-weight: bold; margin-left: 0em; margin-top: 0.5em; 
+		margin-bottom: 0px; text-align: left; text-indent: 0em; text-decoration: none; white-space: normal }
+
+	h5
+		{ color: #383838; font-size: 13px; font-style: normal; font-weight: bold; margin-left: 0em; margin-top: 0.5em; 
+		margin-bottom: 0.8em; text-align: left; text-indent: 0em; text-decoration: none; white-space: normal }
+     
+        
+	.Indented1
+		{ color: #6E727A; font-size: 12px; font-style: normal; font-weight: normal; margin-left: 3.5em; margin-top: 0.5em;
+		margin-bottom: 0.5em; text-align: left; text-indent: 0em; text-decoration: none; white-space: normal }
+        
+	.Indented2
+		{ color: #6E727A; font-size: 12px; font-style: normal; font-weight: normal; margin-left: 5em; margin-top: 0.5em;
+		margin-bottom: 0.5em; text-align: left; text-indent: 0em; text-decoration: none; white-space: normal }
+        
+	.Indented3
+		{ color: #6E727A; font-size: 12px; font-style: normal; font-weight: normal; margin-left: 7.5em; margin-top: 0.5em;
+		margin-bottom: 0.5em; text-align: left; text-indent: 0em; text-decoration: none; white-space: normal }        
+			
+	.WritersNote {
+		color: #9900FF;
+		font-size: 13px;
+		font-style: italic;
+		font-weight: bold;
+		margin-left: 0em;
+		margin-top: 0.5em;
+		margin-bottom: 0.5em;
+		text-align: left;
+		text-indent: 0em;
+		text-decoration: none;
+		white-space: normal
+	}
+			
+ul { margin-left: 4em}
+ol { margin-left: 4em; line-height: 1.5em; text-align: left; white-space: normal}
+
+	.Note, .Tip, .Warning, .Caution {
+		font-family: Verdana, Arial, Helvetica, sans-serif;
+		font-size:12px;
+		font-style:italic;
+		font-weight:bold;
+		background-color:#fcfdfd;
+		border:none;
+		margin: 10px 40px;  /* 10px 100 px */
+		padding: 20px 20px 30px 85px;  /* 20px 20px 30px 85px */
+		background-repeat: no-repeat;
+		background-position: 20px 10px top; /* 20px 10px top */
+		line-height: normal;
+		}
+	
+	.Note {
+		color:#3198D4;	/*blue*/
+		background-image:url(Images/IconNote.png);
+		}
+
+	.TableNote {
+		font-family: Verdana, Arial, Helvetica, sans-serif;
+		font-size:12px;
+		font-style:italic;
+		font-weight:bold;
+		background-color:#fcfdfd;
+		border:none;
+		margin: 0px 10px;  /* 10px 40 px */
+		padding: 20px 5px 30px 50px;  /* top 20px right 5px bottom 30px left 50px */
+		background-repeat: no-repeat;
+		background-position: 0px 0px top; /* 20px 10px top */
+		line-height: normal;
+		color:#3198D4;	/*blue*/
+		background-image:url(Images/IconNote.png);
+		}
+		
+	.Tip {
+		color:#23877C; /*teal*/
+		background-image:url(Images/IconTip.png);
+		}
+		
+	.Warning {
+		color:#86161D; /*red*/
+		background-image:url(Images/IconWarning.png);
+		}
+		
+	.Caution {
+		color:#2D3136; /*dark grey*/
+		background-image:url(Images/IconCaution.png);
+		}
+	
+	.Table-Grey {
+		width:80%;
+		/*align-self:center;*/
+		margin: 30px 50px;
+		font-family: Verdana, Arial, Helvetica, sans-serif;
+		font-size:12px;
+		vertical-align:text-top;
+		text-align:left;
+		}
+
+	.Table-Grey th {
+		/*vertical-align:central;*/
+		text-align:left;
+		font-weight:bold;
+		color:#FFFFFF;
+		background-color:#8b8f99;
+		padding-top: 10px;
+		padding-bottom: 10px;
+		padding-left: 15px;
+		padding-right: 15px;
+		}
+
+	.Table-Grey td {
+    	vertical-align:top;
+		border-bottom:solid #6E727A;
+		border-bottom-width:1px;
+		border-spacing:0.5px;
+		padding-top: 10px;
+		padding-bottom: 10px;
+		padding-left: 15px;
+		padding-right: 15px;
+		}
+		
+     .Table-Grey ul {
+  		padding-left: 0px;
+	    }
+			
+     .Table-Grey li {
+  		padding-left: 0px;
+		font-size:12px;
+		}
+		
+		
+/* Maintenance Table column widths are based on these cells */		
+	.row-Topic {
+ 		width: 40%;
+		}
+	.row-AsReq {
+		width: 10%;
+		}
+	.row-3Months {
+		width: 10%;
+		}
+	.row-6Months {
+		width: 10%;
+		}
+	.row-Annual {
+		width: 10%;
+		}
+		
+/* Drawing Table column widths are based on these cells */		
+	.row-DwgNumber {
+ 		width: 15%;
+		}
+	.row-DwgTitle {
+		width: 65%;
+		}
+		
+/* RSPL Table column widths are based on these cells */		
+	.row-RSPLManufacturer {
+ 		width: 15%;
+		}
+	.row-RSPLQty {
+		width: 5%;
+		}
+	.row-RSPLPartNumber {
+		width: 15%;
+		}
+	.row-RSPLDescription {
+		width: 35%;
+		}
+	.row-RSPLLeadTime {
+		width: 10%;
+		}
+
+/* VDoc Table column widths are based on these cells */		
+	.row-VDocManufacturer {
+ 		width: 15%;
+		}
+	.row-VDocTitle {
+		width: 35%;
+		}
+	.row-VDocType {
+		width: 15%;
+		}
+	.row-VDocPartNumber {
+		width: 15%;
+		}
+
+/* Component Table column widths are based on these cells */		
+	.row-Component {
+ 		width: 15%;
+		}
+	.row-Data {
+		width: 10%;
+		}
+	.row-UserManual {
+		width: 10%;
+		}
+	.row-CompDescription {
+		width: 45%;
+		}
+
+/* ZOOM View for FCS HMI Screens */
+* {box-sizing: border-box;}
+.img-zoom-container {
+  position: relative;
+}
+.img-zoom-lens {
+  position: absolute;
+  border: 2px solid #F9070B;
+  /*set the size of the lens:*/
+  width: 60px;
+  height: 40px;
+}
+.img-zoom-result {
+  border: 2px solid #d4d4d4;
+  /*set the size of the result div:*/
+  width: 500px;
+  height: 300px;
+}

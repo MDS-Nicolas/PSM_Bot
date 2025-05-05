@@ -1,0 +1,20 @@
+﻿<table class="Table-Grey">
+  <tr>
+    <th class="row-Topic" rowspan="2">Topic</th>
+    <th>Maintenance</th>
+  </tr>
+  <tr>
+    <th class="row-AsReq">As Required</th>
+  </tr>
+  <tr>
+    <td><a href="../References/HowTos/proDASHw/Racks/InspectRacks.html">Inspect the Equipment Racks</a><br>
+      <br>
+    Includes:
+    <ul>
+      <li>Inspect and clean the Cooling Fans</li>
+      <li>Inspect area for FOD</li>
+      <li>Dust the racks</li>
+    </ul>    </td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+</table>

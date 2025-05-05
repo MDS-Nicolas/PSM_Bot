@@ -1,0 +1,61 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>VXI Hardware Interface - Overview</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left><h1>VXI Hardware Interface<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<h2>Overview</h2>
+<p>The VME Extended for Instrumentation (VXI) Hardware Interfaces convert analogue signals from engine or facility transducers into digital form for the <a href="../../CompCfg/HostPC/HostPCOverview.html">Linux Host Computer</a> using Signal Conditioning Plug-On (SCP) cards installed on an Analogue to Digital (A/D) conversion card.</p>
+<p>Each SCP scans and digitises the analogue signals, and stores them in the on-board memory of the A/D card. The <a href="../../proDASHelp/DASSubSysConfig/ConfigAIs/ConfigAIs.htm#GASSVXI"> GASSVXI Subsystem</a> within proDAS scans and extracts the data as a block from the cards and stores the values in the proDAS Current Value Table (CVT). The SCP's are dedicated to processing and transmitting different measurement signals, including:</p>
+<ul>
+  <li>general analogue signals</li>
+  <li>general frequency signals</li>
+  <li>thermocouple</li>
+  <li><span class="Body">pneumatic pressure</span></li>
+  <li><span class="Body">liquid pressure</span></li>
+  <li><span class="Body">mechanical measurement</span></li>
+  <li><span class="Body">fuel density measurement</span></li>
+  <li>temperature</li>
+  <li>rotational speed</li>
+  <li>fuel flow</li>
+  <li>environmental measurements</li>
+</ul>
+<p>Analogue and Frequency Input signals are configured as GASSVXI Subsystem channels.</p>
+<p>Analogue Output signals are configured as GASSAO.</p>
+<p>Digital Input/Output signals are configured as GASSDIO.</p>
+<p>The VXI System:</p>
+<ul>
+  <li>accepts analogue voltage inputs</li>
+  <li>conditions the analogue voltage inputs (gain and filter)</li>
+  <li>accepts frequency measurements</li>
+  <li>performs analogue-to-digital conversion of the analogue voltage and frequency inputs for use by proDAS</li>
+  <li>outputs voltage or current</li>
+  <li>accepts discrete input signals from switches or sensors</li>
+  <li>controls discrete devices such as relays or solenoids<br>
+  </li>
+</ul>
+<p class="Note">In case of a card failure, the VXI System continues to operate normally with the remaining cards.</p>
+
+<h5>Block Diagram of VXI Hardware Interfaces</h5>
+<br>
+<div class="Container"><img src="images/BDVXIHw.png" alt="VXI Block Diagram" width="851" height="432"></div>
+<br>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

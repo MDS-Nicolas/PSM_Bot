@@ -1,0 +1,278 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Rule Editor (Option*)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="ACI">Rule Editor (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The Rule Editor is a stand-alone application designed to create and edit rules to be used later in the Automated CITS Import into proDAS (ACI) utility. A rule is a set of instructions that are applied on the ACI source data and updated based on the conditions and commands described in the rule (i.e.: a known rule is the resolution of invalid EUs and substitution with proDAS compliant EUs). To standardize the majority of the rules a more structured rule engine is required with the following customization options for each rule:</p>
+<ul>
+  <li>Name</li>
+  <li>Description</li>
+  <li>File Name</li>
+  <li>Type [Master records | Sub records | Both]</li>
+  <li>Target subsystems</li>
+  <li>Result set [one or more]
+    <ul>
+      <li>Name</li>
+      <li>Type [Update | Delete]</li>
+      <li>Source [one or more] defined by:
+        <ul>
+          <li>Column [mandatory]</li>
+          <li>Type [Value | Column | RegEx]</li>
+          <li>Data [mandatory]</li>
+          <li>Value Operator [applies to Value Type only]</li>
+          <li>Case Sensitive [applies to Value Type only]</li>
+          <li>Include Wildcards [applies to Column Type only]</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Action [applies to Update result set Types, one or more] defined by
+    <ul>
+      <li>Column</li>
+      <li>Operator [Set Value | Subtract]</li>
+      <li>Action data [Set Value: the data to be substituted | Subtract: the value to subtract]</li>
+    </ul>
+  </li>
+</ul>
+<p>Based on the rule engine structure, a rule file format consists of the followingL</p>
+<ul>
+  <li>a header</li>
+  <li>result set (R)</li>
+  <li>source (S)</li>
+  <li>action (A)</li>
+</ul>
+<p>Each of the following bold  items is represented in the rule file as a separate line:</p>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Name </strong><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Description</strong><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Type</strong><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Subsystems</strong> <em>(comma separated)</em><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Result set </strong><em>1</em><strong></strong><br>
+  <strong>	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Source</strong><br>
+  <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Action</strong> <em>(Only required for Update result set types)</em><br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &hellip;<br>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>Result set </strong><em>n</em><strong></strong><br>
+  <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong><strong>Source</strong><br>
+  <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong><strong>Source</strong><br>
+  <strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </strong><strong>Action</strong> <em>(Only required for Update result set types)</em></p>
+<p>The upper part as mention above is the header, consisting of the rule name, its  description, type of the records and target subsystems in the source data the rule will apply to. The header is always followed by the RSA section(s). There can be defined multiple result sets in a rule file. Each result set in its turn may have multiple sources; therefore, it is common to see RSSA, RSSSA sort of combinations in rule files.</p>
+<p>An example of a rule file that converts LIMIT_TYPE DISC values to DISQUIET can be implemented as the following rule definition:</p>
+<blockquote>
+  <p>LIMIT_TYPE_DISC_TO_DISQUIET<br>
+    Fix LIMIT_TYPE =  DISC in all files.<br>
+    Master<br>
+    ARINC_BALLARD||Calculated||GASSAI||GASSAO||GASSTC||PBS||PLC||TBS<br>
+    R||LIMIT_TYPE=DISC||Update<br>
+    S||LIMIT_TYPE||Value||Equals||DISC||False<br>
+    A||LIMIT_TYPE||SetValue||DISQUIET</p>
+</blockquote>
+<p>The breakdown of the above rule:</p>
+<ul>
+  <li>This rule is called LIMIT_TYPE_DISC_TO_DISQUIET, from the 1st line, with a description on the 2nd line and works on the master records from line 3, on the eight &lsquo;||&rsquo; separated subsystems listed on the 4th line.</li>
+  <li>The result set (R) is defined on the 5 th line called LIMIT_TYPE=DISC is of type Update.</li>
+  <li>The source (S) on the 6 th line for this result set is selecting records where LIMIT_TYPE has a value of DISC.</li>
+  <li>The action (A) on 7 th line sets the LIMIT_TYPE column to the value DISCQUIET</li>
+</ul>
+<h2 id="RuleEditorGUI">Rule Editor GUI</h2>
+<p>When the Rule Editor is launched, the main window is displayed (below).</p>
+<div class="Container"><img src="images/RuleEditorMain.png" alt="Rule Editor Main"  width="700" height="456"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Rules (drop-down)</td>
+    <td>Displays the list of all existing rules.
+      <p class="Note">All existing rules are saved under the RuleDirectory folder specified in the ACI.ini file.</p></td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnNewRule.png" alt="Btn New Rule" width="37" height="22"></td>
+    <td>Creates a new rule. A &quot;New&quot; item is appended in the list of rules and all fields are cleared and reset allowing the user to define the new  rule.</td>
+  </tr>
+  <tr>
+    <td>Name</td>
+    <td>Displays the name of the rule.</td>
+  </tr>
+  <tr>
+    <td>Description</td>
+    <td>Displays the description of the rule.</td>
+  </tr>
+  <tr>
+    <td>File Name</td>
+    <td>Displays the absolute path of the selected file.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnBrowse.png" alt="Btn Browse" width="37" height="22"></td>
+    <td>Browse feature  allows the user to select a custom rule file.
+      <p class="Note">Custom created rules are by default saved under the same directory the Rule Editor software is located in. When creating a new rule, the user can define a new directory to save the rule under.</p></td>
+  </tr>
+  <tr>
+    <td>Type (drop-down)</td>
+    <td>Specifies the type of records the rule needs to be applied to. Available options are:
+      <ul>
+        <li>Master records</li>
+        <li>Sub records</li>
+        <li>both Master and Sub records - some source data consist of two types of records</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Sub-Systems</td>
+    <td>Allows the user to select the subsystems to which the data rule is applied.</td>
+  </tr>
+  <tr>
+    <td>Resultset</td>
+    <td>The Resultset table contains the list of specified resultsets. It cosists of two comlumns indicating the name and the type of a resultset.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnAppend.png" alt="Btn Append" width="37" height="22"></td>
+    <td>Creates a new resultset record.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnEdit.png" alt="Btn Edit" width="37" height="22"></td>
+    <td>Edit an existing resultset. The Resultset Form is displayed. For details, see <a href="?2#Resultset">Resultset Form</a>.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnDelete.png" alt="Btn Delete" width="37" height="22"></td>
+    <td>Delete an existing resultset. The Resultset Form is displayed. For details, see <a href="?3#Resultset">Resultset Form</a>.</td>
+  </tr>
+  <tr>
+    <td>Source</td>
+    <td>The Source table contains the list of source records (conditions to filter the data records, the rule to be applied to)</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnAppend.png" alt="Btn Append" width="37" height="22"></td>
+    <td>Appends a new record to the table.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnEdit.png" alt="Btn Edit" width="37" height="22"></td>
+    <td>Edit existing table item. The Source Form is displayed. For details, see <a href="?4#Source">Source Form</a>.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnDelete.png" alt="Btn Delete" width="37" height="22"></td>
+    <td>Delete existing table item. The Source Form is displayed. For details, see <a href="?5#Source">Source Form</a>.</td>
+  </tr>
+  <tr>
+    <td>Actions</td>
+    <td>The Actions table contains the list of actions (what needs to be done on the filtered source data records).</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnAppend.png" alt="Btn Append" width="37" height="22"></td>
+    <td>Appends a new record to the table.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnEdit.png" alt="Btn Edit" width="37" height="22"></td>
+    <td>Edit existing table item. The Action Form is displayed. For details, see <a href="?6#Action">Action Form</a>.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnDelete.png" alt="Btn Delete" width="37" height="22"></td>
+    <td>Delete existing table item. The Action Form is displayed. For details, see <a href="?7#Action">Action Form</a>.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnSave.png" alt="Btn Save" width="36" height="22"></td>
+    <td>Saves the new or modified rule.
+      <p class="Note">If there are any inconsistencies in the specified fields or some fields are not filled or missed then an error message is displayed notifying the user that the rule has not saved. <br>
+        <img src="images/NotSaved.png" alt="Not Saved" width="157" height="156"> <br>
+        Upon successful saving, a corresponding message is displayed notifying the user about the successful completion.</p></td>
+  </tr>
+</table>
+<h3  id="Resultset">Resultset Form</h3>
+<p>The Resultset Form (below) is displayed by selecting either <img src="images/BtnAppend.png" alt="Btn Append" width="37" height="22"> or <img src="images/BtnEdit.png" alt="Btn Edit" width="37" height="22"> next to the Resultset panel.</p>
+<div class="Container"><img src="images/ResultsetForm.png" alt="Resultset Form" width="310" height="173"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Name</td>
+    <td>Displays the name of the resultset.</td>
+  </tr>
+  <tr>
+    <td>Type (drop-down)</td>
+    <td>Specifies the resultset type as either &quot;Update&quot; or &quot;Delete&quot;.</td>
+  </tr>
+</table>
+<h3 id="Source">Source Form</h3>
+<p>The Source Form (below) is displayed by selecting either <img src="images/BtnAppend.png" alt="Btn Append" width="37" height="22"> or <img src="images/BtnEdit.png" alt="Btn Edit" width="37" height="22"> next to the Source panel.</p>
+<div class="Container"><img src="images/SourceForm.png" alt="Source Form" width="439" height="303"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Column (drop-down)</td>
+    <td>Displays the list of names of columns for selected subsystems.
+      <p class="Note">The list is populated only if at least one subsystem is checked in the Sub-Systems list.</p></td>
+  </tr>
+  <tr>
+    <td>Type (drop-down)</td>
+    <td>Displays the list of possible types of source to filter by and apply the rule - Value, Column and RegEx (used as a condition to filter the source data to apply the rule).</td>
+  </tr>
+  <tr>
+    <td>Data</td>
+    <td>The Data field can be either:
+      <ul>
+        <li>an editable field for the  Value and RegEx types in order to specify the value or regular expression for source filtering</li>
+        <li>a drop-down list containing the list of selected sub-systems&rsquo; columns</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Operator (drop-down)</td>
+    <td>The Operator drop down list is enabled and selectable only if the Value type is selected. The available operators are &quot;Equals&quot; and &quot;Not Equal To&quot;.</td>
+  </tr>
+  <tr>
+    <td>Case Sensitive</td>
+    <td>The check box is enabled only if the type &quot;Value&quot; is selected. It defines whether the data value comparison is case sensitive or not.</td>
+  </tr>
+  <tr>
+    <td>Include Wildcards</td>
+    <td>The check box is enabled only if the type &quot;Column&quot; is selected. The later defines whether to include wildcards or not when comparing columns.</td>
+  </tr>
+</table>
+<h3 id="Action">Action Form</h3>
+<p>The Action Form (below) is displayed by selecting either <img src="images/BtnAppend.png" alt="Btn Append" width="37" height="22"> or <img src="images/BtnEdit.png" alt="Btn Edit" width="37" height="22"> next to the Action panel.</p>
+<div class="Container"><img src="images/ActionForm.png" alt="Action Form" width="398" height="231"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Column (drop-down)</td>
+    <td>Displays the list of names of columns for selected subsystems selected in the Sub-Systems list.
+      <p class="Note">The list is populated only if at least one subsystem is checked in the Sub-Systems list.</p></td>
+  </tr>
+  <tr>
+    <td>Operator (drop-down)</td>
+    <td>Displays the list of possible operators to be applied to the filtered source data - Set Value, Subtract and Multiply.</td>
+  </tr>
+  <tr>
+    <td>Data</td>
+    <td>Displays the value to be used with the above mentioned operator type.</td>
+  </tr>
+</table>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

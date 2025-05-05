@@ -1,0 +1,729 @@
+<!DOCTYPE HTML><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>User Function Language</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="UserFunctionLanguage">User Function Language<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" >
+</a><div float:right></div></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The User Function language is separated into the following two sections:</p>
+<ul>
+  <li><a href="?2#FormalDescription">Formal Description of Language</a></li> 
+  <li><a href="?3#DetailedDescription">Detailed Description and Statements</a></li>
+</ul>
+<h2 id="FormalDescription">Formal Description of Language</h2>
+<h3 id="Introdu">Introduction</h3>
+<p>The language described in this section will be used by a programmer to code a user function with the User Function Editor (UFE), which will have several dialogues to parameterise the statements, i.e. the user will not type in statements directly.</p>
+<p>Internally a list of all user functions within a configuration is saved in XML format by proDAS. The UFE will not see the XML file itself; 
+  it receives all user functions and their statements from the Configuration Server. As proDAS recommends the usage of Visual Basic Script for 
+  customer side extensions, the representation of a user function will be quite similar to Visual Basic Script.</p>
+<p>The following description uses Backus-Naur-Form (BNF) with the following symbols:</p>
+<table class="Table-Grey">
+  <tr> 
+    <th>Convention / Symbol</th>
+    <th>What It Means</th>
+  </tr>
+  <tr> 
+    <td><tt>::=</tt></td>
+    <td>Equivalent</td>
+  </tr>
+  <tr> 
+    <td><tt> |</tt></td>
+    <td>Or</td>
+  </tr>
+  <tr> 
+    <td><tt>X+</tt></td>
+    <td>One or more Xs</td>
+  </tr>
+  <tr> 
+    <td><tt>X*</tt></td>
+    <td>Zero or more Xs</td>
+  </tr>
+  <tr> 
+    <td><tt>[X]</tt></td>
+    <td>X is optional. Optional delimiters are denoted by [].</td>
+  </tr>
+  <tr> 
+    <td>Any <tt><strong>bold</strong></tt> text</td>
+    <td>A string literal. The elements of the programming language are denoted with bold text.</td>
+  </tr>
+  <tr> 
+    <td>Any <tt><em>italicised</em></tt> text</td>
+    <td>How to construct a literal.</td>
+  </tr>
+</table>
+<h2 id="LanguageDescription">Language Description</h2>
+<h3 id="General">General</h3>
+<pre>&lt;real variable&gt; ::=  &lt;variable identifier&gt;
+
+&lt;bool variable&gt; ::= &lt;variable identifier&gt;
+
+&lt;variable identifier&gt; ::= &lt;identifier&gt;
+
+&lt;identifier&gt; ::= <em>each name allowed by the proDAS system</em>
+</pre>
+<p>Comment: Variable identifiers can be volatile variables, nonvolatile variables and channels, which will be displayed differently.</p>
+<h3 id="Statement Description">Statement Description</h3>
+<pre>&lt;user function&gt; ::= &lt;statement list&gt;
+
+&lt;statement list&gt; ::= &lt;statement&gt;*
+
+&lt;statement&gt; ::= &lt;assignment statement&gt; | &lt;control statement&gt;
+</pre>
+<p>Also allowed are empty statements, that are, empty lines.</p>
+<p>Each statement can have additional comment text at the end of line. Comments will be marked with a starting apostrophe. It will be possible 
+  to create comments, which encompass a whole line, too.</p>
+<h3 id="Assignment Statements">Assignment Statements</h3>
+<pre>&lt;assignment statement&gt; ::= &lt;real assign&gt; | &lt;function assign&gt; |
+                           &lt;bool assign&gt;
+
+&lt;</pre>
+<p>&gt;&nbsp;</p>
+<h3 id="RealAssign">Real Assign </h3>
+<pre>&lt;real assign&gt; ::= [ <strong>real</strong> ] &lt;real variable&gt; <strong>=</strong> 
+                  &lt;simple float expression&gt; [ &lt;real operator&gt;
+                  &lt;simple float expression&gt; ]
+ 
+&lt;simple float expression&gt; ::= [ <strong>-</strong> ] 
+                              &lt;value reference&gt; |
+                              &lt;no argument function&gt; |
+                              &lt;one argument function&gt;
+
+&lt;value reference&gt; ::=  &lt;real literal&gt; | &lt;real variable&gt;
+
+&lt;real literal&gt; ::= <em>a floating point value, e.g. 23.793</em>
+
+&lt;real operator&gt; ::= <strong>+</strong> | <strong>-</strong> | <strong>*</strong> | <strong>/</strong> | <strong>^</strong>
+</pre>
+<h4 id="Function Assign">Function Assign</h4>
+<pre>&lt;function assign&gt; ::= [ <strong>real</strong> ] &lt;real variable&gt; <strong>=</strong> 
+                      &lt;function identifier&gt;
+
+&lt;function identifier&gt; ::= &lt;two arguments function&gt; | 
+                          &lt;three arguments function&gt; |
+                          &lt;date time function&gt; | 
+                          &lt;interpolation function&gt;
+</pre>
+<p class="Note">Functions with no argument and functions with one argument are supported by <tt>&lt;simple 
+      float expression&gt;</tt> (cf. <a href="#RealAssign">Real Assign</a>).</p>
+
+<h4 id="Functions">Functions</h4>
+<p>The description of the functions named herein can be found in section <a href="?4#AvailableFunctions">Available Functions</a>.</p>
+<pre>&lt;no argument function&gt; ::= <strong>NaN</strong> | <strong>Rand</strong>
+
+&lt;one argument function&gt; ::= &lt;one argument function name&gt; <strong>(</strong>
+                            &lt;value reference&gt; <strong>)</strong>
+
+&lt;two argument function&gt; ::= &lt;two argument function name&gt; <strong>(</strong>
+                            &lt;value reference&gt; <strong>,</strong> 
+                            &lt;value reference&gt; <strong>)</strong> 
+
+&lt;three argument function&gt; ::= &lt;three argument function name&gt; <strong>(</strong>
+                              &lt;value reference&gt; <strong>,</strong>
+                              &lt;value reference&gt; <strong>,</strong>
+                              &lt;value reference&gt; <strong>)</strong>
+
+&lt;one argument function name&gt; ::= <strong>Abs</strong> | <strong>Acos</strong> | <strong>Asin</strong> |
+                                 <strong>Atan</strong> | <strong>Ceil</strong> | <strong>Cos</strong> |
+                                 <strong>Cosh</strong> | <strong>Exp</strong> | 
+                                 <strong>Floor</strong> | <strong>Ln</strong> |
+                                 <strong>Log</strong> | <strong>Round</strong> | <strong>Sin</strong> | 
+                                 <strong>Sinh</strong> | <strong>Sqrt</strong> | <strong>Square</strong> | 
+                                 <strong>Tan</strong> 
+
+&lt;two argument function name&gt; ::= <strong>Atan2</strong> | <strong>Fmod</strong> | <strong>Hypot</strong> | 
+                                 <strong>Max</strong> | <strong>Min</strong> | 
+                                 <strong>IntervalMax</strong> | 
+                                 <strong>IntervalMin</strong> | <strong>Sr2</strong> 
+
+&lt;three argument function name&gt; ::=  <strong>GRAIN</strong> | <strong>Sr5</strong>  
+
+&lt;date time function&gt; ::= &lt;date function&gt; | 
+                         &lt;time function&gt; | 
+                         &lt;time since function&gt; | 
+                         &lt;time diff function&gt;
+
+&lt;date function&gt; ::= <strong>Date()</strong> 
+
+&lt;time function&gt; ::=  <strong>Time()</strong> 
+
+&lt;time since function&gt; ::= <strong>TimeSince(</strong> &lt;date variable&gt; <strong>,</strong> 
+                          &lt;time variable&gt; <strong>)</strong> 
+
+&lt;time diff function&gt; ::= <strong>TimeDiff(</strong> &lt;date variable&gt; <strong>,</strong> 
+                         &lt;time variable&gt; <strong>,</strong> &lt;date variable&gt; <strong>,</strong> 
+                         &lt;time variable&gt; <strong>)</strong> 
+
+&lt;interpolation function&gt; ::= &lt;2d interpolation&gt; | 
+                             &lt;3d interpolation&gt; 
+                           
+&lt;2d interpolation&gt; ::= &lt;2d interpolation function&gt; <strong>(</strong>   
+                       &lt;table identifier&gt; <strong>,</strong> &lt;value reference&gt; <strong>)</strong> 
+                       
+&lt;3d interpolation&gt; ::= &lt;3d interpolation function&gt; <strong>(</strong>   
+                       &lt;table identifier&gt; <strong>,</strong> &lt;value reference&gt; <strong>,</strong> 
+                       &lt;value reference&gt; <strong>)</strong>  
+
+&lt;table identifier&gt; ::= <em>The name of a BreakPointTable</em>
+
+&lt;2d interpolation function&gt; ::= <strong>Lookup</strong> | <strong>LookupInv</strong> 
+
+&lt;3d interpolation function&gt; ::= <strong>Lookup3d</strong> | 
+                                <strong>Lookup3dInvX</strong> | 
+                                <strong>Lookup3dInvY</strong> 
+</pre>
+<h4 id="Bool Assign">Bool Assign</h4>
+<pre>&lt;bool assign&gt; ::= [ <strong>bool</strong> ] &lt;bool variable&gt; <strong>=</strong> &lt;bool expression&gt;
+
+&lt;bool expression&gt; ::= &lt;bool reference value&gt; |
+                      &lt;bool operation&gt; |
+		      &lt;bool function&gt; | 
+		      &lt;real relation&gt;
+
+&lt;bool reference value&gt; ::= [ <strong>NOT</strong> ] &lt;bool literal&gt; | &lt;bool variable&gt;
+													
+&lt;bool literal&gt; ::= <strong>TRUE</strong> | <strong>FALSE</strong> 
+
+&lt;bool operation&gt; ::= &lt;bool reference value&gt; &lt;bool operator&gt; &lt;bool reference value&gt;
+
+&lt;bool function&gt; ::= &lt;non function argument bool&gt; | 
+                    &lt;one arg bool function&gt; | 
+                    &lt;isnan function&gt; | 
+                    &lt;bittest function&gt;
+
+&lt;non function argument bool&gt; ::= &lt;non arg bool function name&gt;<strong>()</strong> 
+
+&lt;one function argument bool&gt; ::= &lt;one arg bool function name&gt; <strong>(</strong> &lt;bool expression&gt; <strong>)</strong> 
+
+&lt;isnan function&gt; ::= <strong>Isnan (</strong> &lt;value reference&gt; <strong>)</strong> 
+
+&lt;bittest function&gt; ::= <strong>BitTest (</strong> &lt;value reference&gt; <strong>,</strong> &lt;value reference&gt; <strong>)</strong> 
+
+&lt;non arg bool function name&gt; ::= <strong>Initialisation</strong> | <strong>AllEvents</strong> 
+
+&lt;one arg bool function name&gt; ::= <strong>FirstTime</strong> | <strong>LastTime</strong> 
+
+&lt;bool operator&gt; ::= <strong>OR</strong> | <strong>AND</strong> | <strong>XOR</strong> | <strong>NOR</strong> | <strong>NAND</strong> | <strong>EQUIV</strong> 
+
+&lt;real relation&gt; ::= &lt;real variable&gt; &lt;comparison operator&gt; &lt;real variable&gt;
+
+&lt;comparison operator&gt; ::= <strong>&lt;</strong> | <strong>&gt;</strong> | <strong>&lt;=</strong> | <strong>&gt;=</strong> | <strong>==</strong> | <strong>!=</strong> 
+</pre>
+<h4 id="ControlStatements">Control Statements</h4>
+<pre>&lt;control statement&gt; ::= &lt;branching statement&gt; | 
+                        &lt;stop statement&gt; | 
+                        &lt;return statement&gt; | 
+                        &lt;label statement&gt; | 
+                        &lt;goto statement&gt; 
+</pre>
+<h4 id="Branching statement">Branching statement</h4>
+<pre>&lt;branching statement&gt; ::= &lt;IF statement&gt;
+                             &lt;statement list&gt;
+                          [&lt;ELSEIF statement&gt;
+                             &lt;statement list&gt;]+ 
+                          [&lt;ELSE statement&gt;
+                             &lt;statement list&gt;] 
+                          &lt;ENDIF statement&gt;
+						 
+&lt;IF statement&gt; ::= <strong>IF</strong> &lt;bool expression&gt; <strong>THEN</strong> 
+
+&lt;ELSEIF statement&gt; ::= <strong>ELSE IF</strong> &lt;bool expression&gt; <strong>THEN</strong> 
+
+&lt;ELSE statement&gt; ::= <strong>ELSE</strong> 
+
+&lt;ENDIF statement&gt; :: <strong>END IF</strong></pre>
+<h4 id="Stop statement">Stop statement</h4>
+<pre>&lt;stop statement&gt; ::= <strong>STOP</strong></pre>
+<h4 id="Return statement">Return statement</h4>
+<pre>&lt;return statement&gt; ::= <strong>RETURN</strong></pre>
+<h4 id="Label statement">Label statement</h4>
+<pre>&lt;label statement&gt; ::= &lt;identifier&gt;:</pre>
+<h4 id="Goto statement">Goto statement</h4>
+<pre>&lt;goto statement&gt; ::= <strong>GOTO</strong> &lt;identifier&gt; <strong>[</strong> &lt;loop count&gt; <strong>]</strong> 
+
+&lt;loop count&gt; ::= <em>a positive integer number</em></pre>
+<p>Note, that GOTO must be followed by a loop count in order to prevent non- terminating loops.</p>
+<h2 id="DetailedDescription">Detailed Description and Statements </h2>
+<h3 id="Data Types and Assignments">Data Types and Assignments</h3>
+<p>The user functions will allow using variables of the types Boolean and real. A variable created within a user function will only be accessible 
+  within this UF. Volatile and nonvolatile variables will be supported. The editor will support displaying the variable type of an assignment at the beginning of a statement on demand.</p>
+<p>Special value for real channels and variables is NaN, which is used to indicate that the value of the channel or variable is not defined. If 
+ a channel or variable has the value NaN in any real expression, the result of this expression always will be NaN too. In real relations the result will always be FALSE if any channel or variable has the value NaN. A user may use the functions NaN and Isnan() to indicate a value as not defined within a user function or to check a variable or channel if it is defined, respectively.</p>
+<p>Nonvolatile variables will keep their value after each execution of a function, that is, the variable will have this previous value as an initial value when the user function will be executed anew. However, before the first execution of a user function in the beginning of a cyclical calculation or before any static calculations, the initial value of a nonvolatile variable will be NaN, that is, it will have to be initialised by the programmer before the first use in the user function. For that purpose the Boolean function Initialisation() can be used, which will be TRUE only, if the function will be executed the first time at the beginning of cyclical calculation or for static calculations.</p>
+<p>In contrast to nonvolatile variables, volatile variables will lose their values after a function execution, that is, a volatile variable will 
+  have the value NaN always as initial value. A volatile variable will have to be initialised before it can be used in the function.</p>
+<p>Each channel can be accessed on the right hand side of an assignment, that is, for reading, but a user function will have write access for channels of the external hook subsystem User Functions only. This feature shall prevent the programmer from damaging measurement data. For external hook channels no automatic initialisation will be done, i.e. channel values are not changed in the user function unless explicitly programmed. Channel values will be accessible from any user function. Since the sequence of execution of the functions is undefined, a programmer should not use channels to transfer values from one user function to another. That's strictly forbidden.</p>
+<p>The behavior of volatile and nonvolatile variables is important for cyclical calculation only. In static calculations the initial value of all 
+  variables will be NaN. But channels will store their value permanently.</p>
+<p>Time values will be represented as date and time values stored in normal real variables. Dates will represent the number of days since the 
+  31.12.1899 00:00:00, that is, a value of 1 will represent the date 01.01.1900. Times will be the part of the current day in seconds. The current date and time can be retrieved from the RTE with the functions Date() and Time(), respectively. For calculating time differences the user may use the helper functions TimeSince() and TimeDiff(). The user has to take care about mixing real variables representing technical values and time and date values, respectively.</p>
+<p>The UFE will use the $ (Dollar sign) preceding the name to indicate channels.</p>
+<p>Names of volatile variables will be preceded by a ~ (tilde). Nonvolatile Variables do not have any preceding sign.</p>
+<p><strong>Example:</strong></p>
+<pre>    ' time 
+    IF Initialisation() THEN 
+       real OldDate = Date() 
+       real OldTime = Time() 
+    END IF 
+    real ~NewDate = Date() 
+    real ~NewTime = Time() 
+    
+    real ~DiffTime = TimeDiff(OldDate, OldTime, ~NewDate, ~NewTime) 
+    real OldDate = ~NewDate 
+    real OldTime = ~NewTime
+    
+    ' boolean assignment 
+    bool ~bPressureHiOk = $AirPressure1 &lt; 1000 
+    bool ~bPressureLoOk = $AirPressure1 &gt; 100 
+    bool ~bP_Ok = ~bPressureHiOk AND ~bPressureLoOk 
+    
+    ' real assignment 
+    real ~rPressureMid = $Pressure1 + $Pressure2 
+    real ~rPressureMid = ~rPressureMid / 2 
+</pre>
+<p class="Note"><tt>$ChannelName</tt> indicates a channel, <tt>~VariableName</tt> indicates a volatile variable 
+      and <tt>VariableName</tt> without any preceding sign indicates a nonvolatile Variable.</p>
+
+<p>This example also displays the appearance of an assignment statement with additional type information for any variable on the left hand side of an assignment statement.</p>
+<h3 id="Control Statements">Control Statements</h3>
+<p>The available control statements are the IF...THEN statement for branching, LABEL and GOTO statement for simple loops and jumps, respectively, 
+  and the STOP and RETURN statements for asynchronous stop of execution. In cyclical calculations the STOP statement will stop the execution of the UF for the current test run, that is, the function will not be executed again in subsequent cycles. In contrast to this, the RETURN statement will allow the execution of the function in the next cycle again. The STOP statement may be used to prevent further execution of a user function if an error occurs.</p>
+<p><strong>Example:</strong></p>
+<pre>    '------------------------------------- 
+    ' if statement 
+    <strong>IF</strong> $Channel_1 &lt; 0.0 <strong>THEN</strong> 
+       rVar_1 = 100.0 
+    <strong>ELSE IF</strong> $Channel_1 &gt;= 1.0 <strong>THEN</strong> 
+       rVar_1 = -100.0 
+    <strong>ELSE</strong> 
+       rVar_1 = rVar_2 
+    <strong>END IF</strong>
+</pre>
+<p class="Note">As the UFE supports the user in editing statements line by line only, the user himself has to take care to complete the IF...THEN statement with the corresponding END IF.</p>
+
+<p><strong>Example:</strong></p>
+<pre>    '------------------------------------- 
+    ' stop statement 
+    IF $Channel_1 == -1000000.0 THEN 
+       <strong>STOP</strong> ' stop execution and do not run again if cyclic 
+    END IF
+</pre>
+<p>During cyclic execution, after STOP the user function will not run again. This may be used for functions which will fail on a channel which 
+  is missing or damaged.</p>
+<p><strong>Example:</strong></p>
+<pre>    '------------------------------------- 
+    ' return statement 
+    bCoolingOn = $Cooling == 1.0 
+    bWaterHot = $WaterTemp == 110 
+    IF bCoolingOn AND bWaterHot THEN 
+       <strong>RETURN</strong> 
+    ELSE IF bCoolinOn AND NOT bWaterHot THEN 
+       $Cooling = 0.0 ' cooling off 
+    ELSE IF NOT bCoolingOn AND bWaterHot THEN 
+       $Cooling = 1.0 ' cooling on 
+    END IF 
+    '...
+</pre>
+<p>The RETURN statement will stop the current function execution. During cyclic calculations the function will be executed in the next cycle again.</p>
+<p><strong>Example:</strong></p>
+<pre> 
+    '------------------------------------- 
+    ' goto statement as jump 
+    IF Var_1 != 2 THEN 
+       <strong>GOTO End [1]</strong> ' jump to end 
+    END IF 
+    '... 
+    <strong>End:</strong> 
+    
+    '------------------------------------- 
+    ' goto statement as counted loop 
+    '... 
+    <strong>Loop_1:</strong> 
+    '... 
+    <strong>GOTO Loop_1 [n]</strong> ' execute jump to Loop_1 <em>n</em> times 
+    '... 
+</pre>
+<p><strong><em>n</em></strong> shall be a positive integer. The code between the label and the corresponding GOTO statement will be executed <strong><em>n+1</em></strong> times. In cases where such a loop is contained by an outer loop, the inner loop will be executed again for each outer cycle.</p>
+<h3 id="Operators">Operators</h3>
+<h4 id="Real Operator (unary)">Real Operator (unary)</h4>
+<table class="Table-Grey">
+  <tr> 
+    <th>Operator</th>
+    <th>Description</th>
+  </tr>
+  <tr> 
+    <td>- <em>Arg</em></td>
+    <td>Changes the sign of <em>Arg</em>.</td>
+  </tr>
+</table>
+<h4 id="Real Operators (binary)">Real Operators (binary)</h4>
+<table class="Table-Grey">
+  <tr> 
+    <th>Operator</th>
+    <th>Description</th>
+  </tr>
+  <tr> 
+    <td><em>Arg1 </em>+ <em>Arg2</em></td>
+    <td>Returns the sum of <em>Arg1</em> and <em>Arg2</em>.</td>
+  </tr>
+  <tr> 
+    <td><em>Arg1</em> - <em>Arg2</em></td>
+    <td>Returns the difference of <em>Arg1</em> and <em>Arg2</em>.</td>
+  </tr>
+  <tr> 
+    <td><em>Arg1</em> * <em>Arg2</em></td>
+    <td>Returns the product of <em>Arg1</em> and <em>Arg2</em>.</td>
+  </tr>
+  <tr> 
+    <td><em>Arg1</em> / <em>Arg2</em></td>
+    <td>Returns the quotient of <em>Arg1</em> and <em>Arg2</em>.</td>
+  </tr>
+  <tr> 
+    <td><em>Arg1</em> ^ <em>Arg2</em></td>
+    <td>Calculates <em>Arg1</em> raised to the power of <em>Arg2</em>.</td>
+  </tr>
+</table>
+<h4 id="Comparison Operators">Comparison Operators</h4>
+<table class="Table-Grey">
+  <tr> 
+    <th>Operator</th>
+    <th>Description</th>
+  </tr>
+  <tr> 
+    <td><em>Arg1</em> &lt; <em>Arg2</em></td>
+    <td>Returns TRUE if <em>Arg1</em> is less then <em>Arg2</em>.</td>
+  </tr>
+  <tr> 
+    <td><em>Arg1</em> &gt; <em>Arg2</em></td>
+    <td>Returns TRUE if <em>Arg1</em> is greater then <em>Arg2</em>.</td>
+  </tr>
+  <tr> 
+    <td><em>Arg1</em> &lt;= <em>Arg2</em></td>
+    <td>Returns TRUE if <em>Arg1</em> is less then or equal <em>Arg2</em>.</td>
+  </tr>
+  <tr> 
+    <td><em>Arg1</em> &gt;= <em>Arg2</em></td>
+    <td>Returns TRUE if <em>Arg1</em> is greater then or equal <em>Arg2</em>.</td>
+  </tr>
+  <tr> 
+    <td><em>Arg1</em> == <em>Arg2</em></td>
+    <td>Returns TRUE if <em>Arg1</em> is equal <em>Arg2</em>.</td>
+  </tr>
+  <tr> 
+    <td><em>Arg1</em> != <em>Arg2</em></td>
+    <td>Returns TRUE if <em>Arg1</em> is different then <em>Arg2</em>.</td>
+  </tr>
+</table>
+<p>The Comparison Operators are available only for real values.</p>
+<h4 id="Boolean Relations">Boolean Relations</h4>
+<table class="Table-Grey">
+  <tr> 
+    <th>Relation</th>
+    <th>Description</th>
+  </tr>
+  <tr> 
+    <td>NOT <em>Arg1</em></td>
+    <td>Negation, returns TRUE if <em>Arg1</em> is FALSE.</td>
+  </tr>
+  <tr> 
+    <td><em>Arg1</em> OR <em>Arg2</em></td>
+    <td>Logical OR, returns TRUE if either <em>Arg1</em> or <em>Arg2</em> or both are TRUE.</td>
+  </tr>
+  <tr> 
+    <td><em>Arg1</em> AND <em>Arg2</em></td>
+    <td>Logical AND, returns TRUE if both <em>Arg1</em> and <em>Arg2</em> are TRUE.</td>
+  </tr>
+  <tr> 
+    <td><em>Arg1</em> XOR <em>Arg2</em></td>
+    <td>Exclusive OR, also known as antivalence, returns TRUE if <em>Arg1</em> and <em>Arg2</em> have different values.</td>
+  </tr>
+  <tr> 
+    <td><em>Arg1</em> NOR <em>Arg2</em></td>
+    <td>Negation of OR, returns TRUE if neither <em>Arg1</em> nor <em>Arg2</em> are TRUE.</td>
+  </tr>
+  <tr> 
+    <td><em>Arg1</em> NAND <em>Arg2</em></td>
+    <td>Negation of AND, returns TRUE if not both <em>Arg1</em> and <em>Arg2</em> are TRUE.</td>
+  </tr>
+  <tr> 
+    <td><em>Arg1</em> EQUIV <em>Arg2</em></td>
+    <td>Equivalence, returns TRUE if <em>Arg1</em> and <em>Arg2</em> have identical values.</td>
+  </tr>
+</table>
+<br>
+<p class="Note">All arguments for the Boolean relations are variables of type Boolean.</p>
+<h3 id="AvailableFunctions">Available Functions </h3>
+<h4 id="Non Argument Functions">Non Argument Functions</h4>
+<p>The following functions without arguments are available:</p>
+<table class="Table-Grey">
+  <tr> 
+    <th>Function Name</th>
+    <th>Description</th>
+  </tr>
+  <tr> 
+    <td>NaN ()</td>
+    <td>Returns the float value &quot;Not a number&quot;, i.e. an undefined value.</td>
+  </tr>
+  <tr> 
+    <td>Rand ()</td>
+    <td>Returns a pseudo random float number y = Rand().</td>
+  </tr>
+  <tr> 
+    <td>Time ()</td>
+    <td>Returns the current date and time.</td>
+  </tr>
+</table>
+<h4 id="SingleArgumentFunctions">Single Argument Functions</h4>
+<p>The following standard float functions with one argument <em>x</em> are available:</p>
+<table class="Table-Grey">
+  <tr> 
+    <th>Function Name</th>
+    <th>Description</th>
+  </tr>
+  <tr> 
+    <td>Abs (<em>x</em>)</td>
+    <td>Returns the absolute value of a number: <em>y = |x|</em>.</td>
+  </tr>
+  <tr> 
+    <td>Acos (<em>x</em>)</td>
+    <td>Returns the arcus cosine: <em>y = arc COs (x)</em>.</td>
+  </tr>
+  <tr> 
+    <td>Asin (<em>x</em>)</td>
+    <td>Returns the arcus sine: <em>y = arc sin (x)</em>.</td>
+  </tr>
+  <tr> 
+    <td>Atan (<em>x</em>)</td>
+    <td>Returns the arcus tangent: <em>y = arc tan (x)</em>.</td>
+  </tr>
+  <tr> 
+    <td>Ceil (<em>x</em>)</td>
+    <td>Returns a real value representing the smallest integer that is greater than or equal to x: <em>y = ceil (x)</em>.</td>
+  </tr>
+  <tr> 
+    <td>Cos (<em>x</em>)</td>
+    <td>Returns the cosine: <em>y = Cos (x)</em>.</td>
+  </tr>
+  <tr> 
+    <td>Cosh (<em>x</em>)</td>
+    <td>Returns the hyperbolic cosine: <em>y = cosh (x)</em>.</td>
+  </tr>
+  <tr> 
+    <td>Exp (<em>x</em>)</td>
+    <td>Returns e (the base of natural logarithms) raised to a power: <em> y = exp (x)</em>.</td>
+  </tr>
+  <tr> 
+    <td>Floor (<em>x</em>)</td>
+    <td>Returns a value representing the largest integer that is less than or equal to x: <em>y = floor (x)</em>.</td>
+  </tr>
+  <tr> 
+    <td>Ln (<em>x</em>)</td>
+    <td>Returns the natural logarithm of the number (base e): <em>y = ln (x)</em>.</td>
+  </tr>
+  <tr> 
+    <td>Log (<em>x</em>)</td>
+    <td>Returns the common logarithm (base 10) of the specified numeric expression: <em>y = log (x)</em>.</td>
+  </tr>
+  <tr> 
+    <td>Round (<em>x</em>)</td>
+    <td>Returns a real value representing the closest integer to the argument: <em>y = round (x)</em>.</td>
+  </tr>
+  <tr> 
+    <td>Sin (<em>x</em>)</td>
+    <td>Returns the sine: <em>y = sin (x)</em>.</td>
+  </tr>
+  <tr> 
+    <td>Sinh (<em>x</em>)</td>
+    <td>Returns the hyperbolic sine: <em>y = sinh (x)</em>.</td>
+  </tr>
+  <tr> 
+    <td>Sqrt (<em>x</em>)</td>
+    <td>Returns the square root of the given argument: <em>y = sqrt (x)</em> (not defined for x&lt;0).</td>
+  </tr>
+  <tr> 
+    <td>Square (<em>x</em>)</td>
+    <td>Returns the square of the given expression: <em>y = x*x</em>.</td>
+  </tr>
+  <tr> 
+    <td>Tan (<em>x</em>)</td>
+    <td>Returns the tangent: <em>y = tan (x)</em> (not defined for |x| = <font face="Times New Roman" size="2">&#960;</font>/2).</td>
+  </tr>
+  <tr>
+    <td>Tanh (<em>x</em>)</td>
+    <td>Returns the hyperbolic tangent: <em>y = tanh (x)</em></td>
+  </tr>
+</table>
+<h4 id="TwoArgumentFunctions">Two Argument Functions</h4>
+<p>The following functions with two arguments are available:</p>
+<table class="Table-Grey">
+  <tr> 
+    <th>Function Name</th>
+    <th>Description</th>
+  </tr>
+  <tr> 
+    <td>Atan2 (<em>arg1</em>, <em>arg2</em>)</td>
+    <td>Arctangent: arcus tan (<em>arg1</em> / <em>arg2</em>) (if <em>arg1</em> = <em>arg2</em> = <em>0</em>, the result is <em>0</em>).</td>
+  </tr>
+  <tr> 
+    <td>Fmod (<em>arg1</em>, <em>arg2</em>)</td>
+    <td>Floating-point remainder.</td>
+  </tr>
+  <tr> 
+    <td>Hypot (<em>arg1</em>, <em>arg2</em>)</td>
+    <td>Calculates the hypotenuse: <em>y = sqrt (arg1^2 + arg2^2)</em>.</td>
+  </tr>
+  <tr> 
+    <td>Max (<em>arg1</em>, <em>arg2</em>)</td>
+    <td>Returns the greater of two values <em>(arg1, arg2)</em>.</td>
+  </tr>
+  <tr> 
+    <td>Min (<em>arg1</em>, <em>arg2</em>)</td>
+    <td>Returns the smaller of two values <em>(arg1, arg2)</em>.</td>
+  </tr>
+  <tr> 
+    <td>IntervalMax (<em>arg1</em>, <em>arg2</em>)</td>
+    <td>Returns maximum value of <em>arg1</em> within the last <em>arg2</em> seconds.</td>
+  </tr>
+  <tr> 
+    <td>IntervalMin (<em>arg1</em>, <em>arg2</em>)</td>
+    <td>Returns minimum value of <em>arg1</em> within the last <em>arg2</em> seconds.</td>
+  </tr>
+</table>
+<p>All arguments are float arguments. Following the common mathematical rules a function will return <em>NaN</em> if one of the arguments are <em>NaN</em>. This applies to all functions.</p>
+<h4 id="InterpolationFunctions">Interpolation Functions </h4>
+<p>The following linear interpolation functions for breakpoint tables stored in the Configuration Server are available. The breakpoint tables have to be monotone.</p>
+<table class="Table-Grey">
+  <tr> 
+    <th>Function Name</th>
+    <th>Description</th>
+  </tr>
+  <tr> 
+    <td>Lookup (<em>n</em>, <em>x</em>)</td>
+    <td><em>n</em> identifies the two dimensional breakpoint table.<br>
+        Returns the y value <em>y = f<sub>n</sub>(x)</em>.</td>
+  </tr>
+  <tr> 
+    <td>LookupInv (<em>n</em>, <em>y</em>)</td>
+    <td><em>n</em> identifies the two dimensional breakpoint table.<br>
+        Returns x value for which <em>y = f<sub>n</sub>(x)</em>.</td>
+  </tr>
+  <tr> 
+    <td>Lookup3d (<em>n</em>, <em>x</em>, <em>y</em>)</td>
+    <td><em>n</em> identifies the three dimensional table.<br>
+        Returns the z value <em>z = f<sub>n</sub>(x, y)</em>.</td>
+  </tr>
+  <tr> 
+    <td>Lookup3dInvX (<em>n</em>, <em>y</em>, <em>z</em>)</td>
+    <td><em>n</em> identifies the three dimensional table.<br>
+        Returns x value for which <em>z = f<sub>n</sub>(x, y)</em>.</td>
+  </tr>
+  <tr> 
+    <td>Lookup3dInvY (<em>n</em>, <em>x</em>, <em>z</em>)</td>
+    <td><em>n</em> identifies the three dimensional table.<br>
+        Returns y value for which <em>z = f<sub>n</sub>(x, y)</em>.</td>
+  </tr>
+</table>
+<p>The first parameter <em>n</em> of the interpolation functions is the name of the breakpoint table. The UFE will provide a list of existing 
+  breakpoint tables, which the user can specify.</p>
+<p>These functions will use the interpolation capabilities of the configuration server. If the arguments for the interpolation functions are outside of the domain of the breakpoint tables, the returned value will be <em>NaN</em>, i.e. no extrapolation will be done. If the result of some interpolation is not unique, the returned value will be <em>NaN</em>, too.</p>
+<h4 id="Boolean Functions">Boolean Functions</h4>
+<table class="Table-Grey">
+  <tr> 
+    <th>Function Name</th>
+    <th>Description</th>
+  </tr>
+  <tr> 
+      <td>Initialisation ()</td>
+    <td>Returns TRUE if the User Function is executed the first time.</td>
+  </tr>
+  <tr> 
+    <td>FirstTime (<em>bExpr</em>)</td>
+    <td>Returns TRUE, if the Boolean expression <em>bExpr</em> is TRUE for the first time.</td>
+  </tr>
+  <tr> 
+    <td>LastTime (<em>bExpr</em>)</td>
+    <td>Returns TRUE, if the Boolean expression <em>bExpr</em> is FALSE for the first time after having been TRUE before.</td>
+  </tr>
+  <tr> 
+    <td>AllEvents ()</td>
+    <td>Returns TRUE if all FirstTime and LastTime functions in the User Function have been TRUE once.</td>
+  </tr>
+  <tr> 
+    <td>Isnan (<em>x</em>)</td>
+    <td>Returns TRUE, if <em>x</em> is <em>NaN</em> (Not a Number).</td>
+  </tr>
+  <tr> 
+    <td>BitTest (<em>x</em>, <em>bit</em>)</td>
+    <td>Returns TRUE, if the Bit with the number <em>bit</em> in the value <em>x</em> is enabled, FALSE otherwise.</td>
+  </tr>
+</table>
+<h4 id="AerodynamicFunctions">Build-in Aerodynamic Functions</h4>
+<table class="Table-Grey">
+  <tr> 
+    <th>Function Name</th>
+    <th>Description</th>
+  </tr>
+  <tr>  
+    <td>GRAIN (<em>p</em>, <em>t</em>, <em>phi</em>)</td>
+    <td>Returns vapour content of dry air [grains], where<br>
+        <em>p</em>: air pressure[kPa/cm2]<br>
+        <em>t</em>: temperature [Cel]<br>
+        <em>phi</em>: relative humidity [-]</td>
+  </tr>
+  <tr> 
+    <td>Sr2 (<em>fa</em>, <em>t</em>)</td>
+    <td>Returns medium enthalpy [kJ/kg], where<br>
+        <em>fa</em>: fuel-air-ratio [-]<br>
+        <em>t</em>: temperature [K]<br>
+        This calculation applies to air and vapour.</td>
+  </tr>
+  <tr> 
+    <td>Sr5 (<em>fa</em>, <em>t</em>, <em>ds</em>)</td>
+    <td>Returns temperature [K] for air and vapour, where<br>
+        <em>fa</em>: fuel-air-ratio [-]<br>
+        <em>t</em>: inlet temperature [K]<br>
+        <em>Ds</em>: enthalpy difference [kJ/kg]</td>
+  </tr>
+</table>
+<h4 id="DateTimeFunctions">Date and Time Functions</h4>
+<table class="Table-Grey">
+  <tr> 
+    <th>Function Name</th>
+    <th>Description</th>
+  </tr>
+  <tr>  
+    <td>Date ()</td>
+    <td>This function returns the current date of the RTE in days since 31.12.1899 as real number.</td>
+  </tr>
+  <tr> 
+    <td>Time ()</td>
+    <td>Returns the time as part of the current day in seconds as real number.</td>
+  </tr>
+  <tr> 
+    <td>TimeSince (<em>date</em>, <em>time</em>)</td>
+    <td>Returns the time difference between <em>date</em> and <em>time</em> and the current date and time.</td>
+  </tr>
+  <tr> 
+    <td>TimeDiff (<em>date1</em>, <em>time1</em>, <em>date2</em>, <em>time2</em>)</td>
+    <td>Returns the time difference between <em>date1</em> and <em>time1</em> and <em>date2</em> and <em>time2</em>.</td>
+  </tr>
+</table>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

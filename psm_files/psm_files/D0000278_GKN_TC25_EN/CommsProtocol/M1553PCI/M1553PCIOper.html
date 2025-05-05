@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>M1553 PCI System - Operation</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left><h1>M1553 PCI System<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<h2>Operation</h2>
+<p>The M1553 PCI System provides a means of receiving and transmitting electronic information between the Electronic Engine Control (EEC) and proDAS on the PCI bus located in the <a href="../../CompCfg/HostPC/HostPCOverview.html">Linux Host Computer</a>, located in Equipment Rack CM1, in the Computer Room. The M1553 PCI channels are defined in the <a href="../../proDASHelp/DASSubSysConfig/M1553/M1553.htm">M1553 Subsystem Driver</a> and are configured with the <a
+href="../../proDASHelp/DASSubSysConfig/ChannelEditor/ChannelEditor.htm">Channel Editor</a>.</p>
+<p>The M1553 PCI System includes:</p>
+<ul>
+  <li><a href="M1553PCIComp.html">Ballard Omnibus PCI M1553 Interface Card</a></li>
+  <li><a href="M1553PCIComp.html">M1553 Subsystem Driver</a></li>
+</ul>
+<p>The level &quot;C&quot; M1553 modules provide the following functionality: </p>
+<ul>
+  <li>software selectable bus termination</li>
+  <li>configurable Remote Terminal (RT) response times</li>
+</ul>
+<p>Each databus on all OmniBus M1553 modules has a 75 ohm termination resistor that can be switched across the direct-coupled terminals under software control.</p>
+<p class="Note">When a transformer coupling is used, the direct-coupled termination resistance must be off, and external couplers and terminators are required.</p>
+
+<p>The RT response time is measured from the mid-set zero crossing of the parity bit to the mid-bit zero crossing of the status word. The RT response time may be set through software using the <em>BTI1553_RTResponseTimeSet</em> function. For more details on the operation of the M1553 PCI card see <a href="../../References/VendorDocs/Ballard/UMMA133-20120925.pdf">MIL-STD-1553 Programming Manual for BTIDriver-Compliant Devices</a> and <a href="../../References/VendorDocs/Ballard/UMMA141091407.pdf">OmniBus PCI/cPCI User's Manual Interface Card to Avionics Databuses</a>.</p>
+<h2>Troubleshooting</h2>
+<p>See the <a href="M1553PCIVDocs.html">user manuals</a> for details on troubleshooting the M1553 PCI System.</p>
+<p>The following special tools and equipment are required to perform troubleshooting.</p>
+<ul>
+  <li>Mi-1553B Bus reader </li>
+  <li>Ballard OmniBus Box and CoPilot software</li>
+</ul>
+<p><br>
+  <br>
+</p>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

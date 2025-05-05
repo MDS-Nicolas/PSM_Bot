@@ -1,0 +1,420 @@
+<!DOCTYPE HTML PUBliC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>How To &ndash; Run an Engine in Run Mode (Auto)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left>
+<h1>How To &ndash; Run an Engine in Run Mode (Auto)<a href="#" onClick="window.print(); return false;"><img src="../../../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<p>This <strong>How To</strong> provides the steps and information required to run an engine in Auto Throttle Mode.</p>
+<h2><a id="RunMode" name="RunMode"></a>Running an Engine in Auto Throttle Mode</h2>
+<p>Auto Throttle Mode allows the engine to be controlled automatically. The engine can be controlled by commanding angle positions, such as Power Lever Angle (PLA) or Throttle lever Angle (TLA), or by commanding an engine parameter such as thrust or engine speed. The Throttle System can be setup to control up to 4 engine parameters, in addition to lever angle position. The parameters must be linearly proportional to lever angle (or close to linear). Examples of parameters that can be controlled are Thrust or Engine Speed.</p>
+<p>The commands used to control the engine may be via a script located directly on the throttle display computer or via an external source, such as proDAS. Auto Throttle can also be started, stopped or paused by external discrete inputs and power settings controlled by a remote analogue command signal.</p>
+<h3><a id="AutoRunTopics" name="AutoRunTopics"></a>Auto Run Mode Topics</h3>
+<ul>
+  <li><a href="#AnalogueDIO">Analogue Discrete Inputs and Outputs</a></li>
+  <li><a href="#AutoModeADIO">Starting Auto Mode Using Analogue/Discrete Inputs</a></li>
+  <li><a href="#PauseAMADIO">Pausing Auto Mode Using Analogue/Discrete Inputs</a></li>
+  <li><a href="#ResumeAMADIO">Resuming Auto Mode Using Analogue/Discrete Inputs(after Pause)</a></li>
+  <li><a href="#StopAMADIO">Stopping Auto Mode Using Analogue/Discrete Inputs</a></li>
+  <li><a href="#ChangeModesADIO">Changing Control Modes Using Analogue/Discrete Inputs</a></li>
+  <li><a href="#AutoScripts">Auto Mission Scripts</a></li>
+  <li><a href="#proDASTestProc">Auto missions run using proDAS test procedures</a></li>
+  <li><a href="#AutoClientScript">Auto missions run from a script stored in the throttle quadrant Display Computer</a></li>
+  <li><a href="#Interlocks">Auto Throttle Mode Interlocks</a></li>
+  <li><a href="#StartAutoThrottle">Starting an Auto Throttle Mission</a></li>
+  <li><a href="#AutoRamp">Auto Ramp (Auto Throttle)</a></li>
+  <li><a href="#StartAutoMission">Auto Mission (Auto Throttle)</a></li>
+</ul>
+<h3><a id="AnalogueDIO" name="AnalogueDIO"></a>Analogue Discrete Inputs and Outputs</h3>
+<p>Auto Mission can be started via a discrete input to the controller. An analogue DC voltage input to the throttle controller acts as the power setting command. This command signal is calibrated to give a value from 0 - 100%. The feedbacks are read via voltage inputs. These inputs are calibrated to give values from 0 - 100%.</p>
+<p>When using discrete inputs to control Auto Throttle, the correct Auto Throttle Mode must be set before Auto Throttle is started. The system has three discrete inputs used to select the mode.</p>
+<ul>
+  <li>Mode Select #1 (In conjunction with Mode Select #2 determines the mode)</li>
+  <li>Mode Select #2 (In conjunction with Mode Select #1 determines the mode)</li>
+  <li>Mode Select #3 (Determines which Actuator is used. Actuator 1 = Right lever control, Actuator 2= Left lever control)</li>
+</ul>
+<p>The table below identifies the Mode Select from PLC Bits settings.</p>
+<table cellspacing="1" class="Table-Grey">
+  <tr>
+  <th width="22%">Mode Select #3 (Bit 2)</th>
+  <th width="22%">Mode Select #2 (Bit 1)</th>
+  <th width="22%">Mode Select #1 (Bit 0)</th>
+  <th width="34%">Mode</th>
+  </tr>
+  <tr>
+  <td>0</td>
+  <td>0</td>
+  <td>0</td>
+  <td>Actuator 1 Manual Run Mode (Selected by GUI)</td>
+  </tr>
+  <tr>
+  <td>0</td>
+  <td>0</td>
+  <td>1</td>
+  <td>Actuator 1: PLA</td>
+  </tr>
+  <tr>
+  <td>0</td>
+  <td>1</td>
+  <td>0</td>
+  <td>Actuator 1: FB1</td>
+  </tr>
+  <tr>
+  <td>0</td>
+  <td>1</td>
+  <td>1</td>
+  <td>Actuator 1: FB2</td>
+  </tr>
+  <tr>
+  <td>1</td>
+  <td>0</td>
+  <td>0</td>
+  <td>Actuator 2 Manual Run Mode (Selected by GUI)</td>
+  </tr>
+  <tr>
+  <td>1</td>
+  <td>0</td>
+  <td>1</td>
+  <td>Actuator 2: CLA</td>
+  </tr>
+  <tr>
+  <td>1</td>
+  <td>1</td>
+  <td>0</td>
+  <td>Actuator 2: FB1</td>
+  </tr>
+  <tr>
+  <td>1</td>
+  <td>1</td>
+  <td>1</td>
+  <td>Actuator 2: FB2</td>
+  </tr>
+</table>
+<p>No action is required from the operator if Auto Throttle Mode is selected from a remote system. The operator however can revert back to Manual Mode at any time during the auto mission by performing one of the following actions:</p>
+<ul>
+  <li>manually moving the lever</li>
+  <li>pressing either of the Trip buttons</li>
+  <li>pressing the Cancel button on the throttle quadrant screen</li>
+</ul>
+<p>The remote trip inputs also initiate a trip and stops the mission.</p>
+<p>Using analogue/discrete inputs is well suited for users who want to use an existing test cell system (like an Engine Control System) to control engine power.</p>
+<p>The system can be controlled automatically via a single analogue input. This analogue input controls both the setpoint and rate of change of the commanded variable (PLA or Feedback).</p>
+<p>In the first mode (Right Lever Mode), the analogue input controls the setpoint and rate of change of the power lever angle. The signal to the engine (resolver, Actuator or RVDT) follows the setpoint set by the analogue input. As the rate at which the input changes, so does the rate of the command signal to the engine.</p>
+<p>In the other modes, another analogue input is provided as the feedback variable. This feedback is representative of an engine parameter. In these modes, the command input represents a value in the EU units of the engine parameter. The Throttle System adjusts the engine command signal until the feedback parameter equals the commanded value. The feedback variable can be any engine parameter that responds linearly to power lever angle (typically Engine Speed or Thrust).</p>
+<p>The operation of Auto Throttle Mode using analogue/discrete inputs relies on the commanding system to ensure proper sequencing.</p>
+<p>Return to <a href="#AutoRunTopics">Auto Run Mode Topics</a>.</p>
+<h3><a id="AutoModeADIO" name="AutoModeADIO"></a>Starting Auto Mode Using Analogue/Discrete Inputs</h3>
+<ol>
+  <li>The commanding system must set the analogue output to the position corresponding to the current lever position. This step ensures that the lever and engine does not respond to a sudden change in commanded input.</li> 
+  <li>The commanding system must set the Mode Select bits to required values. The potential modes are shown in the above table.</li> 
+  <li>The commanding system must toggle the Remote Mission Start bit high for 1 sec and then turn it off.</li>
+</ol>
+<p>Return to <a href="#AutoRunTopics">Auto Run Mode Topics</a>.</p>
+<h3><a id="PauseAMADIO" name="PauseAMADIO"></a>Pausing Auto Mode Using Analogue/Discrete Inputs</h3>
+<ul>
+  <li>The commanding system must toggle the Remote Mission Pause bit high for 1 sec and then turn it off.</li>
+</ul>
+<p>Return to <a href="#AutoRunTopics">Auto Run Mode Topics</a>.</p>
+<h3><a id="ResumeAMADIO" name="ResumeAMADIO"></a>Resuming Auto Mode Using Analogue/Discrete Inputs(after Pause)</h3>
+<ul>
+  <li>The commanding system must toggle the Remote Mission Start bit high for 1 sec and then turn it off.</li>
+</ul>
+<p>Return to <a href="#AutoRunTopics">Auto Run Mode Topics</a>.</p>
+<h3><a id="StopAMADIO" name="StopAMADIO"></a>Stopping Auto Mode Using Analogue/Discrete Inputs</h3>
+<ol>
+  <li>The commanding system must set the three Mode Select bits to off.</li>
+  <li>The commanding system must toggle the Remote Mission Stop bit high for 1 sec and then turn it off.</li>
+</ol>
+<p>Return to <a href="#AutoRunTopics">Auto Run Mode Topics</a>.</p>
+<h3><a id="ChangeModesADIO" name="ChangeModesADIO"></a>Changing Control Modes Using Analogue/Discrete Inputs</h3>
+<ol>
+  <li>The commanding system must set the three Mode Select bits to off.</li>
+  <li>The commanding system must toggle the Remote Mission Stop bit high for 1 sec and then turn it off.</li>
+  <li>The commanding system must set the analogue output to the position corresponding to the current lever position. This step ensures that the lever and engine does not respond to a sudden change in commanded input.</li>
+  <li>The commanding system must set the Mode Select bits to required values. The potential modes are shown in the above table.</li>
+  <li>The commanding system must toggle the Remote Mission Start bit high for 1 sec and then turn it off. </li>
+</ol>
+<p>Return to <a href="#AutoRunTopics">Auto Run Mode Topics</a>.</p>
+<h3><a name="AutoScripts"></a>Auto Mission Scripts</h3>
+<p>Two types of auto missions can be run with auto mission scripts:</p>
+<ul>
+  <li><a href="#proDASTestProc">Auto missions run using proDAS test procedures</a></li>
+  <li><a href="#AutoClientScript">Auto missions run from a script stored in the throttle quadrant Display Computer</a></li>
+</ul>
+<p>Return to <a href="#AutoRunTopics">Auto Run Mode Topics</a>.</p>
+<h3><a name="proDASTestProc"></a><strong>Auto missions run using proDAS test procedures</strong></h3>
+<p>Using auto mission scripts, Throttle control commands can be sent from MDS' proDAS test procedures. Power setting commands become fully integrated with step-by-step test instructions and data recording. Test procedure commands are communicated via Ethernet.</p>
+<p>Setpoint and feedbacks for closed loop control are sent from proDAS to the throttle controller via an OPC connection. These values are sent to the Throttle in engineering units and the DAMMoveChannel_Min and DAMMoveChannel_Max values in the Throttle configuration are used to scale the inputs to a value from 0 - 100%. The set point is sent to the controller software via the display software. This value is read in engineering units and the DAMMoveChannel_Min and DAMMoveChannel_Max values are used to scale the set point to a value from 0 - 100%.</p>
+<p>The advantage of using digital control over analogue control is that because command and feedback values are sent digitally via an Ethernet link, there are no analogue signals to calibrate. It is also possible to provide feedback from calculated channels in proDAS, for example parameters corrected to Standard Day conditions. Another advantage to using proDAS test procedures is the integration between Throttle movements and data recording. Steady state and transient logs can be started and stopped at the proper time without intervention from the operator allowing for more consistent testing.</p>
+<p>If communication between the Data Acquisition System and the Throttle System are lost while in Auto Throttle, the last commanded Throttle position is maintained and the Throttle System is placed under manual control.</p>
+<p>Auto mission scripts can be created using the proDAS Script Editor. For details, see the Script Editor in proDAS Integrated Help if your facility has an MDS proDAS installation.</p>
+<p>The following digital commands are supported:</p>
+<table cellspacing="1" class="Table-Grey">
+  <tr>
+    <th width="25%">Command</th>
+    <th width="75%">Description</th>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>at_startreadonlymode()</strong></td>
+    <td vAlign="top">Auto Throttle Mode data can be displayed but the system cannot be run in Auto Throttle Mode. This allows the test procedure to run get commands but not set commands.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>at_startautomode()</strong></td>
+    <td vAlign="top">Puts the Throttle System into Auto Throttle Mode. The system must be in RUN Mode and no errors, interlocks or trips are set.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>at_stopautomode()</strong></td>
+    <td vAlign="top">Puts the system into Manual Mode.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>at_getchannel()</strong></td>
+    <td vAlign="top">Reads the current value of the given PLC tag.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>at_ischannelvalid()</strong></td>
+    <td vAlign="top">Verifies the alias of the registered PLC tag.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>at_setchannel()</strong></td>
+    <td vAlign="top">Sets the registered PLC tag to the supplied value.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>at_move()</strong></td>
+    <td vAlign="top">Performs the synchronous engine movement.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>at_moveasync()</strong></td>
+    <td vAlign="top">Starts the engine movement asynchronously and returns control back to the test procedure.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>at_movedelay()</strong></td>
+    <td vAlign="top">Sets up the engine movement but the movement isn't initiated until the at_movedelaystart() command is issued.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>at_movedelaystart()</strong></td>
+    <td vAlign="top">Performs the synchronous engine movement(s) which were specified by the previously sent at_movedelay() commands.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>at_movedelaystartasync()</strong></td>
+    <td vAlign="top">Starts engine movement(s) which were specified by the previously sent at_movedelay() commands asynchronously and returns control back to the test procedure.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>at_pause()</strong></td>
+    <td vAlign="top">Suspends the engine movement.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>at_continue()</strong></td>
+    <td vAlign="top">Resumes the engine movement.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>at_abortmove</strong><strong>()</strong></td>
+    <td vAlign="top">Stops the engine movement but leaves the system in auto mode.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>at_getstatus</strong><strong>()</strong></td>
+    <td vAlign="top">Retrieves the Throttle Auto Mode status.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>at_setopenloopmode()</strong></td>
+    <td vAlign="top">Puts the system into Open Loop mode.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>at_setclosedloopmode()</strong></td>
+    <td vAlign="top">Puts the system into Closed Loop mode.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>at_runmission()</strong></td>
+    <td vAlign="top">Launches the mission script located on the throttle display computer.</td>
+  </tr>
+</table>
+<p>The script below is an example of a proDAS test procedure auto mission script.</p>
+<br>
+<div class="Container"><img src="images/AutoThrottleScript.png" alt="Auto Throttle Script" width="851" height="253"></div>
+<p><br>
+  Points to remember when creating a proDAS test procedure:</p>
+</p>
+<ul>
+  <li>test Procedures are not case sensitive</li> 
+  <li>test Procedures must issue an at_startautomode command before any move or setchannel commands</li> 
+  <li>test Procedures must issue an at_stopautomode command to allow other clients to run auto Throttle commands</li> 
+  <li>a return code should be used (retCode). This ensures that the auto-mission is stopped if an error is returned and it aids debugging the script</li>
+</ul>
+
+  <p class="Note">If a return code is not used, the auto mission continues even if a command is not successfully completed.</p>
+<p>Return to <a href="#AutoRunTopics">Auto Run Mode Topics</a>.</p>
+<h3><a id="AutoClientScript" name="AutoClientScript"></a><strong>Auto Missions run from a script stored in the throttle quadrant display computer</strong></h3>
+<p>Auto Missions can be run without the use of an external Data Acquisition System (DAS) using auto mission scripts that are stored in the throttle quadrant display computer. For details on the location of the mission scripts, see <a href="Configuration.html">Configuration</a>. The scripts are similar to proDAS test procedures but with a few syntax differences.</p>
+<p>The following digital commands are supported:</p>
+<table cellspacing="1" class="Table-Grey">
+  <tr>
+    <th width="24%">Command</th>
+    <th width="76%">Description</th>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>atc.startautomode()</strong></td>
+    <td vAlign="top">Puts the Throttle System into Auto Throttle Mode. The system must be in RUN Mode and no errors, interlocks or trips are set.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>atc.stopautomode()</strong></td>
+    <td vAlign="top">Puts the system into Manual Mode.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>atc.getchannel()</strong></td>
+    <td vAlign="top">Reads the current value of the given PLC tag.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>atc.ischannelvalid()</strong></td>
+    <td vAlign="top">Verifies the alias of the registered PLC tag.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>atc.setchannel()</strong></td>
+    <td vAlign="top">Sets the registered PLC tag to the supplied value.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>atc.move()</strong></td>
+    <td vAlign="top">Performs the synchronous engine movement.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>atc.moveasync()</strong></td>
+    <td vAlign="top">Starts the engine movement asynchronously and returns control back to the test procedure.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>atc.movedelay()</strong></td>
+    <td vAlign="top">Sets up the engine movement but the movement isn't initiated until the at_movedelaystart() command is issued.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>atc.movedelaystart()</strong></td>
+    <td vAlign="top">Performs the synchronous engine movement(s) which were specified by the previously sent at_movedelay() commands.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>atc.movedelaystartasync()</strong></td>
+    <td vAlign="top">Starts engine movement(s) which were specified by the previously sent at_movedelay() commands asynchronously and returns control back to the test procedure.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>atc.pause()</strong></td>
+    <td vAlign="top">Suspends the engine movement.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>atc.continue()</strong></td>
+    <td vAlign="top">Resumes the engine movement.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>atc.abortmove</strong><strong>()</strong></td>
+    <td vAlign="top">Stops the engine movement but leaves the system in auto mode.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>atc.getstatus</strong><strong>()</strong></td>
+    <td vAlign="top">Retrieves the Throttle Auto Mode status.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>atc.setopenloopmode()</strong></td>
+    <td vAlign="top">Puts the system into Open Loop mode.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>atc.setclosedloopmode()</strong></td>
+    <td vAlign="top">Puts the system into Closed Loop mode.</td>
+  </tr>
+  <tr>
+    <td vAlign="top"><strong>atc.runmission()</strong></td>
+    <td vAlign="top">Launches the mission script located on the throttle display computer.</td>
+  </tr>
+</table>
+<p>The script below is an example of a throttle quadrant auto mission script.</p>
+<br>
+<div class="Container"><img src="images/AutoThrottleScriptATC.png" alt="Auto Trottle Scipt" width="851" height="253"></div>
+<p><br>
+  Points to remember when creating  throttle quadrant auto mission scripts:</p>
+<ul>
+  <li>test Procedures are not case sensitive</li> 
+  <li>test Procedures must issue an atc.startautomode command before any move or setchannel commands</li> 
+  <li>the client name<strong> _gui</strong> must be declared by the atc.startautomode command</li>
+  <li>test Procedures must issue an atc.stopautomode command to allow other clients to run auto Throttle commands</li> 
+  <li>a return code should be used (code). This ensures that the auto-mission is stopped if an error is returned and it aids in debugging the script<br>
+ <p class="Note">If a return code is not used, the auto mission continues even if a command is not successfully completed.</p>
+  </li>
+</ul>
+<p>Return to <a href="#AutoRunTopics">Auto Run Mode Topics</a>.</p>
+<h3><a name="Interlocks"></a>Auto Throttle Mode Interlocks</h3>
+<p>The following interlocks must be met to enable Auto Throttle Mode:</p>
+<ul>
+  <li>Auto Throttle Mode is enabled in the master configuration file</li> 
+  <li>Trip to idle is not active</li> 
+  <li>Trip to Cut-off is not active</li> 
+  <li>The Throttle System is in Run Mode</li> 
+  <li>The GUI heartbeat is enabled</li> 
+  <li>Auto Throttle server communication is working</li>
+  <li>the Left lever and the Right lever must be stationary</li> 
+  <li>the feedback channels 1-5 are without fault (if relevant feedback sub mode is enabled)</li>
+</ul>
+<p>Return to <a href="#AutoRunTopics">Auto Run Mode Topics</a>.</p>
+<h3><a name="StartAutoThrottle"></a>Starting an Auto Throttle Mission</h3>
+<p>The following two types of Auto Throttle movers can be run from the throttle quadrant:</p>
+<ul>
+  <li><a href="#AutoRamp">Auto Ramp</a></li>
+  <li><a href="#StartAutoMission">Auto Mission</a></li>
+</ul>
+<p>Return to <a href="#AutoRunTopics">Auto Run Mode Topics</a>.</p>
+<h3><a name="AutoRamp"></a><strong>Auto Ramp (Auto Throttle)</strong></h3>
+<p>An Auto Ramp mission moves the engine to a lever angle setpoint and then returns the system to manual control. This set up does not require any configuration ahead of time.</p>
+<h4>To start Auto Ramp:</h4>
+<ol>
+  <li>On the bottom of the screen, press the <strong>Run </strong>button.<br>
+  The Run Mode screen is displayed.</li>
+  <p class="Note">An operator can only enter Run Mode after an engine is selected and (if applicable) all Actuators have been rigged.</p>
+  <li>On the bottom of the screen, press the<strong> Auto Ramp</strong> button.<br>
+  The Auto Ramp screen is displayed.</li>
+  <br>
+  <div class="Container"><img border="1" src="images/AutoRamp.png" alt="Auto Ramp" width="450" height="600"></div>
+  <br>
+  <li>Press the <strong>Position</strong> field.<br>
+  The keypad is displayed.</li>
+  <br>
+  <div class="Container"><img src="images/Keypad.png" alt="Keypad" width="278" height="339"></div>
+  <br>
+  <li>Enter the lever position (in degrees) that you want the Throttle System to run to and press <strong>Enter</strong>.</li> 
+  <li>Press the <strong>Move Time</strong> field (the keypad is displayed) and enter the run time for the Throttle System and press <strong>Enter</strong>.</li>
+  <li>Press the <strong>Start</strong> button.<br>
+  The move executes and the screen updates to show the mission status window. This window shows the move target, the move time,  the current position and elapsed time. Once the move is complete the status window closes and the Auto Ramp window is displayed.</li>
+  <br>
+  <div class="Container"><img border="1" src="images/MissioninProgress.png" alt="MIssion Progress" width="450" height="600"></div>
+  <br>
+</ol>
+<p>Return to <a href="#AutoRunTopics">Auto Run Mode Topics</a>.</p>
+<h3><a name="StartAutoMission"></a>Auto Mission (Auto Throttle)</h3>
+<p>The Auto Mission mode interface is used to perform auto throttle functions without the use of an external Data Acquisition System (DAS). An auto throttle mission, which contains parameters for a specific engine test, is selected from a list of auto mission files which are stored in the throttle quadrant.</p>
+<h4>To start an auto mission:</h4>
+<ol>
+  <li>On the bottom of the display computer screen, press the <strong>Run</strong> button.<br>
+  The Run Mode screen is displayed.</li>
+  <p class="Note">An operator can only enter Run Mode after an engine is selected and (if applicable) all actuators have been rigged.</p>
+  <li>On the bottom of the screen, press the<strong> Auto Mission</strong> button.</li>
+  <br>
+  <div class="Container"><img border="1" src="images/AutoMission.png" alt="Auto Mission" width="450" height="600"></div>
+  <br>
+  <li>From the <strong>Selected Mission</strong> list box, select the desired mission.</li>
+  <li>Press the <strong>Start</strong> button.<br>
+  The auto mission executes and the screen updates to show the Auto Mission in Progress window.</li>
+  <br>
+  <div class="Container"><img border="1" src="images/AutoStarted.png" alt="Auto Started" width="450" height="600"></div>
+  <br>
+</ol>
+<p>Return to <a href="#AutoRunTopics">Auto Run Mode Topics</a>.</p>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

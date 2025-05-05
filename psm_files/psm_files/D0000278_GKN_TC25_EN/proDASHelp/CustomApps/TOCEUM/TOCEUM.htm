@@ -1,0 +1,528 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>TOCEUM (Option*)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="TOCEUM">TOCEUM (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+
+<h2 id="Overview">Overview</h2>
+<p>The TOC and EUM is an External Hook program that monitors the state of the engine and records statistics, on the life usage of the engine, based on the channels selected for the engine test. TOC measures the amount of time that a limited number of channels spend within specified ranges during the engine test and the EUM counts engine cycles and computes a usage index for each cycle.</p>
+<p>The TOC and EUM External Hook program has two main components:</p>
+<ul>
+  <li>TOC (Time On Condition)</li>
+  <li>EUM (Engine Usage Monitor)</li>
+</ul>
+<p>The TOCEUM External Hook program is invoked at the beginning of an engine test by using the configuration information stored in the TOCEUM specific section of the RTE .config file. The TOCEUM External Hook program starts automatically when the RTE is configured and communicates with the External Hook driver that resides in the RTE.</p>
+<p class="Note">TOCEUM may not be configured for every customer.</p>
+<h2 id="ViewHealthReports">Viewing Engine Health Reports</h2>
+<p>From the Management GUI Control Panel Tools menu, select <strong>Post Test Functions / TOCEUM</strong> to display the TOC and EUM Report screen. The TOC and EUM Report screen has the following functions:</p>
+<ul>
+  <li><strong>Create Report</strong> from the accumulated data, see <a href="#GenerateEngHealthReport">Creating an Engine Health Report</a></li>
+  <li>View <strong>EUM Report</strong> (the Engine Usage Monitor Report), see <a href="#ViewEUMReports">Viewing and Printing an EUM Report</a></li>
+  <li>View <strong>TOC Report</strong> (the Time On Condition Report), see <a href="#ViewTOCReports">Viewing and Printing a TOC Report</a></li>
+  <li> View <strong>TOC Graph</strong> (the Time On Condition Graph), see <a href="#ViewTOCgraph">Viewing and Printing TOC Graphs</a></li>
+  <li><strong>Refresh</strong> to display current selected data </li>
+  <li><strong>Reset Data</strong> to start accumulating new data</li>
+  <li><strong>Send Report</strong> allows file transfer through Easifit</li>
+</ul>
+<h3 id="GenerateEngHealthReport">Creating an Engine Health Report</h3>
+<p>To create an engine health report:</p>
+<ol>
+  <li>From the Management GUI Control Panel Tools menu, select <strong>Post Test Function / TOCEUM</strong>. The TOC and EUM Report screen is displayed.
+    <div class="Container"><img src="images/CreateReport.png" alt="CreateReport" width="700" height="576"></div>
+    <p class="Note">The Create Report and Reset Data functions are restricted to authorized personnel.</p>
+  </li>
+  <li>Select <strong>Create Report</strong>.<br>
+    A message is displayed in the proDAS Event Handler and recorded in the Unified Event Log, indicating that the report is being generated.</li>
+  <li>Select <strong>Reset Data</strong> (the Reset Data function  resets all the counters that are used to compute the TOC and EUM statistical reports).<br>
+    A message is displayed in the proDAS Event Handler and recorded in the Unified Event Log, indicating that the timers have been reset.</li>
+</ol>
+<h3 id="ViewEUMReports">Viewing and Printing an EUM Report</h3>
+<p class="Note">An Engine Health report must be created before using this procedure to view or print a TOC or an EUM report, see <a href="?4#GenerateEngHealthReport">Creating an Engine Health Report</a><a href="#GenerateEngHealthReport"></a>.</p>
+<p>The EUM Report provides a summary of an engine usage index for each engine cycle based on the engine cycle and includes (refer to the example EUM Report below):</p>
+<ul>
+  <li>the date and time the EUM report was generated (i.e.: Feb 4 15:04:59 2004)</li>
+  <li>the engine type (i.e.: ATP_Calibration)</li>
+  <li>the test name (i.e.: SubsystemWork)</li>
+  <li>the test cell (i.e.: TC_ATP_Phase2_1)</li>
+  <li>the engine serial number (i.e.: 1234)</li>
+  <li>the engine build identification (i.e.: No_EngbuldNum)</li>
+  <li>the maximum speed in each cycle for each spool (i.e.: LPpc, IPpc, and HPpc)</li>
+  <li>the equivalent engine cycles for each spool (i.e.: LPpc, IPpc, and HPpc)</li>
+  <li>the total equivalent engine cycles for each spool (i.e.: LPpc 68727.000, IPpc 65114.062, and HPpc 0.000)</li>
+</ul>
+<p id="ViewToolbar">The View EUM Report provides an additional toolbar described in the table below:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Buttons and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td><img src="images/BtnGo1stpage.gif" alt="Btn Go1stpage" width="11" height="14"></td>
+    <td>Goes to the first page of the report. </td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnPrevious.gif" alt="Btn Previous" width="9" height="14"></td>
+    <td>Goes to the previous page of the report.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnNext.gif" alt="Btn Next" width="9" height="14"></td>
+    <td>Goes to the next page of the report. </td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnLastpage.gif" alt="Btn Last Page" width="11" height="14"></td>
+    <td>Goes to the last page of the report.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnGotopage.gif" alt="Btn Goto Page" width="16" height="19"></td>
+    <td>Prompts the user to enter a specific page in the report to view.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnPrint.gif" alt="Btn Print" width="15" height="14"></td>
+    <td>Prints the current report.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnExport.gif" alt="Btn Export" width="13" height="14"></td>
+    <td>Exports the report.</td>
+  </tr>
+  <tr>
+    <td><img src="images/BtnZoom.gif" alt="Btn Zoom" width="28" height="13"></td>
+    <td>Zooms in and out.</td>
+  </tr>
+</table>
+<p>To view and print an EUM report:</p>
+<ol>
+  <li>From the TOC and EUM Report screen <strong>Most Recent</strong> panel, select <strong>EUM Report</strong>.</li>
+  <li>Select <strong>Report View</strong> tab. The EUM Report is displayed.
+    <div class="Container"><img src="images/ViewEumReport.png" alt="View EUM Report" width="700" height="576"></div>
+  </li>
+  <li>Select <img src="images/BtnPrint.gif" alt="Btn Print" width="15" height="14"> to print a copy of the EUM Report.
+    <p class="Note">The operating range is defined in a configuration file see <a href="?6#ConfigFiles">TOCEUM Configuration Files</a>).<br>
+      By convention the configuration file is named: engine_type.config<br>
+      The configuration file is stored in the /users/RTE/bin/exe directory on the Host Computer.</p>
+  </li>
+</ol>
+<h3 id="ViewTOCReports">Viewing and Printing a TOC Report</h3>
+<p class="Note">An Engine Health report must be created before using this procedure to view or print a TOC or an EUM report, see <a href="?2#GenerateEngHealthReport">Creating an Engine Health Report</a>.</p>
+<p>The TOC Report provides a summary of how long an engine has been run at each operating bandwidth and includes (refer to the example TOC Report below):</p>
+<ul>
+  <li>the date and time the TOC report was generated (i.e.: 08.18.2006 10:06:07 AM) </li>
+  <li>the engine type (i.e.: ENGINE1)</li>
+  <li>the test name (i.e.: TEST1)</li>
+  <li>the test cell (i.e.: No_TestcellName)</li>
+  <li>the engine serial number (i.e.: No_EngSerialNum)</li>
+  <li>the engine build identification (i.e.: No_EngBuildNum)</li>
+  <li>the channel identification (i.e.: LP)</li>
+  <li>the total run time (i.e.:  Sum ) for all channel bandwidths (125.000)</li>
+  <li>the run time (i.e.: 0:00:00) for each bandwidth (i.e.: 0.000 RPM through 4000.000) of a channel (i.e.: LP)</li>
+</ul>
+<p class="Note">The total engine run time is displayed at the end of the TOC Report.</p>
+<p>The View TOC Report provides an additional toolbar. For details on the toolbar functions, see <a href="?5#ViewToolbar">the EUM Report toolbar functions description</a>.</p>
+<p>To view and print a TOC Report:</p>
+<ol>
+  <li>From the TOC and EUM Report screen <strong>Most Recent</strong> panel , select <strong>TOC Report</strong>.</li>
+  <li>Select <strong>Report View</strong> tab, the TOC Report is displayed.
+    <div class="Container"><img src="images/ViewTocReport.png" alt="View Toc Report" width="700" height="576"></div>
+  </li>
+  <li>Select <img src="images/BtnPrint.gif" alt="Btn Print" width="15" height="14"> to print a copy of the TOC Report.
+    <p class="Note">The bandwidths are defined in a configuration file ( see <a href="?3#ConfigFiles">TOCEUM Configuration Files</a>).<br>
+      By convention the configuration file is named: engine_type.config<br>
+      The configuration file is stored in the /users/RTE/bin/exe directory on the Host Computer.</p>
+  </li>
+</ol>
+<h3 id="ViewTOCgraph">Viewing and Printing TOC Graphs</h3>
+<p class="Note">An Engine Health report must be created before using this procedure to view or print a TOC or an EUM report, see <a href="?7#GenerateEngHealthReport">Creating an Engine Health Report</a>.</p>
+<p>The TOC graph provides a visual summary of how long an engine has been run in each operating band for a specified channel (N1). The TOC graph also provides the following information (refer to the example TOC graph below):</p>
+<ul>
+  <li>the engine type (i.e.: ATP_Calibration)</li>
+  <li>a brief explanation of what the graph represents (i.e.: Plot of Time vs. rpm in 10 rpm increments)</li>
+  <li>the engine number (i.e.: 1000)</li>
+  <li>the engine build number (i.e.: 100)</li>
+  <li>the test cell (i.e.: Stn-Bed01)</li>
+  <li>the total engine run time (i.e.: 0:04:13)</li>
+</ul>
+<p>To view and print TOC Graphs:</p>
+<ol>
+  <li>From the TOC and EUM Report screen <strong>Most Recent</strong> panel, select <strong>TOC Report</strong>.</li>
+  <li>To display TOC Graph, select a channel from the <strong>Select Channel for TOC Report</strong> panel. </li>
+  <li>Select <strong>Graph View</strong> tab. The TOC Graphical Report is displayed.
+    <div class="Container"><img src="images/ViewTocGraph.png" alt="View TOC Graph" width="700" height="576"></div>
+  </li>
+  <li>To display a TOC graph for another channel, select a channel from the <strong>Select Channel for TOC Report</strong> panel.</li>
+  <li>Select <img src="images/BtnPrint.gif" alt="Btn Print" width="15" height="14"> to print a copy of the graph.</li>
+</ol>
+<p class="Note">Mouse over the graph and right-click to display the print icon.</p>
+<h3>Viewing and Printing Historical Reports</h3>
+<p class="Note">An Engine Health report must be created before using this procedure to view or print a TOC or an EUM historical report, see <a href="?7#GenerateEngHealthReport">Creating  an Engine Health Report</a>.</p>
+<p>The Historical TOC and EUM Reports can be viewed through the TOCEUM display screen.</p>
+<p>To view and print Historical TOC and EUM Reports:</p>
+<ol>
+  <li>From the TOC and EUM Report screen <strong>Most Recent</strong> panel, select <strong>Select Specific Report</strong>.</li>
+  <li>Scroll to select either TOC or EUM test, listed in the panel below.<br>
+    If TOC test is selected, an option to select a Channel from the Select Channel for TOC Report is available. Viewing the TOC Graph is also enabled.
+    <div class="Container"><img src="images/ViewSummary.png" alt="View Summary" width="700" height="576"></div>
+  </li>
+  <li>Select <img src="images/BtnPrint.gif" alt="Btn Print" width="15" height="14"> to print a copy of the report.</li>
+</ol>
+<h2 id="ConfigTOCEUMCtrlChans">Configuring TOCEUM Channels</h2>
+<p>To configure a TOCEUM Channel:</p>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm"> Configuration Editors</a>.</li>
+  <li>Select the name of the TOCEUM Subsystem from the list of available subsystems.
+    <div class="Container"><img src="images/SelectSubsystemName.PNG" alt="Select Subsystem Name" width="387" height="317"></div>
+  </li>
+  <li>Fill the category independent columns as described in <a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm"> Configuration Editors</a>.</li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm">Channel Editor</a>.</li>
+  <li>There are no subsystem specific channel columns to enter.
+    <div class="Container"><img src="images/ChannelEditor.png" alt="Channel Editor" width="700" height="428"></div>
+  </li>
+</ol>
+<h3 id="ChansWhichMustExist">Channels Which Must Exist</h3>
+<p>Communication and computation by the RTE is directly related to the channel names defined for the subsystem and the channel names assigned to the TOCEUM parameters in the RTE .config file.</p>
+<p>The TOCEUM program always utilises the following channels, that must be defined as TOCEUM Subsystem channels:</p>
+<ul>
+  <li>TE_ERROR - a Boolean channel that informs the RTE if there is an error in the external program</li>
+  <li>TE_REPORT - a Boolean channel that is set to 1 to indicate to the external program to generate reports</li>
+  <li>TE_HEARTBEAT - a float channel that toggles between the external program and the RTE to ensure communication is alive</li>
+  <li>TE_RESET - a Boolean channel that requests the external program clear all report buffers, generate a report, and transfer the report to the downstream system</li>
+</ul>
+<p>In addition, the TOCEUM program relies on a trigger channel called TE_TRIGGER to notify it to start/stop accumulation. Typically, this channel is defined as a calculated channel that transitions to a value of 1 when the engine starts running. A value of 1 initiates the accumulation of statistics, and a value of 0 stops the accumulation of statistics.</p>
+<h2 id="ConfigFileStructure">Configuration File Structure</h2>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+<p>To import configuration information from an XML file, see <a href="../../DASSubSysConfig/ConfigEditors/ConfigEditors.htm#FileImportMenu"> Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import a <strong>TOCEUM</strong> channel, see <a href="?9#XMLFileStructure"> XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import a <strong>TOCEUM</strong> channel, see <a href="?10#TabDelimitFileStructure">Tab-Delimited File Structure</a>.</p>
+<h3 id="XMLFileStructure">XML File Structure</h3>
+<h4 id="ChannelsXML">Channels</h4>
+<p>The channel definitions are stored in the <em>Channels.xml</em> files in the configuration directories.</p>
+<p>A TOCEUM Channel contains generic information, described in <a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor - Generic Channel Parameters - XML File Structure</a>. There are no subsystem specific columns.</p>
+<p>The structure of a TOCEUM Channel complies with the following example:</p>
+<blockquote>
+  <pre>&lt;Channels LastModificationDate=&quot;2003-02-21 10:55:21&quot;&gt; 
+   &nbsp;&lt;Channel Name=&quot;TOC1&quot; 
+   &nbsp;&nbsp;Description=&quot;Time On Condition first channel&quot; 
+   &nbsp;&nbsp;Enabled=&quot;true&quot; 
+   &nbsp;&nbsp;LastModificationDate=&quot;2003-02-21 10:55:21&quot; 
+   &nbsp;&nbsp;SubsystemName=&quot;myTOCEUM&quot; 
+   &nbsp;&nbsp;SubsystemType=&quot;External&quot; 
+   &nbsp;&nbsp;AlternateName=&quot;&quot; 
+   &nbsp;&nbsp;DataType=&quot;Float&quot; 
+   &nbsp;&nbsp;InitialValue=&quot;0&quot; 
+   &nbsp;&nbsp;Format=&quot;4.2f&quot; 
+   &nbsp;&nbsp;UpdateRate=&quot;100&quot; 
+   &nbsp;&nbsp;QualityCeiling=&quot;GOOD&quot; 
+   &nbsp;&nbsp;Critical=&quot;true&quot; 
+   &nbsp;&nbsp;EngineeringUnit=&quot;&quot; 
+   &nbsp;&nbsp;DisplayMin=&quot;0&quot; 
+   &nbsp;&nbsp;DisplayMax=&quot;1&quot; 
+   &nbsp;&nbsp;DeadBand=&quot;2.5&quot; 
+   &nbsp;&nbsp;Output=&quot;true&quot; 
+   &nbsp;&nbsp;ReferenceChannel=&quot;&quot; 
+   &nbsp;&nbsp;Group=&quot;&quot; 
+   &nbsp;&lt;/Channel&gt; 
+   &lt;/Channels&gt;</pre>
+</blockquote>
+<h4 id="SubsystemsXML">Subsystems</h4>
+<p>The subsystem definitions are stored in the <em>Subsystems.xml</em> files in the configuration directories.</p>
+<p>The structure of a TOCEUM Subsystem is shown in the following example:</p>
+<blockquote>
+  <pre>&lt;Subsystem Name=&quot;myTOCEUM&quot;
+   Description=&quot;External TOCEUM processing&quot; 
+   Enabled=&quot;true&quot; 
+   LastModificationDate=&quot;2003-07-29 15:53:34&quot; 
+   Id=&quot;0&quot; 
+   Type=&quot;External&quot; 
+   CreationDate=&quot;2003-07-29 15:50:24&quot; 
+   Executable=&quot;&quot; 
+   Recalculate=&quot;false&quot;/&gt;
+   &lt;/Subsystems&gt;
+</pre>
+</blockquote>
+<p>TOCEUM Subsystem is configured as an External Subsystem which contains generic information, described in <a href="../../DASSubSysConfig/SubsystemEditor/SubsystemEditor.htm#XMLFileStructure">Subsystem Editor - Generic Subsystem Parameters - XML File Structure</a>. The specific attributes available to the external subsystem are not required to be defined.</p>
+<table class="Table-Grey">
+  <tbody>
+    <tr>
+      <th>Column Name</th>
+      <th>XML Attribute Name</th>
+      <th>Tab-Delimited Attribute Name</th>
+      <th>Description</th>
+      <th>Type</th>
+      <th>Acceptable Values</th>
+    </tr>
+    <tr>
+      <td>Executable</td>
+      <td>Executable</td>
+      <td>n/a</td>
+      <td>Displays the complete path to an executable file. In the case of TOCEUM, this value is stored in the .config file for the RTE.</td>
+      <td>String</td>
+      <td>A case sensitive string</td>
+    </tr>
+    <tr>
+      <td>Program Used for Recalculation</td>
+      <td>Recalculate</td>
+      <td>n/a</td>
+      <td>If the executable is used for recalculation, then this flag must be set. In the case of TOCEUM it will be false.</td>
+      <td>Check Box</td>
+      <td>n/a</td>
+    </tr>
+  </tbody>
+</table>
+<h3 id="TabDelimitFileStructure">Tab-Delimited File Structure</h3>
+<p>The TOCEUM Subsystem channel definition includes all <a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic channel definition columns</a>. No subsystem specific configuration information is required.</p>
+<h2 id="SubsysEditorTOCEUMchannels">Subsystem Editor for TOCEUM</h2>
+<p>To edit the TOCEUM Subsystem, the Subsystem Editor must be selected from within the Configuration Administrator.</p>
+<p>The tool bar in the Configuration Administrator allows the various configuration editors available for proDAS to be selected.</p>
+<p>The Subsystem Editor allows new subsystems to be added to the current configuration.</p>
+<div class="Container"><img src="images/SubsystemEditor.png" alt="Subsystem Editor" width="700" height="423"></div>
+<p>To add a new subsystem:</p>
+<ol>
+  <li>From the Edit menu, select Append Data Record or, in the left pane of the splitter window, click the right mouse button and select <strong>Append Data Record</strong> from the context sensitive menu.</li>
+  <li>Select <strong>External</strong> in the dialogue box to select the type of subsystem.<br>
+    A new line in the Subsystem Editor is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to <strong>External</strong>. The user must then assign a name and description to the subsystem.</li>
+</ol>
+<p>Since this input is defined using a textbox dialogue, the Subsystem menu item is greyed out and the textbox is edited directly.</p>
+<p class="Note">As TOCEUM is not used for recalculation, the appropriate box must not be checked.</p>
+<h2 id="ConfigFiles">TOCEUM Configuration Files</h2>
+<p>The Time On Condition (TOC) measures the amount of time that a specified number of channels spend within a specified range or band, during an engine test run. The ranges or bands are defined within the engine_type.config file. The Engine Usage Monitor (EUM) counts the engine cycles and computes a usage index for each cycle. The normal operating range as defined within the engine_type.config file.</p>
+<p class="Note">TOCEUM may not be configured for every customer.</p>
+<p>The TOCEUM External Hook driver is invoked at the beginning of an engine test by using the configuration information stored in the TOCEUM Subsystem specific section of the RTE initialisation file.</p>
+<p>TOCEUM is dependent upon specific information to function effectively. This information includes:</p>
+<ul>
+  <li><a href="?12#Config">configuration</a></li>
+  <li><a href="?13#MGTini">Management GUI Initialisation File</a></li>
+  <li><a href="?14#RTEInitialisationFile"> RTE Initialisation File</a></li>
+  <li><a href="?15#TOCEUMini">TOCEUM Initialisation File</a></li>
+  <li><a href="?16#EngSpecificini">Engine Specific Initialisation File</a></li>
+</ul>
+<h3 id="Config">Configuration</h3>
+<p>The Time On Condition Engine Usage Monitor (TOCEUM) requires a unique subsystem configuration. The channels in this configuration define how the External Hook driver communicates with the TOCEUM External Hook program.</p>
+<p>If any of the TOCEUM required channels (see <a href="?17#ChansWhichMustExist">Channels Which Must Exist</a>), or all of the channels specified in the engine specific configuration file don't exist, the TOCEUM program will report a UEL message and exit.</p>
+<p>If any of the channel values becomes BAD (equal to -99999), TOCEUM will generate a UEL message, and stop processing that channel.</p>
+<h3 id="MGTini">Management GUI Initialisation File</h3>
+<p>The Management GUI initialisation file (sample below) contains information required by the Management GUI in order to produce reports such as the report and reset channel names. This file is located in the proDAS/ini directory on the Management Interface Computer.</p>
+<p>[TOCEUM]<br>
+  ReportChannel=TE_REPORT<br>
+  ResetChannel=TE_RESET<br>
+  ReportPath=\\rtehost\logs<br>
+  TocEumSetTimeout=30</p>
+<h3 id="RTEInitialisationFile">RTE Initialisation File</h3>
+<p>The TOCEUM Subsystem is configured by the RTE, along with all the other subsystems, as a request from the Management GUI. For legacy purposes, the configuration request can also be specified in the command line of the RTE.</p>
+<p>A typical RTE initialisation file may include the following TOCEUM Subsystem information:</p>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="2">#--------------------------------------------------------------------------<br>
+      # An External Hook Subsystem<br>
+      #--------------------------------------------------------------------------</th>
+  </tr>
+  <tr>
+    <td>SS TOCEUM</td>
+    <td>TRUE</td>
+  </tr>
+  <tr>
+    <td>CI connection</td>
+    <td>SOCKET</td>
+  </tr>
+  <tr>
+    <td>CI serv_key</td>
+    <td>toceum_serv</td>
+  </tr>
+  <tr>
+    <td>CI program</td>
+    <td>/users/RTE/bin/exe/toceum -c   /users/RTE/bin/exe/.toceum.config -s</td>
+  </tr>
+  <tr>
+    <td>CI heartbeat</td>
+    <td>TE_HEARTBEAT</td>
+  </tr>
+  <tr>
+    <td>CI error</td>
+    <td>TE_ERROR</td>
+  </tr>
+  <tr>
+    <td>CI tolerance</td>
+    <td>300</td>
+  </tr>
+  <tr>
+    <td>CI retry</td>
+    <td>3</td>
+  </tr>
+  <tr>
+    <td>CI delay</td>
+    <td>10</td>
+  </tr>
+  <tr>
+    <td>CI allow_disable</td>
+    <td>No</td>
+  </tr>
+</table>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click here to see the RTE Initialisation file.</a></p>
+<h3 id="TOCEUMini">TOCEUM Initialisation File </h3>
+<p>The TOCEUM initialisation file (toc.config) contains information required by the external program such as the location of the engine specific initialisation files. It is located in the users/RTE/bin/exe directory on the Host Computer.</p>
+<p>A typical TOCEUM initialisation file is displayed below.</p>
+<p>=======================================================================<br>
+  #&nbsp;   Module for toceum information setup<br>
+  MD&nbsp;&nbsp;&nbsp; TOCEUM<br>
+  #&nbsp;   -----------------------------------------------------------------------<br>
+  #&nbsp;   The report path for the TOC and EUM report files<br>
+  CI&nbsp;&nbsp;&nbsp; report_path&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   /users/RTE/analysis/TE/report/<br>
+  CI&nbsp;&nbsp;&nbsp; root_path&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /users/RTE/<br>
+  #&nbsp;   -----------------------------------------------------------------------<br>
+  #&nbsp;   The engine config path having the engine configuration file<br>
+  CI&nbsp;&nbsp;&nbsp;   engine_config_path&nbsp;&nbsp; /users/RTE/bin/exe/<br>
+  #&nbsp;   -----------------------------------------------------------------------<br>
+  #&nbsp;   The required argument for the external program (i. e. EAIF) to send TOC   files<br>
+  CI&nbsp;&nbsp;&nbsp; ext_arg_toc&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -t toc<br>
+  #&nbsp;   -----------------------------------------------------------------------<br>
+  #&nbsp;   The required argument for the external program (i. e. EAIF) to send EUM   files<br>
+  CI&nbsp;&nbsp;&nbsp; ext_arg_eum&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -t eum<br>
+  #&nbsp;   -----------------------------------------------------------------------<br>
+  #&nbsp;   The reqd argument for the external program (i. e. EAIF) specify the   testname<br>
+  CI&nbsp;&nbsp;&nbsp; ext_testname_arg&nbsp;&nbsp;&nbsp;&nbsp; -b<br>
+  #&nbsp;   -----------------------------------------------------------------------<br>
+  #&nbsp;   The external program in charge of sending the TOCEUM files<br>
+  CI&nbsp;&nbsp;&nbsp;   ext_prog&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; /users/RTE/bin/exe/eaif<br>
+  #&nbsp;   -----------------------------------------------------------------------<br>
+  #&nbsp;   The reqd argument for the external program (i. e. EAIF) to recognize   customer<br>
+  CI&nbsp;&nbsp;&nbsp; ext_config_file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -f   /users/RTE/bin/exe/.eaif_r2d2.config<br>
+  #&nbsp;   -----------------------------------------------------------------------<br>
+  #&nbsp;   The trace file for the TOCEUM<br>
+  CI&nbsp;&nbsp;&nbsp; toceum_trace_file&nbsp;&nbsp;&nbsp;   /users/RTE/bin/tmp/trace.toc<br>
+  #&nbsp;   -----------------------------------------------------------------------<br>
+  #&nbsp;   The number of minutes to allow for a response from the EPHL server<br>
+  CI&nbsp;&nbsp;&nbsp;   ephl_timeout&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 20<br>
+  #&nbsp;   -----------------------------------------------------------------------<br>
+  #&nbsp;   The ability to download (EASIFIT) a new file that gets generated on exit of   TOCEUM<br>
+  CI&nbsp;&nbsp;&nbsp; enable_download&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; yes<br>
+  #&nbsp;   =======================================================================<br>
+  &lt;!&gt;   END OF CONFIG &lt;!&gt;</p>
+<h3 id="EngSpecificini">Engine Specific Initialisation File</h3>
+<p>The Engine specific initialisation file contains specific information about the channels contained in the configuration. This information is used  by the external program to gather data. There should be one file for every engine type. The file naming convention is ENGINE_NAME.config where ENGINE_NAME is the name of the engine as it appears in the TRSCDB. The location of these files is defined in the TOCEUM Initialisation File, /users/RTE/config/&lt;engine name&gt;/TOCEUM/.</p>
+<p>The engine specific initialisation file includes both a &lt;TOC&gt; section and an &lt;EUM&gt; section. In the &lt;TOC&gt; section, the channels to be monitored are listed, along with the minimum, maximum, and increment values used to mark the conditional bands.</p>
+<p>The time on condition external hook tracks the time each channel spends within each conditional band. The &lt;EUM&gt; section lists a threshold and count factor, as well as a reference value for each channel to be tracked.</p>
+<p class="Note">All values in the EUM section must be percentage values and the tracked channels should also reflect percentage values.</p>
+<p>The values in the &lt;EUM&gt; section are used to calculate a count factor for each channel, using the following equation:</p>
+<blockquote>
+  <p><img src="images/Equation.gif" alt="Equation" width="84" height="33"></p>
+</blockquote>
+<p>where:</p>
+<ul>
+  <li>CF is the count factor</li>
+  <li>N is the maximum value the channel reached during a particular cycle </li>
+  <li>NRef is the reference speed value as defined in the engine.config file (below) </li>
+  <li>y is the constant used in count factor equation</li>
+</ul>
+<p>The threshold value indicates the value at which the tracking will begin.</p>
+<p>The following example illustrates both TOC and EUM.</p>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="4">Description of columns</th>
+    <th>Example</th>
+  </tr>
+  <tr>
+    <td><br>
+      &lt;TOC&gt;<br>
+      LP<br>
+      IP<br>
+      HP<br>
+      TGT<br>
+      VIBN<br>
+      <br>
+      &lt;EUM&gt;<br>
+      Threshold<br>
+      Y<br>
+      LPpcref<br>
+      IPpcref<br>
+      HPpcref </td>
+    <td><br>
+      <br>
+      LPmin<br>
+      IPmin<br>
+      HPmin<br>
+      TGTmin<br>
+      VIBNmin<br>
+      <br>
+      <br>
+      Threshold<br>
+      Y<br>
+      LPpcref<br>
+      IPpcref<br>
+      HPpcref</td>
+    <td><br>
+      <br>
+      LPmax<br>
+      IPmax<br>
+      HPmax<br>
+      TGTmax<br>
+      VIBNmax<br>
+      <br>
+      <br>
+      Threshold<br>
+      Y<br>
+      LPpcref<br>
+      IPpcref<br>
+      HPpcref</td>
+    <td><br>
+      <br>
+      LPInterrupt <br>
+      IPInterrupt<br>
+      HPInterrupt<br>
+      TGTInterrupt<br>
+      VIBNInterrupt<br>
+      <br>
+      <br>
+      Threshold<br>
+      Y<br>
+      LPpcref<br>
+      IPpcref<br>
+      HPpcref </td>
+    <td><img src="images/TOCEUMconfig.gif" alt="TOCEUMconfig" border="0" hspace="0" vspace="0" width="370" height="208"></td>
+  </tr>
+</table>
+<p>For example, the TOC input parameters for the LP channel (see above), are as follows; </p>
+<ul>
+  <li>LP (Low Pressure) = the Channel Name </li>
+  <li>0 = the lower (minimum threshold) rpm limit </li>
+  <li>4300 = the upper (maximum threshold) rpm limit </li>
+  <li>25 = the range or band width value for recording d<span class="SmartList2">ata</span></li>
+</ul>
+<p>Each defined range (or band value) of 25 rpm represents a bin of time recorded as the engine resides in that specific band throughout the test run period.</p>
+<div align="center"><img src="images/TOC.gif" alt="TOC" border="0" hspace="0" vspace="0" width="600" height="70"></div>
+<br>
+<p>As an example the EUM input parameters (see above) determine how the engine usage index is calculated. The EUM input parameters are:</p>
+<ul>
+  <li>66 = threshold speed</li>
+  <li>10.568 = y (constant used in count factor equation)</li>
+  <li>LPpc = the Channel Name</li>
+  <li>97.6 = the reference maximum speed for (Nref)</li>
+</ul>
+<blockquote>
+  <div align="center"><img src="images/EUM2.gif" alt="EUM 2" width="450" height="198"></div>
+</blockquote>
+<p>Each cycle is defined by the channel crossing the threshold value. The maximum values (speeds), for each channel, shall be obtained within each cycle (between S and E) during the engine cycle. The equivalent engine cycle is calculated based on the count factor (CF) equation according to the maximum spool speed (Max) and is calculated by the TOCEUM Subsystem. For example, in the first cycle, the count factor (CF) would be:</p>
+<blockquote>
+  <p><img src="images/EquationWithValues.gif" alt="Equation With Values" width="109" height="36"> or 2.02</p>
+</blockquote>
+<p>The count factors from each cycle are summed to get a single value for each channel.</p>
+<p>TOCEUM produces reports that are placed in a directory specified in the <a href="?18#TOCEUMini">TOCEUM Initialisation File</a>.</p>
+<p>While the TOCEUM program is running, it always resets the TE_HEARTBEAT channel to 0. In the RTE, the TOCEUM External Hooks Subsystem driver increments this TE_HEARTBEAT channel value by 1 on every scan cycle for the channel. If the channel value exceeds the tolerance parameter value (see <a href="?20#RTEInitialisationFile">RTE Initialisation File</a>), the RTE assumes that the TOCEUM program has exited, and will restart the TOCEUM program. The number of restarts is configurable, and is defined by the retry parameter value (see <a href="?21#RTEInitialisationFile">RTE Initialisation File</a>). Once the number of restarts has been exceeded, the RTE  no longer attempts to restart the TOCEUM application, unless RTE scanning is stopped and then restarted.</p>
+<br><br>
+
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

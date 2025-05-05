@@ -1,0 +1,292 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>OMRON PLC Subsystem (Option*)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="OMRONplc">OMRON PLC Subsystem (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+
+<h2 id="Overview">Overview</h2>
+<p>The OLE for Process Control (OPC) Subsystem  is a set of subsystem specific functions used by proDAS to communicate with any devices which support OPC Extensible Markup Language (XML)-Data Access (DA) communication protocol.</p>
+<p>A third party bridging software which translates OPC-DA communication protocol to OPC-XML-DA is required for the OPC Subsystem to communicate with devices using only OPC-DA communication protocol. The bridge software must be configured independently to communicate with the OPC server.</p>
+<p class="Note">Information on the bridging software is available on the client specific Documentation Station.</p>
+<p>The OPC-DA communication protocol is based on Microsoft&rsquo;s COM/DCOM technology.</p>
+<p>The OPC XML-DA communication protocol is based on the TCP/IP technology.</p>
+<h2 id="ConfigOPC">Configuring an OPC Channel</h2>
+<p>To configure an OPC Channel:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</li>
+  <li>Select the name of the OPC Subsystem from the list of available subsystems.
+    <div class="Container"><img src="images/SelectSubsystemName.png" alt="SelectSubsystemName" width="387" height="317"></div>
+  </li>
+  <br>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a>. </li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.</li>
+  <li>Set the <strong>Prefix</strong> column.</li>
+  <li>Set the <strong>Path</strong> column.</li>
+  <li>Set the <strong>Tag</strong> column.
+    <div class="Container"><img src="images/ChannelEditor.png" alt="ChannelEditor" width="700" height="424"></div>
+  </li>
+</ol>
+<h2 id="ConfigFileStructure">Configuration File Structure</h2>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu">Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import an <strong>OPC</strong> channel, see <a href="?10#XMLFileStructure">XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import an <strong>OPC</strong> channel, see <a href="?11#TabDelimitFileStructure">Tab-Delimited File Structure</a>.</p>
+<h3 id="XMLFileStructure">XML File Structure</h3>
+<h4 id="ChannelsXML">Channels</h4>
+<p>The channels are stored in files Channels.xml in the configuration directories.</p>
+<p>An OPC Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor - Generic Channel Parameters - XML File Structure</a>, and the specific attribute <strong>Prefix</strong>, <strong>Path</strong>, and <strong>Tag</strong>. These attributes are explained in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Prefix</td>
+    <td>Prefix</td>
+    <td>PREFIX</td>
+    <td>Defines a distinct set of paths and tags associated to an OPC Server.</td>
+    <td>String</td>
+    <td>One of the prefixes defined at subsystem level.</td>
+  </tr>
+  <tr>
+    <td>Path</td>
+    <td>Path</td>
+    <td>PATH</td>
+    <td>Defines the path to each tag.</td>
+    <td>String</td>
+    <td>One of the paths defined at the subsystem level.</td>
+  </tr>
+  <tr>
+    <td>Tag</td>
+    <td>Tag</td>
+    <td>TAG_NAME</td>
+    <td>Tag name specific to each channel.</td>
+    <td>String</td>
+    <td>One of the tags defined at the subsystem level.</td>
+  </tr>
+</table>
+<p>The structure of a OPC Channel complies with the following example:</p>
+<blockquote><code>&lt;Channels LastModificationDate=&quot;<strong>2015-06-11 11:04:10</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;<br>
+  &lt;Channel Name=&quot;ZZOPC1&quot; <br>
+  Description=&quot;&quot; <br>
+  Enabled=&quot;true&quot; <br>
+  LastModificationDate=&quot;2015-06-11 11:04:10&quot; <br>
+  SubsystemName=&quot;ZZOPC&quot; <br>
+  SubsystemType=&quot;OPC&quot; <br>
+  AlternateName=&quot;&quot; <br>
+  DataType=&quot;Float&quot; <br>
+  InitialValue=&quot;-999999&quot; <br>
+  Format=&quot;4.2f&quot; <br>
+  UpdateRate=&quot;1&quot; <br>
+  QualityCeiling=&quot;GOOD&quot; <br>
+  Critical=&quot;false&quot; <br>
+  EngineeringUnit=&quot;-&quot; <br>
+  DisplayMin=&quot;0&quot; <br>
+  DisplayMax=&quot;100&quot; <br>
+  DeadBand=&quot;0&quot; <br>
+  Output=&quot;false&quot; <br>
+  ReferenceChannel=&quot;&quot; <br>
+  Group=&quot;&quot; <br>
+  SignalId=&quot;&quot; <br>
+  CalSensor=&quot;&quot; <br>
+  CalGroup=&quot;&quot; <br>
+  FixedSensor=&quot;&quot; <br>
+  CustomerSensor=&quot;&quot; <br>
+  FullsetStability=&quot;false&quot; <br>
+  ContinuousLog=&quot;true&quot; <br>
+  Prefix=&quot;RSLinx&quot; <br>
+  Path=&quot;FCS_PLC.Online&quot; <br>
+  Tag=&quot;PLCtoproDASdiscrete04&quot;/&gt;<br>
+  &lt;/Channels&gt;<br>
+</code></blockquote>
+<h4>Subsystems</h4>
+<p>The subsystems are stored in files Subsystems.xml in the configuration directories.</p>
+<p>An OPC Subsystem contains generic information, described in <a href="../SubsystemEditor/SubsystemEditor.htm#XMLFileStructure">Subsystem Editor - Generic Subsystem Parameters - XML File Structure</a>, and the specific attributes:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Prefix (OPC Server)</td>
+    <td>Prefix Name</td>
+    <td>PREFIX</td>
+    <td>Defines the distinct set of paths and tags to be managed by an OPC server.</td>
+    <td>String</td>
+    <td>One of the prefixes defined at subsystem level.</td>
+  </tr>
+  <tr>
+    <td>Path</td>
+    <td>Path</td>
+    <td>PATH</td>
+    <td>Defines all possible branches up to a set of tag names but not including the tag names.</td>
+    <td>String</td>
+    <td>Branches are delimited using the period character &quot;.&quot;.</td>
+  </tr>
+  <tr>
+    <td>Comment</td>
+    <td>Comment</td>
+    <td>n/a</td>
+    <td>User defined comment.</td>
+    <td>String</td>
+    <td>User defined (up to 60 characters).</td>
+  </tr>
+  <tr>
+    <td>Tag Name</td>
+    <td>Tag Name</td>
+    <td>TAG_NAME</td>
+    <td>Tag name specific to each channel.</td>
+    <td>String</td>
+    <td>Must be unique across the current path. &quot;#&quot; is not allowed.</td>
+  </tr>
+</table>
+<p>The structure of an OPC Subsystem is shown in the following example:</p>
+<blockquote>
+  <pre>&lt;Subsystems   LastModificationDate=&quot;<strong>2010-10-28   11:27:09</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Subsystem Name=&quot;OPC&quot;
+Description=&quot;Description of Subsystem OPC, ID 0&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2010-10-25 13:48:59&quot;
+Id=&quot;0&quot;
+Type=&quot;OPC&quot;
+CreationDate=&quot;2010-10-04 16:08:14&quot;
+&lt;Prefixes&gt;
+&lt;Prefix Name=&quot;soft_bridge&quot; Comment=&quot;&quot;&gt;
+&lt;Paths&gt;
+&lt;Path Name=&quot;special&quot;&gt;
+&lt;Tags&gt;
+&lt;Tag Name=&quot;writeonly&quot; Comment=&quot;&quot; /&gt;
+&lt;Tag Name=&quot;write error&quot; Comment=&quot;&quot; /&gt;
+&lt;Tag Name=&quot;read error&quot; Comment=&quot;&quot; /&gt;
+&lt;Tag Name=&quot;quality&quot; Comment=&quot;&quot; /&gt;
+&lt;Tag Name=&quot;client specific&quot; Comment=&quot;&quot; /&gt;
+&lt;/Tags&gt;
+&lt;/Paths&gt;
+&lt;/Prefix&gt;
+&lt;/Prefixes&gt;
+&lt;/Subsystem&gt;
+&lt;/Subsystems&gt;</pre>
+</blockquote>
+<h3 id="TabDelimitFileStructure">Tab-Delimited File Structure</h3>
+<p>The OPC Subsystem channel definition includes all <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic channel definition columns</a> and the specific OPC input parameters defined in the tab-delimited configuration file.</p>
+<p>The rules, syntax and guidelines for creating OPC channels are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th> Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>PREFIX</td>
+    <td>Defines a distinct set of paths and tags associated to an OPC Server.</td>
+    <td>String, one of the prefixes defined at subsystem level</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>PATH</td>
+    <td>Defines the path to each tag.</td>
+    <td>String, one of the paths defined at the subsystem level</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>TAG_NAME</td>
+    <td>Tag name specific to each channel.</td>
+    <td>String, one of the tags defined at the subsystem level</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<h2 id="SSEditorOPC">Subsystem Editor for OPC Channels</h2>
+<p>To edit an OPC Subsystem, the Subsystem Editor must be selected from within the Configuration Administrator.</p>
+<p>The tool bar in the Configuration Administrator allows the various configuration editors available for proDAS to be selected.</p>
+<p>The Subsystem Editor allows new subsystems to be added to the current configuration <a href="../SubsystemEditor/SubsystemEditor.htm#MenuEdit">Subsystem Editor - Menu Edit</a>.</p>
+<div class="Container"><img src="images/SubsystemEditor.png" alt="SubsystemEditor" width="700" height="423"></div>
+<br>
+<p><strong>To add a new subsystem:</strong></p>
+<ol>
+  <li>Select the menu item <strong>Edit - Append Data Record</strong> in the menu bar or click in the left pane of the splitter window and then click the right mouse button and select <strong>Append Data Record</strong> from the context sensitive menu.<br>
+  </li>
+  <li>Select OPC Subsystem in the dialogue box to select the type of subsystem.<br>
+    A new line is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to the type just selected (as shown in the typical Subsystem Editor screenshot above).<br>
+    The user must then assign a name and description to the subsystem.</li>
+</ol>
+<h3>Configuring the OPC Server</h3>
+<p>To configure the OPC Server manually:</p>
+<ol>
+  <li>Using the Subsytem Editor, manually populate the required fields.</li>
+</ol>
+<p class="Note">When configuring manually, the Prefix Name specified must match the one in the RTE initialisation file.</p>
+<p>To configure the OPC Server automatically:</p>
+<ol>
+  <li>Set the Prefix Name.</li>
+  <li>From the Subsystem Editor Subsystem OPC menu, select <strong>Import Paths</strong>.</li>
+  <li>Browse to the  file created using the bridging software, select <strong>Open</strong>. This will automatically populate the remaining OPC Subsystem data fields based on the generated filter file.</li>
+</ol>
+<blockquote>
+  <p><strong>or</strong></p>
+</blockquote>
+<ol>
+  <li>From the Subsystem Editor Subsystem OPC menu, select <strong>Import Prefixes and Paths</strong>.</li>
+  <li>Browse to the file created using the bridging software, select <strong>Open</strong>. This will  automatically populate the OPC Subsystem data based on the generated filter file.</li>
+</ol>
+<h2 id="RTEiniFile">RTE Initialisation File</h2>
+<p>The OPC Subsystem is configured by the RTE, along with all the other subsystems, as a request form the Management Interface GUI.</p>
+<p>A typical RTE initialisation file would include the following OPC  Subsystem information:</p>
+<p># ----------------------------------------------<br>
+  # OPC Subsystem<br>
+  # ----------------------------------------------<br>
+  SS    OPC                  TRUE<br>
+  # OPC server info: prefix, critical_flag, main URL, optional secondary URL<br>
+  # Multiple OPC server info line can be defined.<br>
+  CI  opc_server     soft_bridge, false,  http://plc_pc:8090/OPC/DA<br>
+  # Time out in sec for the OPC connection<br>
+  CI  timeout                 10<br>
+  # Optional, append the specified string to all item<br>
+  #CI  append_prefix         soft_bridge, tag_pf<br>
+  #------------------------------------------------</p>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click here to see the RTE Initialisation file</a>.</p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

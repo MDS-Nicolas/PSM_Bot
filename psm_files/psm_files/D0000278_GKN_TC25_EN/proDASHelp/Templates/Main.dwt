@@ -1,0 +1,23 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta name="GENERATOR" content="Quadralay WebWorks Publisher Professional Edition 6.0.7">
+<meta name="TEMPLATEBASE" content="MDS Docstation Version1">
+<meta name="LASTUPDATED" content="09/19/01 18:07:19">
+<!-- #BeginEditable "doctitle" --> 
+<title></title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../stylemain.css" type="text/css">
+</head>
+
+<body leftmargin="0" topmargin="0" rightmargin="0" bottommargin="20px">
+<!-- #BeginEditable "Main" --> 
+<h1>Sample Heading1</h1>
+<h2> <a> </a>Sample Heading2</h2>
+<p> Sample Body style</p>
+<h2 class="Heading3"> Sample Heading3</h2>
+<p> Sample Body style</p>
+<!-- #EndEditable --></body>
+</html>

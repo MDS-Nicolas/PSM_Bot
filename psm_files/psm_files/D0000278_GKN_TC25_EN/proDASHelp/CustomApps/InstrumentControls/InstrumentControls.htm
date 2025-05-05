@@ -1,0 +1,1093 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Instrument Controls (Option*)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="InstrumentControls">Instrument Controls (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>Accessed from the Management GUI Tools menu, the proDAS Instrument Controls have been divided into the following main categories:</p>
+<ul>
+  <li><a href="#PreTest">Pre Test Functions</a></li>
+  <li><a href="#PostTest">Post Test Functions</a></li>
+  <li><a href="#ConfigEditors">Configuration Editors</a></li>
+  <li><a href="#CustomTools">Custom Tools</a></li>
+</ul>
+<p class="Note">The Management GUI Tools menu is configurable. The contents of each main category is customised for every customer to display only the functions applicable to that customer.</p>
+<h2 id="PreTest">Pre Test Functions</h2>
+<p>proDAS gives the operator the ability to run various Pre Test Functions prior to acquiring data. These tests may allow the user to perform functions such as confirming channel readings are within the appropriate ranges, and zeroing temperature and pressure channels. The following Pre Test Functions, as applicable, can be performed:</p>
+<p class="Note">The Management GUI associates each function with a configurable user level such that only authorised users can perform these functions.</p>
+<ul>
+  <li><a href="?6#AVMConfigDianostic">AVM Configuration and Diagnostics</a></li>
+  <li><a href="?7#DCStrainControls">DC Strain Control</a></li>
+  <li><a href="?8#DDSAVMCal">DDS AVM Calibration</a></li>
+  <li><a href="?9#DDSCal">DDS Calibration</a></li>
+  <li><a href="#DTCI">DTCI System Control</a></li>
+  <li><a href="?25#DTS">DTS3250 System Control</a></li>
+  <li><a href="?10#EMS">Engine Management System (EMS)</a></li>
+  <li><a href="?30#FBOGUI">FBO GUI</a></li>
+  <li><a href="?26#HAMScal">HAMS Calibration</a></li>
+  <li><a href="?12#Hyscan">Hyscan Control </a></li>
+  <li><a href="?13#IEEEcontrols">IEEE Controls </a></li>
+  <li><a href="?14#OTDzero">Open Transducer Detection (OTD) Zero / Transient TC Zero</a></li>
+  <li><a href="#ProDAQ">ProDAQ Calibration</a></li>
+  <li><a href="../../StandardTools/CalibrateChannels/CalibrateChannels.htm#SCA">Sensor Calibration Application (SCA)</a></li>
+  <li><a href="?15#StaticCheck">Static Check</a></li>
+  <li><a href="?16#TSM">Temperature Scanning Module (TSM) Offset Correction</a></li>
+  <li>Thrust Calibration:
+    <ul>
+      <li><a href="../MDSThrustCalUtility/MDSThrustCalUtility.htm">MDS Thrust Calibration Utility</a></li>
+      <li><a href="../TCA/TCA.htm">Thrust Calibration Application (TCA)</a></li>
+    </ul>
+  </li>
+  <li><a href="?18#TruTemp">TruTemp Control</a></li>
+  <li><a href="?19#ZeroPurgePressChan">Zeroing or Purging Pressure Scanners (PBS)</a></li>
+</ul>
+<p class="Note">The above list of pre-run checks are not applicable to every customer. The execution of the pre-run checks depends on customer hardware and procedures. Please refer to the &quot;Home&quot; section of the Docstation for details of the pre-run checks applicable for your system.</p>
+<h3 id="AVMConfigDianostic">AVM Configuration and Diagnostics</h3>
+<p>The AVM Configuration and Diagnostics screen is displayed at the startup of the AVM Configuration and Diagnostic Utility and is the main navigation screen for all functions within the utility.</p>
+<p>From the AVM Configuration and Diagnostics screen, the operator can:</p>
+<ul>
+  <li>access the AVM Analogue Channel Configure screen</li>
+  <li>access the Calibration screen</li>
+  <li>exit the AVM Configuration and Diagnostics Utility</li>
+  <li>minimize the utility</li>
+  <li>access an online help file </li>
+</ul>
+<p>While the AVM Configuration and Diagnostics screen is displayed, a communications check verifies that the ENDEVCO equipment is responding to the AVM Configuration and Diagnostics Utility. Flashing LEDs and an event log allow the operator to monitor the progress of the communications check. During the communications check, all buttons are greyed out and non-accessible by the operator.</p>
+<h4 id="AccessAVM">Accessing the AVM Configuration and Diagnostics Window</h4>
+<p>To access the AVM Configuration and Diagnostics window:</p>
+<ol>
+  <li>From the Management GUI Control Panel Tools menu, select <strong>AVM</strong>.<br>
+    The AVM Configuration and Diagnostics window is displayed and a communications check is performed.
+    <div class="Container"><img height="484" src="images/AVMcommcheck.gif" alt="AVMcommcheck" width="700"></div>
+    On completion of the communications check, the buttons on the AVM Configuration and Diagnostics screen become enabled.
+    <div class="Container"><img height="484" src="images/AVMready.gif" alt="AVMready" width="700"></div>
+  </li>
+</ol>
+<h4 id="AVMAnalogChanConfig">AVM Analog Channel Configure</h4>
+<p>The AVM Analog Channel Settings screen can be displayed, upon successful completion of the communications check, by clicking the <strong>Analog CHANNEL CONFIGURE</strong> button on the AVM Configuration and Diagnostics screen.</p>
+<p>The screen automatically determines which features are applicable based on the configuration that has been read from the AVM. Features that are not applicable will be greyed out (see Velocity in the screen below). </p>
+<div class="Container"><img height="484" src="images/AVMchanSettings.gif" alt="AVMchanSettings" width="700"></div>
+<p>The AVM Analog Channel Settings screen can display the current configurations and status of the AVM analog channels. From the AVM Analog Channel Settings screen, the operator can:</p>
+<ul>
+  <li>load (receive) the current channel settings directly from the ENDEVCO unit</li>
+  <li>save (transmit) the currently selected channel settings directly to the ENDEVCO unit</li>
+  <li>access the Self Test screen for analogue channels</li>
+  <li>access an on-line help file</li>
+  <li>close the AVM Analog Channel Settings screen and return to the previous screen </li>
+</ul>
+<p>The AVM Analog Channel Settings screen is divided into four panels. The upper (first) control panel allows the operator to select the:</p>
+<ul>
+  <li>Channel Number - based on the number of Analogue cards in the Endevco chassis</li>
+  <li>Filter Type - low pass, high pass or band pass filter</li>
+  <li>Mode (output mode) - acceleration in g's, velocity in ips, displacement in mils</li>
+  <li>Transducer Type - Differential Piezoelectric (DPE) transducer, DC/g; Single Ended Piezoelectric (SEPE) transducer, pC/g; Velocity transducer, mV/ips; Isotron transducer or RCC (mv/pC)</li>
+  <li>Time Constant - DC voltage update rate</li>
+  <li>Filter Select - Bypass Internal Filter (BIF), Enable Internal Filter (EIF), Enable External Filter (EEF)</li>
+  <li>Filter Order - chooses 4 pole or 6 pole Butterworth Internal Filter </li>
+</ul>
+<p>The second control panel allows the operator to set the:</p>
+<ul>
+  <li>Lower Cutoff - sets corner frequency of high-pass internal filter</li>
+  <li>Upper Cutoff - sets corner frequency of low-pass internal filter</li>
+  <li>Acceleration - sets the transducer sensitivity in pC/g</li>
+  <li>Velocity - sets the transducer sensitivity in mV/ips</li>
+  <li>AC Volts (full-scale) - sets the fullscale AC output voltage</li>
+  <li>DC volts (full-scale) - sets the fullscale DC output voltage</li>
+  <li>Continuous Range (full-scale EU) - sets the fullscale EU range </li>
+</ul>
+<p>The third panel displays various messages relating to the use of the AVM Analogue Channel Settings screen and the communication between the AVM Diagnostic Utility and the ENDEVCO chassis.</p>
+<p>The bottom panel provides buttons that allow the operator to:</p>
+<ul>
+  <li>RECEIVE setting from UNIT - in order to check current configuration</li>
+  <li>trANSMIT setting to UNIT - in order to update the configuration</li>
+  <li>run a SELF TEST - used to check Tracking Filter Amplifier System (TFAS) hardware integrity</li>
+  <li>Return to the AVM Configuration and Diagnostics window</li>
+  <li>access the online Help </li>
+</ul>
+<h4 id="AnalogChanConfig">AVM Analog Channel Settings </h4>
+<p>The AVM Analog Channel Settings are selected from the AVM Analog Channel Settings screen. To configure the analog channels:</p>
+<ol>
+  <li>Click-and-drag the controls, in the control panels, to the desired settings.</li>
+  <li>Click on the up and down arrows, on the display windows beneath the corresponding controls, to increase or decrease (fine tune) the settings for the control. Selecting the field allows the user to input values manually.</li>
+  <li>If the Transducer Type is set to Velocity, Isotron, or Noise Test, the Acceleration control in the second control panel is disabled (greyed out).</li>
+  <li>If the Transducer Type is set to DPE or SEPE, the Velocity control in the second control panel is disabled (greyed out).</li>
+  <li>If the Filter Select is set to BIF (Bypass Internal Filter), the Filter Type control in the second control panel is disabled (greyed out).</li>
+  <li>To send the new channel settings to the ENDEVCO unit, select <strong>trANSMIT setting to Unit</strong>.</li>
+  <li>To load the channels settings from the ENDEVCO unit, select <strong>RECEIVE setting from Unit</strong>.</li>
+  <li>Ensure that the new channel settings that were sent are the same as the received settings.</li>
+</ol>
+<h4 id="AnalogChanSelfTest">Analog Channel Self Test</h4>
+<p>The Analog Channel Self Test function is used to determine the card, transducer and cable integrity as well as to determine if the card is performing within specifications. The channel internally processes a signal and compares the output with predefined limits.</p>
+<p>The analog channel self-test is initiated from the AVM Analog Channel Settings screen.</p>
+<ol>
+  <li>To initiate a self-test of the AVM Analog Channels, select <strong>SELF TEST</strong>.<br>
+    The AVM Analog Self Test screen is displayed:
+    <div class="Container"><img height="591" src="images/AVMselftest.jpg" alt="AVMselftest" width="399"></div>
+  </li>
+  <li>Select the channels to be included in the self-test by clicking in the corresponding box.<br>
+    A check mark indicates that the channel has been selected. To deselect the channel, click in the corresponding box.</li>
+  <li>To start the AVM Analog Channels self-test, select <strong>SELF TEST</strong>.<br>
+    If no channels have been selected when the SELF TEST button is selected, an Information Window dialogue box is displayed with the message &quot;You must select at least one channel to self test&quot; Select <strong>OK</strong> to return to the AVM Analog Self Test screen.</li>
+  <li>When the self-test is completed, a confirmation dialogue box is displayed.</li>
+  <li>Select <strong>OK</strong>.</li>
+  <li>To return to the AVM Analog Channel Settings screen, select <strong>Return</strong> on the AVM Analog Self Test screen.</li>
+</ol>
+<h4 id="AVMInternalCalScreen">AVM Internal Calibration</h4>
+<p class="Note">Internal calibration is not required if an end-to-end facility calibration is performed once a year.</p>
+<p>The AVM Internal Calibration screen can be displayed, on successful completion of the communications check, by clicking the <strong>CAliBRATION</strong> button on the AVM Configuration and Diagnostics screen.</p>
+<p>The AVM Internal Calibration screen displays the current channels available for calibration. From the AVM Internal Calibration screen, the operator can:</p>
+<ul>
+  <li>select the channels to be calibrated</li>
+  <li>initiate the internal calibration</li>
+  <li>monitor the progress of the internal calibration</li>
+  <li>view the results of the internal calibration</li>
+  <li>close the AVM Internal Calibration screen and return to the previous screen</li>
+</ul>
+<p>The AVM Internal Calibration screen is divided into two control panels. The upper control panel allows the operator to:</p>
+<ul>
+  <li>select the channels to be calibrated</li>
+  <li>monitor the progress of the internal calibration</li>
+  <li>view the results of the internal calibration</li>
+</ul>
+<p>The bottom panel provides buttons that allow the operator to:</p>
+<ul>
+  <li>start the internal calibration (BEGIN CAliBRATION)</li>
+  <li>return to the AVM Configuration and Diagnostics window (Return)</li>
+</ul>
+<h4 id="InternalCal">Internal Calibration</h4>
+<p>The internal calibration is initiated from the AVM Configuration and Diagnostics screen.</p>
+<ol>
+  <li>To initiate an internal calibration of the AVM Configuration and Diagnostics utility, select <strong>CAliBRATION</strong>.<br>
+    The AVM Internal Calibration screen is displayed:
+    <div class="Container"><img height="500" src="images/AVMcal.jpg" alt="AVMcal" width="318"></div>
+  </li>
+  <li>Select the channels to be included in the internal calibration by clicking in the corresponding box.<br>
+    A check mark indicates that the channel has been selected. To deselect the channel, click in the corresponding box.</li>
+  <li>To start the AVM Configuration and Diagnostics utility internal calibration, select <strong>BEGIN CAliBRATION</strong>.</li>
+  <li>If no channels have been selected when the BEGIN CAliBRATION button is selected, an Information Window dialogue box is displayed with the message &quot;You must select at least one channel to self test&quot; Select <strong>OK</strong> to return to the AVM Internal Calibration screen.</li>
+  <li>When the internal calibration is completed, a confirmation dialogue box is displayed.</li>
+  <li>Select <strong>OK</strong>.</li>
+  <li>To return to the AVM Configuration and Diagnostics screen, select <strong>Return</strong> on the AVM Internal Calibration screen.</li>
+</ol>
+<h3 id="DCStrainControls">DC Strain Control</h3>
+<p>DC Strain allows the operator to zero all DC strain channels and perform a shunt check on the DC strain channels.</p>
+<p class="Note">The DC Shunt Status Toggle button is disabled if the Shunt channel is not available in the Current Value Table (CVT).</p>
+<h4 id="AccessDCStrain">Accessing the DC Strain Functions Window</h4>
+<p>To access the DC Strain Functions window:</p>
+<ol>
+  <li>From the Management GUI Control Panel Tools menu, select <strong>DC Strain</strong>.<br>
+    The DC Strain Functions window is displayed.
+    <div class="Container"><img height="454" src="images/DCStrain.gif" alt="DCStrain" width="414"></div>
+  </li>
+</ol>
+<h4 id="PerformDCStrain">Performing a DC Strain Functions Check</h4>
+<p>To perform a DC Shunt Resistor check:</p>
+<ol>
+  <li>From the DC Strain Functions window, select <strong>Toggle DC Shunt</strong>.<br>
+    (The log display identifies the checks performed).</li>
+  <li>The Shunt Status Indicator displays green when completed successfully.</li>
+  <li>Select <strong>Close</strong> to return to the Management GUI Control Panel.
+    <p class="Note">When exiting the DC Strain panel, if the Shunt is still applied, the following warning message is displayed:<br>
+      Shunt still Active!  Please remove the shunt load before exiting.</p>
+    <div class="Container"><img height="447" src="images/DCStrain.gif" alt="DCStrain" width="462"></div>
+  </li>
+</ol>
+<p>To bridge balance one DC Strain channel:</p>
+<ol>
+  <li>Select <strong> Balance One. </strong>(A list of available channels is enabled).</li>
+  <li>Select a channel from the list and select <strong>Apply</strong>.</li>
+  <li>Select <strong>Cancel</strong> to return to the DC Strain Functions window.</li>
+</ol>
+<p>To bridge balance all DC Strain channels:</p>
+<ol>
+  <li>Select <strong> Balance All.</strong></li>
+  <li>Select <strong>Close</strong> to close the DC Strain Functions window.</li>
+</ol>
+<h3 id="DDSAVMCal">DDS AVM Calibration</h3>
+<p>To perform a DDS AVM Calibration:</p>
+<ol>
+  <li>From the Management GUI Control Panel Tools menu, select <strong>DDS AVM Calibration</strong>.<br>
+    The AVM Calibration screen is displayed.
+    <div class="Container"><img height="560" src="images/DDSAVMcal.gif" alt="DDSAVMcal" width="700"></div>
+  </li>
+  <li>To perform a DDS AVM Calibration, select <strong>Start</strong>.</li>
+  <li>To cancel the calibration, select <strong>Abort</strong>.</li>
+  <li>To print the report, select <strong>Print</strong>.</li>
+  <li>To return to the previous screen, select <strong>Return</strong>.</li>
+  <li>To view the help file, select <strong>Help</strong>.</li>
+</ol>
+<h3 id="DDSCal">DDS Calibration</h3>
+<p>DDS Calibration is used to automatically generate the calibration stimuli, measure the ADC output from the DDS and compute the appropriate calibration coefficients.</p>
+<h4 id="PerformDDScal">Performing a DDS Calibration</h4>
+<p>To perform a DDS Calibration:</p>
+<ol>
+  <li>From the Management GUI Control Panel Tools menu, select <strong>DDS Calibration</strong>.<br>
+    The Dynamic Calibration Type Selection window is displayed.
+    <p class="Note">The DAS or Telemetry button will be disabled if not available in the configuration file.</p>
+    <div class="Container"><img src="images/DynCalTypeSelection.gif" alt="DynCalTypeSelection" width="356" height="200"></div>
+    If <strong>DAS</strong> is selected, <a href="?20#DAS">go to step 2</a>.<br>
+    If <strong>Telemetry</strong> is selected, <a href="?21#Telemetry">go to step 14</a>.<br>
+    If <strong>Both</strong> is selected, <a href="?22#Both">go to step 15</a><br>
+    If <strong>Abort</strong> is selected, the DDS Calibration application is closed.</li>
+  <li id="DAS">Select <strong>DAS</strong>.<br>
+    The required sensor and channel data is retrieved from the database. Once retrieved, the Calibration Types panel is enabled.
+    <div class="Container"><img height="560" src="images/DDScaltype.gif" alt="DDScaltype" width="700"></div>
+    <p class="Note">Speed channels do not have to be calibrated.</p>
+    <p class="Note">For all  calibration types selected (other than General Purpose Live Calibration), the information and results are displayed in the main window.</p>
+  </li>
+  <li>From the Calibration Types panel, highlight <strong>GenPurposeLiveCal</strong> and click <strong>Select</strong>. The general purpose live calibration screen is displayed.
+    <div class="Container"><img src="images/GeneralPurpose.gif" alt="GeneralPurpose" width="500" height="315"></div>
+    <p class="Note">The Skip button advances the channel. The Return button stops the General Purpose Live Calibration.</p>
+    <p class="Note">The user can select AC Live Calibration or DC Live Calibration for all the configured General Purpose channels.</p>
+    If <strong>AC Live Calibration</strong> is required <a href="?23#ACLiveCal">go to step 4</a>.<br>
+    If <strong>DC Live Calibration</strong> is required <a href="?24#DCLiveCal">go to step 8</a>. </li>
+  <li id="ACLiveCal">Select <strong>AC Live Calibration</strong>. The AC Live Calibration screen is displayed.
+    <div class="Container"><img src="images/ACLive.gif" alt="" width="700" height="504"></div>
+  </li>
+  <li>Enter the required information and select <strong>Go</strong>.</li>
+  <li>Select <strong>Accept Point</strong>.<br>
+    The results are entered into the table. The Cancel Point button allows the user to only abort the current calibration point. The Accept Point and Remove Point buttons only become enabled once the system has ensured that the Measured Frequency is within the set range. If more than one point is required, repeat steps 5 and 6.
+    <p class="Note">There must be at least one &quot;Normalised&quot; entry in the results table before the Cal Complete button is enabled. To normalise the entry, double click on the entry in the Normalised column. The resulting &quot;Yes&quot; indicates normalisation.</p>
+  </li>
+  <li>Select <strong>Cal Complete</strong>.
+    <p class="Note">Cal Complete - takes the user to the General Purpose Live Calibration screen and advances to the next channel selection.<br>
+      Abort Calibration - takes the user to the General Purpose Live Calibration screen but keeps the same channel selection.</p>
+  </li>
+  <li id="DCLiveCal">Select <strong>DC Live Calibration</strong>. The DC Live Calibration screen is displayed.
+    <div class="Container"><img src="images/DCLive.gif" alt="DCLive" width="700" height="533"></div>
+  </li>
+  <li>Enter required information and select <strong>Go</strong>.</li>
+  <li>Select <strong>Accept Point</strong>.<br>
+    The results are entered into the table. The Accept Point and Remove Point buttons only become enabled once the system has acquired the data twice. Repeat steps 9 and 10 to enter a second point.
+    <p class="Note">There must be at least two entries in the results table before the Cal Complete button is enabled.</p>
+  </li>
+  <li>Select <strong>Cal Complete</strong>. The DC Live exit confirmation dialogue box is displayed.
+    <div class="Container"><img src="images/ExitDCLive.gif" alt="ExitDCLive" width="350" height="139"></div>
+    <p class="Note">Perform AC Calibration - takes the user to the AC Live Calibration screen.<br>
+      Cal Complete - takes the user to the General Purpose Live Calibration screen and advances to the next channel selection.<br>
+      Cancel - takes the user back to the DC Live Calibration screen.</p>
+  </li>
+  <li>For any other calibration type other than General Purpose Live Calibration, highlight the calibration type and click <strong>Select</strong>.<br>
+    The calibration is performed. If <strong>One Channel</strong> is selected, a Channels selection panel is displayed.
+    <div class="Container"><img src="images/DDSchan.gif" alt="DDSchan" width="700" height="560"></div>
+  </li>
+  <li>Select an individual channel for calibration and click <strong>Select</strong>.<br>
+    The calibration is performed and completed.
+    <div class="Container"><img src="images/DDScalcomplete.gif" alt="DDScalcomplete" width="700" height="560"></div>
+  </li>
+  <li id="Telemetry">Select <strong>Telemetry</strong>.<br>
+    As part of the data retrieval a reading of the STINCA Gain settings is performed.<br>
+    When finished a report of any errors in retrieving telemetry data from the database is displayed.<br>
+    The Calibration Types panel is then enabled, showing the list of available telemetry selections for calibration.<br>
+    To start the calibration process, highlight a Calibration Type and click <strong>Select</strong>. The calibration is performed and results are displayed on the panel.
+    <div class="Container"><img src="images/DDScalTelemetry.gif" alt="" width="700" height="560"></div>
+  </li>
+  <li id="Both">Select <strong>Both</strong>. All DAS and Telemetry calibration types are displayed.
+    <div class="Container"><img src="images/DDScalBoth.gif" alt="" width="700" height="560"></div>
+  </li>
+  <li>To print the report, select <strong>Print</strong>.</li>
+  <li>To reconfigure the DDS Subsystem, select <strong>Return</strong>.</li>
+  <li>To view the help file, select <strong>Help</strong>.</li>
+</ol>
+<h3 id="DTCI">DTCI System Control</h3>
+<p> The user controls the DTCI system from the Management GUI control panel interface to zero, set purge mode on, and set purge mode off, with a specific panel for the latter two. The following characteristics apply to the operation of the DTCI Subsystem:</p>
+<ul>
+  <li>if <strong>Zero All</strong> is selected by the operator, the RTE initiates a zero operation on all scanners connected to all configured DTCI systems; the new zero coefficients are stored back to the EEPROM of the scanners</li>
+  <li>if <strong>Purge Mode On</strong> is selected, the RTE commands all scanners connected to all configured DTCI systems into purge mode; the purge operation switches the calibration valves of all affected scanners from the RUN position to the CAL position</li>
+  <li>if <strong>Purge Mode Off</strong> is selected, the RTE commands all scanners connected to all configured DTCI systems out of purge mode into run mode; the affected scanners have their calibration valves switched from CAL to RUN</li>
+</ul>
+<h5>DTCI Control Panel</h5>
+<div class="Container"><img src="images/DTCIPanel.png" width="528" height="517" alt=""/></div>	
+<h3 id="DTS">DTS3250 System Control</h3>
+<p>The DTS3250 System Control  window (below) allows the operator to send the A/D Calibration and Open Thermocouple Test commands to the RTE.</p>
+<div align="Container"><img src="images/DTS.gif" alt="DTS" width="501" height="279"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Buttons and Fields</th>
+    <th>Functions</th>
+  </tr>
+  <tr>
+    <td>Open Thermocouple Test</td>
+    <td>Commands the DTS to test for open thermocouples.</td>
+  </tr>
+  <tr>
+    <td>A/D Calibration</td>
+    <td>Commands the DTS to calibrate the A/D converters.</td>
+  </tr>
+  <tr>
+    <td>CalAVG</td>
+    <td>Sets the time for the A/D converters to be calibrated. The time depends upon the setting of CALAVG. If CALAVG is set to 1, the time will be several seconds. If CALAVG is set to 64 this can require several minutes.
+      <p class="Note">The displayed default value is  configurable in the INI file.</p></td>
+  </tr>
+  <tr>
+    <td>Close</td>
+    <td>Exits the DTS3250 System Control window.</td>
+  </tr>
+</table>
+<h3 id="EMS">Engine Management System (EMS)</h3>
+<p>The Engine Management System (EMS) Functions window (below) provides the operator access to the PWM/EMS.</p>
+<div class="Container"><img height="330" src="images/EMS.gif" alt="EMS" width="442"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Buttons and Fields</th>
+    <th>Functions</th>
+  </tr>
+  <tr>
+    <td>Current Status </td>
+    <td>Displays the status of the PWM host.</td>
+  </tr>
+  <tr>
+    <td>Re-Transmit List </td>
+    <td>Reconfigures the remote PWM host by re-sending the channel list.</td>
+  </tr>
+  <tr>
+    <td>Send Start</td>
+    <td>Starts scanning.
+      <p class="Note">The maximum number of channels that can be scanned is 128.</p></td>
+  </tr>
+  <tr>
+    <td>Close</td>
+    <td>Exits the Engine Management System Functions window.</td>
+  </tr>
+</table>
+<h3 id="FBOGUI">FBO GUI </h3>
+<p>The FBO GUI, also known as FBO CWINCA-TINCA application, is used to verify the continuity for the CWINCA Telemetry unit and the connectivity for the TINCA Telemetry unit. The raw data is retrieved from the Cal Server.</p>
+<p class="Note">The FBO GUI cannot be used at the same time as the DDS Calibration.</p>
+<h4 id="CWINCA">FBO CWINCA Continuity Verification</h4>
+<p>To perform an FBO CWINCA Continuity Verification:</p>
+<ol>
+  <li>From the Management GUI Control Panel Tools menu, select <strong>FBO GUI</strong>.
+    <p class="Note">While information is retrieved from the database, a wait indicator &quot;Getting TINCA and CWINCA data. Please wait...&quot; is displayed.</p>
+    The FBO CWINCA - TINCA window is displayed.
+    <div class="Container"><img height="317" src="images/Selection.gif" alt="Selection" width="500"></div>
+  </li>
+  <li>Select <strong>CWINCA Continuity Verification</strong>.
+    <p class="Note">The CWINCA and the TINCA Verification buttons only appear if those respective systems are available.</p>
+    A progress bar is displayed.
+    <div class="Container"><img height="170" src="images/CWINCAprogress.gif" alt="CWINCAprogress" width="350"></div>
+    Once all the channels have been verified, the Verification Selection screen is displayed with the added options to view results.
+    <div class="Container"><img height="317" src="images/cwincaOnlyResults.gif" alt="cwincaOnlyResults" width="500"></div>
+  </li>
+  <li>Select <strong>CWINCA Results</strong>.<br>
+    The CWINCA Detailed Results table is displayed.
+    <div class="Container"><img height="397" src="images/CWINCAresult.gif" alt="CWINCAresult" width="700"></div>
+    For more information on interpreting verification results, see <a href="?31#InterpretResults">Interpreting Verification Results.</a></li>
+  <li>Select <strong>Save</strong> to save the results. The user is prompted to select a file location and name.</li>
+  <li>Select <strong>Return</strong> to return to the Verification Selection screen without saving the results.</li>
+</ol>
+<h4 id="TINCA">FBO TINCA Connectivity Verification</h4>
+<p>To perform an FBO TINCA Connectivity Verification:</p>
+<ol>
+  <li>From the Management GUI Control Panel Tools menu, select <strong>FBO GUI</strong>.<br>
+    The FBO CWINCA - TINCA window is displayed.
+    <div class="Container"><img height="317" src="images/Selection.gif" alt="Selection" width="500"></div>
+  </li>
+  <li>Select <strong>TINCA Connectivity Verification</strong>.
+    <p class="Note">The CWINCA and the TINCA Verification buttons only appear if those respective systems are available.</p>
+    A progress bar is displayed.
+    <div class="Container"><img height="170" src="images/TINCAprogress.gif" alt="TINCAprogress" width="350"></div>
+    <p class="Note">If Abort is selected, the channel gain is reset to the value in the configuration and the SHUNT command is not active.</p>
+    Once all the channels have been verified, the Verification Selection screen is displayed with the added options to view results.
+    <div class="Container"><img height="317" src="images/tincaOnlyResults.gif" alt="tincaOnlyResults" width="500"></div>
+  </li>
+  <li>Select <strong>TINCA Results</strong>.<br>
+    The TINCA Detailed Results table is displayed.
+    <div class="Container"><img height="335" src="images/TINCAresults.gif" alt="TINCAresults" width="700"></div>
+    For more information on interpreting verification results, see <a href="?32#InterpretResults">Interpreting Verification Results.</a></li>
+  <li>Select <strong>Save</strong> to save the results. The user is prompted to select a file location and name.</li>
+  <li>Select <strong>Return</strong> to return to the Verification Selection screen without saving the results.</li>
+</ol>
+<h4 id="InterpretResults">Interpreting Verification Results</h4>
+<p>CWINCA and TINCA detailed results tables are colour coded. An explanation of the colours, buttons and fields is provided in the tables below. </p>
+<p><strong>CWINCA Results</strong></p>
+<div class="Container"><img height="397" src="images/CWINCAresult.gif" alt="CWINCAresult" width="700"></div>
+<table class="Table-Grey" >
+  <tr>
+    <th>Buttons and Fields</th>
+    <th>Functions</th>
+  </tr>
+  <tr>
+    <td>First 0V Reading </td>
+    <td>The CWINA Continuity test first reads the channel with the circuit closed.</td>
+  </tr>
+  <tr>
+    <td>10V Reading </td>
+    <td>The CWINA Continuity test then reads the channel with the circuit open.</td>
+  </tr>
+  <tr>
+    <td>Second 0V Reading </td>
+    <td>The CWINA Continuity test takes a second reading of the channel after reclosing the circuit.</td>
+  </tr>
+</table>
+<table class="Table-Grey">
+  <tr>
+    <th>Colour</th>
+    <th>Meaning</th>
+  </tr>
+  <tr>
+    <td>Red</td>
+    <td>Fail</td>
+  </tr>
+  <tr>
+    <td>Green</td>
+    <td>Pass</td>
+  </tr>
+</table>
+<p><strong>TINCA Results</strong></p>
+<div class="Container"><img height="335" src="images/TINCAresults.gif" alt="TINCAresults" width="700"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Buttons and Fields</th>
+    <th>Functions</th>
+  </tr>
+  <tr >
+    <td>First Reading </td>
+    <td>The first result for any given channel during the verification process in mV.</td>
+  </tr>
+  <tr >
+    <td>Second Reading </td>
+    <td>The second result for any given channel during the verification process in mV.</td>
+  </tr>
+  <tr >
+    <td>Difference</td>
+    <td>The difference between the first result and the second result. This number is used to ensure the channel is within the test limits.</td>
+  </tr>
+  <tr >
+    <td>Min_Shunt</td>
+    <td>Specifies the minimum tolerance for the shunt confidence check.</td>
+  </tr>
+  <tr >
+    <td>Max_Shunt</td>
+    <td>Specifies the maximum tolerance for the shunt confidence check.</td>
+  </tr>
+</table>
+<p>In the TINCA results table, the Difference between the channel's First Reading and the Second Reading are compared with the Min_Shunt and the Max_Shunt </p>
+<table class="Table-Grey">
+  <tr>
+    <th colSpan="5">Field Names and Background Colours</th>
+    <th rowSpan="2">Meaning</th>
+  </tr>
+  <tr>
+    <th>Channel Name </th>
+    <th>Difference</th>
+    <th>Min_Shunt</th>
+    <th>Max_Shunt</th>
+    <th>Status</th>
+  </tr>
+  <tr>
+    <td>Green</td>
+    <td>Green</td>
+    <td>White</td>
+    <td>White</td>
+    <td>Green</td>
+    <td>The Difference is within the Min and the Max_Shunt. The channel Passed.</td>
+  </tr>
+  <tr>
+    <td>Red</td>
+    <td>Red</td>
+    <td>White </td>
+    <td>Red </td>
+    <td>Red</td>
+    <td>The difference is beyond the Max_Shunt value. The channel Failed.</td>
+  </tr>
+  <tr>
+    <td>Red</td>
+    <td>Red</td>
+    <td>Red</td>
+    <td>White</td>
+    <td>Red</td>
+    <td>The Difference is beyond the Min_Shunt value. The channel Failed.</td>
+  </tr>
+  <tr>
+    <td>Red</td>
+    <td>Red</td>
+    <td>Red</td>
+    <td>Yellow</td>
+    <td>Red</td>
+    <td>The Max_Shunt value is missing and the calculated Difference is below the Min_Shunt. The channel Failed.</td>
+  </tr>
+  <tr>
+    <td>Red</td>
+    <td>Red</td>
+    <td>Yellow</td>
+    <td>Red</td>
+    <td>Red</td>
+    <td>The Min_Shunt value is missing and the calculated Difference is above the Max_Shunt. The channel Failed.</td>
+  </tr>
+  <tr>
+    <td>Yellow</td>
+    <td>Yellow</td>
+    <td>White</td>
+    <td>Yellow</td>
+    <td>Yellow</td>
+    <td>The Max_Shunt value is missing but the calculated Difference is above the Min_Shunt. The channel is Not Available.</td>
+  </tr>
+  <tr>
+    <td>Yellow</td>
+    <td>Yellow</td>
+    <td>Yellow</td>
+    <td>White</td>
+    <td>Yellow</td>
+    <td>The Min_Shunt value is missing but the calculated Difference is below the Max_Shunt. The channel is Not Available.</td>
+  </tr>
+</table>
+<h4>Exit the FBO GUI</h4>
+<p>To exit the FBO GUI:</p>
+<ol>
+  <li>From the Verification Selection screen, select <strong>Exit</strong>.</li>
+  <li>Select one of the following three options:</li>
+</ol>
+<ul>
+  <li>Exit and Save Results - The user is prompted to choice a file name and location to save the result </li>
+  <li>Exit Without Saving - The FBO GUI exits without saving the results </li>
+  <li>Cancel - The user is returned to the Verification Selection screen</li>
+</ul>
+<h3 id="HAMScal">HAMS Calibration</h3>
+<p>When  HAMS Calibration  is selected, the system is configured to interface between the user in the test bed and proDAS display functions. The pneumatic transducers in the cell are shorted, new slope and offsets are calculated, and the database is updated. The HAMS Calibration panel (below) is described in the table below.</p>
+<div class="Container"><img src="images/HamsCal.png" alt="HamsCal" width="700" height="539"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Buttons and Fields</th>
+    <th>Functions</th>
+  </tr>
+  <tr >
+    <td>Hams Cal</td>
+    <td>Records applied load and applied short for the transducers and calculates the new slope and offset.</td>
+  </tr>
+  <tr>
+    <td>Hams Zero</td>
+    <td>Records applied short and calculates a new offset.</td>
+  </tr>
+  <tr>
+    <td>Apply Short</td>
+    <td>Toggles between applying a short and normal operation.</td>
+  </tr>
+  <tr>
+    <td>Apply Load</td>
+    <td>Toggles between applying the load and normal operation.</td>
+  </tr>
+  <tr>
+    <td>Close</td>
+    <td>Closes the HAMS Calibration panel and returns to the Management GUI Control Panel. </td>
+  </tr>
+</table>
+<h4 id="PerformHAMScal">Performing a HAMS Calibration</h4>
+<p>To perform a HAMS calibration:</p>
+<ol>
+  <li>From the Management GUI Control Panel Tools menu, select <strong>HAMS Calibration</strong>.<br>
+    The HAMS Calibration panel is displayed.</li>
+  <li>Select <strong>Hams Cal</strong>.<br>
+    (Messages are displayed indicating Retrieving Channel information from the database, the discretes are set, slope and offset values are displayed and saved to the database.)</li>
+  <li>To return to the Management GUI Control Panel, select<strong> Close</strong>.</li>
+</ol>
+<h4 id="PerformHAMSzero">Performing a HAMS Zero</h4>
+<p>To perform a HAMS Zero:</p>
+<ol>
+  <li>From the HAMS Control &amp; Calibration window, select <strong>Hams Zero</strong>.<br>
+    (The same function as the HAMS Cal occurs).</li>
+  <li>Select <strong>Cancel</strong> to cancel.</li>
+  <li>To return to the Management GUI Control Panel, select<strong> Return</strong>. </li>
+</ol>
+<h4 id="ApplyHAMS">Applying a Hams Short or Load</h4>
+<p>To perform a HAMS Short or a HAMS Load:</p>
+<ol>
+  <li>From the HAMS Control &amp; Calibration window, select <strong></strong>either <strong>Apply Short</strong> or <strong>Apply Load</strong>.</li>
+  <li>To return to the Management GUI Control Panel, select<strong> Return</strong>.</li>
+</ol>
+<h3 id="Hyscan">HyScan Control</h3>
+<p>HyScan is used to measure differential pressures on the engine. The HyScan Functions panel allows the user to:</p>
+<ul>
+  <li><a href="?22#Calibrate">calibrate</a></li>
+  <li><a href="?23#CalibrateZero">calibrate zero</a></li>
+  <li><a href="?24#ZeroMeasurement">toggle the zero measurement On or Off</a></li>
+</ul>
+<h4 id="Calibrate">Calibrate</h4>
+<p>Calibrate mode applies regulated pressure to ZOC modules from the Calibration Unit. proDAS confirms appropriate engine status for this mode by activating <strong>Calibrate</strong> on the HyScan Functions panel. </p>
+<p>To calibrate:</p>
+<ol>
+  <li>From the Management GUI Control Panel Tools menu, select <strong>HyScan</strong>. The HyScan Functions window is displayed.
+    <div class="Container"><img src="images/HyScan.gif" alt="HyScan" width="322" height="308"></div>
+  </li>
+  <li>Select <strong>Calibrate</strong>.<br>
+    A <strong>Working</strong> dialogue box is displayed and all other buttons are disabled during calibration. After calibration is completed, the HyScan Functions panel buttons are reactivated, and the event is recorded in the UEL.</li>
+  <li>Select <strong>Close</strong> to close the HyScan Functions panel.</li>
+</ol>
+<h4 id="CalibrateZero">Calibrate Zero</h4>
+<p>Calibrate Zero mode compensates for temperature drift in the pressure transducer. proDAS confirms appropriate engine status for this mode by activating <strong>Calibrate Zero</strong> on the HyScan Functions panel.</p>
+<p>To calibrate zero:</p>
+<ol>
+  <li>From the Management GUI Control Panel Tools menu, select <strong>HyScan</strong>. The HyScan Functions window is displayed.
+    <div class="Container"><img src="images/HyScan.gif" alt="HyScan" width="322" height="308"></div>
+  </li>
+  <li>Select <strong>Calibrate Zero</strong>.<br>
+    A <strong>Working</strong> dialogue box is displayed and all other buttons are disabled during calibration. After calibration is completed, the HyScan Functions panel buttons are reactivated, and the event is recorded in the UEL.</li>
+  <li> Select <strong>Close</strong> to close the HyScan Functions panel.</li>
+</ol>
+<h4 id="ZeroMeasurement">Zero Measurement ON/OFF</h4>
+<p>Allows a zero measurement (i.e. switch all pressure lines to ambient pressure with the Zero Measurement ON and Zero Measurement OFF Commands).</p>
+<p>To turn zero measurement ON or OFF:</p>
+<ol>
+  <li>From the Management GUI Control Panel Tools menu, select <strong>HyScan</strong>. The HyScan Functions panel is displayed.
+    <div class="Container"><img src="images/HyScan.gif" alt="HyScan" width="322" height="308"></div>
+    <p class="Note">Initial display is the status of the Zero Measurement.</p>
+  </li>
+  <li> To toggle the zero measurement, select <strong>Zero Measurement ON</strong> or <strong>Zero Measurement OFF</strong>.</li>
+  <li>Select <strong>Close</strong> to close the HyScan Functions Panel. </li>
+</ol>
+<h3 id="IEEEcontrols">IEEE Controls</h3>
+<p>The IEEE 488 - Calibration Source Control window is used to control the operating modes of the frequency generator (Source) and the digital multimeter (DMM). The functions on the IEEE 488 - Calibration Source Control window (below) are described in the following table.</p>
+<div class="Container"><img height="543" src="images/IEEE488.gif" alt="IEEE488" width="500"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Button or Field </th>
+    <th>Description</th>
+  </tr>
+  <tr >
+    <td>Blank Field </td>
+    <td>Displays instrument description (i.e. manufacturer and model number).</td>
+  </tr>
+  <tr >
+    <td>Set Values</td>
+    <td>Allows the user to remotely alter the operating parameters of the frequency generator.</td>
+  </tr>
+  <tr >
+    <td>Current Values</td>
+    <td>Displays the current settings of the frequency generator.</td>
+  </tr>
+  <tr >
+    <td>Self Test</td>
+    <td>Performs an internal instrument test on the frequency generator and displays the status result in the Self-Test Response field. (Refer to the OEM manual for the proper decoding explanation.)</td>
+  </tr>
+  <tr >
+    <td>Update Settings</td>
+    <td>Sends the parameters, displayed in the Set Values area, to the frequency generator as operating criteria.</td>
+  </tr>
+  <tr >
+    <td>Self Test </td>
+    <td>Calibration Source performs a self test. The results are displayed to the user.</td>
+  </tr>
+  <tr >
+    <td>Function</td>
+    <td>Allows the user to set the operating mode of the digital multimeter.</td>
+  </tr>
+  <tr >
+    <td>Samples</td>
+    <td>Allows the user to set the number of sample averages that the digital multimeter performs before displaying the value.</td>
+  </tr>
+  <tr >
+    <td>DMM Reading</td>
+    <td>Displays the front panel readout of the digital multimeter.</td>
+  </tr>
+  <tr >
+    <td>RMS/Peak to Peak </td>
+    <td>The user can toggle between RMS and Peak to Peak for AC Amplitude measurement.</td>
+  </tr>
+  <tr >
+    <td>Cancel</td>
+    <td>Returns the user to the previous menu.</td>
+  </tr>
+</table>
+
+<h3 id="OTDzero">Open Transducer Detection (OTD) Zero / Transient TC Zero</h3>
+<p class="Note">Depending on configuration the Open Transducer Detection (OTD) Zero or Transient TC Zero screen is displayed.</p>
+<p>The OTD Zero allows the user to zero out any effect of the current supplied to VXI channels with Open Transducer Detection (OTD) enabled.</p>
+<p class="Note">The channels using this feature are often thermocouples.</p>
+<p>To perform an OTD Zero:</p>
+<ol>
+  <li>From the Management GUI Control Panel Tools menu, select <strong>OTD Zero </strong>. The Open Transducer Detection - Zero window is displayed.
+    <div class="Container"><img src="images/OTDzero.gif" alt="OTDzero" width="700" height="538"></div>
+  </li>
+  <li>To begin an OTD Zero, click <strong>Start</strong>. The Management GUI retrieves channel data from the Config Server and gets the list of channels with OTD enabled, and then proceeds with the zeroing process.<br>
+    The new offsets are presented to the user as mV values. The user is prompted with a modal dialogue box to continue and save the updates or to terminate the check. If the prompt is confirmed, the new facility offsets are updated in the database.</li>
+  <li>To print the results of the OTD Zero, click <strong>Print</strong>.</li>
+  <li>To save the results of the OTD Zero, click <strong>Save</strong>.</li>
+  <li>To close the OTD Zero and return to the Management GUI Control Panel, click <strong>Close</strong>.</li>
+</ol>
+<p class="Note">The channels with bad quality are filtered out and a message is printed for each bad channel.</p>
+<h3 id="ProDAQ">ProDAQ Calibration</h3>
+<p>The ProDAQ Channels Calibration and Diagnostics panel allows the user to calibrate ProDAQ Channels. The ProDAQ calibration utility allows the user to work with analogue input, DC strain, and RTD channels.</p>
+<p class="Note">The ProDAQ panel can only be accessed if proDAS is not scanning. If proDAS is scanning, the function is unavailable in the Tools menu.</p>
+<p>To calibrate analogue input channels:</p>
+<ol>
+  <li>Select whether to calibrate a single channel, single card, or all channels. If calibrating a single channel, select the channel from the list in the Analogue Input Channels panel. If calibrating a single card, all channels on the card are automatically selected in the list. If calibrating all channels, all channels are automatically selected in the list.<br>
+    <div class="Container"><img src="../../DASSubSysConfig/proDAQ/images/GUI1.png" width="646" height="646" alt=""/></div>
+  </li>
+  <li>Click <strong>Calibrate</strong>. The selected channels are calibrated, and the results of the calibration are displayed in the UEL.</li>
+</ol>
+<p>To calibrate DC strain channels:</p>
+<ol>
+  <li>Select whether to calibrate a single channel, single card, or all channels. If calibrating a single channel, select the channel from the list in the DC Strain Channels panel. If calibrating a single card, all channels on the card are automatically selected in the list. If calibrating all channels, all channels are automatically selected in the list.<br>
+    <div class="Container"><img src="../../DASSubSysConfig/proDAQ/images/GUI2.png" width="646" height="646" alt=""/></div>
+  </li>
+  <li>Select the appropriate calibration options from the following:
+    <ul>
+      <li>Signal Path</li>
+      <li>Excitation</li>
+      <li>Autobalance</li>
+    </ul>
+  </li>
+  <li>Click <strong>Calibrate</strong>. The selected channels are calibrated, and the results of the calibration are displayed in the UEL.</li>
+</ol>
+<p>To calibrate RTD channels:</p>
+<ol>
+  <li>Select whether to calibrate a single channel, single card, or all channels. If calibrating a single channel, select the channel from the list in the RTD Channels panel. If calibrating a single card, all channels on the card are automatically selected in the list. If calibrating all channels, all channels are automatically selected in the list.<br>
+    <div class="Container"><img src="../../DASSubSysConfig/proDAQ/images/GUI3.png" width="646" height="646" alt=""/></div>
+  </li>
+  <li>Select the calibration options from the following:
+    <ul>
+      <li>Signal Path</li>
+      <li>Excitation</li>
+    </ul>
+  </li>
+  <li>Click <strong>Calibrate</strong>. The selected channels are calibrated, and the results of the calibration are displayed in the UEL. </li>
+</ol>
+<h3 id="StaticCheck">Static Check</h3>
+<p>The Static Check feature performs a check of all measured channel values, compares the values to a known condition, such as zero and flags all channels which are out of the expected limits.</p>
+<p>The Static Check INI file supports groupings of static checks to be performed. The INI file is structured as follows:</p>
+<p><strong>[StaticCheck]</strong></p>
+<p>This general section contains information on the verbosity for logging the results, the number of decimal places to use when displaying channel values, the number of static check subsystem groups (optional), and the number of subsystems that will be checked.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Key</th>
+    <th>Description</th>
+  </tr>
+  <tr >
+    <td>Verbosity</td>
+    <td>If set to HIGH, information on all channels that have passed or failed the checks are displayed to the log. If set to LOW only information on channels that have failed the checks are displayed.</td>
+  </tr>
+  <tr >
+    <td>ChannelValueDecimalPlaces</td>
+    <td>Number of decimal places for displaying channel values.</td>
+  </tr>
+  <tr >
+    <td>NumberOfSSGroupsToCheck</td>
+    <td>Number of Static Check subsystem groups to be processed. This field is optional, and if not defined, only one static check group is assumed.</td>
+  </tr>
+  <tr >
+    <td>NumberOfSSToCheck</td>
+    <td>Total number of subsystems from all groups that need to be checked.</td>
+  </tr>
+</table>
+<p><strong>[StaticCheckGroups]</strong></p>
+<p>This optional section consists of the assignment of the names to the static check groups. These are user defined and for visual purposes only in the Static Check Panel. If this section is not defined, only one static check group is assumed.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Key</th>
+    <th>Description</th>
+  </tr>
+  <tr >
+    <td>SSGroup01</td>
+    <td>The user specified name for the first static check group of subsystems. The last two digits of the field increments sequentially for subsequent static check groups (e.g.SSGroup01, SSGroup02, SSGroup03).</td>
+  </tr>
+</table>
+<p><strong>[StaticCheck01]</strong>&nbsp;(section header without grouping)<br>
+  <strong>[StaticCheck01-01]</strong>&nbsp;(section header with grouping)</p>
+<p>This is a section header for the first static check. If there is no grouping of static checks, the last two digits of the section header increments sequentially for subsequent section headers (e.g. StaticCheck01, StaticCheck02, StaticCheck03, etc.).</p>
+<p>If grouping of static checks is defined, the first two digits at the end of the section header name indicate the sequential number of a static check subsystem group, whereas the last two digits at the end of the section header indicate the sequential number of the static check within the current group. Both indicator digit pairs increment sequentially for subsequent section headers (e.g. StaticCheck01-01, StaticCheck01-02, StaticCheck02-01, StaticCheck02-02, StaticCheck02-03, StaticCheck03-01, etc.).</p>
+<p>The keys within these two section headers are identical.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Key</th>
+    <th>Description</th>
+  </tr>
+  <tr >
+    <td>SSTypeName</td>
+    <td>This is the name of the subsystem whose channels are checked (e.g. GASSAI, GASSAO, GASSDIO, GASSVXI, PBS).</td>
+  </tr>
+  <tr >
+    <td>Group</td>
+    <td>This is the name of the group whose channels are checked. At least one of the SSTypeName of Group must be defined.
+      <p class="Note">This field can be used as a filter for any subsystem or on its own.</p></td>
+  </tr>
+  <tr >
+    <td>VXIGroup</td>
+    <td>This is the name of the calibration group whose channels are checked (e.g. Capacitance Probe, Vibration).
+      <p class="Note">This field is only used for the GASS related subsystems (GASSAI, GASSAO, GASSDIO, GASSVXI, GASSTC).</p></td>
+  </tr>
+  <tr >
+    <td>NameBeginsWith</td>
+    <td>Filter the list of channels with the defined letters at the beginning of the name.</td>
+  </tr>
+  <tr >
+    <td>NameContains</td>
+    <td>Filter the list of channels that contain the defined letters in the name.</td>
+  </tr>
+  <tr >
+    <td>NameEndsWith</td>
+    <td>Filter the list of channels with the defined letters at the end of the name.</td>
+  </tr>
+  <tr >
+    <td>UseRefChannel</td>
+    <td>This is a Y/N switch that indicates whether the channels are checked against a reference channel.<br>
+      <br>
+      Either the UseRefChannel or UseRefValue key should be present, but not both at the same time. If neither field is defined, a reference value of 0 will be used.</td>
+  </tr>
+  <tr >
+    <td>RefChannelName</td>
+    <td>If UseRefChannel=Y, this field determines the channel name of the reference channel.<br>
+      <br>
+      This field is not required if there is no reference channel.</td>
+  </tr>
+  <tr >
+    <td>UseRefValue</td>
+    <td>This is a Y/N switch that defines whether the selected channels are compared against a reference value.<br>
+      <br>
+      Either the UseRefChannel or UseRefValue key should be present, but not both at the same time. If neither field is defined, a reference value of 0 is used.</td>
+  </tr>
+  <tr >
+    <td>RefValue</td>
+    <td>If UseRefValue=Y, this field specifies the reference value that the channels are checked against.</td>
+  </tr>
+  <tr >
+    <td>Tolerance</td>
+    <td>This is the +/- tolerance for the reference value, which is obtained from the defined reference channel or from the defined reference value. The value of the channel being checked must be within the reference value of +/- the tolerance value in order to pass the check. If not defined, a tolerance value of 0 is used.</td>
+  </tr>
+</table>
+<p><a href="../../References/DASIniFiles/SoftwareiniFiles.pdf">Click here to see the Static Check initialisation file</a>.</p>
+<p>To perform a static check  ensure that proDAS is configured and is scanning:</p>
+<ol>
+  <li>From the Management GUI Control Panel Tools menu, select <strong>Static Check</strong>.<br>
+    A Static Check status window is displayed, indicating the subsystem type, group, channels, associated channel values and a passed or failed status message. A <strong>Cancel</strong> button is also displayed while the Static Check is being performed.
+    <div class="Container"><img src="images/StaticCheck.gif" alt="StaticCheck" width="700" height="426"></div>
+  </li>
+  <li>Select the Report tab to view the report.
+    <div class="Container"><img src="images/StaticCheckReport.gif" alt="StaticCheckReport" width="700" height="431"></div>
+  </li>
+  <li>Select <img src="images/BtnPrint.gif" alt="BtnPrint" width="16" height="13"/> to print a copy of the Report.</li>
+</ol>
+<h3 id="TSM">Temperature Scanning Module (TSM) Offset Correction</h3>
+<p>The TSM panel gives the user the ability to select one or more temperature scanners, any number of channels, and to specify the temperature/resistance that will be applied during an offset adjustment.</p>
+<p>To perform an offset correction:</p>
+<ol>
+  <li>From the Management GUI Control Panel Tools menu, select <strong>TSM</strong>. The Temperature Scanner Select Scanner window is displayed.
+    <div class="Container"><img src="images/TSMSelectChannel.gif" alt="TSMSelectChannel" width="689" height="484"></div>
+  </li>
+  <li>Select one or more scanners from the Select Scanner window and click <strong>Next</strong> or click the <strong>Specify Channel Type </strong> tab. The Specify Channel Type tab is displayed with all channels associated with the previously selected scanner.
+    <div class="Container"><img src="images/TSMChanTypeTab.gif" alt="TSMChanTypeTab" width="689" height="484"></div>
+  </li>
+  <li> Select a channel of the appropriate type from the Specify Channel Type window and click <strong>Next</strong> or click the <strong>Pick Channels</strong> tab. The Pick Channels tab is displayed.
+    <div class="Container"><img src="images/TSMPickChannels.gif" alt="TSMPickChannels" width="689" height="484"></div>
+  </li>
+  <li> Select one or more channels from the Select channels window (or click <strong>Select All</strong>) for Offset Correction and click <strong>Next</strong> or <strong>Offset Correction</strong> tab. The Offset Correction tab is displayed.
+    <div class="Container"><img src="images/TSMOffsetCorrection.gif" alt="TSMOffsetCorrection" width="689" height="577"></div>
+  </li>
+  <li> Enter a target value in the Target Value field. Click <strong>Offset Correction</strong> to calibrate the channel(s).
+    <p class="Note">The target value should have the same units as the &quot;Default EU&quot; as defined in the scanners subsystem (see <a href="../../DASSubSysConfig/TSM/TSM.htm#SubsystemEditorTSM">Subsystem Editor for TSM Channels</a> for details).</p>
+    <p class="Note">All scanners being zeroed at the same time must have the same &quot;Default EU&quot;.</p>
+  </li>
+  <li>Click <strong>Next</strong> or the <strong>Update</strong> tab. The Update tab is displayed.
+    <div class="Container"><img src="images/TSMUpdate.gif" alt="TSMUpdate" width="689" height="577"></div>
+  </li>
+  <li>To complete the offset correction and store the data back to the scanner(s), click <strong>Update</strong>.</li>
+</ol>
+<h3 id="TruTemp">TruTemp Control</h3>
+<p>TruTemp measures thermocouple (T/C) input voltage and resistance temperature detector (RTD) resistance and transmits these values to proDAS for storage in the current value table (CVT). The TruTemp System Control panel provides diagnostic procedures to:</p>
+<ul>
+  <li><a href="?25#DisableEnable">disable or enable the thermocouple open circuit test</a></li>
+  <li><a href="?26#LoopResistance">measure the loop resistance of temperature thermocouples</a></li>
+  <li><a href="?27#ConductancetoEarth">measure the thermocouple conductance to earth</a></li>
+</ul>
+<h4 id="DisableEnable">Disable/Enable OC Test </h4>
+<p class="Note">The RTE must be at idle state to Disable/Enable OC Test.</p>
+<p>To Disable or Enable OC Test:</p>
+<ol>
+  <li>From the Management GUI Control Panel Tools menu, select <strong>TruTemp</strong>. The TruTemp System Control panel is displayed.
+    <div class="Container"><img src="images/TruTemp.gif" alt="TruTemp" width="298" height="290"></div>
+  </li>
+  <li>To toggle the OC Test, select <strong>Disable OC Test</strong> or <strong>Enable OC Test</strong>.<br>
+    If the RTE is at IDLE state, a message window is displayed asking the user to confirm the operation.</li>
+  <li>Select <strong>Yes</strong>. The Management GUI sets the scanner configuration. A <strong>UEL message</strong> is then displayed and the user is returned to the TruTemp System Control Page.</li>
+  <li>Select <strong>Close</strong> to close the TruTemp System Control Panel.</li>
+</ol>
+<h4 id="LoopResistance">Loop Resistance</h4>
+<p>During the loop resistance test, the resistance of each thermocouple channel is measured to ensure that the thermocouple is connected to the TruTemp System and that there are no breaks in the thermocouple wire.</p>
+<p class="Note">The RTE must be in Scan mode to perform a Loop Resistance test.</p>
+<p>To perform a loop resistance test:</p>
+<ol>
+  <li>From the Management GUI Control Panel Tools menu, select <strong>TruTemp</strong>. The TruTemp System Control panel is displayed.
+    <div class="Container"><img src="images/TruTemp.gif" alt="TruTemp" width="298" height="290"></div>
+  </li>
+  <li>Select <strong>Loop Resistance</strong>.<br>
+    A message window is displayed asking the user to confirm the operation and a message is displayed in the UEL.</li>
+  <li>Select <strong>OK</strong> to start the test.</li>
+  <li>When the test is complete a message window is displayed. Any defective channels are listed in the Event Handler Window and recorded in the UEL. The results of the test are stored in the file /users/RTE/bin/tmp/trUTEMP2.log on the Host Computer.</li>
+  <li>Select <strong>OK</strong>. The message window is closed and the user is returned to the TruTemp System Control panel.</li>
+  <li>Select <strong>Close</strong> to close the TruTemp System Control Panel.</li>
+</ol>
+<h4 id="ConductancetoEarth">Conductance To Earth</h4>
+<p>The conductance to earth test checks for electrical shorts, between the thermocouple wire and the metal components of the engine, caused by damaged insulation on the thermocouple wire. </p>
+<p class="Note">The RTE must be in Scan mode to perform a Conductance To Earth test.</p>
+<p>To perform a conductance to earth test:</p>
+<ol>
+  <li>From the Management GUI Control Panel Tools menu, select <strong>TruTemp</strong>. The TruTemp System Control panel is displayed.
+    <div class="Container"><img src="images/TruTemp.gif" alt="TruTemp" width="298" height="290"></div>
+  </li>
+  <li>Select <strong>Conductance To Earth</strong>.<br>
+    A message window is displayed asking the user to confirm the operation and a message is displayed in the UEL.</li>
+  <li>Select <strong>OK</strong> to start the test.</li>
+  <li>When the test is complete a message window is displayed. Any defective channels are listed in the Event Handler Window and recorded in the UEL. The results of the test are stored in the file /users/RTE/bin/tmp/trUTEMP2.log on the Host Computer.</li>
+  <li>Select <strong>OK</strong>. The message window is closed and the user is returned to the TruTemp System Control panel.</li>
+  <li>Select <strong>Close</strong> to close the TruTemp System Control Panel.</li>
+</ol>
+<h3 id="ZeroPurgePressChan">Zeroing or Purging Pressure Scanner Channels (PBS)</h3>
+<p class="Note">The following terminology has the same meaning:<br>
+  &nbsp;&nbsp;&bull;&nbsp;&nbsp;Pressure Brick<br>
+  &nbsp;&nbsp;&bull;&nbsp;&nbsp;Pressure Scanner</p>
+<p class="Note">Scanners specified in the Management GUI ini file parameter PurgeIgnoreList do not appear in the list of purge channels in the Pressure Scanner Functions Panel.</p>
+<p>Purging can be performed on all configured pressure scanner channels in the system before each test.</p>
+<p class="Note">The enable purge channel is defined in the MgtGUI.ini file as:<br>
+  &nbsp;&nbsp;&bull;&nbsp;&nbsp;[PBS]<br>
+  &nbsp;&nbsp;&bull;&nbsp;&nbsp;Purge Time = 30<br>
+  &nbsp;&nbsp;&bull;&nbsp;&nbsp;Enable Purge Chan = Purge Enable<br>
+  &nbsp;&nbsp;&bull;&nbsp;&nbsp;Purge Ignore List = PB131487<br>
+  <br>
+  If the channel listed as the enable purge channel (Purge Enable) is False, then the purge functions are disabled.</p>
+<p>The Pressure Scanner Functions panel provides procedures to:</p>
+<ul>
+  <li><a href="?98#PurgeAllBricks">purge all scanners</a></li>
+  <li><a href="?99#PurgeOneBrick">purge one scanner</a></li>
+  <li><a href="?100#ZeroAllBricks">zero all scanners</a></li>
+</ul>
+<h4 id="AccessPBFunctionsPanel">Accessing the Pressure Scanner Functions Panel</h4>
+<p>To access the Pressure Scanner Functions panel:</p>
+<ol>
+  <li>From the Management GUI Control Panel Tools menu, select <strong>PBS</strong>.<br>
+    The Pressure Scanner Functions panel is displayed.<br>
+    <div class="Container"><img src="images/PBS.png" width="698" height="648" alt=""/> </div>
+  </li>
+</ol>
+<h4 id="PurgeAllBricks">Purge All Scanners</h4>
+<p>The Purge All function allows the user to purge the pressure lines between the scanners and engine. The purge is performed on all configured pressure scanner channels.<br>
+  <br>
+  Purging the pressure scanner isolates the transducers from the measurement ports and connects the ports to an external purge connection (pressure source). Pressure is forced out of the measurement ports, removing any blockages or contaminants between the scanner and the pressure tapping on the engine. <br>
+  <br>
+  The pressure source is typically a conditioned air or nitrogen supply in the test cell.<br>
+</p>
+<p class="Caution">Do not purge scanners with the dust caps installed or with the measurement port sealed, as damage to the scanners will result.</p>
+<p>To purge all scanners:</p>
+<ol>
+  <li>Enter the duration of the purge, in seconds, in the <strong>Purge Time</strong> field of the Pressure Scanner Functions panel.
+    <p class="Note">The default purge time is 30 seconds. This time can be modified in the config.ini file.</p>
+  </li>
+  <li>Select <strong>Purge All Scanners</strong>.<br>
+    A dialogue box is displayed, indicating the scanners are being purged.</li>
+  <li>When all scanners have been purged, the dialogue box is closed and the operator is returned to the Pressure Scanner Functions panel. The pressure channels are returned to their normal measurement mode.</li>
+</ol>
+<h4 id="PurgeOneBrick">Purge One Scanner</h4>
+<p>The Purge One Scanner function allows the user to purge the pressure lines between a single pressure scanner and the engine.</p>
+<p class="Caution">Do not purge scanners with the dust caps installed or with the measurement port sealed, as damage to the scanners will result.</p>
+<p>To purge one scanner: </p>
+<ol>
+  <li>Enter the duration of the purge in the <strong>Purge Time</strong> field.</li>
+  <li>Select <strong>Purge One Scanner</strong>.</li>
+  <li>Select the name of a channel on the scanner to be purged from the Pressure Scanner Functions panel.</li>
+  <li>Select <strong>Start</strong> or select <strong>Cancel</strong> to exit the purge one function.<br>
+    A dialogue box is displayed, indicating the scanner is being purged.</li>
+  <li>When the scanner has been purged, the dialogue box is closed and the operator is returned to the Pressure Scanner Functions panel.
+    The pressure channels are returned to their normal measurement mode.</li>
+</ol>
+<h4 id="ZeroAllBricks">Zero Scanners</h4>
+<p>The zero calibration (Zero) command causes the pressure scanners to shift the internal calibration valves into the CAL position. The pressures that are present at the CAL and the CAL REF inputs are used for the minimum or zero calibration pressure. On completion of the zero calibration, the calibration valves are shifted into the RUN position and the offset coefficients are updated in pneumatic pressure scanner memory.</p>
+<p>The Zero All function allows the user to zero all configured pressure scanners simultaneously, resulting in a recalculated offset coefficient for each of the channels being calibrated and automatically compensating for any drift errors in the transducer offset.</p>
+<p class="Note">Since the coefficients do not get permanently stored in the scanner it is recommended that the zero command be performed prior to each engine test.</p>
+<p>To zero all scanners:</p>
+<ol>
+  <li>Select <strong>Zero All</strong> from the Pressure Scanner Functions panel.</li>
+  <li>When the scanners have been zeroed, the UEL states that the task has been completed.</li>
+</ol>
+<p>The Zero Multiple function allows the user to zero multiple (at least one) configured pressure scanners simultaneously, resulting in a recalculated offset coefficient for each of the channels being calibrated and automatically compensating for any drift errors in the transducer offset.</p>
+<p class="Note">Selecting one scanner will select all channels that are tied to that scanner.</p>
+<p>To zero multiple scanners:</p>
+<ol>
+  <li>Select <strong>Zero Multiple</strong> from the Pressure Scanner Functions panel.</li>
+  <li>Select the scanners to be zeroed from the list in the Pressure Scanner Functions panel. Hold CTRL while selecting to select multiple scanners.</li>
+  <li>Select <strong>Start</strong> or select <strong>Cancel</strong> to exit the purge one function.<br>
+    A dialogue box is displayed, indicating the scanner is being purged.</li>
+  <li>When the scanners have been zeroed, the dialogue box is closed and the operator is returned to the Pressure Scanner Functions panel, and the UEL states that the task has been completed.</li>
+</ol>
+<h2 id="PostTest">Post Test Functions</h2>
+<p>The Management GUI Control Panel Tools menu allow access to various post processing applications through the Post Test Functions sub menu. The following Post Test Functions, as applicable, can be performed:</p>
+<ul>
+  <li><a href="../Easifit/Easifit.html#EASIFITGUI">Easifit Transfer</a></li>
+  <li><a href="../../StandardTools/RAVE/RAVE.htm">RAVE</a></li>
+  <li><a href="../../TestwithDAS/RunEngineTest/RunEngineTest.htm#RTReports">RTReports</a></li>
+  <li><a href="?28#ShiftChange">Shift Change</a></li>
+  <li><a href="../../StandardTools/TAU/TAU.htm">Test Archive Utility (TAU)</a></li>
+  <li><a href="../TOCEUM/TOCEUM.htm">TOCEUM</a></li>
+  <li>Transfer Diary - prepares the Excel Test Diary Logsheet file and transfers it downstream to the RRDS System (Alice). The command line parameters consist of:
+    <ul>
+      <li><strong>/mode</strong> - [ logsheet or &quot;&quot; | transfer | autotr ]</li>
+      <li><strong>/test_cell_id</strong> - (integer) The ID of the current test cell</li>
+      <li><strong>/test_id</strong> - (integer) The ID of the current test</li>
+      <li><strong>/engine</strong> - (string) The name of the engine configured</li>
+      <li><strong>/date</strong> - Event date or control keyword (auto, off, now)</li>
+    </ul>
+    <p class="Note">The Date Filter command line parameter (/date) provides the ability to extract one day's worth of information. The date parameter can be: <br>
+      - specific date: /date 10-31-2009<br>
+      - yesterday: /date auto<br>
+      - do not filter on date: /date off<br>
+      - today: /date now<br>
+      - if /date is not specified a pop-up window is displayed prompting the user to specify the parameters</p>
+  </li>
+  <li><a href="../OMS/OMS.htm">Trent OMS Tests</a></li>
+  <li>View Diary - launches an Excel spreadsheet containing the Test Diary Logsheet</li>
+</ul>
+<h3 id="ShiftChange">Shift Change</h3>
+<p>The shift change feature allows the operators to change shifts &quot;on the fly&quot; during an engine run.</p>
+<p>To perform a shift change:</p>
+<ol>
+  <li>From the  Management GUI Control Panel Tools menu, select <strong>Shift Change</strong>.<br>
+    The shift window is displayed.
+    <div class="Container"><img src="images/ShiftChange.gif" alt="ShiftChange" width="700" height="442"></div>
+  </li>
+  <li>Enter the new crew information in the fields provided.</li>
+  <li>Select <strong>Apply</strong>. The Shift Change window is closed and the Test Engine screen is displayed. The new shift change information is displayed in the Test Diary Log and the Unified Event Log.</li>
+  <li>Select <strong>Close</strong> to return to the Test Engine screen without saving changes.</li>
+</ol>
+<h2 id="ConfigEditors">Configuration Editors</h2>
+<p>The following Configuration Editors, as applicable, are available:</p>
+<ul>
+  <li><a href="../../DASConfigTools/BPTableEditor/BPTableEditor.htm">Break Point Table Editor</a></li>
+  <li><a href="../../DASSubSysConfig/ChannelEditor/ChannelEditor.htm">Channel Editor</a></li>
+  <li><a href="../../DASSubSysConfig/ConfigAdmin/ConfigAdmin.htm">Configuration Administrator</a></li>
+  <li><a href="../../DASConfigTools/EUEditor/EUEditor.htm">Engineering Unit Editor</a></li>
+  <li><a href="../../DASConfigTools/MacroEditor/MacroEditor.htm">Macro Editor</a></li>
+  <li><a href="../../DASConfigTools/PolyEditor/PolyEditor.htm">Polynomial Editor</a></li>
+  <li><a href="../../DASConfigTools/DisplayPages/DisplayPages.htm">RTD Editor</a></li>
+  <li><a href="../../DASConfigTools/ScriptEditor/ScriptEditor.htm">Script Editor</a></li>
+  <li><a href="../../DASConfigTools/SensorEditor/SensorEditor.htm">Sensor Editor</a></li>
+  <li><a href="../../DASSubSysConfig/SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a></li>
+  <li><a href="../../DASConfigTools/TextOutputPages/TextOutputPages.htm">Text Output Pages Editor</a></li>
+  <li><a href="../../DASConfigTools/TransLogDefnEditor/TransLogDefnEditor.htm">Transient Log Definition Editor</a></li>
+  <li><a href="../../DASConfigTools/UserFunctions/UserFunctions.htm">User Functions Editor</a></li>
+</ul>
+<h2 id="CustomTools">Custom Tools</h2>
+<p>The following Custom Tools, as applicable, are available:</p>
+<ul>
+  <li>Calculator - launches the Windows calculator</li>
+  <li>View Log - opens the Management GUI trace file</li>
+</ul>
+
+<br><br>
+
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

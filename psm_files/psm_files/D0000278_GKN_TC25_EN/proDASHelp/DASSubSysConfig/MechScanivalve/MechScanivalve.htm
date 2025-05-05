@@ -1,0 +1,483 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Mechanical Scanivalve Subsystem (MSS)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="MechScanivalve">Mechanical Scanivalve Subsystem (MSS) (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+
+<h2 id="Overview">Overview</h2>
+<p>The Mechanical Scanivalve Subsystem (MSS) provides dry pressure measurements, using the Multiple Scanivalve System MSS-48C Pneumatic Scanner. The MSS can drive up to twelve pressure scanning modules (i.e.: MSS-48C Pneumatic Scanners) with up to 48 ports per module, allowing the MSS to scan up to 576 pressure signals. Only one instance of the Mechanical Scanivalve Subsystem can operate within proDAS.</p>
+<p>A separate pressure transducer is required for each Scanivalve pressure module used in the MSS. The transducer outputs a voltage signal proportional to the pressure input of the port that is currently switched to the module.</p>
+<p>The Home port (i.e.: 48th port) measures ambient pressure while the other forty-seven ports measure pressures from the engine-under-test. An additional float channel (ambient channel) must be set up in the configuration file in order to convert the pressure readings of all ports (from relative to absolute) except the Home port. The Home port measures the ambient pressure so that the quick zero correction factor can be determined for each channel measured.</p>
+<p>All pressure scanning modules are synchronized to each other and to a Channel Encoder. The Channel Encoder provides an absolute digital address for each input position. The MSS multiplexes the individual static pneumatic analogue signals from the individual pressure channels, allowing the port being measured via the GASS analogue input channel to be correlated to the corresponding address, which defines the current position of the MSS.</p>
+<p>The data from each MSS port, which is only available during a steady-state fullset scan, is time-multiplexed with all the other ports (i.e.: to a maximum of 48) on the module. The ports for the different modules are synchronized within the MSS. Whenever a steady-state fullset is requested, a complete scan of all ports on the MSS is first initiated.</p>
+<p>During the scanning, the data is only assigned to its specific channel after:</p>
+<ul>
+  <li>the port counter has been incremented</li>
+  <li>the step command has been given</li>
+  <li>the settling time, the delay time for transmission of the impulse within the GASS Subsystem has elapsed</li>
+  <li>the port position reading (i.e.: the decoded Binary Coded Decimal (BCD) address - MSS_POSITION_n) is identical to the counter address expected.</li>
+</ul>
+<p>The MSS is stepped successively to the highest address expected before being sent to the home position. The recording of steady state data (fullset) is only started once the MSS has stepped through all the ports and has reached the home position again.</p>
+<p>The pressure signals are read at the scan rates defined for the GASS Subsystem. The processing of MSS data, however, is only possible in the form of a fullset (i.e.: when a fullset is triggered, all pressure modules are processed and the MSS automatically steps through all the required ports until the MSS is sent to the home position).</p>
+<p>No MSS Subsystem data processing is available when the RTE is active (i.e.: scanning) unless a fullset has been triggered. The value available at the GASS input channel is the ambient pressure as seen by the MSS in the Home position.</p>
+<h3 id="MSSinterface">MSS Interface</h3>
+<p>The MSS interfaces with the MSS Driver via an appropriate GASS Subsystem. The analogue input signals are measured using a channel in an appropriate subsystem (e.g.: a GASSVXI or a GASSAI Subsystem).</p>
+<p>The incoming analogue signal is converted to Engineering Units (EUs) using the facility calibration curves and the sensor calibration tables stored in the database. This input signal is treated as a normal GASS analogue input signal.</p>
+<p>The MSS is controlled using both STEP and HOME commands. Both the Step and the Home positions are verified. If these positions do not coincide with the expected addresses, an error counter is incremented. If three errors occur during a scan sequence, the MSS Driver sends an error message to the UEL and the scan is aborted.</p>
+<p>The deviation found between the measured ambient pressure and the calibrated zero pressure value at the beginning of every scan (i.e.: quick zero function) must not exceed the tolerance defined in the RTE initialisation file for the Mechanical Scanivalve Subsystem. If the deviation exceeds the defined tolerance, the channel quality is changed to SUSPECT but the scan is processed as a valid scan. The Test Bed Engineer must then decide whether or not the MSS must be recalibrated.</p>
+<h2 id="ConfigPLCChannel">Configuring an MSS Channel</h2>
+<p>The configuration of the Mechanical Scanivalve Subsystem (MSS) is stored in the configuration database.</p>
+<p>To configure an MSS Channel:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</li>
+  <li>Select the name of the Mechanical Scanivalve Subsystem from the list of available subsystems.
+    <div class="Container"><img src="images/SelectSubsystemName.png" alt="SelectSubsystemName" width="387" height="317"></div>
+  </li>
+  <br>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a><a href="../ConfigEditors/ConfigEditors.htm#GenCol"></a>.</li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.
+    <div class="Container"><img src="images/ChannelEditor.png" alt="ChannelEditor" width="700" height="424"></div>
+  </li>
+  <br>
+  <li>Set the <strong>Module</strong> column.</li>
+  <li>Set the <strong>Port</strong> column.</li>
+</ol>
+<h2 id="ConfigFileStructure">Configuration File Structure</h2>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from an XML file (a tab-delimited text file is not currently available).</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu"> Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import an <strong>MSS</strong> channel, see <a href="?10#XMLFileStructure"> XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras 
+  -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import a <strong>MSS</strong> channel, see <a href="?11#TabDelimitFileStructure"> Tab-Delimited File Structure</a>.</p>
+<h3 id="MSSchannels">MSS Channels</h3>
+<p>The MSS is configured with:</p>
+<ul>
+  <li>a Home channel</li>
+  <li>a Step channel</li>
+  <li>seven position channels</li>
+  <li>a Ready-to-Read (RTR) channel</li>
+</ul>
+<p>The MSS is controlled by a Home and a Step signal provided by the RTE. These signals, together with the time multiplexing and digitizing 
+  of the group analogue output signals, also provided by the RTE, ensure the correct processing of the individual pressure signals measured at all of the MSS ports.</p>
+<p>For detailed electrical and mechanical information on the MSS, refer to the Multiple Scanivalve System (MSS-48C) Pneumatic Scanner Instruction Manual.</p>
+<p>The MSS requires two input commands: the Home and the Step commands. These two commands can be delivered by two discrete output channels of the GASSVXI or GASSDIO Subsystem.</p>
+<p>The MSS channels are configured in two steps. First, the GASS channel is used for the 12 analogue input channels, the 8 position channels, and the 2 output channels for the Step and Home signals are defined in the appropriate subsystem. Secondly, the MSS channel definitions are based on the GASS channels defined above.</p>
+<h3 id="XMLFileStructure">XML File Structure</h3>
+<h4 id="ChannelsXML">Channels</h4>
+<p>The channels are stored in files Channels.xml in the configuration directories.</p>
+<p>An MSS Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor - Generic Channel Parameters - XML File Structure</a>, and the specific attributes <strong>Module</strong> and <strong>Port</strong>. The attributes are defined in the following table.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Module</td>
+    <td>Module</td>
+    <td>MOD_NUMBER</td>
+    <td>Specifies the module number via which the port is measured.</td>
+    <td>Integer</td>
+    <td>An integer between 1 and 12.</td>
+  </tr>
+  <tr>
+    <td>Port</td>
+    <td>Port</td>
+    <td>PORT_NUMBER</td>
+    <td>Specifies the port number assigned to the channel.</td>
+    <td>Integer</td>
+    <td>An integer between 1 and 48.</td>
+  </tr>
+</table>
+<p>The structure of an MSS Channel complies with the following example:</p>
+<blockquote>
+  <pre>&lt;Channels   LastModificationDate=&quot;<strong>2008-09-04   14:15:19</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Channel Name=&quot;ZZMSS1&quot;
+Description=&quot;&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2008-04-29 10:41:48&quot;
+SubsystemName=&quot;ZZMSS&quot;
+SubsystemType=&quot;MSS&quot;
+AlternateName=&quot;&quot;
+DataType=&quot;Float&quot;
+InitialValue=&quot;-999999&quot;
+Format=&quot;4.2f&quot;
+UpdateRate=&quot;1&quot;
+QualityCeiling=&quot;GOOD&quot;
+Critical=&quot;false&quot;
+EngineeringUnit=&quot;-&quot;
+DisplayMin=&quot;0&quot;
+DisplayMax=&quot;100&quot;
+DeadBand=&quot;0&quot;
+Output=&quot;false&quot;
+ReferenceChannel=&quot;&quot;
+Group=&quot;&quot;
+SignalId=&quot;&quot;
+CalSensor=&quot;&quot;
+CalGroup=&quot;&quot;
+FixedSensor=&quot;&quot;
+Module=&quot;1&quot;
+Port=&quot;4&quot; /&gt;
+&lt;/Channels&gt;</pre>
+</blockquote>
+<h4 id="SubsystemsXML">Subsystems</h4>
+<p>The subsystems are stored in files <em>Subsystems.xml</em> in the configuration directories.</p>
+<p>A MSS Subsystem contains generic information, described in <a href="../SubsystemEditor/SubsystemEditor.htm#XMLFileStructure">Subsystem 
+  Editor - Generic Subsystem Parameters - XML File Structure</a> and the specific attributes:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Home Channel</td>
+    <td>HomeCommand</td>
+    <td>HOME_CHANNEL</td>
+    <td>Specifies the name of the channel that delivers the Home command.</td>
+    <td>String</td>
+    <td>An arbitrary case sensitive string.</td>
+  </tr>
+  <tr>
+    <td>Step Channel</td>
+    <td>StepCommand</td>
+    <td>STEP_CHANNEL</td>
+    <td>Specifies the name of the channel that delivers the Step command.</td>
+    <td>String</td>
+    <td>An arbitrary case sensitive string.</td>
+  </tr>
+  <tr>
+    <td>RTR Channel</td>
+    <td>ReadyToReadSignal</td>
+    <td>MSS_RTR</td>
+    <td>Specifies the channel name of the address where the RTR signal shall be read.</td>
+    <td>String</td>
+    <td>An arbitrary case sensitive string.</td>
+  </tr>
+  <tr>
+    <td>Position 1</td>
+    <td>BCDPosition1</td>
+    <td>MSS_POSITION_1</td>
+    <td>Specifies the channel name of the address where the BCD '1' position of the current MSS address shall be read.</td>
+    <td>String</td>
+    <td>An arbitrary case sensitive string.</td>
+  </tr>
+  <tr>
+    <td>Position 2</td>
+    <td>BCDPosition2</td>
+    <td>MSS_POSITION_2</td>
+    <td>Specifies the channel name of the address where the BCD '2' position of the current MSS address shall be read.</td>
+    <td>String</td>
+    <td>An arbitrary case sensitive string.</td>
+  </tr>
+  <tr>
+    <td>Position 4</td>
+    <td>BCDPosition4</td>
+    <td>MSS_POSITION_4</td>
+    <td>Specifies the channel name of the address where the BCD '4' position of the current MSS address shall be read.</td>
+    <td>String</td>
+    <td>An arbitrary case sensitive string.</td>
+  </tr>
+  <tr>
+    <td>Position 8</td>
+    <td>BCDPosition8</td>
+    <td>MSS_POSITION_8</td>
+    <td>Specifies the channel name of the address where the BCD '8' position of the current MSS address shall be read.</td>
+    <td>String</td>
+    <td>An arbitrary case sensitive string.</td>
+  </tr>
+  <tr>
+    <td>Position 10</td>
+    <td>BCDPosition10</td>
+    <td>MSS_POSITION_10</td>
+    <td>Specifies the channel name of the address where the BCD '10' position of the current MSS address shall be read.</td>
+    <td>String</td>
+    <td>An arbitrary case sensitive string.</td>
+  </tr>
+  <tr>
+    <td>Position 20</td>
+    <td>BCDPosition20</td>
+    <td>MSS_POSITION_20</td>
+    <td>Specifies the channel name of the address where the BCD '20' position of the current MSS address shall be read.</td>
+    <td>String</td>
+    <td>An arbitrary case sensitive string.</td>
+  </tr>
+  <tr>
+    <td>Position 40</td>
+    <td>BCDPosition40</td>
+    <td>MSS_POSITION_40</td>
+    <td>Specifies the channel name of the address where the BCD '40' position of the current MSS address shall be read.</td>
+    <td>String</td>
+    <td>An arbitrary case sensitive string.</td>
+  </tr>
+  <tr>
+    <td>Pressure Unit</td>
+    <td>PressureUnit</td>
+    <td>PRESSURE_UNIT</td>
+    <td>Specifies the pressure unit EU for all modules</td>
+    <td>String</td>
+    <td>Any EU that belongs to the &quot;Pressure&quot; group.</td>
+  </tr>
+</table>
+<p>The specific attribute <strong>Modules</strong> defines a collection of pressure modules implemented for the MSS Subsystem.<br>
+  Each Module has the following properties:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Module Number</td>
+    <td>ModuleNumber</td>
+    <td>MSS_MOD_n</td>
+    <td>Specifies the module number.</td>
+    <td>Integer</td>
+    <td>An integer between 1 and 12.</td>
+  </tr>
+  <tr>
+    <td>GASS Channel Name</td>
+    <td>PressureChannel</td>
+    <td>GASS_MSS_MOD_n_CHANNEL_NAME</td>
+    <td>Specifies the channel name in the GASS subsystem required to measure the pressures at the 48 ports connected to MSS_MOD_n.</td>
+    <td>String</td>
+    <td>An arbitrary case sensitive string.</td>
+  </tr>
+  <tr>
+    <td>Max. Pressure</td>
+    <td>MaxPressure</td>
+    <td>MSS_MOD_n_PRESS_MAX</td>
+    <td>Specifies the maximum pressure that can be measured using the 48 channels connected to the pressure module.</td>
+    <td>Float</td>
+    <td>The value is limited by the sensor that is used.</td>
+  </tr>
+</table>
+<p>The specific attribute <strong>Ports</strong> defines a collection of pressure ports for each of the modules implemented for the MSS Subsystem.<br>
+  Each Port has the following properties:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Port Number</td>
+    <td>PortNumber</td>
+    <td>PORT_NUMBER</td>
+    <td>Specifies the port number.</td>
+    <td>Integer</td>
+    <td>An integer between 1 and 48.</td>
+  </tr>
+  <tr>
+    <td>Description</td>
+    <td>Description</td>
+    <td>DESCRIPTION</td>
+    <td>Description field.</td>
+    <td>String</td>
+    <td>An arbitrary case sensitive string.</td>
+  </tr>
+</table>
+<p>The structure of a MSS Subsystem is shown in the following example:</p>
+<blockquote>
+  <pre>&lt;Subsystems   LastModificationDate=&quot;<strong>2008-09-04   14:13:03</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Subsystem Name=&quot;ZZMSS&quot;
+Description=&quot;&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2008-04-28 11:23:34&quot;
+Id=&quot;0&quot;
+Type=&quot;MSS&quot;
+CreationDate=&quot;2008-04-28 11:13:40&quot;
+HomeCommand=&quot;MSSHome&quot;
+StepCommand=&quot;MSSStep&quot;
+BCDPosition1=&quot;MSSPos1&quot;
+BCDPosition2=&quot;MSSPos2&quot;
+BCDPosition4=&quot;MSSPos4&quot;
+BCDPosition8=&quot;MSSPos8&quot;
+BCDPosition10=&quot;MSSPos10&quot;
+BCDPosition20=&quot;MSSPos20&quot;
+BCDPosition40=&quot;MSSPos40&quot;
+ReadyToReadSignal=&quot;MSSRTR&quot;
+PressureUnit=&quot;PSI&quot;&gt;
+&lt;Modules&gt;
+&lt;Module ModuleNumber=&quot;1&quot;
+PressureChannel=&quot;MSSMod1&quot;
+MaxPressure=&quot;100&quot; &gt;
+&lt;Ports&gt;
+Port Number=&quot;1&quot;
+Description=&quot;test&quot; /&gt;
+&lt;/Ports&gt;
+&lt;/Module&gt;
+&lt;/Modules&gt;
+&lt;/Subsystem&gt;
+</pre>
+</blockquote>
+<h3 id="TabDelimitFileStructure">Tab-Delimited File Structure</h3>
+<p>The Mechanical Scanivalve Subsystem channel definition includes all <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic channel definition columns</a> and the specific Mechanical Scanivalve Subsystem input parameters defined in the tab-delimited  configuration file.</p>
+<p>The rules, syntax and guidelines for creating MSS channel definitions are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>PORT_NUMBER</td>
+    <td>Specifies the Port number that is assigned to the channel.</td>
+    <td>Number 1 to 48</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>MOD_NUMBER</td>
+    <td>Specifies the Module number through which the port is measured.</td>
+    <td>Number 1 to 12</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single value.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is optional.</p></td>
+  </tr>
+</table>
+<h2 id="SubsysEditorMSS">Subsystem Editor for MSS Channels</h2>
+<p>To edit the MSS Subsystem, the Subsystem Editor must be selected from within the Configuration Administrator.</p>
+<p>The tool bar in the Configuration Administrator allows the various configuration editors available for proDAS to be selected.</p>
+<p>The Subsystem Editor allows new subsystems to be added to the current configuration.</p>
+<div class="Container"><img src="images/SubsystemEditor.png" alt="SubsystemEditor" width="700" height="423"></div>
+<br>
+<p><strong>To add a new subsystem:</strong></p>
+<ol>
+  <li>From the Edit menu, select <strong>Append Data Record</strong> or, click in the left pane of the splitter window, click the right mouse button and select <strong>Append Data Record</strong> from the context sensitive menu.</li>
+  <li>Select <strong>MSS</strong> in the dialogue box to select the type of subsystem.<br>
+    A new line in the Subsystem Editor is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to <strong>MSS</strong>. The user must then assign a name and description to the subsystem.</li>
+</ol>
+<h2 id="RTEInitialiseFile">RTE Initialisation File</h2>
+<p>The Mechanical Scanivalve Subsystem is configured by the RTE, along with all the other subsystems, as a request from the Management Interface GUI. For legacy purposes, the configuration request can also be specified in the command line of the RTE.</p>
+<p>A typical RTE initialisation file would include the following Mechanical Scanivalve Subsystem information:</p>
+<table width="95%" border="0" cellspacing="1" cellpadding="2">
+  <tr>
+    <td colspan="2">#--------------------------------------------------------------------------<br>
+      # MSS Subsystem<br>
+      #--------------------------------------------------------------------------</td>
+  </tr>
+  <tr>
+    <td width="19%">SS MSS</td>
+    <td width="81%">TRUE</td>
+  </tr>
+  <tr>
+    <td width="19%">CI settling_time</td>
+    <td width="81%">180</td>
+  </tr>
+  <tr>
+    <td width="19%">CI impulse_time </td>
+    <td width="81%">16</td>
+  </tr>
+  <tr>
+    <td width="19%">CI time_between_impulse</td>
+    <td width="81%">60</td>
+  </tr>
+  <tr>
+    <td width="19%">CI zero_tolerance</td>
+    <td width="81%">10</td>
+  </tr>
+  <tr>
+    <td width="19%">CI position_confirm</td>
+    <td width="81%">ON</td>
+  </tr>
+  <tr>
+    <td>ambient_channame</td>
+    <td>amb_channel</td>
+  </tr>
+  <tr>
+    <td>sv_zero_pres_volt</td>
+    <td>1, sv1_zero_pv </td>
+  </tr>
+  <tr>
+    <td>sv_zero_pres_volt</td>
+    <td>2, sv2_zero_pv </td>
+  </tr>
+  <tr>
+    <td>sv_zero_pres_volt</td>
+    <td>3, sv3_zero_pv </td>
+  </tr>
+  <tr>
+    <td>sv_zero_pres_volt</td>
+    <td>4, sv4_zero_pv </td>
+  </tr>
+  <tr>
+    <td>sv_zero_pres_volt</td>
+    <td>5, sv5_zero_pv </td>
+  </tr>
+  <tr>
+    <td>sv_zero_pres_volt</td>
+    <td>6, sv6_zero_pv </td>
+  </tr>
+  <tr>
+    <td>sv_zero_pres_volt</td>
+    <td>7, sv7_zero_pv </td>
+  </tr>
+  <tr>
+    <td>sv_zero_pres_volt</td>
+    <td>8, sv8_zero_pv </td>
+  </tr>
+  <tr>
+    <td>sv_zero_pres_volt</td>
+    <td>9, sv9_zero_pv </td>
+  </tr>
+  <tr>
+    <td>sv_zero_pres_volt</td>
+    <td>10, sv10_zero_pv </td>
+  </tr>
+  <tr>
+    <td>sv_zero_pres_volt</td>
+    <td>11, sv11_zero_pv </td>
+  </tr>
+  <tr>
+    <td>sv_zero_pres_volt</td>
+    <td>12, sv12_zero_pv </td>
+  </tr>
+</table>
+<br>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click here to see the RTE Initialisation file.</a></p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

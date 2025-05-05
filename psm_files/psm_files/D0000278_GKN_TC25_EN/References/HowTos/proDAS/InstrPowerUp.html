@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>How To &ndash; Power Up the Instrumentation System</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left><h1>How To &ndash; Power Up the Instrumentation System<a href="#" onClick="window.print(); return false;"><img src="../../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<p>This <strong>How To</strong> provides the steps required to perform a complete power up of the instrumentation.</p>
+<p>A complete power up of the proDAS hardware equipment and other instrumentation systems may be required after maintenance or a power failure.</p>
+<p class="Caution">Ensure that the power up procedures are completed in order. The Instrumentation computers and hardware are sensitive to improper power up procedures. Failure to complete the procedures in the correct sequence could result in irreparable equipment damage and/or data loss.</p>
+<h2>To Power Up the Instrumentation</h2>
+<p>There are two main steps in an instrumentation power up:</p>
+<ol>
+  <li><a href="#UPSstart">Power Up the Uninterruptible Power Supply (UPS)</a>.</li>
+  <li><a href="#proDASstart">Power Up proDAS</a>.</li>
+</ol>
+<h3 id="UPSstart">Power Up the Uninterruptible Power Supply (UPS)</h3>
+<p class="Note">Before powering up the UPS, ensure that the AC input is connected.</p>
+<p>For information on how to power up the UPS, see the <a href="../../VendorDocs/UPSTeknik/UMKR11KR316.pdf">OEM User Manual</a>.</p>
+<h3 id="proDASstart">Power Up proDAS</h3>
+<p>A complete power up of the proDAS hardware equipment may be required on completion of maintenance activities, or to recover from a power failure. The power up procedure shall be performed in the order listed below. To perform a complete power up and start of the system:</p>
+<p class="Note">After a complete power failure, system computers remain off until manually switched on while the UPS is supplying power.</p>
+<h4><strong>In the Computer Room</strong></h4>
+<p class="Note">Ensure the power switch on the TDK-Lambda power supply in equipment rack CM3 is OFF prior to starting the power up sequence.</p>
+<ol>
+	<li>Power up the power bars in equipment racks CM1 to CM4.<p class="Note">Do not power up the TDK-Lambda power supply in equipment rack CM3 until the Linux Host Computer is powered up.</p></li>
+  <li>Power up the PAK MKII Server PC in equipment rack CM1.</li>
+  <li>Power up the PCI Expansion Chassis in equipment rack CM1.</li>
+  <li>Power up the VXI Chassis in equipment rack CM2.  </li>
+  <li>Power up the 5V and 12V power supplies in the scanner interface panel located in equipment rack CM4.</li>
+  <li>Power up the UECU-500 Mark III Throttle Controller Chassis in equipment rack CM4 using the power switch on the back of the chassis.</li>
+  <li>Power up the UECU-500 Mark III Throttle RVDT Chassis in equipment rack CM4 using the power switch on the back of the chassis.</li>
+  <li>Power up the UECU-500 Mark III Throttle Actuator Chassis in equipment rack CM4 using the power switch on the back of the chassis.</li>
+  <li>Power up the NAS in equipment rack CM1.</li>
+  <li>Power up the <a href="../../../CompCfg/HostPC/HostPCOverview.html">Linux Host Computer</a> in equipment rack CM1.</li>
+
+<p class="Note"> The Linux Host Computer must be powered up before any other proDAS computer as the Linux Host Computer acts as a server to the other computers.</p>
+<p class="Note">The Linux Host Computer must be powered up before the 9216 pressure scanners are powered up as the Linux Host Computer runs a DHCP server to provide IP addresses. </p>
+<p class="Note">Do not power up the TDK-Lambda power supply in equipment rack CM3 until the Linux Host Computer has finished booting.</p>
+	<li>Power up the TDK-Lambda power supply in equipment rack CM3.</li>
+</ol>
+<h4>In the Control Room</h4>
+<ol start="12">
+  
+  <li>On the Console, power up and log on to the <a href="../../../CompCfg/MgmtPC/MgmtPCOverview.html">Management Graphic User Interface (Mgt GUI) computer</a>.</li>
+  <li>On the Console, power up and log on to the proDAS <a href="../../../CompCfg/RTDPC/RTDPCOverview.html">Real-Time Display computers RTD 1 to RTD 4</a>.</li>
+  <li>Power up the PAK MKII Mainframe in equipment rack AS03. For details, see the <a href="../../VendorDocs/MBBM/PAKMKIIG2UM1309.pdf">PAK MKII G2 User Manual</a>.</li>
+  <li>In equipment rack AS03, power up the four EX1048A Temperature Scanners.</li>
+  <li>On the Console, start the proDAS software per the procedure <a href="../../../proDASHelp/TestwithDAS/StartConfigStopDAS/StartConfigStopDAS.htm#StartproDAS">Starting proDAS</a> in proDAS Integrated Help.</li>
+</ol>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

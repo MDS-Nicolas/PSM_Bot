@@ -1,0 +1,47 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>How To &ndash; Replace a VXI Card in the VXI Chassis</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left><h1>How To &ndash; Replace a VXI Card in the VXI Chassis<a href="#" onClick="window.print(); return false;"><img src="../../../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<p>This <strong>How To</strong> provides the steps required to replace a VXI card in the VXI chassis.</p>
+<p>The modular design of the VXI system ensures quick access for changing and servicing of the cards in the VXI chassis.</p>
+<h2>To Replace a VXI Card</h2>
+<p class="Warning">To prevent serious injury and/or irreparable damage to equipment, observe all manufacturer's warning and safety precautions during operation and/or maintenance.</p>
+<p class="Caution">Electrostatic discharge can damage components and/or boards on your computer system. To avoid damage from electrostatic discharge when handling components and/or boards/cards/modules, wear an electrostatic strap that is connected to a proper ground before removing the card from the VXI chassis. Store modules in an antistatic bag when the modules are not in use.</p>
+<ol>
+  <li>Shut down proDAS. Use the <a href="../../proDAS/InstrPowerDown.html">How To &ndash; Power Down the Instrumentation System</a> procedure.</li>
+  <li>Remove the cables from the front of the card.</li>
+  <p class="Note">Ensure the cables are propely labelled so they can be properly reconnected in the new card.</p>
+  <li>Remove the defective card.</li>
+  <li>Replace the card with an identical unit.<br>
+<p class="Note">Ensure that the correct address is set on the replacement module. Refer to the Chassis Assembly, VXI engineering drawing for card
+   settings.</p>  
+   <li>Reconnect the cables to the front of the new card.</li>
+   <p class="Caution">If the wrong cables are installed on the new card, it will cause incorrect measurements and may result in damage to the card or the test article.</p>
+   <li>Turn on proDAS. Use the <a href="../../proDAS/InstrPowerUp.html">How To &ndash; Power Up the Instrumentation System</a> procedure.</li>
+   <li>Configure proDAS. Use the <a href="../../../../proDASHelp/DASSubSysConfig/SubsystemEditor/SubsystemEditor.htm">How to Configure the VXI Chassis Using the Subsystem Editor</a> procedure.</li>
+   <li>Verify that the module is operating as expected.</li>
+ </li>
+ </ol>
+<br>
+<!-- #EndEditable -->
+<br>
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

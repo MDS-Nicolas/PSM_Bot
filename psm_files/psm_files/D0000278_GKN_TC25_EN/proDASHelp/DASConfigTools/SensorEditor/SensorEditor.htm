@@ -1,0 +1,892 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Sensor Editor</title>
+<style type="text/css">
+<!--
+.style1 {color: #FF6600}
+-->
+</style>
+<style type="text/css">
+<!--
+.style2 {color: #FF3300}
+-->
+</style>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="SensorEditor">Sensor Editor<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" >
+</a><div float:right></div></h1></div>
+<h2 id="Overview">Overview</h2>
+
+<p class="Note">Expired sensors are reported in the Unified Event Log (UEL) during proDAS startup.</p>
+<p>proDAS acquires data from thermal, pressure and humidity sensors which require periodic calibration. The Sensor Editor application organizes the calibration data for each sensor in a directory with search features that locate the data by association with a sensor name, type, serial number and component part. The Sensor Editor also:</p>
+<ul>
+  <li> creates, deletes, modifies, imports and exports sensor component and calibration data</li>
+  <li>generates sensor summary and calibration reports</li>
+  <li>displays calibration data in graphical form</li>
+</ul>
+<p>Sensor component and calibration data is exported and imported from/to the Sensor Editor in the form of .xml and .txt files. The files include name, type, functional information and an auxiliary name to distinguish sensors of the same type (sensors of the same type are used by proDAS for different functions).</p>
+<p class="Note">If a sensor is imported from an external system, having a negative sensor ID, most of the functions of the Sensor Editor's edit menu are deactivated.</p>
+<h2 id="SensorEditorComponents">Sensor Editor Components</h2>
+<p>The Sensor Editor screen is divided into panels and buttons for selecting and displaying the sensor data.</p>
+<div class="Container"><img src="images/SensorEditor.png" alt="Sensor Editor" width="700" height="493"></div>
+<p>The screen consists of the following primary components:</p>
+<ul>
+  <li><a href="?2#FunctionButtonsMenus">function buttons and menus</a></li>
+  <li><a href="?3#SensorDirectory">Sensor Directory panel</a></li>
+  <li><a href="?4#SensorPanel">Sensors panel</a></li>
+  <li><a href="?5#CalibrationsPanel">Calibrations panel</a></li>
+  <li><a href="?6#CalibrationTablePanel">Calibration and Raw Table panels</a></li>
+  <li><a href="?7#StatusBar">Status Bar</a></li>
+</ul>
+<h3 id="FunctionButtonsMenus">Function Buttons and Menus</h3>
+<p>The Sensor Editor screen functions are executed with button icons and menu items. The function buttons duplicate most of the functions that are 
+  found in the Edit, Report and View menus.</p>
+<p class="Note">The button icons in the following table link to the functional description.</p>
+<h4>File</h4>
+<p>The <strong>File</strong> menu (below) is described in the following table.</p>
+<div class="Container"><img src="images/MenuFile.png" alt="Menu File" width="184" height="151"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu - Button</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td> Reload Data - <img src="images/SensorEditorRefreshButton.png" alt="Sensor Editor Refresh Button" width="30" height="30"></td>
+    <td>Reloads the sensor calibration data from the database.</td>
+  </tr>
+  <tr>
+    <td>Import Sensor - <a href="?20#ImportFilestoSensorEditor"><img src="images/SensorEditorImportButton.png" alt="Sensor Editor Import Button" width="30" height="30" border="0"></a></td>
+    <td>Imports sensor data from .xml or .txt files.</td>
+  </tr>
+  <tr>
+    <td>Export Sensor - <a href="?21#ExportFilesfromSensorEditor"><img src="images/SensorEditorExportButton.png" alt="Sensor Editor Export Button" width="30" height="30" border="0"></a></td>
+    <td>Exports currently selected sensor data to proDAS database in .xml or .txt form.</td>
+  </tr>
+  <tr>
+    <td>Export Calibration</td>
+    <td>Exports calibration data.</td>
+  </tr>
+  <tr>
+    <td>Exit</td>
+    <td>Exits the Sensor Editor.</td>
+  </tr>
+</table>
+<h4>Edit</h4>
+<p>The <strong>Edit</strong> menu (below) is described in the following table.</p>
+<div class="Container"><img src="images/MenuEdit.png" alt="Menu Edit" width="276" height="395"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu - Button</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td> Find - <a href="?22#Find"><img src="images/SensorEditorFindButton.png" alt="Sensor Editor Find Button" width="30" height="30" border="0"></a></td>
+    <td>Finds the first sensor in the Sensor Directory panel that 
+      matches the search criteria.</td>
+  </tr>
+  <tr>
+    <td>Find Next - <a href="?23#Find"><img src="images/SensorEditorFindNextButton.png" alt="Sensor Editor Find Next Button" width="30" height="30" border="0"></a></td>
+    <td>Finds and displays the next sensor in the Sensor Directory 
+      panel that matches the search criteria.</td>
+  </tr>
+  <tr>
+    <td>Find Previous - <a href="?24#Find"><img src="images/SensorEditorFindPreviousButton.png" alt="Sensor Editor Find Previous Button" width="30" height="30" border="0"></a></td>
+    <td>Finds the previous sensor in the Sensor Directory panel that 
+      matches the search criteria.</td>
+  </tr>
+  <tr>
+    <td>Filter - <a href="?25#Filter"><img src="images/SensorEditorFilterButton.png" alt="Sensor Editor Filter Button" width="30" height="30" border="0"></a></td>
+    <td>Selects criteria to narrow a data search.</td>
+  </tr>
+  <tr>
+    <td>Add Sensor - <a href="?26#CreateNewSensorData"><img src="images/SensorEditorNewSensorButton.png" alt="Sensor Editor New Sensor Button" width="30" height="30" border="0"></a></td>
+    <td>Creates and activates calibration data for a new sensor in the Sensors field.</td>
+  </tr>
+  <tr>
+    <td>Clone Sensor - <a href="?27#CloneSensorWindow"><img src="images/SensorEditorCloneSensorButton.png" alt="Sensor Editor Clone Sensor Button" width="30" height="30" border="0"></a></td>
+    <td>Copies existing sensor data to create calibration data for a new sensor in the Sensors field. The user is unable to clone  sensor data that was created remotely from proDAS.</td>
+  </tr>
+  <tr>
+    <td>Edit Sensor - <a href="?28#EditSensorData"><img src="images/SensorEditorEditSensorButton.png" alt="Sensor Editor Edit Sensor Button" width="30" height="30" border="0"></a></td>
+    <td>Edits currently selected sensor (not sensor calibration) data. The user is unable to edit sensors that were created remotely from proDAS. </td>
+  </tr>
+  <tr>
+    <td>Delete Sensor - <a href="?29#DeleteSensorData"><img src="images/SensorEditorDeleteSensorButton.png" alt="Sensor Editor Delete Sensor Button" width="30" height="30" border="0"></a></td>
+    <td>Deletes currently selected sensor data with all associated calibration data. The user is unable to delete sensor data that was created remotely from proDAS. </td>
+  </tr>
+  <tr>
+    <td>Activate Calibration - <a href="?30#ActivateCalibrationData"><img src="images/ActivateButton.png" alt="Activate Button" width="30" height="30"  border="0"></a>, <a href="?31#ActivateCalibrationData"><img src="images/SensorEditorActivateCalibrationRecordButton.png" alt="Sensor Editor Activate Calibration Record Button" width="30" height="30"  border="0"></a></td>
+    <td>Activates a selected calibration data record for the currently selected sensor. The user is unable to activate a selected calibration data record from a sensor that was created remotely from proDAS.</td>
+  </tr>
+  <tr>
+    <td>Add Calibration - <a href="?32#AddingSensorCalData"><img src="images/SensorEditorAddCalButton.png" alt="Sensor Editor Add Cal Button" width="30" height="30" border="0" ></a></td>
+    <td>Creates new calibration data for a selected sensor. The user is unable to create new calibration data for a sensor that was created remotely from proDAS.</td>
+  </tr>
+  <tr>
+    <td>Edit Calibration - <a href="?33#EditSensorData"><img src="images/SensorEditorEditCalButton.png" alt="Sensor Editor Edit Cal Button" width="30" height="30" border="0"></a></td>
+    <td>Edits a currently selected sensor calibration record. The user is unable to edit the calibration data for a sensor that was created remotely from proDAS.</td>
+  </tr>
+  <tr>
+    <td><a href="?8#CreateNewSensorType">Edit Sensor Type</a></td>
+    <td>Edits the sensor types.</td>
+  </tr>
+  <tr>
+    <td><a href="?9#CreateNewSensorPart">Edit Sensor Part</a></td>
+    <td>Edits the sensor parts.</td>
+  </tr>
+  <tr>
+    <td><a href="?10#EditCalibrationEquipment">Edit Calibration Equipment</a></td>
+    <td>Creates and edits lists of equipment that is required to perform calibrations.</td>
+  </tr>
+  <tr>
+    <td>Start EU Editor</td>
+    <td>Launches the Engineering Unit Editor.</td>
+  </tr>
+</table>
+<h4>Report</h4>
+<p>The <strong>Report</strong> menu (below) is described in the following table.</p>
+<div class="Container"><img src="images/MenuReport.png" alt="Menu Report" width="217" height="69"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu - Button</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><a href="?11#SensorCalibrationReport">Report Calibration</a></td>
+    <td>Generates the sensor calibration report.</td>
+  </tr>
+  <tr>
+    <td><a href="?12#SensorSummaryReport">Report Sensor Summary</a></td>
+    <td>Generates the sensor summary report.</td>
+  </tr>
+</table>
+<h4>View</h4>
+<p>The <strong>View</strong> menu (below) is described in the following table.</p>
+<div class="Container"><img src="images/MenuView.png" alt="Menu View" width="214" height="121"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu - Button</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Graph - <a href="?34#CalibrationTablePanel"><img src="images/SensorEditorShowCalRawDataGraphsButton.png" alt="Sensor Editor Show Cal Raw Data Graphs Button" width="30" height="30" border="0"></a> or <a href="?35#CalibrationTablePanel"><img src="images/BtnGraph.png" alt="Graph Button" width="72" height="28" border="0"></a></td>
+    <td>Displays currently selected raw data in graphs within the Calibration Table panel. Toggles with the Table and Equipment Display buttons.</td>
+  </tr>
+  <tr>
+    <td>Table Data - <a href="?36#CalibrationTablePanel"><img src="images/SensorEditorShowCalRawDataTablesButton.png" alt="Sensor Editor Show Cal Raw Data Tables Button" width="30" height="30" border="0"></a> or <a href="?37#CalibrationTablePanel"><img src="images/BtnData.png" alt="Data Button" width="72" height="28" border="0"></a></td>
+    <td>Displays currently selected raw data in table form. Toggles 
+      with the Graph and Equipment Display buttons.</td>
+  </tr>
+  <tr>
+    <td>Calibration Equipments - <a href="?38#CalibrationTablePanel"><img src="images/SensorEditorCalEquipmentButton.png" alt="Sensor Editor Cal Equipment Button" width="30" height="30" border="0"></a> or <a href="?39#CalibrationTablePanel"><img src="images/BtnEquipment.png" alt="Equipment Button" width="72" height="28" border="0"></a></td>
+    <td>Displays a list of equipment in the Calibrations field that is required for the current type of calibration. Toggles with the Graph  Display and Table Display buttons.</td>
+  </tr>
+  <tr>
+    <td>Toolbar</td>
+    <td>Displays the toolbar.</td>
+  </tr>
+</table>
+<h4>Help</h4>
+<p>The <strong>Help</strong> menu (below) is described in the following table.</p>
+<div class="Container"><img src="images/MenuHelp.png" alt="Help Menu" width="195" height="99"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu - Button</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Getting Started </td>
+    <td> Opens the first page of the proDAS Integrated Help.</td>
+  </tr>
+  <tr>
+    <td>Topic</td>
+    <td>Contains all specific help topics referring to the Sensor Editor.</td>
+  </tr>
+  <tr>
+    <td>About Sensor Editor</td>
+    <td>Displays information about the Sensor Editor, comprising the name, version number, and copyright.<br>
+      <br>
+      <img src="images/AboutSensorEditor.gif" alt="About Sensor Editor" width="404" height="276"></td>
+  </tr>
+</table>
+<h3 id="SensorDirectory">Sensor Directory Panel</h3>
+<p>Sensor data is displayed by selecting the sensors from within 
+  the Sensor Directory panel on the left side of the Sensor Editor.</p>
+<div class="Container"><img src="images/SensorDirectory.png" alt="Sensor Directory" width="339" height="411"></div>
+<p>The directory organizes the sensors in a similar fashion as Windows 
+  folders and files. The primary headings (engine, facility and system) are expanded 
+  by selecting the plus (<strong>+</strong>) icon to reveal sensor groups. During a search, 
+  the headings automatically expand to display a sensor that is located by the search engine.</p>
+<p>Each sensor within a primary heading (<strong>SCUTR</strong> in the preceding 
+  image) is identified by a part name (<strong>MG-001</strong> in the preceding image) that 
+  identifies the sensor type (e.g., thermocouple, pressure transducer or accelerometer). 
+  Sensors that share the same part name are differentiated by a sensor name and 
+  auxiliary address (e.g., <strong>DG000001_xyzCJ_1</strong> in the preceding image). The 
+  total number of sensors that share the same part name is indicated in brackets 
+  (<strong>SCUTR [1265/1301]</strong> and <strong>MG-001 [1121/1157]</strong> in the preceding image).</p>
+<p>The check box beside the auxiliary address is selected to display associated sensor data in the Sensors, Calibrations, Calibration Table and Raw Table panels.</p>
+<p>A right - click selection on a primary heading displays a menu with Select All and Select None options. The part names and the Select All / 
+  Select None apply to all sensors listed in the left panel.</p>
+<h3 id="SensorPanel">Sensors Panel</h3>
+<p>After sensors are selected from within the Sensor Directory, the Sensor panel displays the data in rows (one row for each selected sensor part). Highlighting a row populates the Calibrations Panel, Calibration Table and Raw Table panels with associated data. Sensors with expired calibration dates are highlighted by the Sensor Editor in red. Sensors that are approaching the calibration expiry date are highlighted in yellow.</p>
+<div class="Container"><img src="images/SensorsPanel.png" alt="Sensors Panel" width="700" height="152"></div>
+<p>The data in each row is separated by the following column headings:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Heading</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Sensor Name</td>
+    <td>Sensor database name.</td>
+  </tr>
+  <tr>
+    <td>Auxiliary Address</td>
+    <td>Database name to distinguish sensor parts with the same 
+      name and serial number.</td>
+  </tr>
+  <tr>
+    <td>Calibration Due Date </td>
+    <td>Date calibration is due.</td>
+  </tr>
+  <tr>
+    <td>Serial Number</td>
+    <td>Manufacturer's serial number.</td>
+  </tr>
+  <tr>
+    <td>Sensor Type</td>
+    <td>System where the sensor is located.</td>
+  </tr>
+  <tr>
+    <td>Sensor Part</td>
+    <td>Portion of the sensor that sources the measurement data.</td>
+  </tr>
+  <tr>
+    <td>Unit (in)</td>
+    <td>Sensor input (can be in any unit, ie. volts, degrees, psi, percent).</td>
+  </tr>
+  <tr>
+    <td>Unit (out</td>
+    <td>Sensor output (can be in any unit, ie. volts, degrees, psi, percent).</td>
+  </tr>
+  <tr>
+    <td>Range (max)</td>
+    <td>Maximum output level or value.</td>
+  </tr>
+  <tr>
+    <td>Range (min)</td>
+    <td>Minimum output level or value.</td>
+  </tr>
+  <tr>
+    <td>Table Type</td>
+    <td>Available table types for displaying sensor output data (two-dimensional [2D] break point, three-dimensional [3D] break point or polynomial).</td>
+  </tr>
+  <tr>
+    <td>Raw Table Type</td>
+    <td>Available 2D table for displaying input and output measurement values.</td>
+  </tr>
+  <tr>
+    <td>Unit (2nd in)</td>
+    <td>Second input to sensor in volts, degrees, psi and percent.</td>
+  </tr>
+</table>
+<h3 id="CalibrationsPanel">Calibrations Panel</h3>
+<p>The Calibrations panel displays the calibration history for a selected sensor. A sensor is selected for calibration data analysis by highlighting the desired data row in the Sensors panel (multiple rows can be selected at a time but only the row with <img src="images/Arrow.gif" alt="Arrow" width="7" height="11"> indicator next to it is displayed). The row that contains the current or activated calibration parameters for the sensor is highlighted in yellow.</p>
+<div class="Container"><img src="images/CalibrationsPanel.png" alt="Calibrations Panel" width="700" height="134"></div>
+<p>The calibration data in each row is separated by the following column headings:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Heading</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><img src="images/CalibrationsPanelActivateIcon.png" alt="Calibrations Panel Activate Icon" width="39" height="16"></td>
+    <td>Indicates that the calibration data in the row is <strong>activated</strong>, or currently applied to the sensor. Another calibration data row may be selected and applied to the currently selected sensor with the <strong>Activate</strong> button.</td>
+  </tr>
+  <tr>
+    <td>Result</td>
+    <td>Sensor calibration data Pass or Fail status. The resulting values from a calibration test for a sensor must fall within the range of 
+      data in the selected row. A green check or red X mark in the column denotes the status.</td>
+  </tr>
+  <tr>
+    <td>Calibration Date</td>
+    <td>Most recent calibration.</td>
+  </tr>
+  <tr>
+    <td>Due Date</td>
+    <td>Due date for next calibration.</td>
+  </tr>
+  <tr>
+    <td>Expire</td>
+    <td>Indicates the status of the sensor calibration. Indicated as (<strong>Y</strong>) for can/is expired  and (<strong>N</strong>) for does not expire.</td>
+  </tr>
+  <tr>
+    <td>User Name</td>
+    <td>Account name of person who performed the last calibration.</td>
+  </tr>
+  <tr>
+    <td>Temperature</td>
+    <td>Ambient temperature during calibration.</td>
+  </tr>
+  <tr>
+    <td>Humidity</td>
+    <td>Ambient humidity during calibration.</td>
+  </tr>
+  <tr>
+    <td>Comments</td>
+    <td>Additional information.</td>
+  </tr>
+  <tr>
+    <td>Unit (in)</td>
+    <td>Calibration input to sensor in engineering units (volts, degrees, psi and percent).</td>
+  </tr>
+  <tr>
+    <td>Unit (out)</td>
+    <td>Sensor output in engineering units (volts, degrees, psi and percent) during calibration.</td>
+  </tr>
+  <tr>
+    <td>Unit (2nd in)</td>
+    <td>Secondary calibration input to sensor in engineering units (volts, degrees, psi and percent).</td>
+  </tr>
+  <tr>
+    <td><img src="images/CalibrationPanelReturnArrow.gif" alt="Calibration Panel Return Arrow" width="31" height="19"></td>
+    <td>Display control icon.</td>
+  </tr>
+</table>
+<p>Selecting the (<strong>+</strong>) icon at the left side of the row displays the Audit Records link:</p>
+<div class="Container"><img src="images/CalibrationsPanel.png" alt="Calibrations Panel" width="700" height="134"></div>
+<p>Selecting the Audit Records link displays additional information that is related to the activated calibration parameters, such as recent audit 
+  results and auditing equipment. The list of related information is separated by column headers, such as Equipment Type, Equipment Part Number and Equipment Serial Number.</p>
+<div class="Container"><img src="images/CalibrationsPanel2.png" alt="Calibrations Panel 2" width="700" height="172"></div>
+<p>Column headers that are specific to an audit include Result (pass or fail with a check mark or X), Audit Date, Audit Due Date and Comments.</p>
+<div class="Container"><img src="images/CalibrationsPanel3.png" alt="Calibrations Panel 3" width="699" height="170"></div>
+<p>The Display Control icon ( <img src="images/CalibrationPanelReturnArrow.gif" alt="Calibration Panel Return Arrow" width="31" height="19" > ) at the top right side of the Calibrations panel has the following functions:</p>
+<ul>
+  <li>selecting the up/down symbols on the icon displays or hides the lower row of column headings</li>
+  <li>selecting the arrow symbol on the icon returns the default display</li>
+</ul>
+<h3 id="CalibrationTablePanel">Calibration and Raw Table Panels</h3>
+<p>During calibration, signals are injected into sensors from calibration equipment and the resulting sensor output values are stored in a database. The Sensor Editor displays the database values in the Calibration Table and Raw Table panels. The Raw Table panel displays input and output values in engineering units that were measured during calibration. The Calibration Table panel displays data that has been derived from the raw table data by the <a href="../../StandardTools/CalibrateChannels/CalibrateChannels.htm">Sensor Calibration Application (SCA)</a>.</p>
+<p>The Calibration and Raw data is displayed in table form by selecting <strong>Data</strong> (below) or the Table Display button ( <img src="images/SensorEditorShowCalRawDataTablesButton.png" alt="Sensor Editor Show Cal Raw Data Tables Button" width="23" height="22" > ) at the top of the Sensor Editor window.</p>
+<div class="Container"><img src="images/TableDisplay.png" alt="Table Display" width="700" height="214"></div>
+<p>Both Calibration and Raw tables have a Sequence column that indicates instances of sensor measurements. The number of rows in the Sequence column correspond to points that form a graphical curve. Data points in a Raw table are displayed in a simple two-dimensional curve with engineering units in the X and Y axes. The derived data points in a Calibration table contain slope and offset functions to form a calibration curve.</p>
+<p>Calibration tables may be 2D (two-dimensional) breakpoint, 3D (three-dimensional) breakpoint or polynomial types. A 2D breakpoint table has X and Y columns that contain input and output values. A 3D breakpoint table has X and Y columns that contain input values and a Z column that contains output values. A polynomial table has only Sequence and Coefficient columns.</p>
+<p>The numerical data is displayed in two-dimensional graph form by selecting <strong>Graph</strong> (below) or the Graph Display button ( <img src="images/SensorEditorShowCalRawDataGraphsButton.png" alt="Sensor Editor Show Cal Raw Data Graphs Button" width="23" height="22" > ) at the top of the Sensor Editor window.</p>
+<div class="Container"><img src="images/GraphDisplay.png" alt="Graph Display" width="700" height="215"></div>
+<p>The test equipment that is used to obtain the numerical / graphical data is displayed by selecting <strong>Equipment</strong> (below) or the Calibration Equipment Display button ( <img src="images/SensorEditorCalEquipmentButton.png" alt="Sensor Editor Cal Equipment Button" width="24" height="22" > ) at the top of the Sensor Editor window.</p>
+<div class="Container"><img src="images/EquipmentDisplay.png" alt="Equipment Display" width="700" height="213"></div>
+<h3 id="StatusBar">Status Bar</h3>
+<p>The Status Bar displays messages, alarms and warnings as Sensor Editor functions are executed. Select <strong>Clear</strong> to delete the Status Bar contents.</p>
+<div class="Container"><img src="images/StatusBar.png" alt="Status Bar" width="700" height="32"></div>
+
+<h2 id="StartSensorEditor">Starting the Sensor Editor</h2>
+<p>To start the Sensor Editor:</p>
+<ol>
+  <li>From the Management GUI Control panel Tools menu, select <strong>Sensor Editor</strong>. The Sensor Editor screen is displayed.
+    <div class="Container"><img src="images/SensorEditor.png" alt="Sensor Editor" width="700" height="493"></div>
+  </li>
+</ol>
+<h2 id="ViewSensorData">Viewing Sensor Calibration Data</h2>
+<p>Sensor calibration data may be displayed in the Sensors panel using:</p>
+<ul>
+  <li><a href="?13#UsingFilter">Sensor Directory</a></li>
+  <li><a href="?14#Filter">Filter</a></li>
+  <li><a href="?15#Find">Find</a></li>
+</ul>
+<h3 id="UsingFilter">Sensor Directory</h3>
+<p>To display sensor calibration data using the Sensor Directory:</p>
+<ol>
+  <li>Locate the sensor names within the directory by system, facility or engine location (e.g., SCUTR), part name (e.g., MG-001), sensor name and auxiliary address (e.g., DG000001_xyz.CJ_1).
+    <div class="Container"><img src="images/SensorDirectory.png" alt="Sensor Directory" width="339" height="411"></div>
+  </li>
+  <li>Select the check boxes that are beside the auxiliary addresses of the required sensors in the directory. The Sensors, Calibrations, Calibration Table and Raw Table panels are populated with sensor data.</li>
+</ol>
+<h4 id="LocateDirectorySensorsFromSensorsPanel">Locating Sensors in the Directory from the Sensors Panel</h4>
+<p>From the Sensors panel:</p>
+<ol>
+  <li>Select (highlight) a sensor from the panel.</li>
+  <li>Right click on the selected row. A menu is displayed.
+    <div class="Container"><img src="images/DisplaySensorInSensorDirectory.png" alt="Display Sensor In Sensor Directory" width="700" height="309"></div>
+  </li>
+  <li>Select <strong>Select in browser</strong> from the menu. The Sensor Directory expands and highlights the sensor.
+    <div class="Container"><img src="images/SensorDirectory.png" alt="Sensor Directory" width="339" height="411"></div>
+  </li>
+</ol>
+<h3 id="Filter">Filter</h3>
+<p>The Filter window locates and displays a range of sensor data in the Sensors, Calibrations, Calibration Table and Raw Table panels. The range 
+  of displayed data is defined by the search parameters in the Filter window. To display sensor calibration data using the Filter feature:</p>
+<ol>
+  <li>From the Edit menu, select <strong>Filter</strong> or from the Function Buttons ( <img src="images/SensorEditorFilterButton.png" alt="Sensor Editor Filter Button" width="30" height="30" > ). The Filter window is displayed.
+    <div class="Container"><img src="images/FilterWindow1.png" alt="Filter Window 1" width="514" height="444"></div>
+  </li>
+  <li>Toggle <strong>Less/More</strong> to hide or display the Calibration Date functions on the Filter window.
+    <div class="Container"><img src="images/FilterWindow.png" alt="Filter Window" width="514" height="231"></div>
+  </li>
+  <li>Define the range of the filter by entering search data in the fields of the window. If necessary, narrow the filter range by applying the 
+    appropriate expressions to the data fields. Select the expressions from the drop-down lists that are displayed using the arrow buttons. Select <strong>Clear Condition</strong> to clear the filter (no filter is applied to the displayed data).
+    <div class="Container"><img src="images/FilterWindow2.png" alt="Filter Window 2" width="612" height="231"></div>
+  </li>
+  <li>If necessary, select additional filter parameters from the Wildcards/Regular Expressions, Table Type and Calibration Date fields.
+    <div class="Container"><img src="images/FilterWindow5.png" alt="Filter Window 5" width="514" height="231"></div>
+    <div class="Container"><img src="images/FilterWindow4.png" alt="Filter Window 4" width="514" height="272"></div>
+    The Calibration Date range may be entered by selecting dates from the drop-down calendars in the Calibration Date fields.
+    <div class="Container"><img src="images/FilterWindow3.png" alt="Filter Window 3" width="514" height="447"></div>
+  </li>
+  <li>Select <strong>Apply</strong> <strong>Condition</strong> to activate the Filter. The defined sensor data is displayed in the Sensors, Calibrations, Calibration Table and Raw Table panels.</li>
+  <li>Select <strong>Clear</strong> <strong>Condition</strong> to deactivate the filter.</li>
+  <li>Select <strong>Close</strong> to close the window.<br>
+  </li>
+</ol>
+<h3 id="Find">Find</h3>
+<p>The Find window locates and highlights an instance (row) of sensor data in the Sensors panel. The window has several parameters that define a data search. When the Find feature is selected, the total number of matching sensors is displayed in the Status Bar, the first matching sensor is highlighted in the Sensor Directory panel, and the Find window is displayed.</p>
+<p>Subsequent matches of the sensor are located with the Find Next 
+  feature. The Find Previous feature displays preceding matches of the sensor. 
+  To display sensor calibration data using the Find feature:</p>
+<ol>
+  <li>From the Edit menu, select <strong>Find</strong> or from the Functions Buttons ( <img src="images/SensorEditorFindButton.png" alt="Sensor Editor Find Button" width="30" height="30" > ). The Find window is displayed.
+    <div class="Container"><img src="images/FindWindow.png" alt="Find Window" width="503" height="505"></div>
+  </li>
+  <li>Toggle <strong>Less/More</strong> to hide or display the Calibration Date functions on the Filter window.</li>
+  <li>Define the range of the search by entering search data in the fields of the window. If necessary, narrow the search range by applying the appropriate expressions to the data fields. Select the expressions from the drop-down lists that are displayed using the arrow buttons.
+    <div class="Container"><img src="images/FindWindowb.png" alt="Find Window B" width="611" height="505"></div>
+  </li>
+  <li>If necessary, select additional search parameters from the Wildcards/Regular Expressions, Table Type and Calibration Date fields.<br>
+    The Calibration Date range may be entered by selecting dates from the drop-down calendars in the Calibration Date fields.</li>
+  <li>Select <strong>Find Next</strong> or the corresponding button ( <img src="images/SensorEditorFindNextButton.png" alt="Sensor Editor Find Next Button" width="30" height="30" > ) from the Functions Buttons to highlight the first instance of the defined sensor data in the Sensors panel. Select <strong>Find Next</strong> again to highlight subsequent instances of the data. Select <strong>Find</strong> <strong>Previous</strong> or the corresponding button ( <img src="images/SensorEditorFindPreviousButton.png" alt="Sensor Editor Find Previous Button" width="30" height="30" > ) from the Functions Buttons to highlight the previous instance of the data in the panel.</li>
+  <li>Select <strong>Close</strong> to close the window.</li>
+</ol>
+<h2 id="EditSensorData">Creating and Editing New Sensor Data</h2>
+<p>New sensor type and part data is created using the Edit Sensor Type and Edit Sensor Part functions of the Edit menu (there are no equivalent function buttons). Sensor data is edited using the Update Sensor window.</p>
+<h3 id="CreateNewSensorType">Create New Sensor Type</h3>
+<p>To create a new sensor type:</p>
+<ol>
+  <li>From the Edit menu, select <strong>Edit Sensor Type</strong>. The Edit Sensor Types window is displayed.
+    <div class="Container"><img src="images/EditSensorTypes.png" alt="Edit Sensor Types" width="394" height="389"></div>
+  </li>
+  <li>Enter the names of the new sensor types in the Type Name column of the window.</li>
+  <li>Select <strong>OK</strong> to enter the data into the database.<br>
+    The names are displayed in the Sensor Type fields within the Update Sensor, Add Sensor, Clone Sensor, Add Calibration Record and Update Calibration Record windows.</li>
+</ol>
+<h3 id="CreateNewSensorPart">Create New Sensor Part</h3>
+<p>To create a new sensor part:</p>
+<ol>
+  <li>From the Edit menu, select <strong>Edit Sensor Part</strong>. The Edit Sensor Parts window is displayed.
+    <div class="Container"><img src="images/EditSensorParts.png" alt="Edit Sensor Parts" width="451" height="356"></div>
+  </li>
+  <li>Enter the names and descriptions of the new sensor parts in the Part Name and Descriptions columns of the window.</li>
+  <li>Select <strong>OK</strong> to enter the data into the database.<br>
+    The names are displayed in the Sensor Part Name fields within the Update Sensor, Add Sensor, Clone Sensor, Add Calibration Record and Update Calibration Record windows.</li>
+</ol>
+<h3 id="UpdateSensorData">Edit Sensor Data</h3>
+<p>To edit sensor data:</p>
+<ol>
+  <li>Select (highlight) the required sensor data on the Sensors panel.</li>
+  <li>From the Edit menu, select <strong>Edit Sensor</strong> or from the Functions Buttons 
+    ( <img src="images/SensorEditorEditSensorButton.png" alt="Sensor Editor Edit Sensor Button" width="30" height="30" > ). The Update Sensor window is displayed.
+    <div class="Container"><img src="images/UpdateSensor.png" alt="Update Sensor" width="700" height="458"></div>
+  </li>
+  <li>Modify the required sensor data in the active fields. </li>
+  <li>Select <strong>OK</strong>.</li>
+</ol>
+<h2 id="CreateNewSensorData">Creating Calibration Data for a New Sensor</h2>
+<p>Calibration data for a new sensor is created using the Add Sensor and Clone Sensor windows. The Add Sensor window creates calibration data for a new sensor. The Clone Sensor window copies existing data from an existing sensor and applies (pastes) the data to the new sensor.</p>
+<h3 id="AddSensorWindow">Creating New Sensor Calibration Data using the Add Sensor Window</h3>
+<p>To create new sensor calibration data using the Add Sensor Window:</p>
+<ol>
+  <li>From the Edit menu, select <strong>Add</strong> <strong>Sensor</strong> or from the Functions 
+    Buttons ( <img src="images/SensorEditorNewSensorButton.png" alt="Sensor Editor New Sensor Button" width="30" height="30" > ) . The Add Sensor window is displayed first with the <strong>Sensor</strong> <strong>Data</strong> tab.
+    <div class="Container"><img src="images/AddSensor.png" alt="Add Sensor" width="700" height="458"></div>
+  </li>
+  <li>Enter the required data into the Sensor Data tab fields (the Sensor ID field  already contains data). The Calibration Data tab cannot be selected until data is entered into all required fields, which are identified by an indicator ( <img src="images/AddSensorRequiredDataFlag.gif" alt="Add Sensor Required Data Flag"  width="25" height="25" > ).</li>
+  <p class="Note">The Sensor Name cannot be the same as the name of an existing sensor. If the user attempts to use an existing sensor name, a message appears indicating that the Sensor Name must be unique and the sensor data cannot be saved.</p>
+  <li>Select the <strong>Calibration Data</strong> tab. The Calibration Data panel is displayed.
+    <div class="Container"><img src="images/AddSensor1.png" alt="Add Sensor 1" width="700" height="458"></div>
+  </li>
+  <li>Select <strong>OK</strong> if no data is required for the Calibration Data panel fields. The Add Sensor window closes and the calibration data is activated for the sensor.</li>
+  <li>Enter any required data into the Calibration Data fields. Identify the required calibration equipment by selecting the appropriate row in the <strong>V</strong> field.
+    <p class="Note">Available equipment with expired calibration dates are highlighted by the Sensor Editor in red. Available equipment that are approaching the calibration expiry date are highlighted in yellow.</p>
+  </li>
+  <li>Select the <strong>Table Data/Raw Table Data</strong> tab to view the resulting calibration and raw data tables for the new sensor data. Select <strong>Graph</strong> to display the table data in graphical form. Data from an xls. file may be copied and pasted into either field, and data may be copied from the fields in the window.
+    <div class="Container"><img src="images/AddSensor2.png" alt="Add Sensor 2" width="700" height="458"></div>
+  </li>
+  <p class="Note">When creating a sensor with a 2D Break Point Table, if the table data and raw table data fields are left blank during creation, an error message will inform the user after creation that the fields are blank. The sensor will have to be deleted and recreated to insert data into these fields.</p>
+  <li>Select the <strong>Graph</strong> tab to view the sensor data in a graph.
+    <div class="Container"><img src="images/AddSensor3.png" alt="Add Sensor 3" width="700" height="458"></div>
+  </li>
+  <li>Select <strong>OK</strong> to close the Add Sensor window and activate the calibration 
+    data for the sensor.</li>
+</ol>
+<h3 id="CloneSensorWindow">Creating New Sensor Calibration Data using the Clone Sensor Window</h3>
+<p>To create new sensor calibration data using the Clone Sensor Window:</p>
+<ol>
+  <li>Select (highlight) the row in the Sensors panel that contains the required sensor calibration data.</li>
+  <li>From the Edit menu, select <strong>Clone</strong> <strong>Sensor</strong> or from the Functions 
+    Buttons ( <img src="images/SensorEditorCloneSensorButton.png" alt="Sensor Editor Clone Sensor Button" width="30" height="30" > ). The Clone Sensor window is displayed first with the <strong>Sensor</strong> <strong>Data</strong> tab.
+    <div class="Container"><img src="images/CloneSensorWindow.png" alt="Clone Sensor Window" width="700" height="458"></div>
+  </li>
+  <li>Enter the required data into the Sensor Name and Auxiliary Address fields (the other fields contain copied data). The Calibration Data tab 
+    cannot be selected until data is entered into the two fields.</li>
+  <li>Select the <strong>Calibration Data</strong> tab. The Calibration Data panel is displayed.
+    <div class="Container"><img src="images/CloneSensor1.png" alt="Clone Sensor 1" width="700" height="458"></div>
+  </li>
+  <li>Select <strong>OK</strong> if no data is required for the Calibration Data panel fields. The Clone Sensor window closes and the calibration data is activated for the sensor.</li>
+  <li>Enter any required data into the Calibration Data fields. Identify the required calibration equipment by selecting the appropriate row in the <strong>V</strong> field.
+    <p class="Note">Available equipment with expired calibration dates are highlighted by the Sensor Editor in red. Available equipment that are approaching the calibration expiry date are highlighted in yellow.</p>
+  </li>
+  <li>Select the <strong>Table Data/Raw Table Data</strong> tab to view the resulting calibration and raw data tables for the new sensor data. Select <strong>Graph</strong> to display the table data in graphical form. Data from an xls. file may be copied and pasted into either field, and data may be copied from the fields in the window.
+    <div class="Container"><img src="images/CloneSensor2.png" alt="Clone Sensor 2" width="700" height="458"></div>
+  </li>
+</ol>
+<ol>
+  <p value="8" class="Note">When creating a sensor with a 2D Break Point Table, if the table data and raw table data fields are left blank during creation, an error message will inform the user after creation that the fields are blank. The sensor will have to be deleted and recreated to insert data into these fields.</p>
+  <li>Select <strong>OK</strong> to close the Clone Sensor window and activate 
+    the calibration data for the sensor.</li>
+</ol>
+<h2 id="AddingSensorCalData">Adding Sensor Calibration Data to a Sensor</h2>
+<p>The Add Calibration Record window creates a new calibration record 
+  for an existing sensor (i.e., highlighted in the Sensors panel). The new calibration 
+  data is automatically activated in the database and yellow-highlighted in the 
+  Calibrations panel. The older data is retained as part of the calibration history.</p>
+<p>To add sensor calibration data to a sensor:</p>
+<ol>
+  <li>Select (highlight) the required sensor in the Sensors panel.</li>
+  <li>From the Edit menu, select <strong>Add Calibration</strong> or from the Functions 
+    Buttons ( <img src="images/SensorEditorNewSensorButton.png" alt="Sensor Editor New Sensor Button" width="30" height="30" > ). The Add Calibration Record window is displayed with the preselected Calibration Data tab.
+    <div class="Container"><img src="images/AddCalibrationRecord.png" alt="Add Calibration Record" width="700" height="458"></div>
+  </li>
+  <li>Enter any required data into the Calibration Data fields. Identify the required calibration equipment by selecting the appropriate row in the <strong>V</strong> field.
+    <p class="Note">Available equipment with expired calibration dates are highlighted by the Sensor Editor in red. Available equipment that are approaching the calibration expiry date are highlighted in yellow.</p>
+  </li>
+  <li>Select <strong>OK</strong>.</li>
+</ol>
+<h2 id="EditSensorData">Editing Sensor Calibration Data</h2>
+<p>The Update Calibration Record window modifies existing sensor calibration data. To edit sensor calibration data:</p>
+<ol>
+  <li>Select (highlight) the row in the Sensors panel that contains the desired sensor calibration data.</li>
+  <li>From the Edit menu, select <strong>Edit</strong> <strong>Calibration</strong> or from the Functions Buttons ( <img src="images/SensorEditorEditSensorButton.png" alt="Sensor Editor Edit Sensor Button" width="30" height="30" > ). The Update Calibration Record window is displayed with the preselected Calibration Data tab.
+    <div class="Container"><img src="images/UpdateCalibrationRecord.png" alt="Update Calibration Record" width="700" height="458"></div>
+  </li>
+  <li>Enter any required data into the Calibration Data fields. Identify the required 
+    calibration equipment by selecting the appropriate row in the <strong>V</strong> field.
+    <p class="Note">Available equipment with expired calibration dates are highlighted by the Sensor Editor in red. Available equipment that are approaching the calibration expiry date are highlighted in yellow.</p>
+  </li>
+  <li>Select <strong>OK</strong>.</li>
+</ol>
+<h2 id="DeleteSensorData">Deleting Sensor Calibration Data</h2>
+<p>To delete sensor calibration data:</p>
+<ol>
+  <li>Select (highlight) the row in the Sensors panel that contains the sensor 
+    calibration data to be deleted.</li>
+  <li>From the Edit menu, Select <strong>Delete Sensor</strong> or from the Functions Buttons ( <img src="images/SensorEditorDeleteSensorButton.png" alt="Sensor Editor Delete Sensor Button" width="30" height="30" >).</li>
+</ol>
+<h2 id="ActivateCalibrationData">Activating Sensor Calibration Data</h2>
+<p>The Activate Calibration function applies (activates) data from a sensor calibration history to a sensor. The function also indicates the calibration data that is currently active for the sensor.</p>
+<p class="Note">The current calibration data may be locked in the database by another user with a higher permission level.</p>
+<ol>
+  <li>Select (highlight) the desired sensor from the Sensors panel.</li>
+  <li>Select the required calibration data from the sensor calibration history in the Calibrations panel.<br>
+    The currently activated data which is normally highlighted in yellow is now highlighted in green.<br>
+    The normally disabled Activate button in the Functions Buttons ( <img src="images/SensorEditorActivateCalibrationRecordButton.png" alt="Sensor Editor Activate Calibration Record Button" width="30" height="30" > ) is now enabled ( <img src="images/ActivateButtonGrn.png" alt="Activate Button Green" width="30" height="30"> ).
+    <div class="Container"><img src="images/ChangeCalibrationActivation.png" alt="Change Calibration Activation" width="700" height="140"></div>
+  </li>
+  <li>From the Edit menu, select <strong>Activate Calibration</strong> or from the Functions buttons ( <img src="images/ActivateButton.png" alt="Activate Button" width="30" height="30"> ). A confirmation window is displayed after the activation is applied to the new sensor  calibration data.
+    <div class="Container"><img src="images/ActivateCalibrationSuccessful.png" alt="Activate Calibration Successful" width="461" height="161"></div>
+  </li>
+  <li>Select <strong>OK</strong>.</li>
+</ol>
+<h2 id="EditCalibrationEquipment">Editing Sensor Calibration Equipment Data</h2>
+<p>The calibration equipment database is created and edited with the <strong>Edit Calibration Equipment</strong> function of the Edit menu (there is no equivalent function button).</p>
+<p>To edit sensor calibration equipment data:</p>
+<ol>
+  <li>From the Edit menu, select <strong>Edit Calibration Equipment</strong> at the top of the Sensor Editor screen. The Edit Calibration Equipment window is displayed.
+    <div class="Container"><img src="images/EditCalibrationEquipment.png" alt="Edit Calibration Equipment" width="700" height="368"></div>
+  </li>
+  <li>Enter the type, part name, serial number and calibration due date of the calibration equipment in the appropriate columns of the window.</li>
+  <li>Select <strong>OK</strong> to enter the data into the database.<br>
+    <br>
+    The data is displayed in the Calibration Data fields of the Add Sensor, Clone Sensor, Add Calibration Record and Update Calibration Record windows.</li>
+</ol>
+<h2 id="ImportFilestoSensorEditor">Importing Files to the Sensor Editor from proDAS</h2>
+<p>Files may be imported into the Sensor Editor in .txt and .xml formats. For details, see <a href="XMLFormat.pdf"> XML Format Definition File</a> and <a href="XMLSchema.pdf">XML Schematic of a Sensor File</a>.<br>
+  <br>
+  To import files into the Sensor Editor:</p>
+<ol>
+  <li>Select <strong>Import Sensor</strong> ( <img src="images/SensorEditorImportButton.png" alt="Sensor Editor Import Button" width="30" height="30" > ) or <strong>Import Sensor</strong> from the File menu. A window is displayed with the last directory from which files were selected.
+    <div class="Container"><img src="images/ImportSensorWindow.png" alt="Import Sensor Window" width="640" height="512"></div>
+  </li>
+  <li>Highlight the file(s) to be imported and select <strong>Open</strong>.<br>
+    Importing errors are displayed in the Status Bar.</li>
+</ol>
+<p>The default import path is configured in the SensorEditor.ini file, and may be modified by the user:</p>
+<blockquote>
+  <p>[Application]<br>
+    EXPORTPATH=c:\gsw5<br>
+    <strong>IMPORTPATH=..\Data\SensorEditor\Exports</strong><br>
+    REPORTPATH=..\DATA\SENSOREDITOR\REPORT<br>
+    SENSORREPORTTEMPLATE= d:\prodas\Data\SensorEditor\Sensor Report Template.xlt<br>
+    SUMMARYREPORTTEMPLATE= d:\prodas\Data\SensorEditor\Summary Report Template.xlt<br>
+    NUMBER OF POINTS=160<br>
+    Expire Soon=350</p>
+</blockquote>
+<h3>Sensor Definition Text Format</h3>
+<p>The table below describes the fields in the sensor definition text format file, including the maximum lengths of the strings, and which fields are optional.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Fields</th>
+    <th> Type</th>
+    <th>Status</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Generic Sensor File Format 2.1</td>
+    <td>standard header</td>
+    <td>required</td>
+    <td>--</td>
+  </tr>
+  <tr>
+    <td>DATE FORMAT</td>
+    <td>&lt;Date Format String&gt;</td>
+    <td>optional</td>
+    <td>if not specified &quot;yyy-MM-dd&quot; is used</td>
+  </tr>
+  <tr>
+    <td>SENSOR_NAME</td>
+    <td>string 40</td>
+    <td>required</td>
+    <td>name of sensor</td>
+  </tr>
+  <tr>
+    <td>AUXILIARY_ADDRESS </td>
+    <td>string 40</td>
+    <td>required</td>
+    <td>additional name for sensor, if not applicable, use &quot;NA&quot; </td>
+  </tr>
+  <tr>
+    <td>SENSOR_TYPE </td>
+    <td>number</td>
+    <td>required</td>
+    <td>a category for the sensor (ENGINE, FACILITY, &hellip;) </td>
+  </tr>
+  <tr>
+    <td>SENSOR_PART </td>
+    <td>number</td>
+    <td>optional</td>
+    <td>sensor part number </td>
+  </tr>
+  <tr>
+    <td>SENSOR_SERIAL_NO</td>
+    <td>string 40</td>
+    <td>optional</td>
+    <td>sensor serial number </td>
+  </tr>
+  <tr>
+    <td>UNIT_NAME_IN</td>
+    <td>string 25</td>
+    <td>required</td>
+    <td>units for the input to the sensor table</td>
+  </tr>
+  <tr>
+    <td>UNIT_NAME_OUT</td>
+    <td>string 25</td>
+    <td>required</td>
+    <td> units for the output of the sensor table </td>
+  </tr>
+  <tr>
+    <td> UNIT_NAME_IN2 </td>
+    <td>string 25</td>
+    <td>optional</td>
+    <td>specify only for 3D BPT sensor for the Y inputs of the table </td>
+  </tr>
+  <tr>
+    <td>RANGE_MIN</td>
+    <td>number</td>
+    <td>optional</td>
+    <td>minimum range of the table (applicable for polynomial tables)</td>
+  </tr>
+  <tr>
+    <td>RANGE_MAX</td>
+    <td>number</td>
+    <td>optional</td>
+    <td>maximum range of the table (applicable for polynomial tables)</td>
+  </tr>
+  <tr>
+    <td>CAL_DATE</td>
+    <td>date</td>
+    <td>required</td>
+    <td>calibration date</td>
+  </tr>
+  <tr>
+    <td>DUE_DATE</td>
+    <td>date</td>
+    <td>required</td>
+    <td>calibration due date</td>
+  </tr>
+  <tr>
+    <td>EXPIRE</td>
+    <td>Y or N</td>
+    <td>required</td>
+    <td>should the calibration be checked for expiry</td>
+  </tr>
+  <tr>
+    <td>USER_NAME</td>
+    <td>string 40</td>
+    <td>required</td>
+    <td> user name of the person performing the calibration</td>
+  </tr>
+  <tr>
+    <td>AMB_TEMPERATURE</td>
+    <td>string 20</td>
+    <td>optional</td>
+    <td>ambient temperature at the time of calibration</td>
+  </tr>
+  <tr>
+    <td>AMB_HUMIDITY</td>
+    <td>string 20</td>
+    <td>optional</td>
+    <td>ambient humidity at the time of calibration</td>
+  </tr>
+  <tr>
+    <td>COMMENTS</td>
+    <td>string 255</td>
+    <td>optional</td>
+    <td>free format comment</td>
+  </tr>
+  <tr>
+    <td>PASS_FAIL</td>
+    <td>P or string 1</td>
+    <td>optional</td>
+    <td>if not specified &quot;P&quot; will be used - indicates a successful calibration</td>
+  </tr>
+  <tr>
+    <td>TABLE_DATA</td>
+    <td>breakpoint table keyword</td>
+    <td>required</td>
+    <td>POLYNOMIAL, BREAKPOINT_2D or BREAKPOINT_3D</td>
+  </tr>
+  <tr>
+    <td>&lt;breakpoint data table&gt;</td>
+    <td>number</td>
+    <td>required</td>
+    <td>refer to the respective Data Type worksheet<br>
+      represents the calibration data of the sensor </td>
+  </tr>
+  <tr>
+    <td>RAW_TABLE_DATA</td>
+    <td>breakpoint table keyword</td>
+    <td>optional</td>
+    <td>POLYNOMIAL, BREAKPOINT_2D or BREAKPOINT_3D </td>
+  </tr>
+  <tr>
+    <td>&lt;breakpoint data table&gt;</td>
+    <td>number</td>
+    <td>required</td>
+    <td>refer to the respective Data Type worksheet<br>
+      represents the raw data used to derive the calibration data</td>
+  </tr>
+  <tr>
+    <td>CALIBRATION_EQUIPMENT</td>
+    <td>string</td>
+    <td>optional</td>
+    <td>equipment used to calibrate the channel</td>
+  </tr>
+  <tr>
+    <td>&lt;calibration equipment table&gt;</td>
+    <td>string</td>
+    <td>optional</td>
+    <td>refer to the Calibration Equipment Table worksheet<br>
+      identifies the equipment used to calibrate the sensor</td>
+  </tr>
+</table>
+<h2 id="ExportFilesfromSensorEditor">Exporting Files from the Sensor Editor to proDAS</h2>
+<p>The Export Section allows the user to take any sensor calibration 
+  data from the database and export it to disk as either a .txt or .xml file. For details, see <a href="XMLFormat.pdf"> XML Format Definition File</a> and <a href="XMLSchema.pdf">XML Schematic of a Sensor File</a>. <br>
+  <br>
+  To export files from the Sensor Editor:</p>
+<ol>
+  <li> Select <strong>Export Sensor</strong> ( <img src="images/SensorEditorExportButton.png" alt="Sensor Editor Export Button" width="30" height="30"> ) or <strong>Export Sensor</strong> from the File menu. The Export Sensor window with a default export folder location is displayed.
+    <div class="Container"><img src="images/ExportSensorWindow.png" alt="Export Sensor Window" width="489" height="190"></div>
+  </li>
+  <li>If necessary, select the folder from which to export files.</li>
+  <li>Select the file types (XML or Tab Delimited Text) in the folder to export.</li>
+  <li>Select <strong>Export</strong>.</li>
+</ol>
+<p>The export path is configured in the SensorEditor.ini file, and may be modified by the user:</p>
+<blockquote>
+  <p>[Application]<br>
+    <strong>EXPORTPATH=c:\gsw5</strong><br>
+    IMPORTPATH=..\Data\SensorEditor\Exports<br>
+    REPORTPATH=..\DATA\SENSOREDITOR\REPORT<br>
+    SENSORREPORTTEMPLATE= d:\prodas\Data\SensorEditor\Sensor Report Template.xlt<br>
+    SUMMARYREPORTTEMPLATE= d:\prodas\Data\SensorEditor\Summary Report Template.xlt<br>
+    NUMBER OF POINTS=160<br>
+    Expire Soon=350</p>
+</blockquote>
+<p>Exported file names are automatically created by the application as a combination of the sensor and calibration columns of the sensor list (example: BIN.2DBPT 01-04-2003 9:52:09PM.csv).</p>
+<h2 id="SensorEditorReports">Generating Sensor Editor Reports</h2>
+<p>The .xls Sensor Summary and Calibration Reports are generated by selecting <strong>Report Calibration</strong> and <strong>Report Sensor Summary</strong> under the Report menu at the top of the Sensor Editor screen. The location of the report templates and export/import file paths are identified in the <em>SensorEditor.ini</em> file:</p>
+<blockquote>
+  <p>[Application]<br>
+    EXPORTPATH=c:\gsw5<br>
+    IMPORTPATH=..\Data\SensorEditor\Exports<br>
+    <strong>REPORTPATH=..\DATA\SENSOREDITOR\REPORT<br>
+      SENSORREPORTTEMPLATE= d:\prodas\Data\SensorEditor\Sensor Report Template.xlt<br>
+      SUMMARYREPORTTEMPLATE= d:\prodas\Data\SensorEditor\Summary Report Template.xlt</strong><br>
+    NUMBER OF POINTS=160<br>
+    Expire Soon=350</p>
+</blockquote>
+<h3 id="SensorSummaryReport">Sensor Summary Report</h3>
+<p>The Sensor Summary Report includes the following headings:</p>
+<ul>
+  <li>name</li>
+  <li>auxiliary address</li>
+  <li>type</li>
+  <li>part name</li>
+  <li>serial number</li>
+  <li>calibration date</li>
+  <li>calibration due date</li>
+</ul>
+<p>The Sensor Calibration Report groups sensors into worksheets by expiry status:</p>
+<ul>
+  <li>expired</li>
+  <li>soon to expire</li>
+  <li>valid</li>
+  <li>never expires</li>
+</ul>
+<h3 id="SensorCalibrationReport">Sensor Calibration Report</h3>
+<p>The Sensor Calibration Report includes the following headings on each worksheet:</p>
+<ul>
+  <li>expiry status</li>
+  <li>calibration date</li>
+  <li>due date (day, month and year)</li>
+  <li>user name</li>
+  <li>ambient temperature</li>
+  <li>ambient humidity</li>
+  <li>pass/fail status</li>
+  <li>comments</li>
+  <li>associated audits</li>
+  <li>associated equipment</li>
+</ul>
+<p>Displayed calibration date and time information is formatted to the regional settings of the computer.</p>
+<br>
+<br>
+
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

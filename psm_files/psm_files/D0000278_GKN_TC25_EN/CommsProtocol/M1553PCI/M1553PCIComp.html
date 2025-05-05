@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>M1553 PCI System - Components</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1>M1553 PCI System<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<h2>Components</h2>
+<p>The M1553 PCI System contains the following major components:</p>
+<table class="Table-Grey">
+  <tr>
+    <th class="row-Component">Component</th>
+    <th class="row-CompDescription">Description</th>
+  </tr>
+  <tr>
+    <td>Ballard Omnibus PCI M1553 Interface Card</td>
+    <td>The Ballard Omnibus PCI M1553 Interface Card connects the EEC to the<span class="Apple-converted-space">&nbsp;</span>Linux Host Computer. The PCI board has a Power PC processor and an IRIG-B circuit.</td>
+  </tr>
+  <tr>
+    <td>M1553 Subsystem Driver</td>
+    <td>The M1553 Subsystem Driver is a set of subsystem specific functions used by proDAS to control the Ballard Omnibus PCI M1553 Interface Card via the PCI bus.<br>
+      <br>The subsystem driver receives data from the  unit via the M1553 bus, and transmits data required by the EEC during an engine test. All received and transmitted data must be in M1553 word format. Each M1553 word contains format-dependent data. Possible formats are:<br>
+      <ul>
+        <li>data word</li>
+        <li>command words</li>
+        <li>status words</li>
+        <li>time-tags</li>
+        <li>error flags</li>
+        <li>control flags</li>
+      </ul>
+      <br>The M1553 data Messages consist of one or more 16-bit words (command, data, or status). The 16 bits comprising each word are transmitted using Manchester code, where each bit is transmitted as a 0.5 &mu;s high and 0.5 &mu;s low for a logical 1 or a low-high sequence for a logical 0. Each word is preceded by a 3 &mu;s sync pulse (1.5 &mu;s low plus 1.5 &mu;s high for data words and the opposite for command and status words, which cannot occur in the Manchester code) and followed by an odd parity bit. Practically each word could be considered as a 20-bit word: 3 bit for sync, 16 bit for payload and 1 bit for odd parity control.<br>
+    <br>For more details see, <a href="../../proDASHelp/DASSubSysConfig/M1553/M1553.htm"> M1553 Subsystem Driver in proDAS Integrated Help</a>.<br></td>
+  </tr>
+</table>
+<p>For OEM operational information, see <a href="M1553PCIVDocs.html">Vendor Documentation</a>.<br>
+</p>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

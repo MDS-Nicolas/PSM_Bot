@@ -1,0 +1,56 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>How To - Add a DTS3250/DTS4050 Temperature Scanner</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left>
+  <h1>How To - Add a DTS3250/DTS4050 Temperature Scanner<a href="#" onClick="window.print(); return false;"><img src="../../../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<p>This <strong>How To</strong> describes the required steps to add a DTS3250/DTS4050 temperature scanner to the proDAS system.</p>
+<p>When a new DTS3250/DTS4050 temperature scanner is being added to the proDAS system, the IP address for the scanner needs to be entered in the Linux PC hosts file.</p>
+<h2>To Add a DTS3250/DTS4050 Temperature Scanner</h2>
+<ol>
+  <li>Login to the Linux PC as the root user and use a text editor (nedit, gedit or vi) to open the /etc/hosts file for editing.</li>
+  <li>Scroll down in the file to where the Real-Time Network IP addresses are defined.</li>
+  <li>Search for any previously defined temperature scanners.
+    <p class="Note">Normally the host name for a DTS3250/DTS4050 temperature scanner has the following naming convention:
+    DTS_&lt;serial_number&gt;</p>
+  <p class="Note">If the serial number for the temperature scanner is 2150, then the host name would be entered as DTS_2150. A previously unused IP address must be allocated to the scanner.</p></li>
+  <li>Review the currently allocated IP addresses in the hosts file for all the devices on the Real-Time Network and select one that is not assigned to any device.</li>
+  <li>Using an example of an unallocated IP address of <strong>172.29.18.24</strong>, the following line would be added to the <strong>/etc/hosts</strong> file in the  same location where the previously defined temperature scanners are found: <strong><br>
+    <br>
+  172.29.18.24&nbsp;&nbsp;&nbsp;&nbsp;DTS_2150</strong><br>
+  <br>
+  </li>
+  <li>Save the <strong>/etc/hosts</strong> file and logout of the Linux PC.</li>
+  <li>On the MgtGUI PC, launch an instance of the Subsystem Editor. </li>
+  <li>Select the <strong>DTS3250 Subsystem</strong>. A list of the currently defined temperature scanners is displayed on the right-hand side.</li>
+  <li>Right-click on the right-hand side and select the <strong>Append</strong> option to add a new scanner.</li>
+  <li>In the Host Name field, enter the same host name that was entered in the <strong>/etc/hosts</strong> file.</li>
+  <li>Enter the remaining information based on the type of scanner that is being added &ndash; <strong>number of channels (16, 32, 64)</strong>, <strong>scanner model  (DTS3250/DTS4050)</strong>, <strong>unit scan rate</strong>, <strong>average samples</strong> and, <strong>default EU</strong>.
+    <div class="Container"><img src="images/AddDTSScanner.png" width="850" height="87" alt=""/></div>
+  </li>
+  <li>Save the changes in the Subsystem Editor. You can now add DTS channels in the Channel Editor and assign them to this new temperature scanner.</li>
+</ol>
+<br>
+<br>
+<!-- #EndEditable -->
+<br>
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

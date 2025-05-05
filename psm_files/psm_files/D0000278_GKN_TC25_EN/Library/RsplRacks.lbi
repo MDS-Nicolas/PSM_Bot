@@ -1,0 +1,30 @@
+<table class="Table-Grey">
+  <tr> 
+    <th class="row-RSPLManufacturer">Manufacturer</th>
+    <th class="row-RSPLQty">Quantity</th>
+    <th class="row-RSPLPartNumber">Part Number</th>
+    <th class="row-RSPLDescription">Description</th>
+    <th class="row-RSPLLeadTime">Lead Time</th>
+  </tr>
+  <tr> 
+    <td>Eaton</td>
+    <td>4</td>
+    <td>GDB-500MA</td>
+    <td>Fuses for cooling fans, Glass fuse, 500 mA, 5x20mm</td>
+    <td> 2 weeks</td>
+  </tr>
+  <tr>
+    <td>Rittal</td>
+    <td>1</td>
+    <td>7094120</td>
+    <td>Screw and Plastic Washer, M5, 50 PCS</td>
+    <td>2 weeks</td>
+  </tr>
+  <tr>
+    <td>Rittal</td>
+    <td>1</td>
+    <td>2094500</td>
+    <td>Captive Nuts, M5 with Contact, 50 PCS</td>
+    <td>2 weeks</td>
+  </tr>
+</table>

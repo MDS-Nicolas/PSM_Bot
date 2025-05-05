@@ -1,0 +1,338 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Maintenance</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+
+<div float:left>
+  <h1>Maintenance Schedule<a href="#" onClick="window.print(); return false;"><img src="../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<p>The system maintenance tables below contain the  maintenance schedule for   each system. The schedule indicates the frequency requirements for the maintenance, the   system/component requiring the maintenance, a description of the type of   maintenance, and provide links to documentation required   for conducting the maintenance.</p>
+<p>The following systems contain MDS recommended maintenance:</p>
+<table class="Table-Grey">
+  <tr>
+    <th class="row-DwgNumber">Computer Configuration</th>
+  </tr>
+  <tr>
+    <td><a href="#HostPC">Host Computer</a></td>
+  </tr>
+  <tr>
+    <td><a href="#WindowsPC">Windows Computers</a></td>
+  </tr>
+</table>
+<table class="Table-Grey">
+  <tr>
+    <th class="row-DwgNumber">Control/Monitoring Systems</th>
+  </tr>
+  <tr>
+    <td><a href="#Throttle">Throttle</a></td>
+  </tr>
+</table>
+<table width="200" class="Table-Grey">
+  <tbody>
+    <tr>
+      <th scope="col">Dynamic Data System</th>
+    </tr>
+    <tr>
+      <td><a href="#DDS">Dynamic Data System (DDS)</a></td>
+    </tr>
+  </tbody>
+</table>
+<table class="Table-Grey">
+  <tr>
+    <th class="row-DwgNumber">Facility</th>
+  </tr>
+  <tr>
+    <td><a href="#UPS">Uninterruptible Power Supply (UPS)</a></td>
+  </tr>
+</table>
+<table class="Table-Grey">
+  <tr>
+    <th class="row-DwgNumber">Measurement Systems</th>
+  </tr>
+  <tr>
+    <td><a href="#PneuPMeas">Pneumatic Pressure Measurement System</a></td>
+  </tr>
+  <tr>
+    <td><a href="#TempMeas">Temperature Measurement System</a></td>
+  </tr>
+</table>
+<table class="Table-Grey">
+  <tr>
+    <th class="row-DwgNumber">proDAS Hardware Configuration</th>
+  </tr>
+  <tr>
+    <td><a href="#Racks">Racks</a></td>
+  </tr>
+  <tr>
+    <td><a href="#VXI">VXI Hardware</a></td>
+  </tr>
+</table>
+<h2>Computer Configuration:</h2>
+<h3 id="HostPC">Host Computer</h3><!-- #BeginLibraryItem "/Library/MtnHostPC.lbi" --><table class="Table-Grey">
+  <tr>
+    <th class="row-Topic" rowspan="2">Topic</th>
+    <th colspan="2">Maintenance</th>
+  </tr>
+  <tr>
+    <th class="row-AsReq">As Required</th>
+    <th class="row-3Months">Annual</th>
+  </tr>
+  <tr>
+    <td><a href="HowTos/CompCfgHT/HostPCHT/CheckDiskSpaceHostPC.html">Checking  the Disk Space on the Host Computer</a></td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><a href="HowTos/CompCfgHT/GenInfo/DustInspectPC.html">Dusting and Visual Inspection of Internal Components</a><br>
+    (Includes checking the cooling fans.)</td>
+    <td>&nbsp;</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+</table><!-- #EndLibraryItem --><h3 id="WindowsPC">Windows Computers</h3><!-- #BeginLibraryItem "/Library/MtnPC.lbi" --><table class="Table-Grey">
+  <tr>
+    <th class="row-Topic" rowspan="2">Topic</th>
+    <th>Maintenance</th>
+  </tr>
+  <tr>
+    <th class="row-AsReq">Annual</th>
+  </tr>
+  <tr>
+    <td><a href="HowTos/CompCfgHT/GenInfo/ScanHDPC.html">Scan the Hard Drive for Errors</a></td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+  <tr>
+    <td><a href="HowTos/CompCfgHT/GenInfo/DustInspectPC.html">Dust and Inspect the Internal Components on a Computer</a><br>
+    (Includes checking the cooling fans.)</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+</table><!-- #EndLibraryItem --><h2>Control/Monitoring Systems:</h2>
+<h3 id="Throttle">Throttle</h3><!-- #BeginLibraryItem "/Library/MtnUECU.lbi" --><table class="Table-Grey">
+  <tr>
+    <th class="row-Topic" rowspan="2">Topic</th>
+    <th colspan="2">Maintenance</th>
+  </tr>
+  <tr>
+    <th class="row-AsReq">As Required</th>
+    <th class="row-Annual">Annual</th>
+  </tr>
+  <tr>
+    <td><a href="HowTos/ControlMon/UECU/CheckThrottleWiring.html">Check the Throttle Quadrant Wiring</a></td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><a href="HowTos/ControlMon/UECU/SetupLeverPot.html">Set Up the Lever Potentiometer</a></td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><a href="HowTos/ControlMon/UECU/AdjustOverride.html">Adjust the Actuator Override Stop Position</a></td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><a href="HowTos/ControlMon/UECU/InspectBrushes.html">Inspect the Brushes on the Throttle Lever</a></td>
+    <td>&nbsp;</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+  <tr>
+    <td><a href="HowTos/ControlMon/UECU/CleanThrottleQuad.html">Clean the Throttle Quadrant</a></td>
+    <td>&nbsp;</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+  <tr>
+    <td><a href="HowTos/ControlMon/UECU/CalibrateLever.html">Calibrate the Throttle Lever</a></td>
+    <td>&nbsp;</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+  <tr>
+    <td><a href="HowTos/ControlMon/UECU/ThrottleControllerWiring.html">Check the Wiring in the Throttle Controller Enclosure Assembly</a></td>
+    <td>&nbsp;</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+  <tr>
+    <td><a href="HowTos/ControlMon/UECU/CalibrateActuator.html">Calibrate the Actuator</a></td>
+    <td>&nbsp;</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+  <tr>
+    <td><a href="HowTos/ControlMon/UECU/VerifyOverride.html">Verify the Actuator Override System Operation</a></td>
+    <td>&nbsp;</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+  <tr>
+    <td><a href="HowTos/ControlMon/UECU/AirMotor.html">Lubricate the Air Motor</a></td>
+    <td>&nbsp;</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+  <tr>
+    <td><a href="HowTos/ControlMon/UECU/SpurBacklashGear.html">Check the Actuator Spur and Anti-Backlash Gears</a></td>
+    <td>&nbsp;</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+  <tr>
+    <td><a href="HowTos/ControlMon/UECU/ActuatorWiring.html">Check the Actuator Enclosure Assembly (Screws,Wires, Fasteners)</a></td>
+    <td>&nbsp;</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+</table>
+<!-- #EndLibraryItem --><h2>Dynamic Data System:</h2>
+<h3 id="DDS">Dynamic Data System (DDS)</h3><!-- #BeginLibraryItem "/Library/MtnDDS.lbi" --><table class="Table-Grey">
+  <tr>
+    <th class="row-Topic" rowspan="2">Topic</th>
+    <th colspan="1">Maintenance</th>
+  </tr>
+  <tr>
+    <th class="row-AsReq">As Required</th>
+  </tr>
+  <tr>
+    <td><a href="HowTos/CompCfgHT/GenInfo/DustInspectPC.html">Dust and Verify the Internal Components on a Computer</a> <a href="HowTos/CompCfgHT/GenInfo/DustInspectPC.html"></a>(Includes dusting and checking the cooling fans.)</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+</table><!-- #EndLibraryItem --><h2>Facility:</h2>
+<h3 id="UPS">UPS</h3><!-- #BeginLibraryItem "/Library/MtnUPS.lbi" --><table class="Table-Grey">
+  <tr>
+    <th class="row-Topic" rowspan="2">Topic</th>
+    <th>Maintenance</th>
+  </tr>
+  <tr>
+    <th class="row-AsReq">Annual</th>
+  </tr>
+  <tr>
+    <td>Functional verification of the rectifier, inverter, and batteries by a UPS OEM representative</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div>      <div align="center"></div></td>
+  </tr>
+</table><!-- #EndLibraryItem --><h2>Measurement Systems:</h2><h3 id="PneuPMeas">Pneumatic Pressure Measurement</h3><!-- #BeginLibraryItem "/Library/MtnPressMeas.lbi" --><table class="Table-Grey">
+  <tr>
+    <th class="row-Topic" rowspan="2">Topic</th>
+    <th colspan="2">Maintenance</th>
+  </tr>
+  <tr>
+    <th class="row-AsReq">Before Each Engine Test</th>
+    <th class="row-6Months">Annual</th>
+  </tr>
+  <tr>
+    <td><a href="HowTos/Measurement/PneuPMeas/InspectPneuMS.html">Inspect the Pneumatic Pressure Measurement System</a></td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+  <tr>
+    <td><a href="HowTos/Measurement/PneuPMeas/PurgeCal.html">Purge and Zero the Pressure Scanners</a></td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+  <tr>
+    <td><a href="../Measurement/PneuPMeas/PneuPMOper.html#Calibration">Check the Calibration of the Pressure Scanners</a></td>
+    <td>&nbsp;</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div>      <div align="center"></div></td>
+  </tr>
+</table><!-- #EndLibraryItem --><h3 id="TempMeas">Temperature Measurement</h3><!-- #BeginLibraryItem "/Library/MtnTempMeas.lbi" --><table class="Table-Grey">
+  <tr>
+    <th class="row-Topic" rowspan="2">Topic</th>
+    <th colspan="5">Maintenance</th>
+  </tr>
+  <tr>
+    <th class="row-AsReq">As Required</th>
+    <th class="row-3Months">Before Each Test</th>
+    <th class="row-3Months">1 Month</th>
+    <th class="row-6Months">6 Months</th>
+    <th class="row-Annual">Annual</th>
+  </tr>
+  <tr>
+    <td><a href="HowTos/Measurement/TempMeas/InspectCalTempMS.html">Inspect the Calibration of a Temperature Scanner</a></td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+  <tr>
+    <td><a href="HowTos/Measurement/TempMeas/InspectTempMS.html">Inspect the Temperature Measurement System</a></td>
+    <td>&nbsp;</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+    <td>&nbsp;</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><a href="../Measurement/TempMeas/TempMsOper.html#EX1048ACal">Perform a Self-Calibration of the Temperature Scanners</a></td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><a href="HowTos/Measurement/TempMeas/TroubleTempScan.html">Troubleshoot Trigger Problems with the Temperature Scanners</a></td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<!-- #EndLibraryItem --><h2>proDAS Hardware Configuration:</h2>
+<h3 id="Racks">Racks</h3><!-- #BeginLibraryItem "/Library/MtnRacks.lbi" --><table class="Table-Grey">
+  <tr>
+    <th class="row-Topic" rowspan="2">Topic</th>
+    <th>Maintenance</th>
+  </tr>
+  <tr>
+    <th class="row-AsReq">As Required</th>
+  </tr>
+  <tr>
+    <td><a href="HowTos/proDASHw/Racks/InspectRacks.html">Inspect the Equipment Racks</a><br>
+      <br>
+    Includes:
+    <ul>
+      <li>Inspect and clean the Cooling Fans</li>
+      <li>Inspect area for FOD</li>
+      <li>Dust the racks</li>
+    </ul>    </td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+</table><!-- #EndLibraryItem --><h3 id="VXI">VXI Hardware</h3><!-- #BeginLibraryItem "/Library/MtnVXI.lbi" --><table class="Table-Grey">
+  <tr>
+    <th class="row-Topic" rowspan="2">Topic</th>
+    <th colspan="2">Maintenance</th>
+  </tr>
+  <tr>
+    <th class="row-AsReq">As Required</th>
+    <th class="row-3Months">6 Months</th>
+  </tr>
+  <tr>
+    <td><a href="HowTos/proDASHw/VXI/ExternalRefSignal.html">Check the Operation of the VXI DIO Card</a></td>
+    <td>&nbsp;</td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+  </tr>
+  <tr>
+    <td><a href="HowTos/proDASHw/VXI/InspectCleanVXI.html">Inspect and Clean the VXI chassis</a></td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><a href="HowTos/proDASHw/VXI/ChangeCardVXI.html">Replace a VXI Card in the VXI chassis</a></td>
+    <td><div align="center"><img src="../Images/GrnCheck24x24.png" alt="maintenance" width="24" height="24"></div></td>
+    <td>&nbsp;</td>
+  </tr>
+</table><!-- #EndLibraryItem --><br>
+<br>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

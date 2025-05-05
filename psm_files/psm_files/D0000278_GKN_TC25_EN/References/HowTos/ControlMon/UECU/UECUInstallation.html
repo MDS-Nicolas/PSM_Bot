@@ -1,0 +1,154 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>How To &ndash; Install UECU Mark III</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left>
+  <h1>How To &ndash; Install the UECU-500 Mark III Throttle<a href="#" onClick="window.print(); return false;"><img src="../../../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<p>The UECU-500 Mark III Throttle may be installed in an existing test facility, or incorporated into a new facility design. The installation procedure involves mounting the required equipment, routing the electrical cables between these components, and installing the actuator-to-engine linkage.</p>
+<p>This <strong>How To</strong> includes the following topics:</p>
+<ul>
+  <li><a href="#Enviro">Environmental Requirements</a></li>
+  <li><a href="#ThrottleQuad">Install the Throttle Quadrant</a></li>
+  <li><a href="#ContActResRVDT">Install the Controller, Actuator, Resolver and RVDT Chassis</a></li>
+  <li><a href="#Override">Install the Override System</a></li>
+</ul>
+<h3><a name="Enviro"></a>Environmental Requirements</h3>
+<p>The throttle quadrant and the controller chassis are mounted in the control room. The actuator(s) are mounted in the Test Cell. </p>
+<p>The <strong>throttle quadrant</strong> is designed to be mounted in a control room. This is considered to be a clean environment at a temperature between 15 and 35 degrees Celsius with a relative humidity of 5 to 95% (non-condensing).</p>
+<p>The <strong>controller chassis, actuator chassis and resolver chassis</strong> are designed to be mounted in a control room. This is considered to be a clean environment at a temperature between 15 and 35 degrees Celsius with a relative humidity of 5 to 95% (non-condensing).</p>
+<p>The <strong>actuator</strong> is designed to operate in a typical test cell environment. Applications requiring high torque output combined with high ambient temperatures should be discussed with MDS Aero Support Corporation. The following are the environmental requirements for the actuator:</p>
+<ul>
+  <li>a Test Cell temperature of -40 degrees Celsius to 50 degrees Celsius</li>
+  <li>a control room temperature of 15 degrees Celsius to 35 degrees Celsius</li>
+  <li>altitude from sea level to 50,000 feet</li>
+  <li>an accuracy &plusmn;0.5 degrees</li>
+</ul>
+<p>The <strong>override junction box</strong> is considered to be installed in a typical Test Cell environment, at a temperature between 10 and 60 degrees Celsius with a relative humidity of 5% to 100% (non-condensing).</p>
+<h4>Power Requirements</h4>
+<p>The system controller can be adapted for use with 85 to 264 VAC at a frequency of 45 Hz to 66 Hz. Current draw is less than 10 amperes at 120 VAC.</p>
+<table cellspacing="1" class="Table-Grey">
+ <tr>
+ <th width="33%">Details</th>
+ <th width="33%">120 VAC</th>
+ <th width="33%">230 VAC</th>
+ </tr>
+ <tr>
+ <td>Controller</td>
+ <td>9.0 A</td>
+ <td>4.5 A</td>
+ </tr>
+ <tr>
+ <td>Resolver/RVDT</td>
+ <td>1.0 A</td>
+ <td>0.5 A</td>
+ </tr>
+ <tr>
+ <td>Actuator </td>
+ <td >5.0 A</td>
+ <td>2.5 A</td>
+ </tr>
+ <tr>
+   <td>Quadrant</td>
+   <td >1.0 A</td>
+   <td>0.5 A</td>
+ </tr>
+</table>
+<h3><a name="ThrottleQuad"></a>Install the Throttle Quadrant</h3>
+<p>To install the throttle quadrant:</p>
+<ol>
+ <li>Make a cutout in the surface in which the quadrant is mounted. Use the dimensions in the applicable Throttle Quadrant Outline and Installation drawing.</li>
+
+<ul>
+ <li>Single Lever:<a href="../../../MDSDrawings/14710xx.pdf"> GA-900-01-14710 Outline and Installation, UECU-500 Mark IIII, Single Lever Quadrant</a></li>
+ <li>Dual Lever: <a href="../../../MDSDrawings/14711xx.pdf">GA-900-01-14711 Outline and Installation, UECU-500 Mark IIII, Dual Lever Quadrant</a></li>
+ </ul>
+ <li>Lower the throttle quadrant into the cutout and secure with the four (4) bolts (M4 x 0.7 x 35 long), and washers included with the unit.</li> 
+ <li>Connect the quadrant cable assembly between the quadrant connector and the J1 connector on the <a href="?22#Controller">controller chassis</a>.</li>
+ <li>Connect the power cable and the Ethernet cables.</li>
+</ol>
+<h3><a name="ContActResRVDT"></a>Install the Controller, Actuator, Resolver and RVDT Chassis</h3>
+<p>The throttle controller, actuator, resolver and RVDT chassis are designed to be installed in an existing 19-inch electronics rack that conforms to the EIA (Electronic Industries Association) Standard for racks, panels and associated equipment.</p>
+<p class="Note">Some space should be allowed for connector clearance and removal. For details refer to the drawings below.</p>
+<p>For sizing and installation details on the controller chassis, see <a href="../../../MDSDrawings/14712xx.pdf">GA-900-01-14712 Outline and Installation, Chassis Assembly, UECU-500 Mark IIII, Controller</a>.</p>
+<p>For sizing and installation details on the RVDT/resolver chassis, see <a href="../../../MDSDrawings/13993xx.pdf">GA-900-01-13993 Outline and Installation, Chassis Assembly, UECU-500 Mark III, Resolver</a>.</p>
+<p>For sizing and installation details on the actuator chassis, see <a href="../../../MDSDrawings/13994xx.pdf">GA-900-01-13994 Outline and Installation, Chassis Assembly, UECU-500 Mark III, Actuator</a>.</p>
+<br><div class="Container"><img src="images/Chassis.gif" alt="Chassis" width="650" height="174"></div><br>
+<p>The controller, actuator, resolver and RVDT chassis must be connected to a 120 VAC 60 Hz or 220 VAC 50 Hz power supply (customer dependent). It is recommended that the UECU-500 Mark III be powered through a UPS (Uninterruptible Power Supply) for safety. MDS can provide an optional UPS system on request.</p>
+<h4>Installing the Cables and Connectors</h4>
+<p>Cables and mating connectors may be supplied with the UECU-500 Mark III Throttle System based on agreed terms at the time of purchase. The cables should be routed using a cable tray or conduit, as required by local building codes.</p>
+<p class="Note">Please refer to your supplied drawing package for exact cable requirements.</p>
+<h4>Installing the Actuator</h4>
+<p>Each installation of the UECU-500 Mark III actuator is unique to the engine and test cell. An interface pad must be constructed to mount the actuator for use with each engine type.</p>
+<p>The design and placement of the actuator should be performed by an engineer experienced with the test cell environment. This manual does not include all concerns required, but the following recommendations should be obeyed:</p>
+<ul>
+ <li>mount the actuator with electrical receptacles down and the harnesses left long to droop below the level of the connector. This prevents liquids from flowing into the receptacles</li>
+ <li>attach the electrical harnesses after the actuator is securely mounted</li>
+ <li>design the mechanical linkages between the actuator and the engine for minimum inertia, maximum acceleration and zero backlash </li>
+</ul>
+<p class="Warning">To prevent serious injury and or irreparable damage to equipment, ensure that a qualified technician has properly mounted the actuator. An improperly mounted actuator can cause severe equipment damage and personnel injury.</p>
+<p class="Note">Do not subject the actuator to high shock loads; it contains sensitive electronics that may be damaged.</p>
+<p>For design assistance for actuator-to-engine linkages, contact MDS Aero Support Corporation.</p>
+<h4>UECU-500 Mark III Actuator</h4>
+<br><div class="Container"><img src="images/Actuator02.gif" alt="Actuator 02" width="350" height="291"></div><br>
+<h3><a name="Override"></a>Install the Override System</h3>
+<p>The override system consists of the following three components:</p>
+<ul>
+ <li><a href="#InstallOVSystem">Override Drive System</a>  - consists of an air motor and mechanical assembly that drives the actuator output shaft to the override position. The drive system is contained in the actuator.</li> 
+ <li><a href="#InstallPneuJB">Override Pneumatic Control Box</a>  - contains all of the valves and air controls required to operate the override drive system. The override pneumatic control box is installed in the control room or mechanical service room.</li>
+ <li>Manual Override Panel - is the operator interface to the override system and includes the actuate and reset controls as well as status indicators. The manual override panel is installed in the operator console.</li>
+</ul>
+<h4><a name="InstallOVSystem"></a>Install the Override Drive System</h4>
+<p>The override drive system is included in the actuator and requires no further installation.</p>
+<p>The override drive system is intended to provide override actuation in one direction only (i.e. the override drive system can only rotate the output shaft in the direction specified by the client at the time of ordering). The override direction can be changed by removing the actuator cover  and re-positioning the override drive pin. Please consult MDS for details on the procedure.</p>
+<p class="Caution">To prevent injury and damage to equipment, verify that the override operates in the correct direction prior to the first engine run.</p>
+<h4><a name="InstallPneuJB"></a>Install the Override Pneumatic Control Box and Override Panel:</h4>
+<ol>
+ <li>To prevent air condensate from freezing in the system, wall-mount the pneumatic control box in a temperature controlled service room.</li>
+ <p class="Note">Ensure the pneumatic control box is mounted with the air inlet on the bottom to prevent a build-up of moisture in the system.</p>
+ <li>Connect the pneumatic control box air inlet to a source of dry, filtered air at 70-120 psi.</li>
+ <li>Connect the pneumatic control box <strong>Actuate</strong> and <strong>Reset</strong> air outlets to the back of the Throttle actuator using 3/8&rdquo; hose or tubing. The tubing should be less than 100 ft long. When the installation is completed, verify that the two air lines are connected properly and are not reversed. If the air line connections are correct, the actuator drives to the override position when actuated and returns control to the normal servo drive when reset.</li>
+ <p class="Caution">To prevent injury and damage to equipment, ensure that the system is operating correctly before connecting the throttle linkage to the engine. If the actuator is not configured for the correct output shaft rotation (i.e. clockwise for full throttle or vise-versa), the override system can potentially drive the throttle output shaft to full throttle.</p>
+ <li>Mount the manual override panel in the Control Room.</li> 
+ <li>Connect the pneumatic control box electrical connection to the manual override panel.</li>
+</ol>
+<h4><a name="VerifyOperation"></a>Verify Correct Operation</h4>
+<p>To verify that the override system has been correctly installed, complete the following test. </p>
+<p class="Note">If the system passes every step of this procedure then the  override system has been installed correctly.</p>
+<ol>
+ <li>Ensure that the manual override panel <strong>READY</strong> light is illuminated. When the system is first powered up, the operator must hold the <strong>RESET</strong> button until the <strong>READY</strong> light is illuminated.</li> 
+ <li>Ensure that the actuator is operating correctly for normal throttle control:</li>
+ <ol type="a">
+ <li>The actuator-fuel lever linkage is connected.</li> 
+ <li>The throttle lever responds in the correct direction and magnitude (i.e. full throttle on the quadrant lever is full throttle on the engine fuel lever).</li>
+ </ol>
+ <li>Disconnect the actuator-fuel lever linkage to temporarily avoid moving the fuel lever. This ensures that the disconnected linkage does not damage any personnel or equipment if the actuator output shaft is moved.</li> 
+ <li>Command the actuator to full throttle using the throttle quadrant.</li>
+ <li>Press the <strong>THROTTLE TRIP</strong> pushbutton on the manual override panel.</li>
+ <li>Verify that the manual override panel <strong>ACTIVATED</strong> light is illuminated.</li> 
+ <li>Re-connect the actuator-fuel lever linkage.</li> 
+ <li>Verify that the actuator shaft rotated to the desired <strong>safe idle</strong> position.</li> 
+ <li>Press and hold&nbsp;the <strong>RESET</strong> button on the manual override panel until the <strong>READY</strong> light is illuminated.</li> 
+ <li>Verify that the throttle actuator has returned to normal operation.</li> 
+ <li>Repeat steps <strong>4</strong> through <strong>10</strong> with the linkage connected.</li>
+</ol>
+
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

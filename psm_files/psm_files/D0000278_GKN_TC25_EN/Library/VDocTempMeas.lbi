@@ -1,0 +1,28 @@
+<table class="Table-Grey">
+  <tr> 
+    <th class="row-VDocManufacturer">Manufacturer</th>
+    <th class="row-VDocTitle">Manual Title</th>
+    <th class="row-VDocType">Manual Type</th>
+    <th class="row-VDocPartNumber">Part Number</th>
+  </tr>
+  <tr> 
+    <td>VTI Instruments</td>
+    <td><a href="../References/VendorDocs/VTIInstruments/UM820122000.pdf">EX1048A User Manual</a></td>
+    <td>User Manual</td>
+    <td>82-0122-000, March 24, 2015</td>
+  </tr>
+  <tr>
+    <td>VTI Instruments</td>
+    <td>Drivers and Product Manuals</td>
+    <td>CD-ROM </td>
+    <td>72-0030-000</td>
+  </tr>
+  <tr>
+    <td>Schneider Electric </td>
+    <td><a href="../References/VendorDocs/Schneider/SI9903433C.pdf">Schneider Electric, Rack Power Distribution Unit Safety Information</a></td>
+    <td>Safety Instructions</td>
+    <td><table cellspacing="0" cellpadding="0">
+  <td width="184">990-3433C,    01/2015</td>
+    </table></td>
+  </tr>
+</table>

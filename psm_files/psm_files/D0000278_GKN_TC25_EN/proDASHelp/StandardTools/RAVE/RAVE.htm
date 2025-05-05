@@ -1,0 +1,614 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Building Reports with RAVE</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1>Reporting and Viewing Environment (RAVE)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The Reporting and Viewing Environment (RAVE) is an application used to view data recorded during a test and to create reports.</p>
+<h2 id="StartRAVE">Starting RAVE</h2>
+<p>RAVE can be started in one of two ways:</p>
+<ul>
+  <li>via the Management GUI Control Panel where the username and password are passed automatically </li>
+  <li>as an independent application where the username and password are not passed automatically</li>
+</ul>
+<h3 id="startfromproDAS">To start RAVE from the Management GUI Control Panel:</h3>
+<ol>
+  <li>From the Management GUI Control Panel (below) Tools menu, select <strong>Post Test Functions / Real-Time Report</strong> or <strong>RAVE</strong>.
+    <p class="Note">If RAVE is selected the RTReports screen is not displayed.</p>
+    <div class="Container"><img src="images/MGTControlPanel.gif" alt="MGT Control Panel" width="734" height="385"></div>
+    <br>
+    The RTReports screen is displayed.
+    <div class="Container"><img src="images/RTReports.png" alt="RT Reports" width="253" height="145"></div>
+  </li>
+  <br>
+  <li>Select <img src="images/RTRbtnRave.gif" alt="RTRbtn Rave" width="43" height="39"> from the RTReports screen.<br>
+    The Test Selection screen is displayed. For details, see <a href="?61#TestSelectScrn">Test Selection Screen</a>.
+    <div class="Container"><img src="images/RAVEPage.png" alt="RAVE Page" width="700" height="538"></div>
+  </li>
+</ol>
+<h2 id="StartRAVEstandalone">To start RAVE as an independent application:</h2>
+<ol>
+  <li>Double-click the RAVE executable file, from your directory structure.<br>
+    The RAVE Login window is displayed.
+    <div class="Container"><img src="images/LoginRave.gif" alt="Login Rave" width="404" height="280"></div>
+  </li>
+  <br>
+  <li>Enter the user name and password in the corresponding fields.<br>
+    The user name and password must be a minimum of three characters and five characters long, respectively, to enable the <strong>Login</strong> button.</li>
+  <li>Select a database from the Database drop-down list.</li>
+  <li>Select <strong>Login</strong>.</li>
+  <li>The Test Selection screen is displayed (<a href="?61#TestSelectScrn">click here to go to the Test Selection screen</a>).</li>
+</ol>
+<h2 id="TestSelectScrn">Test Selection Screen</h2>
+<p>The Test Selection screen (displayed below) is launched after login. The user can retrieve any combination of engine tests using the query builder tool. The range of retrieved data is refined by execution of a single query defined as a set of selected search parameters. Typically, data is retrieved by selecting <i>predefined</i> (already saved) queries from a drop-down list. A query cannot locate a historical test or group of tests that have been archived.</p>
+<div class="Container"><img src="images/RaveLiteTestSelScreen.png" alt="Rave Lite Test SelScreen" width="700" height="538"></div>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="2" rowspan="1">Test Selection Screen</th>
+  </tr>
+  <tr>
+    <th>Buttons, Panels and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td>Predefined Queries </td>
+    <td>The Predefined Queries panel retrieves engine test data based on queries that have already been defined and saved. Queries retrieve specific test data by using a combination of search criteria such as test cell, engine type, engine serial number, test name and date.</td>
+  </tr>
+  <tr>
+    <td>Query controls</td>
+    <td>The buttons in the Query controls panel execute, save and display query data.
+      <ul>
+        <li><strong>Execute</strong> - retrieves engine tests based upon parameters in the QUERY BUILDER panels</li>
+        <li><strong>Save series</strong> - saves QUERY BUILDER data in an existing Category folder. A new Category folder may be created if desired</li>
+        <li><strong>Clear all</strong> - clears data within the QUERY BUILDER panels</li>
+        <li><strong>Reports</strong> - displays the Reports screen for the engine test highlighted in the Query Results panel</li>
+        <li><strong>SHOW/HIDE QUERY BUILDER</strong> - displays or closes the <a href="?57#QueryBuilderDescrip">QUERY BUILDER</a> area (for detailed information on the QUERY BUILDER, see <a href="?2#CreateNewQueries">Creating New Queries with the Query Builder Panel</a> in Building Reports with RAVE)</li>
+        <li><strong>Replace</strong> - overwrites engine tests in the Query Results panel with data that is retrieved from executing a new query</li>
+        <li><strong>Add</strong> - accumulates engine test in the field</li>
+        <li>scroll buttons (<strong>&lt;&lt; &lt; &gt; &gt;&gt;</strong>) are used to display a number of queries that are currently in use (i.e.: a query series)</li>
+        <li><strong>Data</strong> - displays the associate Fullsets for the engine test that is highlighted in the Query Results panel</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td id="QueryBuilderDescrip">QUERY BUILDER</td>
+    <td>The QUERY BUILDER panel is subdivided into Standard Test Criteria and Custom Test Criteria sections. There are five fields and five buttons within the Standard Test Criteria section for selecting data for test cell, engine type, engine serial number, test name and test date. The Custom Test Criteria section has twelve data fields and six buttons for retrieving customer specific data.</td>
+  </tr>
+  <tr>
+    <td>Query Results</td>
+    <td>The Query Results panel displays the retrieved data under the header bars:
+      <ul>
+        <li>Test Cell</li>
+        <li>Test Date</li>
+        <li>Test Name</li>
+        <li>Test Description</li>
+        <li>Engine</li>
+        <li>Serial Number</li>
+        <li>Engine Standard</li>
+        <li>Customer</li>
+      </ul>
+      The header bars within this field have similar functions to standard spreadsheet headers. Columns may be dragged laterally and placed in any order from left to right, and selecting a header bar will sort the corresponding data in ascending or descending order.</td>
+  </tr>
+  <tr>
+    <td>Session history</td>
+    <td> The Session History panel displays user related messages during the query session. All messages are stored in (and may be retrieved from) an RTE trace file. The Session history panel may be configured at the administrator level to display only operator messages or to include  error and debugging messages to suit user requirements.<br>
+      <br>
+      The <strong>Clear</strong> button removes the entry displayed in the Session History panel.</td>
+  </tr>
+  <tr>
+    <td>Exit</td>
+    <td>The <strong>Exit</strong> button closes the Test Selection screen and exits RAVE.</td>
+  </tr>
+</table>
+<h3 id="ModifyPermissions">Modifying Permission Levels</h3>
+<p>The default condition for each level may be customised through the Accounts and Permissions screens by an admitted user. To modify permission 
+  levels from the Test Selection Screen, the user must be logged in as the administrator.</p>
+<p>From the Admin drop-down list:</p>
+<ol>
+  <li>Select <strong>Permission Manager</strong>.<br>
+    The Permission Manager window is displayed.
+    <div class="Container"><img src="images/PermissionManager.png" alt="Permission Manager" width="204" height="347"></div>
+  </li>
+  <br>
+  <li>Select a function from the Available Functionality list.</li>
+  <li>Select an Activiation Level (i.e.: 3) from the Activiation Level drop-down list and select <strong>Exit</strong>.<br>
+    The Permission Manager window is closed and the operator is returned to the Test Selection Screen.<br>
+    Select <strong>Reset</strong> to restore all permission levels to default values.</li>
+</ol>
+<h2 id="ReportsScrn">Reports Screen</h2>
+<p>The <strong>REPORTS</strong> button in the QUERY CONTROLS panel of the the Test Selection screen displays the Reports screen (see below). The specific engine test that was highlighted in the QUERY RESULTS panel of the Test Selection screen is included in the Reports Screen. Report  templates are selected by the user and populated by RAVE. The reports are produced in Microsoft Excel. Typical reports are:</p>
+<ul>
+  <li>Logsheets (containing fullsets (steady state data) and comments)</li>
+  <li>Transient Data Reports (depicting transient logs)</li>
+  <li>Fullset Reports (depicting steady state data) </li>
+  <li>Combination Reports (depicting both steady state and transient data)</li>
+</ul>
+<div class="Container"><img src="images/ReportsScreenFull.png" alt="Reports Screen Full" width="700" height="538"></div>
+<table class="Table-Grey">
+  <tr>
+    <th colspan="2" rowspan="1">Reports Screen</th>
+  </tr>
+  <tr>
+    <th>Buttons, Panels and Fields</th>
+    <th>Function</th>
+  </tr>
+  <tr>
+    <td>Currently selected tests</td>
+    <td>The Currently selected tests panel displays the engine test that was highlighted in the Query Results panel of the Test Selection 
+      screen.</td>
+  </tr>
+  <tr>
+    <td>Single engine reports templates.</td>
+    <td>The Single engine reports templates. panel contains names of previously created reports (in <strong>.xls</strong> spreadsheet form).</td>
+  </tr>
+  <tr>
+    <td>REPORT TEMPLATE CONTENTS:</td>
+    <td>The REPORT TEMPLATE CONTENTS: panel displays the <strong>.ini</strong> configuration file of the selected Single engine reports template. The file defines the report contents, such as channels and test step names, limit lines and comments.</td>
+  </tr>
+  <tr>
+    <td> Report controls </td>
+    <td> The Report controls buttons and functions are:
+      <ul>
+        <li><strong>Select All</strong> - highlight the report templates within the Single Engine Report Templates panel</li>
+        <li><strong>Unselect All</strong> - deselect the report templates within the Single Engine Report Templates panel</li>
+        <li><strong>Report Builder</strong> - launches the Report Builder wizard used to create new report templates</li>
+        <li><strong>Peek</strong> - displays the<strong> .xls</strong> (Excel workbook) file based on the selected report template populated with the last test data that was deposited into the template</li>
+        <p class="Note">Peek is only available when logged in as an Administrator level user.</p>
+        <p class="Note">When using the peek function, ensure the peek window spans the full height of the screen. If the peek window is smaller than the size of the screen, some of the user buttons will not be visible.</p>
+        <li><strong> View</strong> - generates and displays an <strong>.xls</strong> report based on the selected report template and  data extracted from the <a href="../TRSCDB/TRSCDB.htm#TRSC">TRSCDB</a> for the given engine test</li>
+        <li><strong>Print</strong> - prints the selected report in the form of an Excel workbook</li>
+      </ul></td>
+  </tr>
+  <tr>
+    <td>Session history</td>
+    <td>The Session history panel displays user related messages during the query session. All messages are stored in (and may be retrieved from) the RAVE trace file. The Session history panel may be configured by the administrator to display only operator messages or to include error and  troubleshooting messages to suit the user's requirements.<br>
+      <br>
+      The <strong>Clear</strong> button removes the entry displayed in the Session history panel.</td>
+  </tr>
+  <tr>
+    <td>Back</td>
+    <td>The <strong>Back</strong> button closes the Reports screen and displays the Test Selection screen.</td>
+  </tr>
+</table>
+<h2 id="CreateRetrieveReports">Creating and Retrieving Reports</h2>
+<h3 id="RetrievSavedQueries">Retrieving Saved Queries with the Predefined Queries Panel</h3>
+<p>From the PREDEFINED QUERIES panel on the Test Selection screen:</p>
+<ol>
+  <li>Select a previously saved category (i.e.: ATP_Calib) from the drop-down list in the <strong>Query and Report Categories</strong> field.
+    <div class="Container"><img src="images/RaveLitePredefinedQueriesSaved.png" alt="Rave Lite Predefined Queries Saved" width="635" height="178"></div>
+  </li>
+  <br>
+  <li>Select the desired query (i.e.: ATP_Calib) from the drop-down list within the <strong>Current Queries</strong> field.</li>
+  <li>Select <strong>EXECUTE</strong> from the QUERY CONTROLS panel to execute the query and retrieve engine tests based on the search criteria defined in the query.</li>
+  <li>Select the desired engine test (highlighted) listed in the <strong>QUERY RESULTS</strong> panel.</li>
+  <li>Select <strong>REPORTS</strong> from the QUERY CONTROLS panel to open the Reports screen. The Reports screen is displayed.
+    <div class="Container"><img src="images/ReportsScreenFull.png" alt="Reports Screen Full" width="700" height="538"></div>
+  </li>
+</ol>
+<h3 id="CreateNewQueries">Creating New Queries with the Query Builder Panel</h3>
+<p>From the QUERY CONTROLS panel on the Test Selection Screen:</p>
+<ol>
+  <li>Select <strong>Show QUERY BUILDER</strong> to display the QUERY BUILDER panel. The QUERY BUILDER section contains Standard Test Criteria and Custom Test Criteria fields.</li>
+  <li>Populate any of the five data fields in the Standard Test Criteria area (Test Cell, Engine, Engine S/N [serial number], Test Name and Test Date) with the desired query criteria. The Data may be entered manually or selected from drop-down lists. The Buttons beside each field [<img src="images/StandardTestCriteriaButton.png" alt="Standard Test Criteria Button" width="22" height="22" >] activate windows which contain lists of test cells, engines, serial numbers,  test names and test dates. Highlight the rows of desired data from the Master List (hold the <strong>Ctrl</strong> key and click with the mouse to select multiple items) and select <img src="images/ForwardArrowButton.png" alt="Forward Arrow Button" width="42" height="27" > to move the data to the Selected List. To return undesired data to the Master List, highlight the data (hold the <strong>Ctrl</strong> key and click with the mouse to select multiple items) and select <img src="images/BackArrowButton.png" alt="Back Arrow Button" width="42" height="27" >.<br>
+    <div class="Container"><img src="images/StandardTestCriteriaList.png" alt="Standard Test Criteria List" width="496" height="430"></div>
+  </li>
+  <br>
+  <li>Select <strong>OK</strong> to accept the changes or <strong>Cancel</strong> to return to the QUERY BUILDER panel.</li>
+  <li>To change the Operator, select <img src="images/OperatorBtn.png" alt="Operator Btn" width="61" height="26"> (Operator). The <strong>Select an operator</strong> window is displayed.</li>
+  <li>Select the desired <strong>operator</strong> from the <strong>Select an operator</strong> window, then select <strong>OK</strong>.
+    <p class="Note">The default condition is: = [Equal To]</p>
+    <div class="Container"><img src="images/ButtonOperatorSelect.png" alt="Button Operator Select" width="186" height="246"></div>
+    <p class="Note">Manually entering data into any of the Standard Test Criteria fields changes the description of the operator button to CONTAINS.</p>
+    Exclusive to the Test Date, Engine S/N fields and Custom Test Criteria fields, a <strong>BETWEEN</strong> button may be selected for a range of dates or serial numbers. Both Test Date or Serial Number fields with an <strong>AND</strong> operator appear.
+    <div class="Container"><img src="images/QueryBuilderBetweenOperator1.png" alt="Query Builder Between Operator 1" width="557" height="302"></div>
+    <br>
+    Clicking inside the <strong>Test Date</strong> field automatically enters the present date and activates a drop-down button. Clicking the drop-down button activates a calendar; the field is automatically populated with any selection made. <strong>Clear Dates</strong> deletes all data within the Test Date field.
+    <div class="Container"><img src="images/QueryBuilderBetweenOperator.png" alt="Query Builder Between Operator" width="561" height="424"></div>
+    Clicking on the <strong>month and year</strong> at the top of the calendar activates their respective selection features:
+    <table width="400" border="0" cellspacing="0" cellpadding="0">
+      <tr valign="top">
+        <td><img src="images/QueryBuilderCalendar1.png" alt="Query Builder Calendar1" width="177" height="237"></td>
+        <td><img src="images/QueryBuilderCalendar2.png" alt="Query Builder Calendar2" width="177" height="174"></td>
+      </tr>
+    </table>
+    <br>
+  </li>
+  <li>If required, populate the Custom Test Criteria fields with the desired data. The Custom Test Criteria contains six fields with identical drop-down lists of Custom query data, from the Customer_Specific table in the proDAS database. An item that is selected from one list is automatically removed from the other lists. Similar to the Test Date and Engine S/N fields of the Standard Test Criteria, a <strong>BETWEEN</strong> operator may be selected by clicking on the operator buttons for a range of data. Buttons beside each field [<img src="images/StandardTestCriteriaButton.png" alt="Standard Test Criteria Button" width="22" height="22" >] activate windows which list criteria that is unique to the item. Highlight    the rows of desired data from the <strong>Master List</strong> (to highlight multiple  items, hold the <strong>Ctrl</strong> key and click with the mouse) and select <img src="images/ForwardArrowButton.png" alt="Forward Arrow Button" width="42" height="27" > to move the data to the <strong>Selected List</strong>. To return undesired data to the Master List, highlight the data (to highlight multiple items, hold the <strong>Ctrl</strong> key and click with the mouse) and select <img src="images/BackArrowButton.png" alt="Back Arrow Button" width="42" height="27" >.
+    <div class="Container"><img src="images/CustomTestCriteriaFieldList.png" alt="Custom Test Criteria Field List" width="496" height="431"></div>
+  </li>
+  <br>
+  <li>Select <strong>OK</strong> to accept the changes or <strong>Cancel</strong> to return to the QUERY BUILDER panel
+    <p class="Note">Similar to the Standard Test Criteria buttons, manually entering data into any of the Custom Test Criteria fields changes the description of the operator button to CONTAINS.</p>
+    <div class="Container"><img src="images/CustomTestCriteriaField.png" alt="Custom Test Criteria Field" width="703" height="303"></div>
+  </li>
+</ol>
+<h3 id="ExecuteQueries">Executing Queries with the Query Controls Panel</h3>
+<p class="Note">The CLEAR ALL button in the QUERY CONTROLS panel deletes both unsaved queries and query results.<br>
+  <br>
+  The REMOVE PRESENT QUERY button in the QUERY BUILDER panel deletes the displayed query.</p>
+<p>To execute queries with the Query Controls panel:</p>
+<ol>
+  <li>Select <strong>EXECUTE</strong> from the QUERY CONTROLS panel to retrieve data:
+    <div class="Container"><img src="images/RaveLiteQueryControls.png" alt="Rave Lite Query Controls" width="634" height="123"></div>
+    <br>
+    The QUERY RESULTS panel displays the applicable tests:
+    <div class="Container"><img src="images/RaveLiteQueryResultsPopulated.png" alt="Rave Lite Query Results Populated" width="699" height="299"></div>
+  </li>
+  <br>
+  <li>To add data from another query or replace with data from another query:
+    <ul>
+      <li>From the QUERY BUILDER panel, select <strong>Reset</strong> to clear the QUERY BUILDER fields. The present query is then stored in local memory.</li>
+      <li>Enter new query parameters in the QUERY BUILDER fields, either the Standard Test Criteria or the Custom Tests Criteria sections.</li>
+      <li>From the QUERY CONTROLS panel, select <strong>Replace</strong> to overwrite the present data within the QUERY RESULTS panel. Select <strong>Add</strong> to retain the present data.</li>
+      <li>Select <strong>EXECUTE</strong>.</li>
+    </ul>
+    <p>The selection buttons <img src="images/QueryControlsSelectButtons.png" alt="Query Controls Select Buttons" width="240" height="24" /> are used to display queries temporarily stored in local memory, not yet saved to disk (i.e. a query series).</p>
+  </li>
+</ol>
+<h3 id="SaveQueries">Saving Queries with the Query Controls Panel</h3>
+<p>To save queries with the Query Controls panel:</p>
+<ol>
+  <li>Select <strong>SAVE SERIES</strong> for the present query.
+    <div class="Container"><img src="images/RaveLiteQueryControls.png" alt="Rave Lite Query Controls" width="634" height="123"></div>
+    <br>
+    A <strong>Saving the query...</strong> prompt window is displayed.
+    <div class="Container"><img src="images/SaveQueryPrompt.png" alt="Save Query Prompt" width="281" height="107"></div>
+    <br>
+  </li>
+  <li>If No is selected, enter a category name for the query and select <strong>OK</strong>.
+    <div class="Container"><img src="images/SelectQueryCategory.png" alt="Select Query Category" width="363" height="152"></div>
+  </li>
+  <br>
+  <li>If Yes is selected, enter a query name and select <strong>OK</strong>.
+    <div class="Container"><img src="images/SelectQueryName.png" alt="Select Query Name" width="363" height="152"></div>
+  </li>
+  <br>
+  <li>The query names are listed within the PREDEFINED QUERIES field.
+    <div class="Container"><img src="images/RaveLitePredefinedQueriesSaved.png" alt="Rave Lite Predefined Queries Saved" width="635" height="178"></div>
+  </li>
+</ol>
+<h3 id="ViewDatawithQueryResults">Viewing Data with the Query Results Field</h3>
+<p>Engine test data from executed queries is displayed in the QUERY RESULTS panel.</p>
+<div class="Container"><img src="images/RaveLiteQueryResultsPopulated.png" alt="Rave Lite Query Results Populated" width="699" height="299"></div>
+<br>
+<p>Columns in the QUERY RESULTS are:</p>
+<ul>
+  <li>Test Cell</li>
+  <li>Test Date</li>
+  <li>Test Name</li>
+  <li>Test Description</li>
+  <li>Engine</li>
+  <li>S/N (Serial Number)</li>
+  <li>Engine Standard</li>
+  <li>Customer</li>
+</ul>
+<p>The header bars in the QUERY RESULTS panel have functions similar to standard spreadsheet headers (i.e.: columns may be dragged laterally and placed in any order from left to right and clicking on a header bar will sort the corresponding data in ascending or descending order). Shift and Ctrl keys are used to select rows.</p>
+<h3 id="ViewQuerieswithSQL">Viewing Queries with the Generated SQL Field</h3>
+<p>To view queries with the Generated SQL panel:</p>
+<ol>
+  <li>The Generated SQL panel displays the Structured Query Language (SQL) code of the present query. To open the Generated SQL panel, select <strong>Admin/Show/Hide SQL</strong> from the drop-down list in the RAVE menu. The Generated SQL panel is displayed.
+    <div class="Container"><img src="images/RaveLiteTestSelectionGeneratedSQL.png" alt="Rave Lite Test Selectio Generated SQL" width="700" height="560"></div>
+  </li>
+  <br>
+  <li>The displayed code is assigned a Sub Query ID number (&quot;1&quot; in the example). Code sequences for other queries may be viewed with the query selection buttons <img src="images/QueryControlsSelectButtons.png" alt="Query Controls Select Buttons" width="240" height="24" >. The code in the field may be edited in the Unlocked mode by toggling <strong>Lock SQL/Unlock SQL</strong>.
+    <div class="Container"><img src="images/SQLUnlocked.png" alt="SQL Unlocked" width="700" height="74"></div>
+    <div class="Container"><img src="images/SQLLocked.png" alt="SQL Locked" width="700" height="74"></div>
+  </li>
+  <br>
+  <li>While editing, the original code structure may be retrieved by selecting <strong>Restore SQL</strong>. After editing is completed, the new code is written to disk when <strong>Lock SQL/Unlock SQL</strong> is toggled to <strong>Lock SQL</strong>. If the updated code is incompatible with the QUERY BUILDER, a warning is displayed when <strong>Execute</strong> is selected.
+    <div class="Container"><img src="images/RaveLiteTestSelectionGeneratedSQL2.png" alt="Rave Lite Test Selection Generated SQL 2" width="700" height="560"></div>
+  </li>
+</ol>
+<h3 id="RetrieveExistingReport">Retrieving Existing Reports</h3>
+<p>To retrieve an existing report:</p>
+<ol>
+  <li>Select a previously saved query from the Query &amp; Report Categories drop-down list in the PREDEFINED QUERIES panel.</li>
+  <li>Select the desired query from the Current Queries drop-down list in the PREDEFINED QUERIES panel.</li>
+  <li>Select <strong>EXECUTE</strong> in the QUERY CONTROLS panel to retrieve data.</li>
+  <li>Select the desired engine test from the QUERY RESULTS panel.</li>
+  <li>Select <strong>REPORTS</strong> in the QUERY CONTROLS panel.<br>
+    The Reports screen is displayed.
+    <div class="Container"><img src="images/ReportsScreenFull.png" alt="Reports Screen Full" width="700" height="538"></div>
+  </li>
+  <br>
+  <li>Highlight the desired template from the Single Engine Report Templates panel.</li>
+  <li>Select <strong>VIEW</strong> to generate and display the <strong>.xls</strong> (Excel workbook) file.<br>
+    The .xls (Excel workbook) file is based on the Report Template and is populated with engine test data that has been extracted from the proDAS database.</li>
+  <li>When <strong>VIEW</strong> is selected, the Duplicate Comments window is displayed, if the engine test data contains more than one comment with the same test step name.
+    <div class="Container"><img src="images/DuplicateComments.png" alt="Duplicate Comments" width="635" height="391"></div>
+  </li>
+  <br>
+  <li>Highlight (select) the comments to be included in the report.</li>
+  <li>When all the applicable comments have been highlighted, select <strong>Continue</strong>.<br>
+    The Single Engine Report - Duplicate Test Steps Found! window is displayed, if the engine test data contains more than one fullset with the same test step name.
+    <div class="Container"><img src="images/SingleEngineDuplicateTestSteps.png" alt="Single Engine Duplicate Test Steps" width="636" height="388"></div>
+  </li>
+  <br>
+  <li>If duplicate test steps are found, select the test step that is to be included for the currently selected report to be generated.</li>
+  <li>When the test step has been selected, select <strong>Continue</strong>.<br>
+    The Single Engine Report - Duplicate Test Steps Found! window is closed and the Report is generated in Excel.</li>
+  <li>To print the generated report in Excel, select <strong>File&gt;Print</strong> from the Excel toolbar.</li>
+  <li>To close the report, select <strong>File&gt;Exit</strong> form the Excel toolbar. The Reports screen in RAVE is visible.</li>
+  <li>Select <strong>BACK</strong> on the Reports screen to return to the Test Selection screen.</li>
+  <li>Select <strong>EXIT</strong> on the Test Selection screen to close the RAVE application and return to the User Interface Home screen.<br>
+    <br>
+    <p class="Note">Select the PEEK button to display the last .xls (Excel workbook) file previously generated with the Report Template Contents configuration.</p>
+  </li>
+</ol>
+<h3 id="CreateNewReport">Creating a New Report</h3>
+<p>To create a new report (all four types of reports):</p>
+<ol>
+  <li>From the Report screen, select <strong>REPORT BUILDER</strong>.<br>
+    The Report Builder Wizard - Start window is displayed.
+    <div class="Container"><img src="images/WizardStart.png" alt="Wizard Start" width="493" height="375"></div>
+  </li>
+  <br>
+  <li>Select <strong>Next&gt;</strong> to proceed to the Report Type window.<br>
+    The Report Type window is displayed.
+    <div class="Container"><img src="images/WizardReportType.PNG" alt="Wizard Report Type" width="493" height="375"></div>
+  </li>
+  <br>
+  <li>Select the <strong>Report</strong> or <strong>Logsheet</strong> radio button in the Report Type window.<br>
+    Four types of reports may be generated, depending upon selections in the Report Type and Data Source windows:
+    <ul>
+      <li>Steady-State (fullset)</li>
+      <li>Transient (Log)</li>
+      <li>Steady-State / Transient (Log) Combination</li>
+      <li>Logsheet</li>
+    </ul>
+  </li>
+  <li>Select <strong>Next&gt;</strong> to proceed to the Data Source window for Steady-state or Transient reports.
+    <div class="Container"><img src="images/WizardDataSource.PNG" alt="Wizard Data Source" width="483" height="365"></div>
+    <p class="Note">If Logsheet is selected, the Select Channels window is displayed.</p>
+  </li>
+  <li>Select<strong> &lt;Back</strong> to return to the Reports screen. </li>
+</ol>
+<h4 id="CreateSStransReport">Creating a Steady-State / Transient Combination Report</h4>
+<p>To create a Steady-State / Transient Combination Report:</p>
+<ol>
+  <li><a href="?3#CreateNewReport">Repeat steps 1 through 4 of Creating a New Report</a>.</li>
+  <li>From the Data Source window, select the <strong>Both</strong> radio button.
+    <div class="Container"><img src="images/WizardDataSource.PNG" alt="WizardDataSource" width="483" height="365"></div>
+  </li>
+  <br>
+  <li>Select <strong>Next&gt;</strong> to proceed to the Steady State Test Steps window or <strong>&lt;Back</strong> to return to the Report Type window.</li>
+  <li>From the Steady State Test Steps window, highlight the desired test steps (i.e: Dry Crank) from the left side field and select <img src="images/ForwardArrowButton.png" alt="Forward Arrow Button" width="42" height="27" > to move the highlighted data to the right side field. To return undesired data back to the left side field (using the <strong>Ctrl</strong> key and mouse click), highlight multiple data and select <img src="images/BackArrowButton.png" alt="Back ArrowB utton" width="42" height="27" >.
+    <div class="Container"><img src="images/WizardSteadyStateTestSteps.png" alt="Wizard Steady State Test Steps" width="593" height="365"></div>
+  </li>
+  <br>
+  <li>Select <strong>Next</strong> to proceed to the Steady State Channels (if test steps have been selected) or, if no test steps have been selected, the Transient Logs window (see <a href="#Step10TransLogs">Step 10</a>). Select <strong>&lt;Back</strong> to return to the Data Source window.</li>
+  <li>From the Steady State Channels window, highlight desired channels (using the <strong>Ctrl</strong> key and mouse click) on the left side field and select <img src="images/ForwardArrowButton.png" alt="Forward Arrow Button" width="42" height="27" > to move the highlighted data to the right side field. To return undesired data back to the left side field (using the <strong>Ctrl</strong> key and mouse click), highlight  multiple channels and select <img src="images/BackArrowButton.png" alt="Back Arrow Button" width="42" height="27" >.
+    <div class="Container"><img src="images/WizardSteadyStateChannels.png" alt="Wizard Steady State Channels" width="593" height="365"></div>
+  </li>
+  <br>
+  <li>Select <strong>Next&gt;</strong> to proceed to the Steady State Limit Lines window or <strong>&lt;Back</strong> to return to the previous window.</li>
+  <li>From the Steady State Limit Lines window, highlight desired limit lines (using the <strong>Ctrl</strong> key and mouse click) from the left side field and select <img src="images/ForwardArrowButton.png" alt="Forward Arrow Button" width="42" height="27" > to move the highlighted data to the right side field. To return undesired 
+    data back to the left side field (using the <strong>Ctrl</strong> key and mouse click), highlight 
+    multiple items of data and select <img src="images/BackArrowButton.png" alt="Back Arrow Button" width="42" height="27" >.
+    <p class="Note">Limit lines are any two dimensional break point tables defined in the configuration.</p>
+    <p class="Note">RAVE returns all available curves for the associated test cell, engine, engine standard and customer for the selected test name.</p>
+    <div class="Container"><img src="images/WizardSteadyStateLimitLines.png" alt="Wizard Steady State LimitLines" width="706" height="365"></div>
+  </li>
+  <br>
+  <li>Select <strong>Next&gt;</strong> to proceed to the Transient Logs window or <strong>&lt;Back</strong> to return to the previous window.</li>
+  <li id="Step10TransLogs">From the Transient Logs window, highlight desired log definitions (using the <strong>Ctrl</strong> key and mouse click) from the left side field and select <img src="images/ForwardArrowButton.png" alt="Forward Arrow Button" width="42" height="27" > to move the highlighted data to the right side field. To return undesired data back to the left side field (using the <strong>Ctrl</strong> key and mouse click), highlight multiple items of data and select <img src="images/BackArrowButton.png" alt="Back Arrow Button" width="42" height="27" >.
+    <p class="Note">RAVE returns all available log definitions for the associated test cell, engine, engine standard and customer for the selected test name.</p>
+    <div class="Container"><img src="images/WizardTransientLogs.png" alt="Wizard Transient Logs" width="483" height="365"></div>
+  </li>
+  <br>
+  <li>Select <strong>Next&gt;</strong> to proceed to the Transient Log Channels window (if log definitions have been chosen).<br>
+    Select <strong>&lt;Back</strong> to return to the previous window.</li>
+  <li>From the Transient Log Channels window, highlight desired log channels (using the <strong>Ctrl</strong> key and mouse click) from the left side field and select <img src="images/ForwardArrowButton.png" alt="Forward Arrow Button" width="42" height="27" > to move the highlighted data to the right side field. To return undesired data back to the left side field (using the <strong>Ctrl</strong> key and mouse click), highlight multiple items of data and select <img src="images/BackArrowButton.png" alt="Back Arrow Button" width="42" height="27" >.
+    <div class="Container"><img src="images/WizardTransientLogChannels.png" alt="Wizard Transient Log Channels" width="483" height="372"></div>
+  </li>
+  <br>
+  <li>Select <strong>Next&gt;</strong> to proceed to the Transient Log Limit Lines window or <strong>&lt;Back</strong> to return to the previous window.</li>
+  <li>From the Transient Log Limit Lines window, highlight desired limit lines (using the <strong>Ctrl</strong> key and mouse click) from the left side field and select <img src="images/ForwardArrowButton.png" alt="Forward Arrow Button" width="42" height="27" > to move the highlighted data to the right side field. To return undesired data back to the left side field (using the <strong>Ctrl</strong> key and mouse click), highlight the data and select <img src="images/BackArrowButton.png" alt="Back Arrow Button" width="42" height="27" >.
+    <p class="Note">RAVE returns all available limit lines for the associated test cell, engine, engine standard and customer for the selected test name.</p>
+    <div class="Container"><img src="images/WizardTransientLogLimitLines.png" alt="Wizard Transient Log LimitLines" width="706" height="365"></div>
+  </li>
+  <br>
+  <li>Select <strong>Next&gt;</strong> to proceed to the Event Comments window or <strong>&lt;Back</strong> to return to the previous window.</li>
+  <li>From the Event Comments window, highlight desired test steps to include their associated comments (using the <strong>Ctrl</strong> key and mouse click) from the left side field and select <img src="images/ForwardArrowButton.png" alt="Forward Arrow Button" width="42" height="27" > to move the highlighted data to the right side field. To return undesired data back to the left side field (using the <strong>Ctrl</strong> key and mouse click), highlight the data and select <img src="images/BackArrowButton.png" alt="Back Arrow Button" width="42" height="27" >.
+    <div class="Container"><img src="images/WizardEventComments.png" alt="Wizard Event Comments" width="593" height="365"></div>
+  </li>
+  <br>
+  <li>Select <strong>Next&gt;</strong> to proceed to the Description window or <strong>&lt;Back</strong> to return to the previous window.</li>
+  <li>From the Description window, enter any additional comments for the report.
+    <p class="Note">The comments appear in the template [INFO] section displayed in the report template contents window.</p>
+    <div class="Container"><img src="images/WizardDescription.png" alt="Wizard Description" width="493" height="375"></div>
+  </li>
+  <br>
+  <li>Select <strong>Next&gt;</strong> to proceed to the Save window or <strong>&lt;Back</strong> to return to the previous window.</li>
+  <li>From the Save window, enter a name for the report (i.e: ENGINE1 Ignition Log).
+    <div class="Container"><img src="images/WizardSave.png" alt="Wizard Save" width="493" height="375"></div>
+  </li>
+  <p class="Note">The user will be prompted for an action (the Save As window will appear)in case the report already exists.</p>
+  <li>Select <strong>Finish</strong> to generate and save the report configuration <strong>.ini</strong> file within the associated category folder and proceed to the Generate Worksheet window or <strong>&lt;Back</strong> to return to the previous window.</li>
+  <li>From the Generate Worksheet window, select <strong>Generate Worksheet</strong> to create the report.
+    <div class="Container"><img src="images/WizardFinish.png" alt="Wizard Finish" width="491" height="373"></div>
+  </li>
+  <br>
+  <li>Select <strong>View</strong> to view the report as an Excel spreadsheet. Select any duplicated comments and steady-state test steps to be included in the report from the Duplicate Comments and Duplicate Test Steps windows.
+    <div class="Container"><img src="images/WizardWorksheetGenerated.png" alt="Wizard Worksheet Generated" width="491" height="373"></div>
+    <br>
+    Duplicated Comments window:
+    <div class="Container"><img src="images/DuplicateComments.png" alt="Duplicate Comments" width="635" height="391"></div>
+    <br>
+    Duplicated Steady-State Test Steps in single-engine test reports:
+    <div class="Container"><img src="images/SingleEngineDuplicateTestSteps.png" alt="Single Engine Duplicate Test Steps" width="636" height="388"></div>
+    <p class="Note">Only one fullset per test step can be included per report.</p>
+  </li>
+  <li>Select <strong>Restart Wizard</strong> to create a new report.</li>
+</ol>
+<h4 id="CreateTransLogReport">Creating a Transient (Log) Report</h4>
+<p>To create a Transient (Log) Report:</p>
+<ol>
+  <li><a href="?6#CreateNewReport">Repeat steps 1 through 4 of Creating a New Report</a>.</li>
+  <li>From the Data Source window, select the <strong>Transient (log)</strong> radio button.
+    <div class="Container"><img src="images/WizardDataSource2.png" alt="Wizard Data Source 2" width="483" height="365"></div>
+  </li>
+  <br>
+  <li>Select <strong>Next&gt;</strong> to proceed to the Transient Logs window or <strong>&lt;Back</strong> to return to the Report Type window.</li>
+  <li>From the Transient Logs window, highlight desired log definitions (using the <strong>Ctrl</strong> key and mouse) from the left side field and select <img src="images/ForwardArrowButton.png" alt="Forward Arrow Button" width="42" height="27" > to move the highlighted data to the right side field. To return undesired data back to the left side field (using the <strong>Ctrl</strong> key and mouse), highlight the data and select <img src="images/BackArrowButton.png" alt="Back Arrow Button" width="42" height="27" >.
+    <p class="Note">RAVE returns all available log definitions for the associated test cell, engine, engine standard and customer for the selected test name.</p>
+    <div class="Container"><img src="images/WizardTransientLogs.png" alt="Wizard Transient Logs" width="483" height="365"></div>
+  </li>
+  <br>
+  <li>Select <strong>Next&gt;</strong>to proceed to the Transient Log Channels window (if log definitions have been chosen).<br>
+    Select <strong>&lt;Back</strong> to return to the previous window.</li>
+  <li>From the Transient Log Channels window, highlight desired log channels (using the <strong>Ctrl</strong> key and mouse) from the left side field and select <img src="images/ForwardArrowButton.png" alt="Forward Arrow Button" width="42" height="27" > to move the highlighted data to the right side field. To return undesired data back to the left side field (using the <strong>Ctrl</strong> key and mouse), highlight the data and select <img src="images/BackArrowButton.png" alt="Back Arrow Button" width="42" height="27" >.
+    <div class="Container"><img src="images/WizardTransientLogChannels.png" alt="Wizard Transient Log Channels" width="483" height="372"></div>
+  </li>
+  <br>
+  <li>Select <strong>Next&gt;</strong>to proceed to the Transient Log Limit Lines window 
+    or <strong>&lt;Back</strong> to return to the previous window.<br>
+  </li>
+  <li>From the Transient Log Limit Lines window, highlight desired limit lines (using the <strong>Ctrl</strong> key and mouse) from the left side field and select <img src="images/ForwardArrowButton.png" alt="Forward Arrow Button" width="42" height="27" > to move the highlighted data to the right side field. To return undesired 
+    data back to the left side field (using the <strong>Ctrl</strong> key and mouse), highlight 
+    the data and select <img src="images/BackArrowButton.png" alt="Back Arrow Button" width="42" height="27" >.
+    <p class="Note">Limit lines are any two dimensional break point tables defined in the configuration.</p>
+    <p class="Note">RAVE returns all available curves for the associated test cell, engine, engine standard and customer for the selected test name.</p>
+    <div class="Container"><img src="images/WizardTransientLogLimitLines.png" alt="Wizard Transient Log LimitLines" width="706" height="365"></div>
+  </li>
+  <br>
+  <li>Select <strong>Next&gt;</strong>to proceed to the Event Comments window or <strong>&lt;Back</strong> to return to the previous window.</li>
+  <li>From the Event Comments window, highlight desired test steps to include their associated comments (using the <strong>Ctrl</strong> key and mouse click) from the left side field and select <img src="images/ForwardArrowButton.png" alt="Forward Arrow Button" width="42" height="27" > to move the highlighted data to the right side field. To return undesired data back to the left side field (using the <strong>Ctrl</strong> key and mouse click), highlight the data and select <img src="images/BackArrowButton.png" alt="Back Arrow Button" width="42" height="27" >.
+    <div class="Container"><img src="images/WizardEventComments.png" alt="Wizard Event Comments" width="593" height="365"></div>
+  </li>
+  <br>
+  <li>Select <strong>Next&gt;</strong> to proceed to the Description window or <strong>&lt;Back</strong> to return to the previous window.</li>
+  <li>From the Description window, enter any additional comments for the report.
+    <p class="Note">The comments appear in the template [INFO] section displayed in the report template contents window.</p>
+    <div class="Container"><img src="images/WizardDescription.png" alt="Wizard Description" width="493" height="375"></div>
+  </li>
+  <br>
+  <li>Select <strong>Next&gt;</strong>to proceed to the Save window or <strong>&lt;Back</strong> to return to the previous window.</li>
+  <li>From the Save window, enter a name for the report (i.e: ENGINE1 Ignition Log).
+    <div class="Container"><img src="images/WizardSave.png" alt="Wizard Save" width="493" height="375"></div>
+  </li>
+</ol>
+<p class="Note">The user will be prompted for an action (the Save As window will appear) in case the report already exists.</p>
+<ol>
+  <li value="15"> Select <strong>Finish</strong> to generate and save the report configuration <strong>.ini</strong> file within the associated category folder and proceed to the Generate Worksheet window or <strong>&lt;Back</strong> to return to the previous window.</li>
+  <li>From the Generate Worksheet window, select <strong>Generate Worksheet</strong> to create the report.
+    <div class="Container"><img src="images/WizardFinish.png" alt="Wizard Finish" width="491" height="373"></div>
+  </li>
+  <br>
+  <li>Select <strong>View</strong> to view the report as an Excel spreadsheet. Select any duplicated comments and steady-state test steps to be included in the report from the Duplicate Comments and Duplicate Test Steps windows.
+    <div class="Container"><img src="images/WizardWorksheetGenerated.png" alt="Wizard Worksheet Generated" width="491" height="373"></div>
+    Duplicated Comments window:
+    <div class="Container"><img src="images/DuplicateComments.png" alt="Duplicate Comments" width="635" height="391"></div>
+  </li>
+  <br>
+  <li>Select <strong>Restart Wizard</strong> to create a new report.</li>
+</ol>
+<h4 id="CreateSSReport">Creating a Steady State (Fullset) Report</h4>
+<ol>
+  <li><a href="?7#CreateNewReport">Repeat steps 1 through 4 of Creating a New Report</a>.</li>
+  <li>From the Data Source window, select the <strong>Steady-state (Fullset)</strong> radio button.
+    <div class="Container"><img src="images/WizardDataSource3.png" alt="Wizard Data Source 3" width="493" height="375"></div>
+  </li>
+  <br>
+  <li>Click <strong>Next&gt;</strong> to proceed to the Steady State Test Steps or <strong>&lt;Back</strong> to return to the Report Type window. </li>
+  <li>From the Steady State Test Steps window, highlight desired test steps (using the <strong>Ctrl</strong> key and mouse) from the left side field and select <img src="images/ForwardArrowButton.png" alt="Forward Arrow Button" width="42" height="27" > to move the highlighted data to the right side field. To return undesired data back to the left side field (using the <strong>Ctrl</strong> key and mouse), highlight the data and select <img src="images/BackArrowButton.png" alt="Back Arrow Button" width="42" height="27" >.
+    <div class="Container"><img src="images/WizardSteadyStateTestSteps.png" alt="Wizard Steady State Test Steps" width="593" height="365"></div>
+  </li>
+  <br>
+  <li>Select <strong>Next&gt;</strong>to proceed to the Steady State Channels window (if test steps have been selected).<br>
+    Select <strong>&lt;Back</strong> to return to the Data Source window.</li>
+  <li>From the Steady State Channels window, highlight desired channels (using the <strong>Ctrl</strong> key and mouse) from the left side field and select <img src="images/ForwardArrowButton.png" alt="Forward Arrow Button" width="42" height="27" > to move the highlighted data to the right side field. To return undesired data back to the left side field (using the <strong>Ctrl</strong> key and mouse), highlight the data and select <img src="images/BackArrowButton.png" alt="Back Arrow Button" width="42" height="27" >.
+    <div class="Container"><img src="images/WizardSteadyStateChannels.png" alt="Wizard Steady State Channels" width="593" height="365"></div>
+  </li>
+  <br>
+  <li>Select <strong>Next&gt;</strong>to proceed to the Steady State Limit Lines window or <strong>&lt;Back</strong> to return to the previous window.</li>
+  <li>From the Steady State Limit Lines window, highlight desired limit lines (using the <strong>Ctrl</strong> key and mouse) from the left side field and select <img src="images/ForwardArrowButton.png" alt="Forward Arrow Button" width="42" height="27" > to move the highlighted data to the right side field. To return undesired data back to the left side field (using the <strong>Ctrl</strong> key and mouse), highlight the data and select <img src="images/BackArrowButton.png" alt="Back Arrow Button" width="42" height="27" >.
+    <p class="Note">Limit lines are any two dimensional break point tables defined in the configuration.</p>
+    <p class="Note">RAVE returns all available curves for the associated test cell, engine, engine standard and customer for the selected test name.</p>
+    <div class="Container"><img src="images/WizardSteadyStateLimitLines.png" alt="Wizard Steady State Limit Lines" width="706" height="365"></div>
+  </li>
+  <br>
+  <li>Select <strong>Next&gt;</strong>to proceed to the Event Comments window or <strong>&lt;Back</strong> to return to the previous window.</li>
+  <li>From the Event Comments window, highlight the desired test steps to include their associated comments (using the <strong>Ctrl</strong> key and mouse click) from the left side field and select <img src="images/ForwardArrowButton.png" alt="Forward Arrow Button" width="42" height="27" > to move the highlighted data to the right side field. To return undesired data back to the left side field (using the <strong>Ctrl</strong> key and mouse click), highlight the data and select <img src="images/BackArrowButton.png" alt="Back Arrow Button" width="42" height="27" >.
+    <div class="Container"><img src="images/WizardEventComments.png" alt="Wizard Event Comments" width="593" height="365"></div>
+  </li>
+  <br>
+  <li>Select <strong>Next&gt;</strong>to proceed to the Description window or <strong>&lt;Back</strong> to return to the previous window.</li>
+  <li>From the Description window, enter any additional comments for the report.
+    <p class="Note">The comments appear in the template [INFO] section displayed in the report template contents window.</p>
+    <div class="Container"><img src="images/WizardDescription.png" alt="Wizard Description" width="493" height="375"></div>
+  </li>
+  <br>
+  <li>Select <strong>Next&gt;</strong>to proceed to the Save window or <strong>&lt;Back</strong> to return to the previous window.</li>
+  <li>From the Save window, enter a name for the report (i.e: ENGINE1 Ignition Log).
+    <div class="Container"><img src="images/WizardSave.png" alt="Wizard Save" width="493" height="375"></div>
+  </li>
+  <p class="Note">The user will be prompted for an action (the Save As window will appear) in case the report already exists.</p>
+  <li>Select <strong>Finish</strong> to generate and save the report configuration <strong>.ini</strong> file within the associated category folder and proceed to the Generate Worksheet window or <strong>&lt;Back</strong> to return to the previous window.</li>
+  <li>From the Generate Worksheet window, select <strong>Generate Worksheet</strong> to create the report.
+    <div class="Container"><img src="images/WizardFinish.png" alt="Wizard Finish" width="491" height="373"></div>
+  </li>
+  <br>
+  <li>Select <strong>View</strong> to view the report as an Excel spreadsheet. Select any duplicated comments and steady-state test steps to be included in the report from the Duplicate Comments and Duplicate Test Steps windows.
+    <div class="Container"><img src="images/WizardWorksheetGenerated.png" alt="Wizard Worksheet Generated" width="491" height="373"></div>
+  </li>
+</ol>
+<h3 id="CreateLogsheet">Creating a Logsheet</h3>
+<p>To create a Logsheet:</p>
+<ol>
+  <li>From the Reports screen, select <strong>Report Builder</strong>. The Report Builder Wizard window is displayed.
+    <div class="Container"><img src="images/WizardStart.png" alt="Wizard Start" width="493" height="375"></div>
+  </li>
+  <br>
+  <li>Select <strong>NEXT</strong> to proceed to the Report Type window.</li>
+  <li>From the Report Type window select the <strong>Logsheet</strong> radio button to create a logsheet.
+    <div class="Container"><img src="images/WizardReportType2.png" alt="Wizard Report Type2" width="483" height="365"></div>
+  </li>
+  <br>
+  <li>Select <strong>NEXT</strong> to proceed to the Logsheet channels window.</li>
+  <li>From the Logsheet channels window, highlight desired channels (using the <strong>Ctrl</strong> key and mouse) from the left side field and select <img src="images/ForwardArrowButton.png" alt="Forward Arrow Button" width="42" height="27" > to move the highlighted data to the right side field. To return undesired data back to the left side field (using the <strong>Ctrl</strong> key and mouse), highlight the data and select <img src="images/BackArrowButton.png" alt="Back Arrow Button" width="42" height="27" >.
+    <div class="Container"><img src="images/WizardLogsheet.png" alt="Wizard Logsheet" width="593" height="365"></div>
+  </li>
+  <br>
+  <li>Select <strong>Next&gt;</strong>to proceed to the Save window or <strong>&lt;Back</strong> to return to the Report Type window.</li>
+  <li>From the Save window, enter a name for the report.
+    <div class="Container"><img src="images/WizardSave.png" alt="Wizard Save" width="493" height="375"></div>
+  </li>
+  <p class="Note">The user will be prompted for an action (the Save As window will appear) in case the report already exists.</p>
+  <li> Select <strong>Finish</strong> to generate and save the report configuration <strong>.ini</strong> file within the associated category folder and proceed to the Generate Worksheet window or <strong>&lt;Back</strong> to return to the previous window.</li>
+  <li>From the Generate Worksheet window, select <strong>Generate Worksheet</strong> to create the report.
+    <div class="Container"><img src="images/WizardFinish.png" alt="Wizard Finish" width="491" height="373"></div>
+  </li>
+  <br>
+  <li>Select <strong>View</strong> to view the report as an Excel spreadsheet.
+    <div class="Container"><img src="images/Logsheet.gif" alt="Logsheet" width="700" height="560"></div>
+  </li>
+  <br>
+  <li>Select <strong>Restart Wizard</strong> to create a new report.
+    <div class="Container"><img src="images/WizardWorksheetGenerated.png" alt="Wizard Worksheet Generated" width="491" height="373"></div>
+  </li>
+</ol>
+<h2 id="ReportConfig">Report Configuration</h2>
+<p>The number and range of the worksheets in the report .xls file are dependent upon the selections that are made in the Report Builder Wizard. The contents of the report appear in the Report Template Contents field of the Reports screen. The sections in that file also correspond to selections that are made in the windows of the Wizard.</p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>Calibration Data Sync (CDS) Utility (Option*)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="CDS">Calibration Data Sync (CDS) Utility (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" >
+</a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The Calibration Data Sync (CDS) Utility synchronizes calibration data tables in the local proDAS Test Results and Sensor Calibration Database (TRSCDB) with tables in a remote calibration database. The CDS Utility:</p>
+<ul>
+  <li> creates a list of sensors to update</li>
+  <li> updates the sensors in the local database by copying data from the remote calibration database</li>
+  <li>cleans up any expired sensors</li>
+</ul>
+<p class="Note">It is imperative that no other processes update the relevant proDAS tables during CDS processing. To prevent this, share mode locks are placed on all proDAS tables used which are not released until processing is completed.</p>
+<p>The CDS Utility configuration file contains: </p>
+
+<ul>
+  <li> the remote database name</li>
+  <li>the remote login name and password</li>
+  <li>the local database name</li>
+  <li>the local login  name &amp; password</li>
+  <li> the grace period for expired sensors</li>
+  <li> the amount of coverage time for normal updates (referred to as <em>nhours</em> in)</li>
+  <li>the name of the log file</li>
+  <li>the maximum number of lines allowed in the log file</li>
+  <li>number  of days for revised sensors</li>
+  <li>home directory path name</li>
+</ul>
+<p>The CDS start script is used to execute the CDS Utility. This script is available at /user/RTE/bin/exe directory. All sensors which fail the update process are  written to an Oracle table. This table includes the sensor_name, auxiliary_address, sensor_id and the date and time stamp from the remote system indicating when the CDS failure occurred.</p>
+<p>A signal can be sent to the CDS Utility, at any time, to indicate that the process must be immediately stopped.</p>
+<p>A log file is written  so the User can view the module&rsquo;s progress. It is moved to a log file name with date and time stamp with each run of the CDS Utility. The log file is available at /users/RTE/bin/temp directory on the Linux RTE machine.</p>
+<div class="Container"><img src="images/BDCDS.gif" alt="BDCDS" width="453" height="213"></div>
+<h2 id="Updates">Updates Created for List of Sensors</h2>
+<p>The CDS Utility updates the list of sensors. By default, the criteria used is:</p>
+<ul>
+  <li>all sensors with a calibration due date greater than the current system date minus grace days. The number of grace days for expired sensors are specified in the configuration file</li>
+  <li>all sensors with a revision date between the current system date and the current system date minus the number of days. The number of days are specified in the command line or in the configuration file, and is used to identify recently modified sensors as requiring transfer</li>
+</ul>
+<h2 id="Processing">Processing</h2>
+<p>For each of the sensors in the update list, records in all sensor data tables are updated. Each time a sensor has been processed (success or failure), an indicator line is written to the log file. This line includes the sensor name, sensor address, sensor ID, and a failure message in case of failure.</p>
+<p>If the list is empty, the processing is skipped.</p>
+<p>A validation check is done on the key fields used to identify a sensor. Sensor_name, auxiliary_address and sensor_id must all match in both databases. If there is no match, an error is written to the log file for that sensor and processing continues.</p>
+<h2 id="CleanUp">Clean Up of Expired Sensors</h2>
+<p>The local sensor_calibration table also contains an expiration date (due_date field). When a sensor has expired (system date is greater than due_date in proDAS tables) it is deleted. The CDS Utility reads a grace period value from the configuration file. This grace period is the number of days past the due_date which the CDS will wait before deleting the sensor from the proDAS Test Results and Sensor Calibration Database (TRSCDB). If the tolerance period is not past, the CDS will not delete the sensor.</p>
+<br>
+<br>
+
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

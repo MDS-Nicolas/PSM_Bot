@@ -1,0 +1,35 @@
+<table class="Table-Grey">
+  <tr> 
+    <th class="row-VDocManufacturer">Manufacturer</th>
+    <th class="row-VDocTitle">Manual Title</th>
+    <th class="row-VDocType">Manual Type</th>
+    <th class="row-VDocPartNumber">Part Number</th>
+  </tr>
+  <tr valign="top">
+    <td>Measurement Specialties<br></td>
+    <td><a href="../References/VendorDocs/MeasurementSpecialties/CAT9116.pdf">9216 Ethernet Intelligent Pressure Scanner</a></td>
+    <td>Product Information</td>
+    <td>No. 0812</td>
+  </tr>
+  <tr valign="top">
+    <td>Measurement Specialties<br></td>
+    <td><a href="../References/VendorDocs/MeasurementSpecialties/UM9116.pdf">Model 9216 Intelligent Pressure Scanner User&rsquo;s Manual</a></td>
+    <td>User Manual</td>
+    <td>August 2007</td>
+  </tr>
+  <tr valign="top">
+    <td>Measurement Specialties<br></td>
+    <td><a href="../References/VendorDocs/MeasurementSpecialties/nussuman/nussindx.htm">NetScanner Unified Startup Software (NUSS)</a>
+      <p class="Note">See the TE Connectivity, Test Data, Software, and Documents CD-ROM in the Media Case for the manual files.</p>
+      </td>
+    <td>User Manual</td>
+    <td>October 2010</td>
+  </tr>
+  <tr valign="top">
+    <td>Measurement Specialties<br>
+</td>
+    <td>NetScanner System (NUSS v2.9.1)</td>
+    <td>CD-ROM</td>
+    <td>0813</td>
+  </tr>
+</table>

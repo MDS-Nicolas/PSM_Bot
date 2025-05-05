@@ -1,0 +1,233 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>How To &ndash; Turn Off the Real-Time Display Computer</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left>
+  <h1>How To &ndash; Set Up the Bridge Software to Connect to the OPC Server<a href="#" onClick="window.print(); return false;"><img src="../../../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<p>This <strong>How To</strong> provides the steps required to set up the bridge software to connect to the OPC Server.</p>
+<h2>Setting up the Bridge Software to Connect to the OPC Server</h2>
+<p>Softing OPC Easy Connect software is used to translate OPC-DA communication protocol to OPC-XML-DA. It is required for the OPC Subsystem to communicate with devices using only the OPC-DA communication protocol. The bridge software must be configured independently to communicate with the OPC server.</p>
+<p class="Note">For further information on how to configure the bridge software, see the help feature in the Softing OPC Easy Connect software.</p>
+<p class="Note">The softing OPC Easy Connect software is installed on the RTD 2 computer only. It is used to connect to the Throttle System.</p>
+<h3>This section has the following procedures:</h3>
+<ul>
+  <li><a href="#CreateExtServers">Creating and Configuring Connections (Data Sources) to External Servers</a></li>
+  <li><a href="#StartOPC">Starting the Bridge Software</a></li>
+  <li><a href="#ExportOPC">Exporting a Tag List/Filter File</a></li>
+  <li><a href="#LostOPCcomm">Loss of Communication with the OPC Devices</a></li>
+  <li><a href="#ConfirmOPCstatus">Confirming the OPC Connection Status</a></li>
+  <li><a href="#OPCRestart">Restarting an OPC Easy Connect Instance</a></li>
+  <li><a href="#ReStartOPCInstance">Restarting the Computer Hosting Softing Bridge Software</a></li>
+</ul>
+<h3 id="CreateExtServers">Creating and Configuring Connections (Data Sources) to External Servers</h3>
+<p>To create and configure connections (data sources) to external servers: </p>
+<ol>
+  <li>From the Windows Task Bar on the RTD 4 Computer, select the <strong>OPC System Tray</strong> icon <img alt="Tray Icon" src="images/TrayIcon.png" width="60" height="42">. The Softing OPC Easy Connect Configuration Window is displayed.</li>
+
+<p class="Note">Softing OPC Connect has been configured to run automatically at computer start-up. It can also be launched via the Start, Programs menus.<br>
+  <br>
+  <img alt="Start Easy Connect" src="images/StartEasyConnect.png" width="244" height="293">
+  <br>
+</p>
+
+  <li>From the Side Panel, select<strong> Data Source</strong> and then <strong>OPC Server</strong>.   
+  </li>
+  <li>Click on the <strong>Add new data source</strong> icon.<br>
+    <br>
+    <img alt="Select OPC Server" src="images/SelectOPCServer.png" width="700" height="491"><br>
+    The OPC Server Wizard is displayed.<br>
+    <br>
+    <img alt="OPC Server Wizard" src="images/OPCServerWizard.png" width="700" height="475"><br>
+  </li><li>Click <strong>Next</strong>.<br>
+    The Settings window is displayed.<br>
+    <br>
+    <img alt="Select OPC DA Server" src="images/SelectOPCDAServer.png" width="700" height="475"> <br>
+    <br>
+  <li>Enter the Data source name (In this example <strong>OPC_1</strong>).</li>
+  <p class="Note">This name is used only to identify the instance of the data source connection. It has no connection to the proDAS configuration.</p>
+  <li>Enable the <strong>OPC DA Server </strong>radio button.</li>   
+  <li>Click <strong>Next</strong>.</li><br>
+    The OPC Server window is displayed.   
+  <li>From the tree structure in the <strong>Found OPC Servers</strong> pane, select the newly created OPC server connection (In this example <strong>Softing OPC Toolbox Demo OPC DA Server</strong>).<br>
+    <br>
+    <img alt="Select Softing Tool Box" src="images/SelectSoftingToolBox.png" width="700" height="475"></li><br>
+    <br>
+  <li>Click <strong>Next</strong>.<br>
+The Authentication window displayed.</li>
+  <li>Click on the <strong>Connection Test </strong>icon to test the server connection.<br>
+    <br>
+    <img alt="Perfom Connection Test" src="images/PerfomConnectionTest.png" width="700" height="475"><br>
+    <br>
+    The connection test is performed. If the server returns some information, the connection to the OPC server through the bridge software is successful.<br>
+    <br>
+    <img alt="Connection Test" src="images/ConnectionTest.png" width="616" height="338"></li><br>
+    <br>
+  <li>Click <strong>OK</strong>.</li>   
+  <li>Click <strong>Next</strong>.<br></li>
+    The Filter window is displayed.<br>
+    <br>
+    <img alt="Select Activate Filter" src="images/SelectActivateFilter.png" width="700" height="475"><br></li>
+    <br>
+  <li>Enable the <strong>Activate Filter</strong> radio button and select the <strong>Display data items of Type 'Property'</strong> check box.</li>   
+  <li>Click <strong>Next</strong>.<br>
+    The Filter Items window is displayed.<br>
+    <br>
+    <img alt="Select Filter Items" src="images/SelectFilterItems.png" width="700" height="475"><br>
+    <br></li>
+  <li>Select the desired filter items and click <strong>Finish</strong>.<br>
+  The Data Source - OPC Server window is displayed.</li>   
+  <li>From the Side Panel, select <strong>Settings</strong> and then <strong>Diagnostics</strong>.<br>
+    The Diagnostics window is displayed.<br>
+    <br>
+    <img alt="Select Diagnostics" src="images/SelectDiagnostics.png" width="700" height="491"><br>
+  <br></li>
+  <li>Deselect the <strong>Trace to File</strong> check box.</li>   
+  <li>From the <strong>Configuration</strong> menu, select <strong>Save</strong>.<br>
+    <br>
+    <img alt="Save Config" src="images/SaveConfig.png" width="700" height="491"><br>
+    The newly created OPC server connection is saved. </li>
+</ol>
+<h3 id="StartOPC">Starting the Bridge Software </h3>
+<p class="Note">The connection being made is to the OPC Server. It has no connection to the proDAS configuration.</p>
+<p>To start the Bridge Software: </p>
+<ol>
+  <li>From the Windows Task Bar, select the <strong>OPC System Tray</strong> icon <img alt="" src="images/TrayIcon.png" width="60" height="42">.<br>
+  The Softing OPC Easy Connect Configuration Window is displayed.</li>   
+  <li>From the External OPC Servers pane, select the desired OPC server.</li>  
+  <li>From the <strong>Local Application</strong> menu, select <strong>Start</strong>.<br>
+    <br>
+    <img alt="Start Configuration" src="images/StartConfiguration.png" width="700" height="490"></li>
+</ol>
+<h3 id="ExportOPC">Exporting a Tag List/Filter File</h3>
+<p>To export a Tag List/Filter File:</p>
+<ol>
+  <li>From the Data Source - OPC Server window, select the connection that you want to export.</li>   
+  <li>Click on the <strong>Filter Data Items</strong> icon.<br>
+    <br>
+    <img alt="Select Filter Icon" src="images/SelectFilterIcon.png" width="700" height="491"><br>
+    The Filter Items window is displayed.
+    <br>
+<br>
+    
+    <img alt="Export to File" src="images/ExporttoFile.png" width="700" height="475"></li>
+  <li>Select the desired filter items.</li>   
+  <li>Click on the <strong>Export to File</strong> icon.<br>
+    The Filter Export Wizard window is displayed.<br>
+    <br>
+    <img alt="Enter File Destination" src="images/EnterFileDestination.png" width="500" height="313"><br>
+    <br></li>
+  <li>Enter the file name and storage location in the file field.</li>  
+
+<p class="Note"> Save the connection to a place where it can be located easily. It has to be imported into the proDAS <a href="../../../../proDASHelp/DASSubSysConfig/OPC/OPC.htm">OPC Subsystem</a>. For details, see <a href="../../../../proDASHelp/DASSubSysConfig/OPC/OPC.htm#RTEiniFile">Configuring the OPC Server</a>.
+  <br>
+</p>
+
+  <li>Click <strong>Next</strong>.<br>
+  The connection is exported and saved.</li>
+</ol>
+<h3 id="LostOPCcomm">Loss of Communication with the OPC Devices</h3>
+<p>proDAS is not able to communicate with the device using the OPC DA communication protocol, if:<br>
+</p>
+<ul>
+  <li>the connection is lost between the OPC Easy Connect Instance and the applicable devices</li>   
+  <li>the connection is lost between proDAS and Softing Easy Connect</li>   
+  <li>the OPC server for the applicable devices is no longer functional</li>   
+  <li>Softing Easy Connect is no longer functional</li>
+</ul>
+<p>This section focuses on resolving the last last two issues in the list above as the occurrence of the first two issues is rare after proper integration and is usually the result of damaged cables.</p>
+<h3 id="ConfirmOPCstatus">Confirming the OPC Connection Status</h3>
+<p>To confirm the OPC Easy Connect Instance is connected:</p>
+<ol>
+  <li>On the computer hosting the Softing Bridge Software, check that the OPC Easy Connect icon <img alt="OPC Easy Icon" src="images/OPCEasyIcon.png" width="40" height="44"> in the bottom right corner of the screen is green.<br>
+    <br><table cellspacing="1" class="Table-Grey">      
+        <tr>
+          <th scope="col">OPC Easy Connect Instance Connected</th>
+          <th scope="col">Issue with OPC Easy Connect Connection</th>
+          <th scope="col">OPC Easy Connect Instance is Not Connected</th>
+        </tr>
+        <tr>
+          <td><div align="center"><img alt="OPC connected" src="images/OPCconnected.PNG" width="88" height="21"></div></td>
+          <td><div align="center"><img alt="OPC connect Issue" src="images/OPCconnectIssue.PNG" width="89" height="22"></div></td>
+          <td><div align="center"><img alt="OPC no Connection" src="images/OPCnoConnection.PNG" width="92" height="23"></div></td></tr>     
+    </table>
+    <br>
+   <p class="Note">In situations where there is more than one OPC Easy Connect Instance, if one of the Instances is connected, the OPC icon appears red (not   connected) if one of the other OPC Instances is connected.</p>
+        If the OPC Easy Connect Icon <img alt="OPC Easy Icon" src="images/OPCEasyIcon.png" width="40" height="44"> is not green, refer to <a href="#StartOPCInstance">To start an OPC Easy Connect Instance</a>.<br>
+    <br>
+    If the OPC Easy Connect icon <img alt="OPC Easy Icon" src="images/OPCEasyIcon.png" width="40" height="44"> is green, refer to <a href="#StopOPCInstance">To stop an OPC Easy Connect Instance</a> and then <a href="#StartOPCInstance">To start an OPC Easy Connect Instance</a> to restart the OPC Easy Connect Instance.</li> <br>
+    <br>
+  <p class="Note">Connection issues should be logged and reported to MDS.</p>  
+</ol>
+<h3 id="OPCRestart"><a></a>Restarting an OPC Easy Connect Instance</h3>
+<p id="StopOPCInstance">To stop an OPC Easy Connect Instance:</p>
+<ol>
+  <li>On the computer hosting the Softing Bridge Software, <strong>right-click</strong> on the OPC Easy Connect icon <img alt="OPC Easy Icon" src="images/OPCEasyIcon.png" width="40" height="44">. (If there is only one configuration, simply left-click on the OPC Easy Connect icon.)</li>     
+  <li>Select the desired OPC connection (in this example <strong>Easy Connect - Configuration2</strong>).<br>
+    <img alt="OPC configure" src="images/OPCconfigure.png" width="248" height="86"></li><br>
+    <br>
+  <li>Select <strong>Open Softing Easy Connect - Configuration2 Tray</strong>.<br>
+    <img alt="OPC config Tray" src="images/OPCconfigTray.png" width="583" height="192"></li><br>
+    <br>
+  <li>Select <strong>Stop</strong>.<br>
+    <img alt="OPC Stop" src="images/OPCStop.png" width="420" height="204"></li><br>
+    <br>
+  <li>Confirm the selected OPC Easy Connect Instance has stopped.<br>
+    <img alt="OPC Stop Confirm" src="images/OPCStopConfrim.png" width="417" height="200"></li><br>
+    <p>If the State field still shows "Running" after 30 seconds, proceed to the next step; otherwise, skip to Step 10.</p>       
+   
+  <li>Click on the Windows Start button <img alt="Windows Start" src="images/WindowsStart.png" width="40" height="39"> and type "<strong>taskmgr</strong>" and press the<strong> Enter</strong> key.<br>
+    <img alt="Taskmgr" src="images/Taskmgr.png" width="345" height="471"><br>
+    <br></li>
+  <li>Find the <strong>OSF_Service.exe</strong> and <strong>right-click</strong> click on it.<br>
+    <img alt="OPCexe" src="images/OPCexe.png" width="514" height="764"><br>
+    <br></li>
+  <li>Select "<strong>End Process</strong>" to stop the Easy Connect process.</li>   
+  <li>Confirm the selected OPC Easy Connect Instance has stopped.<br>
+    <img alt="OPC Stop Confirm" src="images/OPCStopConfrim.png" width="417" height="200"></li>
+    <p class="Note">You have the option of waiting for proDAS to report the loss of connection to the OPC devices if proDAS is running and has not reported it   before.</p>
+  
+</ol>
+<p id="StartOPCInstance">To start an OPC Easy Connect Instance:</p>
+<ol>
+  <li>On the computer hosting the Softing Bridge Software, <strong>right-click</strong> on the OPC Easy Connect icon <img alt="OPC Easy Icon" src="images/OPCEasyIcon.png" width="40" height="44">. (If there is only one configuration, simply left-click on the OPC Easy Connect icon)</li>     
+  <li>Select the desired OPC connection (in this example <strong>Easy Connect - Configuration2</strong>).<br>
+    <img alt="OPC configure" src="images/OPCconfigure.png" width="248" height="86"></li><br>
+    <br>
+  <li>Select <strong>Open Softing Easy Connect - Configuration2 Tray</strong>.<br>
+    <img alt="OPC config Tray" src="images/OPCconfigTray.png" width="583" height="192"></li><br>
+  <li>Click on the <strong>Start </strong>button to start the OPC Easy Connect Instance.</li>   
+  <li>Confirm the selected OPC Easy Connect Instance has started.<br>
+    <img alt="OPC start" src="images/OPCstart.png" width="416" height="196"></li><br>
+  <li>The Softing Easy Connect Tray can be closed by clicking on the X icon in the upper right corner of the window.</li>
+</ol>
+<h3 id="ReStartOPCInstance">Restarting the Computer Hosting the Softing Bridge Software</h3>
+<p>Wait up to 5 minutes after a restart has been performed. If the OPC connection is not initiated after the restart of the Softing Easy Connect instance, follow the following procedure:</p>
+<ol>
+  <li>Stop any applications from running on other computers that are connected to the computer hosting the Softing Bridge Software.</li>   
+  <li>Reboot the PC.</li>   
+  <li>Wait for the start up of all processes in the PC.</li>   
+  <li>Confirm that the Softing Easy Connect icon <img alt="OPC Easy Icon" src="images/OPCEasyIcon.png" width="40" height="44"> is green.</li>
+  <li>Restart any applications that were stopped in step 1.</li>
+</ol>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->

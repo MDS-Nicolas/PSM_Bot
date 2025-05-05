@@ -1,0 +1,162 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>CCS Messaging System (Option*)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left>
+  <h1 id="ArincChanList">CCS Messaging System (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" >
+</a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The CCS Messaging System is used to exchange messages between proDAS and the CCS (client-supplied). This allows CCS users to notify proDAS users if there is a problem with any of the recording files being transferred to the CCS, and for proDAS users to notify CCS users of any issues from proDAS. Messages from CCS are placed in a shared folder and automatically displayed in the message viewer in proDAS. The message viewer provides a GUI for proDAS users to view messages from and send messages to the CCS.</p>
+<p>When messages are created in the message viewer (proDAS), a message file is created and automatically saved in a shared folder. Each message file is an ASCII text file that contains the following fields:</p>
+<ul>
+  <li>time the message was generated (YYMMDD_HHMMSS)</li>
+  <li>severity level of the message (INFO, WARNING, or ERROR)</li>
+  <li>comment string</li>
+</ul>
+<p>Messages are sent between proDAS and the CCS automatically when an alarm or a limit occurs in the RTE. When this occurs, the RTE launches the VB Script on the Management GUI PC. The VB Script translates the message using the predefined comments file based on the message ID. The message appears in the message queue in the message viewer.</p>
+<p class="Note">If the message ID is unknown, the message reads &quot;Message ID X (unknown)&quot;.</p>
+<p class="Note">When a message is received from the CCS, a notification is displayed in the task bar.</p>
+<h2 id="MessageViewer">Message Viewer</h2>
+<p>The message viewer is the CCS Messaging System GUI that can be used from proDAS.</p>
+<div class="Container"><img src="images/GUI.png" width="700" height="381" alt=""/></div>
+<p> The top of the screen allows the user to create messages and select the severity of each. When a message is created/received, it is automatically displayed in the message list. The columns in the GUI screen can be rearranged into different orders, and each column can be sorted according to the data within.</p>
+<p class="Note">By default, messages are displayed in reverse chronological order.</p>
+<p class="Note">Messages can be filtered based on the current test by pressing CTRL+F.</p>
+<p>The following table describes the different sections of the GUI:</p>
+<table class="Table-Grey">
+  <tr >
+    <th>Section</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Severity Drop-Down Menu<br>
+      <img src="images/SeverityDropDown.png" width="74" height="24" alt=""/></td>
+    <td>The severity drop-down menu allows the user to select the severity of the message being created. The severity is displayed in the Severity column of the main screen. The options in the severity drop-down menu are:
+      <ul>
+        <li> Info</li>
+        <li>Warning</li>
+        <li>Error</li>
+      </ul>
+      Each option can be colour coded through the Options panel.</td>
+  </tr>
+  <tr>
+    <td>Message Field</td>
+    <td>The message field is where the message is entered. Clicking <strong>Send</strong> sends the message to the CCS.
+      <p class="Note">The message field supports non-English characters.</p>
+      Clicking the drop-down menu to the right of the field (<img src="images/DropDown.png" width="15" height="18" alt=""/>) provides a list of pre-defined messages that can be sent. The pre-defined messages are defined in the comment file.<br>
+      <br>
+      The message text can contain keywords in <em>%keyword%</em> format. Keywords are automatically replaced with the requisite information.
+      If the keyword string contains any of the following and proDAS is configured, the keyword is replaced with the matching test information.
+      <ul>
+        <li>testname</li>
+        <li>testid</li>
+        <li>configid</li>
+        <li>enginebuildno</li>
+        <li>engineserialno</li>
+        <li>enginestandard</li>
+        <li>enginetype</li>
+      </ul>
+      If the keyword string contains the proDAS channel name (or anything other than the above defined keywords), the keyword is replaced with the current value of the channel name if proDAS is configured and scanning.</td>
+  </tr>
+  <tr>
+    <td><img src="images/SendButton.png" width="58" height="23" alt=""/></td>
+    <td>Button to send message to CCS and display them in the message viewer.</td>
+  </tr>
+  <tr>
+    <td>Arrived Column</td>
+    <td>The time and date the message arrived in the messaging system.</td>
+  </tr>
+  <tr>
+    <td>Message Column</td>
+    <td>The message content.</td>
+  </tr>
+  <tr>
+    <td>Time Stamp Column</td>
+    <td>The time the message was created if the message was sent from proDAS to CCS. If the message was created in CCS the time stamp is stored in the message file.</td>
+  </tr>
+  <tr>
+    <td>Origin Column</td>
+    <td>The origin of the message (proDAS or CCS).</td>
+  </tr>
+  <tr>
+    <td>Severity Column</td>
+    <td>The severity of the message (Warning, Error, or Info).</td>
+  </tr>
+  <tr>
+    <td>Test Name Column</td>
+    <td>The name of the test being run while the message was created (if proDAS is configured and scanning).</td>
+  </tr>
+</table>
+<h2 id="OptionsPanel">Options Panel</h2>
+<p>Pressing CTRL&ndash;O on the keyboard opens the Options panel. The Options panel provides basic customisation of the CCS Messaging System.</p>
+<div class="Container"><img src="images/Options.png" width="400" height="488" alt=""/></div>
+<br>
+<p>The following table describes the different sections of the Options panel:</p>
+<table class="Table-Grey">
+  <tr >
+    <th>Section</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Send</td>
+    <td>Provides the option to reset to new information or keep the current information.</td>
+  </tr>
+  <tr>
+    <td>Message Log Filter [CTRL+F]</td>
+    <td>Filters the displayed messages based on the current test. Selecting <strong>Filter on the current proDAS Test</strong> displays only messages from that test.</td>
+  </tr>
+  <tr>
+    <td>Notifications</td>
+    <td>Options for message notifications that appear from the task bar when a message is received from CCS.</td>
+  </tr>
+  <tr>
+    <td>Error Colour</td>
+    <td>Select the colour to highlight the severity description in the Severity column.</td>
+  </tr>
+  <tr>
+    <td>Font</td>
+    <td>Select the font for the text in the message viewer.</td>
+  </tr>
+  <tr>
+    <td>Delete [CTRL+D]</td>
+    <td>Delete all messages in the queue.</td>
+  </tr>
+  <tr>
+    <td>Edit Comment File</td>
+    <td>Opens the comment file in Notepad for editing.
+      The format of the comment file is as follows:<br>
+      <br>
+      <em>ID | Severity Level | Message Text</em><br>
+      <br>
+      <strong>ID</strong>: An integer number representing the message ID.<br>
+      <strong>Severity Level</strong>: Warning, Error, or Info<br>
+      <strong>Message Text</strong>: Text of the message
+      <p class="Note">If the file is edited, the CCS Messaging System must be restarted before the changes will take effect.</p></td>
+  </tr>
+  <tr>
+    <td>Service Status</td>
+    <td>The status of the CCS Windows services.</td>
+  </tr>
+</table>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

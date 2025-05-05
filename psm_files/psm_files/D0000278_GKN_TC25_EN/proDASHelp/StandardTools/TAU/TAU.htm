@@ -1,0 +1,399 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" -->
+<title>Test Archive Utility (TAU)</title><!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="TestArchiveUtility">Test Archive Utility (TAU)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The Test Archive Utility (TAU) is a part of the proDAS system that allows the test cell operator to effectively manage the data collected during engine tests. The functions that are available in TAU provide the capability of storing data to an arbitrary (external) media format and reimporting that same data back from that medium, if additional analysis is required. This capability ensures that adequate disk space is maintained on the Host Computer for continued testing and that the proDAS database is at peak operating performance (the performance of the Test Results and Sensor Calibration Database is optimized). TAU uses the test name, that was provided during the original engine test, and the medium label as the key words for locating the data that is stored. The proDAS database maintains an historical record of each engine test. The historical record includes the status of the engine test and whether or not the engine test has been archived or retrieved.</p>
+<p class="Note">Tests can only be archived if they have been marked as complete. To mark a test as complete, select the Test Completed check box on the <a href="../../TestwithDAS/MGTGUI/MGTGUI.htm">Test Information Page</a>.</p>
+<p class="Note">Archived and restored tests cannot be resumed.</p>
+<p>The Test Archive Utility is launched from the Management Interface Computer. The utility has a user friendly Graphical User Interface (GUI) that is mouse (point-and-click) and keyboard operated.</p>
+<p>The Test Archive Utility can perform the following functions:</p>
+<ul>
+  <li><a href="#Archive">archive</a> engine tests</li>
+  <li><a href="#Retrieve">retrieve</a> archived engine tests</li>
+  <li><a href="#Clean">clean</a> (remove) engine tests (that have been previously archived and restored)</li>
+  <li><a href="#Delete">delete</a> engine tests</li>
+  <li><a href="#ToolbarFiltering">filter</a> engine tests</li>
+</ul>
+<p>Engine test data that is archived includes:</p>
+<ul>
+  <li>proDAS Event and Fullset data from the TRSCDB</li>
+  <li>Transient logs, Critical logs, Continuous logs, filtered files, Event logs, and Report files from the Host Computer</li>
+</ul>
+<h2 id="MainWindow">Test Archive Utility Window</h2>
+<p>The Test Archive Utility Window displays the list of tests stored in the TRSCDB. All the header information used to identify a test is shown in a table.</p>
+<div class="Container"><img src="images/MainArchive.PNG" alt="Main Archive" width="700" height="418"></div>
+<div class="Container"><img src="images/MainAllRight.png" alt="Main All Right" width="700" height="418"></div>
+<p>When TAU is opened, it presents the user with a list of all tests currently in the TRSCDB and their status. The Main Window lists the following columns:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Check Box</td>
+    <td>Selection for operation</td>
+  </tr>
+  <tr>
+    <td>Test Cell</td>
+    <td>Name of the test cell.</td>
+  </tr>
+  <tr>
+    <td>Test Name</td>
+    <td>Name of the test.</td>
+  </tr>
+  <tr>
+    <td>Test Date</td>
+    <td>Date of the test.</td>
+  </tr>
+  <tr>
+    <td>Engine Type</td>
+    <td>Type of the tested engine.</td>
+  </tr>
+  <tr>
+    <td>Set Id</td>
+    <td>Id of the archive set.</td>
+  </tr>
+  <tr>
+    <td>Archive Date</td>
+    <td>Date when the test was archived.</td>
+  </tr>
+  <tr>
+    <td>Cleaned</td>
+    <td>Flag whether the test data are in the database (N) or not (Y).</td>
+  </tr>
+  <tr>
+    <td>Engine Standard</td>
+    <td>Standard of the tested engine.</td>
+  </tr>
+  <tr>
+    <td>Customer</td>
+    <td>Customer for the tested engine.</td>
+  </tr>
+  <tr>
+    <td>Serial No</td>
+    <td>Serial number of the tested engine.</td>
+  </tr>
+  <tr>
+    <td>Build No</td>
+    <td>Build number of the tested engine.</td>
+  </tr>
+  <tr>
+    <td>Description</td>
+    <td>Description of the test.</td>
+  </tr>
+  <tr>
+    <td>Operator 1</td>
+    <td>First operator of the test.</td>
+  </tr>
+  <tr>
+    <td>Operator 2</td>
+    <td>Second operator of the test.</td>
+  </tr>
+  <tr>
+    <td>Engineer</td>
+    <td>Engineer of the test.</td>
+  </tr>
+  <tr>
+    <td>A</td>
+    <td>Flag indicating whether the test can be archived.</td>
+  </tr>
+  <tr>
+    <td>R</td>
+    <td>Flag indicating whether the test can be retrieved.</td>
+  </tr>
+  <tr>
+    <td>C</td>
+    <td>Flag indicating whether the test can be cleaned.</td>
+  </tr>
+  <tr>
+    <td>D</td>
+    <td>Flag indicating whether the test can be deleted.</td>
+  </tr>
+  <tr>
+    <td>#Fullsets</td>
+    <td>Number of fullset events stored for the test.</td>
+  </tr>
+  <tr>
+    <td>#Values</td>
+    <td>Number of fullset values stored for the test.</td>
+  </tr>
+</table>
+<p class="Note">The check box in the first column must be checked in order to select a test for an operation. An arbitrary number of tests can be checked. The operations are only enabled if at least one test is checked and the operation can be applied to all selected tests.</p>
+<h3>Menus</h3>
+<p>The main menu is divided into the following pull-down menus:</p>
+<ul>
+  <li><a href="?7#File">File</a></li>
+  <li><a href="?8#Edit">Edit</a></li>
+  <li><a href="?9#Test">Test</a></li>
+  <li><a href="?10#Help">Help</a></li>
+</ul>
+<h4 id="File">File</h4>
+<p>The <strong>File</strong> menu (displayed below) is described in the table below.</p>
+<div class="Container"><img src="images/MenuFile.png" alt="Menu File" width="108" height="47"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Exit</td>
+    <td>Terminates the TAU application.</td>
+  </tr>
+</table>
+<h4 id="Edit">Edit</h4>
+<p>The <strong>Edit</strong> menu (displayed below) is described in the table below.</p>
+<div class="Container"><img src="images/MenuEdit.png" alt="Menu Edit" width="195" height="269"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Archive</td>
+    <td>Archives test information.</td>
+  </tr>
+  <tr>
+    <td>Retrieve</td>
+    <td>Retrieves test information.</td>
+  </tr>
+  <tr>
+    <td>Clean</td>
+    <td>Cleans test information.</td>
+  </tr>
+  <tr>
+    <td>Delete</td>
+    <td>Deletes test information.</td>
+  </tr>
+  <tr>
+    <td>Check All</td>
+    <td>Marks all tests at once.</td>
+  </tr>
+  <tr>
+    <td>Uncheck All</td>
+    <td>Unmarks all tests at once.</td>
+  </tr>
+  <tr>
+    <td>Count Fullset</td>
+    <td>Counts the number of fullset events for each test and displays the results in the #Fullsets column.</td>
+  </tr>
+  <tr>
+    <td>Count All Values</td>
+    <td>Counts the number of fullset values for each test and displays the results in the #Values column. Since this may be a lengthy operation, the user is prompted for confirmation prior to executing the command.
+      <p class="Note">This number represents the number of fullsets multiplied by the number of channels.</p></td>
+  </tr>
+  <tr>
+    <td>Count Single Values</td>
+    <td> Counts the number of fullset values for each <strong>displayed</strong> test and displays it in the column <em>#Values</em>. The values are counted only test by test and the progress is shown in a progress dialogue, displaying the name of the test cell and the name of the test for which the values are currently counted. The user can interrupt the counting by clicking the Cancel button. The counting then terminates after the values of the current test are counted.
+      <div class="Container"><img src="images/DialogueCountSingleValues.PNG" alt="Dialogue Count Single Values" width="308" height="107"></div>
+      These counts are only updated when prompted by the user.</td>
+  </tr>
+  <tr>
+    <td>Archive Sets</td>
+    <td>Displays the media identifier, the name and the location of the media. This allows the user to identify previously archived tests for post test processing purposes. The column Space indicates the free space available on the medium. The value 0 stands for no free space.
+      <div class="Container"><img src="images/DialogueArchiveSets.png" alt="Dialogue Archive Sets" width="440" height="339"></div></td>
+  </tr>
+</table>
+<h4 id="Test">Test</h4>
+<p>The <strong>Test</strong> menu (displayed below) is described in the table below.</p>
+<div class="Container"><img src="images/MenuTest.png" alt="Menu Test" width="187" height="91"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Insert Fullset Data</td>
+    <td>Opens the Insert Fullset Data window where  the number of fullsets and number of channels can be entered.
+      <div class="Container"><img src="images/InsertFullset.png" alt="Insert Fullset" width="248" height="147"></div></td>
+  </tr>
+  <tr>
+    <td>Delete Fullset Data</td>
+    <td>Displays a confirmation window.
+      <div class="Container"><img src="images/DeleteFullset.png" alt="Delete Fullset" width="291" height="144"></div></td>
+  </tr>
+  <tr>
+    <td>Set Unarchived</td>
+    <td>Changes the status from archived to unarchived. Only applicable from Retrieved and Cleaning filter.</td>
+  </tr>
+</table>
+<h4 id="Help">Help</h4>
+<p>The <strong>Help</strong> menu (displayed below) is described in the table below.</p>
+<div class="Container"><img src="images/MenuHelp.png" alt="Menu Help" width="225" height="91"></div>
+<table class="Table-Grey">
+  <tr>
+    <th>Menu or Column</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>Getting Started </td>
+    <td>Opens the first page of the proDAS Integrated Help.</td>
+  </tr>
+  <tr>
+    <td>Topic</td>
+    <td>Contains all specific help topics referring to the Test Archive Utility.</td>
+  </tr>
+  <tr>
+    <td>About Test Archive Utility</td>
+    <td>Displays information about the Test Archive Utility, comprising the name, version number, and copyright.</td>
+  </tr>
+</table>
+<h3 id="ToolbarFiltering">Toolbar and Filtering</h3>
+<table class="Table-Grey">
+  <tr>
+    <th>Button or Combo Box</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td><img src="images/ButtonArchive.PNG" alt="Archive Button" width="41" height="41"></td>
+    <td>Archives data. </td>
+  </tr>
+  <tr>
+    <td><img src="images/ButtonRetrieve.PNG" alt="Retrieve Button" width="41" height="41"></td>
+    <td>Retrieves data.</td>
+  </tr>
+  <tr>
+    <td><img src="images/ButtonClean.PNG" alt="Clean Button" width="41" height="41"></td>
+    <td>Cleans data.</td>
+  </tr>
+  <tr>
+    <td><img src="images/ButtonDelete.PNG" alt="Delete Button" width="41" height="41"></td>
+    <td>Deletes data.</td>
+  </tr>
+  <tr>
+    <td><img src="images/FilterOperation.png" alt="Operation Filter" width="214" height="100"></td>
+    <td>The first combo box allows to filter for the tests to which one of the four principal operations can be applied, i.e. only these tests are listed after having applied such a filter. It is also possible to display all tests. When starting the application, only the tests which can be archived are displayed.</td>
+  </tr>
+  <tr>
+    <td><img src="images/FilterField.png" alt="Filter Field" width="290" height="82"></td>
+    <td>The second combo box only works if exactly one test is selected and thus highlighted. If <em>Set Id</em>, <em>Test Cell</em> or <em>Engine Type</em> is selected, only the displayed tests with the same value in the respective column as the selected test are displayed. The filter can be removed by selecting <em>(None)</em> in the same combo box.<br>
+      <br>
+      The two filters can be combined by first selecting an operation and then selecting a field. But if an operation is selected in the first combo box the second combo box is reset to <em>(None)</em>.</td>
+  </tr>
+</table>
+<h2 id="StartTAU">Starting the Test Archive Utility</h2>
+<h4>To start TAU:</h4>
+<ol>
+  <li>From the Management GUI Control Panel Tools menu, select <strong>TAU</strong>. The Test Archive Utility is displayed.
+    <div class="Container"><img src="images/MainArchive.PNG" alt="Main Archive" width="700" height="418"></div>
+  </li>
+</ol>
+<h2 id="Archive">Archiving Data</h2>
+<p class="Caution">Data archived to DVD-ROM eventually becomes volatile (+ five years). To avoid loss of data, MDS recommends archiving to an external drive.</p>
+<p>The archiving process extracts engine test data from the proDAS database and recorded log files from the Host Computer and transfers them to the medium for storage. The engine test data is then removed from the proDAS database and the log files are removed from the Host Computer. When the archiving process is complete, a unique identification name is written to the proDAS database, indicating the specific archive set name and the storage location of the medium for later retrieval. The same identification is written to the medium to ensure that the proDAS database and the medium has corresponding tagging information. The Test Archive Utility allows the operator to select multiple engine tests to be archived during one archiving instance.</p>
+<p class="Note">TAU does not allow the test data and recorded log files associated with the test id of 0 to be archived. The last test recorded is not displayed in the list.</p>
+<p class="Note">It is not possible to continue a test after the test has been archived. If the user requires to archive the most recent test, the TAU displays a warning informing the user that it will not be possible to continue the test after it has been archived.</p>
+<p>To omit the continuous log files along with other fullsets and logs data from the archive process ensure the following parameters are set in the archive initialisation file before starting the archive process:</p>
+<ul>
+  <li>TarCommandArchive=tar -cvt</li>
+  <li>RemoveContinuousLogsOnCleaning=FALSE</li>
+</ul>
+<p class="Note">The parameter RemoveContinuousLogsOnCleaning=FALSE does not allow TAU to remove the continuous log files from the Host Computer.</p>
+<p>The following parameters are used to archive the fullsets data, log files including continuous log files and remove all the data stored in the proDAS database and recorded log files from the  Host Computer following a successful archive operation:</p>
+<ul>
+  <li>TarCommandArchive=tar -chvf</li>
+  <li>RemoveContinuousLogsOnCleaning=TRUE</li>
+</ul>
+<p>Using the following parameters, TAU allows the operator to delete data from the database or leave the data in the database:</p>
+<ul>
+  <li>CleanDataAfterArchiving=TRUE - deletes the data from the database</li>
+  <li>CleanDataAfterArchiving=FALSE - leaves the data in the database </li>
+</ul>
+<p>The initialisation file allows for the user to split the archive at a specified point during the archive. This can be used to ensure the archive is split into segments that fit onto the required storage media. The SplitSize parameter defines the point at which the archive splits the data. The parameter is defined in bytes (e.g. SplitSize=650000000 will split the archive at 650 MB intervals). When the TarCommandArchive parameter is set to <strong>tar -czvfh</strong>, the archive will split at the specified split size. When the  TarCommandArchive parameter is set to <strong>tar -czvhf</strong>, the archive will not split. </p>
+<p>When engine test data is being archived, a copy of each file is first written to a temporary directory as defined in the archive initialisation file, and is then written from the temporary directory to the archive medium. As a final step, TAU removes the original engine test data from the proDAS database and the corresponding log directory structure that was created on the Host Computer. TAU is capable of archiving multiple engine tests in one session, although the data is committed to the archive medium on a test-by-test basis.</p>
+<p class="Note">Only available for security level 2 and higher.</p>
+<h4>To archive test data:</h4>
+<p class="Note">Prior to archiving, ensure the [General] section of the .ini file has the following setting:<br>
+  CleanDataAfterArchiving=FALSE.</p>
+<ol>
+  <li>Check one or more desired tests.</li>
+  <li>From the Edit menu, select <strong>Archive</strong> or, click the toolbar button <img src="images/ButtonArchive.PNG" alt="Archive Button" width="41" height="41">.</li>
+  <li>Select an archive medium in the medium selection dialogue.<br>
+    <br>
+    <img src="images/DialogueArchiveMediumExisting.png" alt="Dialogue Archive Medium Existing" width="280" height="364"> <img src="images/DialogueArchiveMediumNew.png" alt="Dialogue Archive Medium New" width="280" height="364"> <br>
+    <br>
+    The user can either select an existing medium or can define a new one with a new name and location.</li>
+  <li>Click <strong>OK</strong> to start archiving or <strong>Cancel</strong> to cancel the medium selection. If the medium selection is cancelled, no archiving is performed.<br>
+    Archiving may be a lengthy operation, depending on the amount of fullset data and the size of the transient log files to be archived. The progress is shown in a <a href="?11#ProgressDialog">progress dialogue</a>. After the operation has ended, the progress dialogue remains displayed.</li>
+  <li> Close the progress dialogue to continue with another operation.</li>
+  <li>Validate archived data (try reading the files from the archive media).</li>
+  <li>Using TAU, for each validated archived test, delete the test.</li>
+</ol>
+<p>A test can be archived if it has not been archived yet and it is not the most recent test of its test cell. Such tests are tagged with a <em>True</em> in the <em>A (Archived)</em> column.</p>
+<h2 id="Retrieve">Retrieving Data</h2>
+<p>The Retrieval feature restores engine test data and recorded log files, that reside on the storage medium, to the proDAS database and back to the original file structure on the Host Computer for further analysis. The utility maintains the same data format as was originally created by proDAS when the data was first captured and recorded. In doing so, the restored engine tests can be further analysed and reports can be regenerated using the inherent features within proDAS. The retrieval process takes the selection made by the operator and checks the unique identification information that is stored in the proDAS database when the engine test was originally archived and verifies that the correct medium containing the corresponding engine test is inserted into the configured drive.</p>
+<p>When an engine test is being retrieved from the medium, the retrieved files are extracted from the medium and copied to the TRSCDB and log file structure.</p>
+<p class="Note">Only available for security level 2 and higher.</p>
+<h4>To retrieve the data:</h4>
+<ol>
+  <li>Check one or more desired archived tests.</li>
+  <li>From the Edit menu, select <strong>Retrieve</strong> or, click the toolbar button <img src="images/ButtonRetrieve.PNG" alt="Retrieve Button" width="41" height="41">, thus starting the retrieval of the checked tests.<br>
+    <br>
+    This may be a lengthy operation, depending on the amount of fullset data and the size of the transient log files to be retrieved. The progress is shown in a <a href="TAU.htm">progress dialogue</a>. After the operation has ended, the progress dialogue remains displayed.<br>
+    <br>
+  </li>
+  <li> Close the progress dialogue to continue with another operation.</li>
+</ol>
+<p>A test can be retrieved if it has been archived and its data are 
+  currently cleaned. Such tests are tagged with <em>True</em> in the <em>R (Retrieved)</em> column.</p>
+<h2 id="Clean">Cleaning Data</h2>
+<p>Since the proDAS database tracks the state of engine tests that have been archived and restored, TAU makes use of that information differently for each feature of the utility. The Cleaning feature allows the operator to clean (remove) only the engine tests that already reside on an archive set. The Cleaning function removes the previously retrieved data files and recorded log files from the proDAS database and the directory file structure, on the Host Computer, for the selected engine test. This function helps maintain and manage the size of the proDAS database and the file structure on the Host Computer. It should be used once the test cell operators and engineers have finished with the analysis of an older engine test that was retrieved from a medium. Once an engine test is &quot;cleaned&quot; TAU  updates the proDAS database to indicate that the engine test can be restored once again if required.</p>
+<p class="Note">Only available for security level 2 and higher.</p>
+<h4>To clean the data:</h4>
+<ol>
+  <li> Check one or more desired tests.</li>
+  <li>From the Edit menu select <strong>Clean</strong> or, click the toolbar button <img src="images/ButtonClean.PNG" alt="Clean Button" width="41" height="41">, thus starting the cleaning of the checked tests.<br>
+    <br>
+    This may be a lengthy operation, depending on the amount of fullset data and the size of the transient log files to be cleaned. The progress is shown in a <a href="?13#ProgressDialog">progress dialogue</a>. After the operation has ended, the progress dialogue remains displayed.<br>
+    <br>
+  </li>
+  <li>Close the progress dialogue to continue with another operation.</li>
+</ol>
+<p>A test can be cleaned if it has been archived and its data are not currently cleaned. Such tests are tagged with a <em>True</em> in the <em>C (Cleaned)</em> column.</p>
+<h2 id="Delete">Deleting Data</h2>
+<p>In the course of preparing for an engine test or performing preliminary tests to verify a change to the proDAS data acquisition system, it may be necessary to create new test names (test records) that do not need to be historically maintained. The Delete feature allows the operator and engineers to delete the unwanted engine tests from the proDAS system. The Delete feature removes all data stored in the proDAS database and recorded log files on the Host Computer for the selected engine test. Once deleted, the engine test, associated data and recorded log files cannot be recovered.</p>
+<p class="Note">Only available for security level 3 and higher.</p>
+<h4>To delete the data:</h4>
+<ol>
+  <li>Check one or more of the desired tests.</li>
+  <li>From the Edit menu, select <strong>Delete</strong> or, click the toolbar button <img src="images/ButtonDelete.PNG" alt="Delete Button" width="41" height="41">, thus starting the deletion of the checked tests.<br>
+    A delete confirmation widow is displayed.<br>
+    <br>
+    <img src="images/DeleteConfirm.png" alt="Confirm Delete" width="473" height="144"><br>
+    <br>
+    This may be a lengthy operation, depending on the amount of fullset data and the size of the transient log files to be deleted. The progress is shown in a <a href="?14#ProgressDialog">progress dialogue</a>. After the operation has ended, the progress dialogue remains displayed.<br>
+    <br>
+  </li>
+  <li>Close the progress dialogue to continue with another operation.</li>
+</ol>
+<p>A test can be deleted if it has not been archived and its test id is not 0. Such tests are tagged with a <em>True</em> in the <em>D (Deleted)</em> column.</p>
+<h2 id="ProgressDialog">Progress Dialogue</h2>
+<p>The progress dialogue is displayed during <a href="#Archive">archiving</a>, <a href="#Retrieve">retrieval</a>, <a href="#Clean"> cleaning</a> and <a href="#Delete">deletion</a>. In the title bar, the operation is named (ie. Retrieving Data).</p>
+<div class="Container"><img src="images/ProgressRetrieve.png" alt="Progress Retrieve" width="520" height="227"></div>
+<p>Below there is a principal message and, optionally, a secondary message.</p>
+<p>Next, the estimated time and the elapsed time are displayed. The estimated time is updated continuously. The progress bar shows the progress, according to the elapsed and the estimated time.</p>
+<p>The <strong>Close</strong> button is only enabled when the operation is finished. The user must then click this button to close the progress dialogue and to continue with another operation.</p>
+<p class="Note">The progress dialogue locks the rest of the screen from alteration. The progress dialogue must be closed in order to continue with another operation.</p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

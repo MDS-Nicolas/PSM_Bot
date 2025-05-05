@@ -1,0 +1,670 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>MIL-1553B Subsystem</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="1553B">M1553 Subsystem Driver (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The M1553 Subsystem Driver is a set of subsystem specific functions used by proDAS to control the Ballard M1553 interface card via the PCI bus. The M1553 Subsystem Driver is used by proDAS to handle messages sent and received on a MIL-STD-1553 bus. Each M1553 Subsystem represents one MIL-STD-1553 interface card connected to a single independent MIL-STD-1553 bus.</p>
+<p class="Note">The implementation of the M1553 Subsystem complies with the MIL-STD-1553B Standard.</p>
+<p class="Note">The M1553 Subsystem Driver supports multiple instances of the MIL-STD-1553 bus.</p>
+<p>The subsystem driver scans all its channels (regardless of their scan rate) at the RTE&rsquo;s base frequency and is configurable to act in any of the following roles on a M1553 bus and in any combination of these roles simultaneously:</p>
+<p class="Note">BC and BM cannot exist at the same time for a specified port.</p>
+<ul>
+  <li>act as a bus controller (BC) - maximum of 1 BC is allowed per port</li>
+  <li>act as a bus monitor (BM) - maximum of 1 BM is allowed per port</li>
+  <li>act as a remote terminal (RT) - maximum of 31 RTs are allowed per port (also the limitation for a M1553 bus)</li>   
+  <li>to distinguish multiple remote terminals on the bus (maximum 31)</li>
+  <li>to distinguish multiple sub addresses (SA) for each remote terminal (maximum 30 per RT)</li>
+  <li>to distinguish multiple messages for each sub address</li>
+</ul>
+<p>The M1553 Subsystem message can be one of the following types:</p>
+<ul>
+  <li>BC to RT</li>
+  <li>RT to BC</li>
+  <li>RT to RT</li>
+  <li>RT_Transmit</li>
+  <li>RT_Receive</li>
+</ul>
+<p class="Note">The M1553 Subsystem Driver does not implement broadcast type messages.</p>
+<p class="Note">The M1553 Subsystem supports accelerated scan rates for all its channels so all channels are scanned at the RTE's base frequency regardless of their defined scan rate.</p>
+<p>The M1553 Subsystem Driver supports a configuration parameter that allows the user to choose a primary bus (A/B) where the messages are transmitted and received. This applies to all messages in a MIL 1553 port. The M1553 Subsystem is configurable to use multiple receive and transmit channels.</p>
+<p>When acting as a BC, the M1553 Subsystem supports a periodic message scheduling scheme. This is achieved by associating the message with a frequency no faster than 1000 Hz. This is the frequency at which the message is sent and received by the interface card (independent of the proDAS channel scan rate).</p>
+<p>The M1553 Subsystem Driver supports a periodic message scheduling of multiple frequencies; however, each frequency is an integer multiple of one another.</p>
+<p>The M1553 Subsystem implements a aperiodic scheduling scheme by associating the message with a 0Hz frequency. A 0Hz frequency message defined for a port is only processed by the M1553 Subsystem Driver if it is operating as a BC for that port. A M1553 Subsystem Driver  message associated with 0Hz frequency is only transmitted on request through the RTE&rsquo;s opcode service.</p>
+<p>The M1553 Subsystem stores the decoded channel values in the proDAS CVT and retrieves the channel values from the proDAS CVT for message encoding purposes. The M1553 Subsystem defines the following data field interpreters in order to decode and encode the MIL-STD-1553 messages:</p>
+<ul>
+  <li>signed BNR</li>
+  <li>unsigned BNR</li>
+  <li>discrete</li>
+  <li>Binary Coded Decimal (BCD 8421)</li>
+  <li>floating point</li>
+  <li>ASCII - A seven-bit binary code representing alpha and numeric characters</li>
+</ul>
+<p>The decoded ASCII data is displayed in the UEL but is not saved in the proDAS CVT.</p>
+<p>The M1553 Subsystem ascertains the proper operation of the hardware interface during proDAS initialization and verifies the successful configuration of the hardware interface.</p>
+<p>If an initialization method and its corresponding triggering channel are defined in the .config file, the M1553 Subsystem performs the specified initialization procedure every time it receives the signal from the triggering channel. During the initialization procedure, the M1553 Subsystem stops communicating with the MIL-STD-1553 bus for that port.</p>
+<p>The M1553 Subsystem monitors bus integrity while proDAS is scanning. The integrity monitoring requires no operator intervention.</p>
+<p>If acting as a BC node, the M1553 Subsystem configures the messages so that it will retry on the redundant bus if a bus error is encountered. Switching to the redundant bus is reported to the UEL. An error message is displayed if switching to the redundant bus does not succeed in obtaining a message response. Switching to the redundant bus requires no operator intervention.</p>
+<p>	Configuration information for the M1553 Subsystem is received from and stored in the .config file on the Host Computer. </p>
+<h2 id="ConfigMIL1553Channel">Configuring a M1553 Channel</h2>
+<p>To configure a M1553 Channel:</p>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</li>
+  <li>Select the name of the M1553 Subsystem from the list of available subsystems.
+    <div class="Container"><img src="images/SelectSubsystemName.png" alt="SelectSubsystemName" width="387" height="317"></div>
+  </li>
+  <br>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a>.</li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.</li>
+  <li>Set the <strong>Message</strong>, <strong>Start Word</strong>, <strong>Start Bit</strong>, <strong>Sign. Bits</strong>, <strong>Encoding</strong>, <strong>Slope</strong> and <strong>Offset</strong> columns.
+    <div class="Container"><img src="images/ChannelEditor.png" alt="ChannelEditor" width="700" height="424"></div>
+  </li>
+</ol>
+<h2 id="ConfigFileStructure">Configuration File Structure</h2>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu"> Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import a <strong>M1553</strong> channel, see <a href="?10#XMLFileStructure">XML File Structure</a>.
+</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import a <strong>M1553</strong> channel, see <a href="?11#TabDelimitFileStructure">Tab-Delimited File Structure</a>.</p>
+<h3 id="XMLFileStructure">XML File Structure</h3>
+<h4 id="ChannelsXML">Channels</h4>
+<p>The channels are stored in files <em>Channels.xml</em> in the configuration directories.</p>
+<p>A M1553 Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel 
+  Editor - Generic Channel Parameters - XML File Structure</a>, and the specific attributes <strong>Message</strong>, <strong>Start Word</strong>, <strong>Start Bit</strong>, <strong>Sign. Bits</strong>, <strong>Encoding</strong>, <strong>Slope</strong> and <strong>Offset</strong>. These attributes are explained in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Message</td>
+    <td>Message</td>
+    <td>MESSAGE</td>
+    <td>A descriptive name assigned by the user for a message.</td>
+    <td>String</td>
+    <td>Restricted to the Message Names defined for the Nodes at the Subsystem level and further restricted by direction of the transmission (input or output)</td>
+  </tr>
+  <tr>
+    <td>Start Word </td>
+    <td>StartWord</td>
+    <td>START_WORD</td>
+    <td>The word number in the message the data starts at.</td>
+    <td>Integer</td>
+    <td>Less than or equal to the number of words for the message being used</td>
+  </tr>
+  <tr>
+    <td>Start Bit</td>
+    <td>StartBit</td>
+    <td>START_BIT</td>
+    <td>The bit number in the start word the data starts at.</td>
+    <td>Integer</td>
+    <td>1 to 32</td>
+  </tr>
+  <tr>
+    <td>Sign. Bits </td>
+    <td>SignificantBits</td>
+    <td>SIGNIFICANT_BITS</td>
+    <td>The number of significant bits.</td>
+    <td>Integer</td>
+    <td>1 to 32
+      <p class="TableNote">The bits defined by the combination of StartWord/ StarBit/ SigBits must not overlap with another range of bits defined for the same message.</p>
+      <p class="TableNote">When the channel is boolean, the Sign. Bits can only be set to 1 (this is done automatically) and the Encoding must be Discrete.</p></td>
+  </tr>
+  <tr>
+    <td>Encoding</td>
+    <td>Encoding</td>
+    <td>ENCODING</td>
+    <td> The interpreter associated with the channel.</td>
+    <td>String</td>
+    <td>Unsigned BNR, Signed BNR, Discrete, Floating point, BCD 8421, ASCII
+      <p class="TableNote">When the channel is boolean, the Sign. Bits can only be set to 1 (this is done automatically) and the Encoding must be Discrete.</p></td>
+  </tr>
+  <tr>
+    <td>Slope</td>
+    <td>Slope</td>
+    <td>SLOPE</td>
+    <td>Slope value to be applied.</td>
+    <td>Float</td>
+    <td>Used as a multiplier for EU conversion when  receiving data, and as a divider when sending data</td>
+  </tr>
+  <tr>
+    <td>Offset</td>
+    <td>Offset</td>
+    <td>OFFSET</td>
+    <td>Offset value to be applied.</td>
+    <td>Float</td>
+    <td>Used as an adder for EU conversion when  receiving data, and as a subtraction when sending data</td>
+  </tr>
+</table>
+<p> The structure of a M1553 Channel complies with the following example:</p>
+<blockquote><code>&lt;Channels LastModificationDate=&quot;<strong>2008-10-01 15:18:18</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;<br>
+  &lt;Channel Name=&quot;OUT_SBNR_1&quot;<br>
+  Description=&quot;&quot;<br>
+  Enabled=&quot;true&quot;<br>
+  LastModificationDate=&quot;2008-09-26 15:18:08&quot;<br>
+  SubsystemName=&quot;M1553&quot;<br>
+  SubsystemType=&quot;M1553B&quot;<br>
+  AlternateName=&quot;&quot;<br>
+  DataType=&quot;Float&quot;<br>
+  InitialValue=&quot;-999999&quot;<br>
+  Format=&quot;4.2f&quot;<br>
+  UpdateRate=&quot;1&quot;<br>
+  QualityCeiling=&quot;GOOD&quot;<br>
+  Critical=&quot;false&quot;<br>
+  EngineeringUnit=&quot;-&quot;<br>
+  DisplayMin=&quot;0&quot;<br>
+  DisplayMax=&quot;100&quot;<br>
+  DeadBand=&quot;0&quot;<br>
+  Output=&quot;true&quot;<br>
+  ReferenceChannel=&quot;Second&quot;<br>
+  Group=&quot;&quot;<br>
+  SignalId=&quot;&quot;<br>
+  CalSensor=&quot;&quot;<br>
+  CalGroup=&quot;&quot;<br>
+  FixedSensor=&quot;&quot;<br>
+  CustomerSensor=&quot;&quot; <br>
+  FullsetStability=&quot;false&quot; <br>
+  ContinuousLog=&quot;true&quot; <br>
+  Message=&quot;BCRT_1_1&quot;<br>
+  StartWord=&quot;1&quot;<br>
+  StartBit=&quot;1&quot;<br>
+  SignificantBits=&quot;32&quot;<br>
+  Encoding=&quot;Signed BNR&quot;<br>
+  Slope=&quot;1&quot;<br>
+  Offset=&quot;0&quot; /&gt;<br>
+  &lt;/Channels&gt;<br>
+</code></blockquote>
+<h4 id="SubsystemsXML">Subsystems</h4>
+<p>The subsystem definitions are stored in files Subsystems.xml in the configuration directories.</p>
+<p>A M1553 Subsystem contains generic information, described in <a href="../SubsystemEditor/SubsystemEditor.htm#XMLFileStructure">Subsystem Editor - Generic Subsystem Parameters - XML File Structure</a>, and the specific attribute:</p>
+<ul>
+  <li><strong>Networks</strong></li>
+  <li><strong>Nodes</strong></li>
+  <li><strong>Messages</strong></li>
+</ul>
+<p>Each network has the following properties:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Network Id</td>
+    <td>Network ID</td>
+    <td>--</td>
+    <td>Network identifier</td>
+    <td>Integer</td>
+    <td>1 or 2</td>
+  </tr>
+  <tr>
+    <td>Primary Bus </td>
+    <td>PrimaryBus</td>
+    <td>--</td>
+    <td>Primary bus on which the messages are transmitted/received (A/B) for the port.</td>
+    <td>String</td>
+    <td>Bus A or Bus B</td>
+  </tr>
+</table>
+<p class="Note">When creating a network, it is possible to copy and paste the network information from a different network. There is a maximum of two networks allowed for the M1553 Subsystem. If the user attempts to create a new network when the maximum has already been reached, a warning message informs the user that it is not possible.<br>
+  <br>
+  When network information is copied and the maximum has not been reached, the network ID automatically changes to either 1 or 2 to ensure there is no duplicate network ID.</p>
+<p>The specific attribute Nodes consists of the following fields and restrictions (on a per port basis):</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Name</td>
+    <td>Node Name</td>
+    <td>--</td>
+    <td>A descriptive name assigned by the user to a specific node. The name must be unique across the entire subsystem.</td>
+    <td>String</td>
+    <td>Alpha numeric, and the characters "#" and "_" - maximum of 19 characters</td>
+  </tr>
+  <tr>
+    <td>Address</td>
+    <td>Address</td>
+    <td>--</td>
+    <td>Number from 0 to 31 inclusive. Duplicate (same number) addresses are not permitted.
+      <p class="Note">BC and BM should default to 31. An address of 31 is not allowed for the RT type.</p></td>
+    <td>Integer</td>
+    <td>Range from 0-31</td>
+  </tr>
+  <tr>
+    <td>Type</td>
+    <td>Type</td>
+    <td>--</td>
+    <td>One of: BC, BM or RT. Maximum of 1 BC node, 1 BM node and 31 RT nodes.</td>
+    <td>String</td>
+    <td>BC/RT/BM</td>
+  </tr>
+  <tr>
+    <td>Simulated By proDAS</td>
+    <td>IsSimulated</td>
+    <td>--</td>
+    <td>Either YES or NO. A BC node and a BM node cannot both be simultaneously selected for simulation by proDAS.</td>
+    <td>String</td>
+    <td>Yes, No</td>
+  </tr>
+</table>
+<p>The specific attribute Messages is provided for each node simulated by proDAS. The following three different message sections are provided:</p>
+<ul>
+  <li><a href="?6#BCnode">proDAS simulating a BC node</a></li>
+  <li><a href="?7#BMnode">proDAS simulating a BM node</a></li>
+  <li><a href="?8#RTnode">proDAS simulating a RT node</a></li>
+</ul>
+<p id="BCnode">The message definitions for proDAS simulating a BC consists of the following fields and restrictions:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Name</td>
+    <td>Message Name</td>
+    <td>--</td>
+    <td>A descriptive name assigned by the user to a specific M1553 message. The name must be unique across the entire subsystem.</td>
+    <td>String</td>
+    <td>Alpha numeric, and the characters "#" and "_" - maximum of 19 characters</td>
+  </tr>
+  <tr>
+    <td>Type</td>
+    <td>Type</td>
+    <td>--</td>
+    <td>Indicates the source and destination nodes for a message.</td>
+    <td>String</td>
+    <td>BCRT, RTBC, RTRT</td>
+  </tr>
+  <tr>
+    <td># of Words </td>
+    <td>NumberOfWords</td>
+    <td>--</td>
+    <td>The number of data words in the message (1-32).</td>
+    <td>Integer</td>
+    <td>Range from 1-32</td>
+  </tr>
+  <tr>
+    <td>From</td>
+    <td>From</td>
+    <td>--</td>
+    <td>This field is populated from and restricted to a node in the node list. This can not be the same node as the &lsquo;To&rsquo; field for a given message.</td>
+    <td>String</td>
+    <td>See Description field for restrictions.</td>
+  </tr>
+  <tr>
+    <td>Sub-Address</td>
+    <td>FromSubAddress</td>
+    <td>--</td>
+    <td>Number from 1 to 30 inclusive.</td>
+    <td>Integer</td>
+    <td>Range from 1-30</td>
+  </tr>
+  <tr>
+    <td>To</td>
+    <td>To</td>
+    <td>--</td>
+    <td>This field is populated from and restricted to a node in the node list.</td>
+    <td>String</td>
+    <td>See Description field for restrictions.</td>
+  </tr>
+  <tr>
+    <td>Sub-Address</td>
+    <td>ToSubAddress</td>
+    <td>--</td>
+    <td>Number from 1 to 30 inclusive.</td>
+    <td>Integer</td>
+    <td>Range from 1-30 </td>
+  </tr>
+  <tr>
+    <td>Period</td>
+    <td>Period</td>
+    <td>--</td>
+    <td>Any number in ms. All values must be integer multiples of the smallest positive value. Zero is a valid number.</td>
+    <td>Integer</td>
+    <td>--</td>
+  </tr>
+</table>
+<p id="BMnode">The message definitions for proDAS simulating a BM consists of the following fields and restrictions:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Name</td>
+    <td>Message Name</td>
+    <td>--</td>
+    <td>The name must be unique across the entire subsystem.</td>
+    <td>String</td>
+    <td>Alpha numeric, and the characters "#" and "_" - maximum of 19 characters</td>
+  </tr>
+  <tr>
+    <td>Type</td>
+    <td>Type</td>
+    <td>--</td>
+    <td>Indicates the source and destination nodes for a message.</td>
+    <td>String</td>
+    <td>BCRT, RTBC, RTRT</td>
+  </tr>
+  <tr>
+    <td># of Words</td>
+    <td>NumberOfWords</td>
+    <td>--</td>
+    <td>The number of data words in the message (1-32).</td>
+    <td>Integer</td>
+    <td>Range from 1-32</td>
+  </tr>
+  <tr>
+    <td>From</td>
+    <td>From</td>
+    <td>--</td>
+    <td>This field is populated from and restricted to a node in the node list. This can not be the same node as the &lsquo;To&rsquo; field for a given message.</td>
+    <td>String</td>
+    <td>See Description field for restrictions.</td>
+  </tr>
+  <tr>
+    <td>Sub-Address</td>
+    <td>FromSubAddress</td>
+    <td>--</td>
+    <td>Number from 1 to 30 inclusive.</td>
+    <td>Integer</td>
+    <td>Range from 1-30</td>
+  </tr>
+  <tr>
+    <td>To</td>
+    <td>To</td>
+    <td>--</td>
+    <td>This field is populated from and restricted to a node in the node list.</td>
+    <td>String</td>
+    <td>See Description field for restrictions.</td>
+  </tr>
+  <tr>
+    <td>Sub-Address</td>
+    <td>ToSubAddress</td>
+    <td>--</td>
+    <td>Number from 1 to 30 inclusive.</td>
+    <td>Integer</td>
+    <td>Range from 1-30</td>
+  </tr>
+</table>
+<p id="RTnode">The message definitions for proDAS simulating a RT consists of the following fields and restrictions:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Name</td>
+    <td>Message Name</td>
+    <td>--</td>
+    <td>The name must be unique across the entire subsystem.</td>
+    <td>String</td>
+    <td>Alpha numeric, and the characters "#" and "_" - maximum of 19 characters</td>
+  </tr>
+  <tr>
+    <td>Type</td>
+    <td>Type</td>
+    <td>--</td>
+    <td>Either Tx or Rx.</td>
+    <td>String</td>
+    <td>RT_Rx, RT_Tx</td>
+  </tr>
+  <tr>
+    <td># of Words</td>
+    <td>NumberOfWords</td>
+    <td>--</td>
+    <td>Number from 1 to 32 inclusive.</td>
+    <td>Integer</td>
+    <td>Range from 1-32</td>
+  </tr>
+  <tr>
+    <td>Sub-Address</td>
+    <td>SubAddress</td>
+    <td>--</td>
+    <td>Number from 1 to 30 inclusive.</td>
+    <td>Integer</td>
+    <td>Range from 1-30</td>
+  </tr>
+</table>
+<p>The structure of a M1553 Subsystem is shown in the following example:</p>
+<blockquote>
+  <pre>&lt;Subsystems LastModificationDate=&quot;2008-10-01 15:15:33&quot; Version=&quot;1.1&quot;&gt;
+&lt;Subsystem Name=&quot;M1553&quot;
+Description=&quot;MIL-STD-1553 SS&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2008-10-01 15:15:33&quot;
+Id=&quot;0&quot;
+Type=&quot;M1553B&quot;
+CreationDate=&quot;2008-09-24 17:14:32&quot;&gt;
+&lt;Networks&gt;
+&lt;Network ID=&quot;1&quot;
+PrimaryBus=&quot;A&quot;&gt;
+&lt;Nodes&gt;
+&lt;Node Name=&quot;BC&quot;
+Address=&quot;0&quot;
+Type=&quot;BC&quot;
+IsSimulated=&quot;true&quot;&gt;
+&lt;Messages&gt;
+&lt;Message Name=&quot;BCRT_1_1&quot;
+Type=&quot;BCRT&quot;
+NumberOfWords=&quot;32&quot;
+From=&quot;BC&quot;
+FromSubAddress=&quot;1&quot;
+To=&quot;RT_1&quot;
+ToSubAddress=&quot;1&quot;
+Period=&quot;1000&quot; /&gt;
+&lt;/Messages&gt;
+&lt;/Node&gt;
+&lt;Node Name=&quot;RT_1&quot;
+Address=&quot;1&quot;
+Type=&quot;RT&quot;
+IsSimulated=&quot;false&quot; /&gt;
+&lt;Node Name=&quot;RT_2&quot;
+Address=&quot;2&quot;
+Type=&quot;RT&quot;
+IsSimulated=&quot;false&quot; /&gt;
+&lt;/Nodes&gt;
+&lt;/Network&gt;
+&lt;Network ID=&quot;2&quot;
+PrimaryBus=&quot;A&quot;&gt;
+&lt;Nodes&gt;
+&lt;Node Name=&quot;BC&quot;
+Address=&quot;0&quot;
+Type=&quot;BC&quot;
+IsSimulated=&quot;false&quot; /&gt;
+&lt;Node Name=&quot;RT_1&quot;
+Address=&quot;1&quot;
+Type=&quot;RT&quot;
+IsSimulated=&quot;true&quot;&gt;
+&lt;Messages&gt;
+&lt;Message Name=&quot;RT1_Rx_1&quot;
+Type=&quot;RT_Rx&quot;
+NumberOfWords=&quot;32&quot;
+SubAddress=&quot;1&quot; /&gt;
+&lt;/Messages&gt;
+&lt;/Node&gt;
+&lt;/Nodes&gt;
+&lt;/Network&gt;
+&lt;/Networks&gt;
+&lt;/Subsystem&gt;</pre>
+</blockquote>
+<h3 id="TabDelimitFileStructure">Tab-Delimited File Structure</h3>
+<p>The M1553 Subsystem channel definition includes all <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic channel definition columns</a> and the specific M1553 Subsystem input parameters defined in the tab-delimited configuration file.</p>
+<p>The rules, syntax and guidelines for creating M1553 Subsystem channels are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>MESSAGE</td>
+    <td>A descriptive name assigned by the user for a message.</td>
+    <td>String, one of the messages defined at the SS level.</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>START_WORD</td>
+    <td>The word number in the message the data starts at.</td>
+    <td>Number from 1 to Number of words in message, inclusive.</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>START_BIT</td>
+    <td>The bit number in the start word the data starts at.</td>
+    <td>Number from 1 to 16 inclusive.</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>SIGNIFICANT_BITS</td>
+    <td>The number of significant bits.</td>
+    <td>Any non-zero number, maximum 32 for all encoding types except ASCII, which has a maximum of 512 significant bits. Must ensure no bit is defined twice in a message and that sufficient bits remain in the message. (i.e. can not define 32 bits if Start Word is the last word  in the message)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>ENCODING</td>
+    <td>The data type of the channel: Signed BNR, Unsigned BNR, Discrete, Binary Coded Decimal (BCD 8421), Floating point, and ASCII (for input data only).</td>
+    <td>One of: Signed BNR, Unsigned BNR, Discrete, Binary Coded Decimal (BCD 8421), Floating point, or ASCII (for input messages only)</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>SLOPE</td>
+    <td>The EU resolution of the transmitted data.</td>
+    <td>Any number. Default to 1.0</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>OFFSET</td>
+    <td>The EU offset of the transmitted data.</td>
+    <td>Any number. Default to 0</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single line of the spread sheet.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is always optional.</p></td>
+  </tr>
+</table>
+<h2 id="SSM1553">Subsystem Editor for M1553 Channels</h2>
+<p>To edit the M1553 Subsystem, the Subsystem Editor must be selected from within the Configuration Administrator.</p>
+<p>The tool bar in the Configuration Administrator allows the various configuration editors available for proDAS to be selected.</p>
+<p>The Subsystem Editor allows new subsystems to be added to the current configuration.</p>
+<div class="Container"><img src="images/SubsystemEditor.png" alt="SubsystemEditor" width="700" height="423"></div>
+<br>
+<p><strong>To add a new subsystem:</strong></p>
+<ol>
+  <li>From the Edit menu, select <strong>Append Data Record</strong> or, in the left pane of the splitter window and then click the right mouse button and select <strong>Append Data Record</strong> from the context sensitive menu.</li>
+  <li>Selecting <strong>M1553</strong> in the dialogue box to select the type of subsystem.<br>
+    A new line in Subsystem Editor is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to <strong>M1553</strong>. The user must then assign a name and description to the subsystem.</li>
+</ol>
+<h2 id="RTEInitialiseFile">RTE Initialisation File</h2>
+<p>The M1553 Subsystem is configured by the RTE, along with all the other subsystems, as a request from the Management Interface GUI.</p>
+<p>A typical RTE initialisation file would include the following M1553 Subsystem information:</p>
+<table width="95%" border="0" cellspacing="1" cellpadding="2">
+  <tr>
+    <td>#</td>
+    <td colspan="2">--------------------------------------------------------------------------</td>
+  </tr>
+  <tr>
+    <td>#</td>
+    <td colspan="2">M1553 Subsystem</td>
+  </tr>
+  <tr>
+    <td>#</td>
+    <td colspan="2">--------------------------------------------------------------------------</td>
+  </tr>
+  <tr>
+    <td>SS</td>
+    <td>M1553</td>
+    <td>TRUE</td>
+  </tr>
+  <tr>
+    <td>#</td>
+    <td colspan="2">Ballard card number in the PCI bus</td>
+  </tr>
+  <tr>
+    <td width="3%">CI</td>
+    <td width="16%">card_number</td>
+    <td width="81%">1</td>
+  </tr>
+  <tr>
+    <td width="3%">#</td>
+    <td colspan="2">The maximum response time in us that proDAS will wait before setting the channel quality to suspect</td>
+  </tr>
+  <tr>
+    <td width="3%">CI </td>
+    <td width="16%">exp_resp_time</td>
+    <td width="81%">12</td>
+  </tr>
+  <tr>
+    <td width="3%">#</td>
+    <td colspan="2">init_port, init_method, trigger chan, trigger node </td>
+  </tr>
+  <tr>
+    <td width="3%">CI </td>
+    <td width="16%">init_params</td>
+    <td width="81%">0, WC, trigger, 2,5,10 </td>
+  </tr>
+</table>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click here to see the RTE Initialisation file.</a></p>
+<br>
+<br>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

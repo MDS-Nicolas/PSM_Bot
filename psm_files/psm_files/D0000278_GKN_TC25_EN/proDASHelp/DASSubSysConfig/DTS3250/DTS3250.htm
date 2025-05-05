@@ -1,0 +1,532 @@
+<!DOCTYPE HTML>
+<html>
+<!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">  
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>DTS3250 Subsystem (Option*)</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" -->
+<div float:left><h1 id="DTS3250">DTS3250 Subsystem (Option*)<a href="#" onClick="window.print(); return false;"><img src="../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right;" ></a></h1></div>
+<h2 id="Overview">Overview</h2>
+<p>The Digital Thermocouple Scanner DTS3250 Subsystem is used to communicate with the DTS3250 and DTS4050 families of scanners manufactured by Scanivalve Corporation. The supported scanner models include:</p>
+<ul>
+  <li>DTS3250/16Tx</li>
+  <li>DTS3250/32Tx</li>
+  <li>DTS3250/64Tx</li>
+  <li>DTS4050/16Tx</li>
+  <li>DTS4050/32Tx</li>
+  <li>DTS405064/Tx</li>
+</ul>
+<p class="Note">Though the subsystem is referred to as the DTS3250 subsystem, both DTS3250 and DTS4050 scanners are supported.</p>
+<p>The scanners offer 16, 32, or 64 thermocouple measurement channels with the last two digits of the model name indicating the number of dedicated thermocouple channels available on the scanner. The scanners  also return the internal Uniform Temperature Reference (UTR) temperatures, which are measured by built-in RTDs.</p>
+<p class="Note">There is one internal UTR for each group of eight thermocouple channels<a href="../SubsystemEditor/SubsystemEditor.htm"></a>.</p>
+<p>Communication between the scanner and proDAS is done via 10 Base T Ethernet. proDAS supports the following scan rates:</p>
+<ul>
+  <li>up to 40 samples/channel/second for 16 channel scanners</li>
+  <li>up to 20 samples/channel/second for 32 channel scanners</li>
+  <li>up to 10 samples/channel/second for 64 channel scanners</li>
+</ul>
+<p>Configuration information for the DTS3250 Subsystem is stored in and read from the configuration file on the Host Computer (.config) and the configuration information (xml configuration data) on the Management Interface Computer.</p>
+<p>The DTS3250 driver querries each scanner at the start of the initialisation phase to determine that the model number (channel count) matches the configuration specified in the Subsystem Editor. A configuration mismatch results in:</p>
+<ul>
+  <li>an error message displayed in the UEL</li>
+  <li>a descriptive entry of the error in the Trace proDAS file</li>
+  <li>a conclusion to any further configuration of the scanner</li>
+</ul>
+<h2 id="ConfigDTS3250">Configuring a  DTS3250 Channel</h2>
+<p>To configure a DTS3250 Channel:</p>
+<p class="Note">If the desired subsystem is missing from the subsystem list or multiple subsystems (of the same type) are required, the operator must first create the subsystem(s). To create a subsystem, see <a href="../SubsystemEditor/SubsystemEditor.htm">Subsystem Editor</a>.</p>
+<ol>
+  <li>Append a channel by selecting <strong>Append</strong> from the Edit menu as described in <a href="../ConfigEditors/ConfigEditors.htm#MenuEdit">Configuration Editors</a>.</li>
+  <li>Select the name of the DTS3250 Subsystem from the list of available subsystems.
+    <div class="Container"><img src="images/SelectSubsystemName.png" alt="SelectSubsystemName" width="387" height="317"></div>
+  </li>
+  <br>
+  <li>Fill the category independent columns as described in <a href="../ConfigEditors/ConfigEditors.htm#GenCol">Configuration Editors</a>.</li>
+  <li>Fill the Channel Specific Columns as described in the <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">Channel Editor</a>.</li>
+  <li>Set the <strong>Host Name</strong> column.</li>
+  <li>Set the <strong>Channel Type</strong>.</li>
+  <li>Set the <strong>Channel Number</strong>.</li>
+  <li>Set the <strong>Output Eu</strong> column.</li>
+  <li>If required, manually modify the <strong>Low Limit</strong> and <strong>High Limit</strong> columns.
+    <p class="Note">These columns are automatically populated by the Channel Editor.</p>
+  </li>
+  <li>Set the <strong>Sheild SW</strong> column.
+    <div class="Container"><img src="images/ChannelEditor.png" alt="ChannelEditor" width="700" height="424"></div>
+  </li>
+</ol>
+<h2 id="ConfigFileStructure">Configuration File Structure</h2>
+<p>Channel configuration information (e.g.: hardware connection, calculation, limits or actions) can be defined and manipulated through the <a href="../ChannelEditor/ChannelEditor.htm">Channel Editor</a> or imported directly from either an XML file or a tab-delimited text file.</p>
+<p>To import configuration information from an XML file, see <a href="../ConfigEditors/ConfigEditors.htm#FileImportMenu">Selecting the menu item File - Import in the Configuration Editors module</a>. For detailed XML file structure information required to import a <strong>DTS3250</strong> channel, see <a href="?10#XMLFileStructure">XML File Structure</a>.</p>
+<p>To import configuration information from a tab-delimited file, see <a href="../ChannelEditor/ChannelEditor.htm#FileImportTAB">Extras -- Import   TAB-delimited in the Channel Editor module</a>. For detailed tab-delimited file structure information required to import a <strong>DTS3250</strong> channel, see <a href="?11#TabDelimitFileStructure">Tab-Delimited File Structure</a>.</p>
+<h3 id="XMLFileStructure">XML File Structure</h3>
+<h4 id="ChannelsXML">Channels</h4>
+<p>The channels are stored in files Channels.xml in the configuration directories.</p>
+<p>A DTS3250 Channel contains generic information, described in <a href="../ChannelEditor/ChannelEditor.htm#XMLFileStructure">Channel Editor - Generic Channel Parameters - XML File Structure</a>, and the specific attribute <strong>HostName</strong>, <strong>ChannelType</strong>, <strong>ChannelNumber</strong>, <strong>OutputEu</strong>, <strong>LowLimit</strong>, <strong>HighLimit</strong>, and <strong>ShieldSW</strong>. These attributes are explained in the table below.</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>Host Name</td>
+    <td>HostName</td>
+    <td>HOST_NAME</td>
+    <td>Unique name used to identify each device.</td>
+    <td>String</td>
+    <td>Available host name for the unit.</td>
+  </tr>
+  <tr>
+    <td>Channel Type</td>
+    <td>ChannelType</td>
+    <td>CHANNEL_TYPE</td>
+    <td>Type of channel. Either a thermocouple type or an RTD.</td>
+    <td>String</td>
+    <td>Type B<br>
+      Type E<br>
+      Type J<br>
+      Type K<br>
+      Type N<br>
+      Type R<br>
+      Type S<br>
+      Type T<br>
+      RTD</td>
+  </tr>
+  <tr>
+    <td>Channel Number</td>
+    <td>ChannelNumber</td>
+    <td>CHANNEL_NO</td>
+    <td>Number of the channel on the device.<br>
+      <br>
+      For Thermocouple channels:<br>
+      1-16 for a 16-port scanner<br>
+      1-32 for a 32-port scanner<br>
+      1-64 for a 64-port scanner <br>
+      <br>
+      For RTD channels:<br>
+      1-2 for a 16-port scanner<br>
+      1-4 for a 32-port scanner<br>
+      1-8 for a 64-port scanner</td>
+    <td>Integer</td>
+    <td>Integer numbers from 1 to 64</td>
+  </tr>
+  <tr>
+    <td>Output Engineering Unit</td>
+    <td>OutputEU</td>
+    <td>OUTPUT_EU</td>
+    <td>Final Engineering Unit conversion applied to the value returned by the instrument (based on the DEFAULT_EU parameter).
+      <p class="TableNote"><strong><em>Only applicable if the  scanner is returning temperature units.</em></strong></p>
+      <p class="TableNote">The Channel Editor changes the displayed low and high limit values based on the OutputEU selected by the user<a href="../SubsystemEditor/SubsystemEditor.htm"></a>.</p></td>
+    <td>String</td>
+    <td>C, F, K, R</td>
+  </tr>
+  <tr>
+    <td>Low Limit</td>
+    <td>LowLimit</td>
+    <td>LOW_LIMIT</td>
+    <td>Low limit value for the channel.
+      <p class="TableNote">Measurements below this value will return a status code of 6000<a href="../SubsystemEditor/SubsystemEditor.htm"></a>.</p></td>
+    <td>Integer</td>
+    <td>Default to Low Usable Range value, see <a href="?11#Limits">Low and High Limits table below</a>.<br>
+      <br>
+      May be set to any value within overall range of the thermocouple type.<br>
+      <br>
+      Must be lower than HIGH_LIMIT</td>
+  </tr>
+  <tr>
+    <td>High Limit</td>
+    <td>HighLimit</td>
+    <td>HIGH_LIMIT</td>
+    <td>High limit value for the channel.
+      <p class="TableNote">Measurements above this value will return a status code of 5000<a href="../SubsystemEditor/SubsystemEditor.htm"></a>.</p></td>
+    <td>Integer</td>
+    <td>Default to High Usable Range value, see <a href="?12#Limits">Low and High Limits table below</a>.<br>
+      <br>
+      May be set to any value within overall range of the thermocouple type.<br>
+      <br>
+      Must be higher than LOW_LIMIT</td>
+  </tr>
+  <tr>
+    <td>Shield SW</td>
+    <td>ShieldSW</td>
+    <td>SHIELD_SW</td>
+    <td>Connection method for thermocouple shield.<br>
+      <br>
+      CLOSED &ndash; used for unshielded T/Cs, or shielded T/Cs with shield connected at scanner end only.<br>
+      <br>
+      OPEN &ndash; used for T/Cs with the shield connected to ground at the source.<br>
+      <br>
+      Not applicable for RTD channels.</td>
+    <td>String</td>
+    <td>CLOSED <br>
+      <br>
+      OPEN<br></td>
+  </tr>
+</table>
+<p>The structure of a  DTS3250 Channel complies with the following example:</p>
+<blockquote> <code>&lt;Channels LastModificationDate=&quot;<strong>2015-06-10 16:04:39</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;<br>
+  &lt;Channel Name=&quot;DTS32501_1&quot; <br>
+  Description=&quot;&quot; <br>
+  Enabled=&quot;true&quot; <br>
+  LastModificationDate=&quot;2015-06-10 16:04:39&quot; <br>
+  SubsystemName=&quot;DTS3250&quot; <br>
+  SubsystemType=&quot;DTS3250&quot; <br>
+  AlternateName=&quot;&quot; <br>
+  DataType=&quot;Float&quot; <br>
+  InitialValue=&quot;-999999&quot; <br>
+  Format=&quot;4.2f&quot; <br>
+  UpdateRate=&quot;1&quot; <br>
+  QualityCeiling=&quot;GOOD&quot; <br>
+  Critical=&quot;false&quot; <br>
+  EngineeringUnit=&quot;-&quot; <br>
+  DisplayMin=&quot;0&quot; <br>
+  DisplayMax=&quot;100&quot; <br>
+  DeadBand=&quot;0&quot; <br>
+  Output=&quot;false&quot; <br>
+  ReferenceChannel=&quot;&quot; <br>
+  Group=&quot;&quot; <br>
+  SignalId=&quot;&quot; <br>
+  CalSensor=&quot;&quot; <br>
+  CalGroup=&quot;&quot; <br>
+  FixedSensor=&quot;&quot; <br>
+  CustomerSensor=&quot;&quot; <br>
+  FullsetStability=&quot;false&quot; <br>
+  ContinuousLog=&quot;true&quot; <br>
+  HostName=&quot;DTS3250&quot; <br>
+  ChannelType=&quot;Type_K&quot; <br>
+  ChannelNumber=&quot;1&quot; <br>
+  OutputEu=&quot;C&quot; <br>
+  LowLimit=&quot;-36&quot; <br>
+  HighLimit=&quot;1260&quot; <br>
+  ShieldSW=&quot;Closed&quot;/&gt;<br>
+  &lt;/Channels&gt;<br>
+</code></blockquote>
+<h4 id="Limits">Low and High Limits</h4>
+<p>The low and high limits are set by default to the usable range of the thermocouple. These values are displayed in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th rowspan="2"> T/C Type</th>
+    <th colspan="2">Overall Range</th>
+    <th colspan="2">Default Limits</th>
+  </tr>
+  <tr>
+    <th>Low (Deg C)</th>
+    <th>High (Deg C)</th>
+    <th>Low (Deg C)</th>
+    <th>High (Deg C)</th>
+  </tr>
+  <tr>
+    <td>B</td>
+    <td>0</td>
+    <td>1800</td>
+    <td>400</td>
+    <td>1704</td>
+  </tr>
+  <tr>
+    <td>E</td>
+    <td>-270</td>
+    <td>1000</td>
+    <td>0</td>
+    <td>900</td>
+  </tr>
+  <tr>
+    <td>J</td>
+    <td>-210</td>
+    <td>1200</td>
+    <td>0</td>
+    <td>816</td>
+  </tr>
+  <tr>
+    <td>K</td>
+    <td>-270</td>
+    <td>1372</td>
+    <td>-36</td>
+    <td>1260</td>
+  </tr>
+  <tr>
+    <td>N</td>
+    <td>-270</td>
+    <td>1372</td>
+    <td>0</td>
+    <td>1260</td>
+  </tr>
+  <tr>
+    <td>R</td>
+    <td>-50</td>
+    <td>1767</td>
+    <td>0</td>
+    <td>1482</td>
+  </tr>
+  <tr>
+    <td>S</td>
+    <td>-50</td>
+    <td>1767</td>
+    <td>0</td>
+    <td>1482</td>
+  </tr>
+  <tr>
+    <td>T</td>
+    <td>-270</td>
+    <td>400</td>
+    <td>-262</td>
+    <td>350</td>
+  </tr>
+</table>
+<h4>Subsystems</h4>
+<p>The subsystems are stored in files Subsystems.xml in the configuration directories.</p>
+<p>A DTS3250 Subsystem  contains generic information, described in <a href="../SubsystemEditor/SubsystemEditor.htm#XMLFileStructure">Subsystem Editor - Generic Subsystem Parameters - XML File Structure</a>, and the specific attributes:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>XML Attribute Name</th>
+    <th>Tab-Delimited Attribute Name</th>
+    <th>Description</th>
+    <th>Type</th>
+    <th>Acceptable Values</th>
+  </tr>
+  <tr>
+    <td>HostName</td>
+    <td>HostName</td>
+    <td>HOST_NAME</td>
+    <td>Unique name used to identify each device. This name must be defined in the /etc/hosts file of the RTE.</td>
+    <td>String</td>
+    <td>Available host name for the unit.</td>
+  </tr>
+  <tr>
+    <td>NumberOfChannels</td>
+    <td>NumberOfChannels</td>
+    <td>NUM_CHANNELS</td>
+    <td> Number of channels on the scanner.</td>
+    <td>Combo Box</td>
+    <td>16, 32, 64</td>
+  </tr>
+  <tr>
+    <td>UnitScanRate</td>
+    <td>UnitScanRate</td>
+    <td>UNIT_SCAN_RATE</td>
+    <td>Specifies the maximum scan rate up to: <br>
+      40Hz for a 16 chan. scanner,<br>
+      20Hz for 32 chan. scanner,<br>
+      10Hz for 64 chan. scanner.</td>
+    <td>Combo Box</td>
+    <td>Drop down list of valid proDAS scan rates up to the maximum allowed for the scanner.<br>
+      <br>
+      Default = 1Hz</td>
+  </tr>
+  <tr>
+    <td>AverageSamples</td>
+    <td>AverageSamples</td>
+    <td>AVG_SAMPLES</td>
+    <td> Specifies the number of samples to be averaged for one scan value.</td>
+    <td>Integer</td>
+    <td>Minimum = 1 <br>
+      For 16 channel scanner, 40.<br>
+      For 32 channel scanner, 20.<br>
+      For 64 channel scanner, 10. </td>
+  </tr>
+  <tr>
+    <td>DefaultEu</td>
+    <td>DefaultEu</td>
+    <td>DEFAULT EU</td>
+    <td> Specifies the EU of the values returned by the scanner.</td>
+    <td>Combo Box</td>
+    <td> C &ndash; Degrees Celsius<br>
+      F &ndash; Degrees Fahrenheit<br>
+      K &ndash;  Degrees Kelvin<br>
+      R &ndash; Degrees Rankin<br>
+      V &ndash; Volts (raw, uncorrected)<br>
+      A &ndash; Volts (corrected by UTR temp)<br>
+      0 (Zero) &ndash; Raw counts </td>
+  </tr>
+</table>
+<p>The structure of a DTS3250 Subsystem is shown in the following example:</p>
+<blockquote>
+  <pre>&lt;Subsystems   LastModificationDate=&quot;<strong>2010-10-27   10:15:19</strong>&quot; Version=&quot;<strong>1.1</strong>&quot;&gt;
+&lt;Subsystem Name=&quot;DTS&quot;
+Description=&quot;DTS subsystem&quot;
+Enabled=&quot;true&quot;
+LastModificationDate=&quot;2010-10-25 13:48:59&quot;
+Id=&quot;0&quot;
+Type=&quot;DTS3250&quot;
+CreationDate=&quot;2010-10-04 16:08:14&quot;
+&lt;Devices&gt;
+&lt;Device HostName=&quot;DTS238&quot;
+NumberOfChannels=&quot;32&quot;
+UnitScanRate=&quot;20&quot;
+AverageSamples=&quot;2&quot;
+DefaultEu=&quot;A&quot;/&gt;
+&lt;/Devices&gt;
+&lt;/Subsystems&gt;</pre>
+</blockquote>
+<h3 id="TabDelimitFileStructure">Tab-Delimited File Structure</h3>
+<p>The DTS3250 Subsystem channel definition includes all <a href="../ChannelEditor/ChannelEditor.htm#TabDelimitFileStructure">generic   channel definition columns</a> and the specific DTS3250 Device input parameters defined in the   tab-delimited configuration file.</p>
+<p>The rules, syntax and guidelines for creating DTS3250 channels are described in the following table:</p>
+<table class="Table-Grey">
+  <tr>
+    <th>Column Name</th>
+    <th>Description</th>
+    <th>Syntax (data type expected in the column)</th>
+    <th>Multiple Values Allowed (See Note*)</th>
+    <th>Data Required (See Note**)</th>
+  </tr>
+  <tr>
+    <td>HOST_NAME</td>
+    <td>Unique name used to identify each device.</td>
+    <td>String, one of the hosts defined at subsystem level</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>CHANNEL_TYPE</td>
+    <td>Type of the channel.</td>
+    <td>String, one of:<br>
+      Type B<br>
+      Type E<br>
+      Type J<br>
+      Type K<br>
+      Type N<br>
+      Type R<br>
+      Type S<br>
+      Type T<br>
+      RTD</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>CHANNEL_NO</td>
+    <td>Number of the channel on the device.</td>
+    <td>Number <br>
+      For Thermocouple channels:<br>
+      1-16 for a 16-port scanner<br>
+      1-32 for a 32-port scanner<br>
+      1-64 for a 64-port scanner<br>
+      <br>
+      For RTD channels:<br>
+      1-2 for a 
+      16-port scanner<br>
+      1-4 for a 32-port scanner<br>
+      1-8 for a 64-port scanner</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>OUTPUT_EU</td>
+    <td>Final Engineering Unit conversion applied to the value returned by the instrument.
+      <p class="Note">Only applicable if the scanner is returning temperature units and not voltage or A/D count readings<a href="../SubsystemEditor/SubsystemEditor.htm"></a>.</p>
+      <p class="Note">The Channel Editor changes the displayed low and high limit values based on the OutputEU selected by the user<a href="../SubsystemEditor/SubsystemEditor.htm"></a>.</p></td>
+    <td>String, one of:<br>
+      C<br>
+      F<br>
+      K<br>
+      R</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>LOW_LIMIT</td>
+    <td>Low limit value for the channel that will be downloaded into the scanner for monitoring purposes.
+      <p class="Note">Only applicable to thermocouple type channels<a href="../SubsystemEditor/SubsystemEditor.htm"></a>.</p></td>
+    <td>Number, any value within the overall range of the thermocouple type.<br>
+      <br>
+      Must be smaller than HIGH_LIMIT</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>HIGH_LIMIT</td>
+    <td>High limit value for the channel that will be downloaded into the scanner for monitoring purposes.
+      <p class="Note">Only applicable to thermocouple type channels<a href="../SubsystemEditor/SubsystemEditor.htm"></a>.</p></td>
+    <td>Number, any value within the overall range of the thermocouple type.<br>
+      <br>
+      Must be higher than LOW_LIMIT</td>
+    <td>No</td>
+    <td>See Description</td>
+  </tr>
+  <tr>
+    <td>SHIELD_SW</td>
+    <td>Connection method for thermocouple shield.<br>
+      <br>
+      CLOSED - used for unshielded T/Cs, or shielded T/Cs with shield connected at scanner end only.<br>
+      <br>
+      OPEN - used for T/Cs with the shield connected to ground at the source.<br>
+      <br>
+      NA - used for RTD channels.</td>
+    <td>String, one of: <br>
+      CLOSED<br>
+      OPEN<br>
+      NA</td>
+    <td>No</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td colspan="5"><p class="Note">&quot;Yes&quot; indicates that more than one column value may be specified for a single channel. In this case, additional lines follow the first line of a channel definition.<br>
+      <br>
+      An additional line is identified by a &quot;*&quot; in its first column (the generic NAME column). Only fields that cause a channel to be defined on more than one line (like LIMIT_TYPE when a channel has more than one limit defined) are qualified as multi-line. Fields that appear multiple times as attributes of a multi-line field (like VALUE), are not qualified as multi-line.<br>
+      <br>
+      &quot;No&quot; means that the channel is restricted to a single line of the spread sheet.</p>
+      <p class="Note">&quot;Yes&quot; indicates that the field must contain data (it cannot be left blank or filled with an asterisk).<br>
+        <br>
+        &quot;No&quot; indicates that the field is always optional.</p></td>
+  </tr>
+</table>
+<h2 id="SSEditorDTS3250">Subsystem Editor for DTS3250 Channels</h2>
+<p>To edit&nbsp;a DTS3250 Subsystem, the Subsystem Editor must be selected from within the Configuration Administrator.</p>
+<p>The tool bar in the Configuration Administrator allows the various configuration editors available for proDAS to be selected.</p>
+<p>The Subsystem Editor allows new subsystems to be added to the current configuration <a href="../SubsystemEditor/SubsystemEditor.htm#MenuEdit">Subsystem Editor - Menu Edit</a>.</p>
+<div class="Container"><img src="images/SubsystemEditor.png" alt="SubsystemEditor" width="700" height="423"></div>
+<br>
+<p><strong>To add a new subsystem</strong>:</p>
+<ol>
+  <li>Select the menu item <strong>Edit - Append Data Record</strong> in the menu bar or click in the left pane of the splitter window and then click the right mouse button and select <strong>Append Data Record</strong> from the context sensitive menu.<br>
+  </li>
+  <li>Select DTS3250 Subsystem in the dialogue box to select the type of subsystem.<br>
+    A new line is appended to the current subsystem configuration in the left pane of the splitter window and the subsystem type is set to the type just selected (as shown in the typical Subsystem Editor screenshot above).<br>
+    The user must then assign a name and description to the subsystem.</li>
+</ol>
+<h2 id="RTEiniFile">RTE Initialisation File</h2>
+<p>The DTS3250 Subsystem is configured by the RTE, along with all the other subsystems, as a request form the Management Interface GUI. For  legacy purposes, the configuration request can also be specified in the command line of the RTE.</p>
+<p>A typical RTE initialisation file would include the following DTS3250 Subsystem information:</p>
+<p>#   ==============================================<br>
+  # DTS (Digital Thermocouple   Scanners) subsystem<br>
+  # ----------------------------------------------<br>
+  SS&nbsp;&nbsp;&nbsp;   DTS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; TRUE<br>
+  # DTS service name (default telnet)<br>
+  CI&nbsp;&nbsp;&nbsp;&nbsp;   port&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; telnet<br>
+  # software or hardware trigger; SW or HW<br>
+  CI&nbsp;&nbsp;&nbsp;&nbsp;   trigger&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; HW<br>
+  # external trigger rate (Hz)<br>
+  CI&nbsp;&nbsp;&nbsp;&nbsp; hw_trigger_rate&nbsp;&nbsp;   100<br>
+  # number of averages during calibration<br>
+  CI&nbsp;&nbsp;&nbsp;&nbsp; calavg&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;   1<br>
+  # maximum allowable difference between RTD values<br>
+  CI&nbsp;&nbsp;&nbsp;&nbsp;   maxdelta&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 10.0<br>
+  # scan rate for accelerated transfer<br>
+  CI&nbsp;&nbsp;&nbsp;&nbsp;   accel_xfer&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 20<br>
+  # reply time-out in seconds<br>
+  CI&nbsp;&nbsp;&nbsp;&nbsp; reply_timeout&nbsp;&nbsp;&nbsp;&nbsp;   3<br>
+  #------------------------------------------------</p>
+<p><a href="../../References/DASIniFiles/RTEInitialisationFile.pdf">Click here to see the RTE Initialisation file</a>.</p>
+<br>
+<p><br>
+</p>
+<!-- #EndEditable -->
+</body>
+
+<!-- #EndTemplate --></html>
+<script type="text/javascript">highlight();</script>

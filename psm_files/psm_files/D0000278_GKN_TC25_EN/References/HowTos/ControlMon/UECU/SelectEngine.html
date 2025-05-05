@@ -1,0 +1,231 @@
+<!DOCTYPE HTML PUBliC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html><!-- #BeginTemplate "/Templates/Modules.dwt" --><!-- DW6 -->
+
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+
+<!--Start, needed for Search highlighting-->
+<style type="text/css">.highlight { background: #FFFF40; }</style>
+<script type="text/javascript" src="../../../../highlight.js"></script>
+<!--End, needed for Search highlighting-->
+
+<!-- #BeginEditable "doctitle" --> 
+<title>How To &ndash; Select an Engine</title>
+<!-- #EndEditable --> 
+<link rel="stylesheet" href="../../../../stylemodule.css" type="text/css">
+</head>
+
+<body>
+<!-- #BeginEditable "Main" --> 
+<div float:left><h1>How To &ndash; Select an Engine<a href="#" onClick="window.print(); return false;"><img src="../../../../Images/IconPrint.png" alt="Print Icon" width="45" height="62" style="display:block; float: right; "></a></h1></div>
+<p>This <strong>How To</strong> provides the steps required to select an engine.</p>
+<h2>To Select an Engine</h2>
+<p>Before the Throttle System can be used to test an engine it must be configured with the proper engine type. The engine can be   selected by:</p>
+<ul>
+  <li>hardwired discrete inputs (<a href="#RemoSelecEng">Remotely Selecting an Engine</a>)</li>   
+  <li>proDAS engine configurations (<a href="#SelectproDAS">Selecting an Engine Using proDAS</a>)</li>   
+  <li>the operator via the throttle quadrant (<a href="#SelecEngQuad">Selecting an Engine Using the throttle quadrant</a>)</li>
+</ul>
+<p>When an engine is selected, the throttle display software downloads the engine configuration parameters to the throttle controller. The parameters contain:</p>
+<ul>
+  <li>engine minimum and maximum ranges</li>   
+  <li>number of levers and actuators</li>   
+  <li>calibration curves</li>   
+  <li>Auto Throttle configuration parameters</li>   
+  <li>trip settings</li>   
+  <li>stop positions (if configured)</li>
+</ul>
+<p class="Note">If the engine selected contains any errors, a message is displayed to the user and the download is cancelled.</p>
+
+<h3><a name="RemoSelecEng"></a>Remotely Selecting an Engine</h3>
+<p>An engine can be selected remotely using hardwire engine select discretes. There are four discrete inputs. The following table shows how engine selection works.</p>
+<table cellspacing="1" class="Table-Grey">
+  <tr>
+    <th width="15%">Engine Select Discrete #4</th>
+    <th width="7%">Engine Select Discrete #3</th>
+    <th width="8%">Engine Select Discrete #2</th>
+    <th width="8%">Engine Select Discrete #1</th>
+    <th width="70%">Engine Selected</th>
+  </tr>
+  <tr valign="top">
+    <td>Off</td>
+    <td>Off</td>
+    <td>Off</td>
+    <td>Off</td>
+    <td>Engine can be selected via proDAS or the throttle quadrant display software</td>
+  </tr>
+  <tr valign="top">
+    <td>Off</td>
+    <td>Off</td>
+    <td>Off</td>
+    <td>On</td>
+    <td>Engine ID #1</td>
+  </tr>
+  <tr valign="top">
+    <td>Off</td>
+    <td>Off</td>
+    <td>On</td>
+    <td>Off</td>
+    <td>Engine ID #2</td>
+  </tr>
+  <tr valign="top">
+    <td>Off</td>
+    <td>Off</td>
+    <td>On</td>
+    <td>On</td>
+    <td>Engine ID #3</td>
+  </tr>
+  <tr valign="top">
+    <td>Off</td>
+    <td>On</td>
+    <td>Off</td>
+    <td>Off</td>
+    <td>Engine ID #4</td>
+  </tr>
+  <tr valign="top">
+    <td>Off</td>
+    <td>On</td>
+    <td>Off</td>
+    <td>On</td>
+    <td>Engine ID #5</td>
+  </tr>
+  <tr valign="top">
+    <td>Off</td>
+    <td>On</td>
+    <td>On</td>
+    <td>Off</td>
+    <td>Engine ID #6</td>
+  </tr>
+  <tr valign="top">
+    <td>Off</td>
+    <td>On</td>
+    <td>On</td>
+    <td>On</td>
+    <td>Engine ID #7</td>
+  </tr>
+  <tr valign="top">
+    <td>On</td>
+    <td>Off</td>
+    <td>Off</td>
+    <td>Off</td>
+    <td>Engine ID #8</td>
+  </tr>
+  <tr valign="top">
+    <td>On</td>
+    <td>Off</td>
+    <td>Off</td>
+    <td>On</td>
+    <td>Engine ID #9</td>
+  </tr>
+  <tr valign="top">
+    <td>On</td>
+    <td>Off</td>
+    <td>On</td>
+    <td>Off</td>
+    <td>Engine ID #10</td>
+  </tr>
+  <tr valign="top">
+    <td>On</td>
+    <td>Off</td>
+    <td>On</td>
+    <td>On</td>
+    <td>Engine ID #11</td>
+  </tr>
+  <tr valign="top">
+    <td>On</td>
+    <td>On</td>
+    <td>Off</td>
+    <td>Off</td>
+    <td>Engine ID #12</td>
+  </tr>
+  <tr valign="top">
+    <td>On</td>
+    <td>On</td>
+    <td>Off</td>
+    <td>On</td>
+    <td>Engine ID #13</td>
+  </tr>
+  <tr valign="top">
+    <td>On</td>
+    <td>On</td>
+    <td>On</td>
+    <td>Off</td>
+    <td>Engine ID #14</td>
+  </tr>
+  <tr valign="top">
+    <td>On</td>
+    <td>On</td>
+    <td>On</td>
+    <td>On</td>
+    <td>Engine ID #15</td>
+  </tr>
+</table>
+<p>If the throttle controller detects that a new engine is requested via hardware discretes, it checks for interlocks to see if it is safe to transition to a new engine type. The following interlocks prevent transition:</p>
+<ul>
+  <li>Is the system in Run Mode?</li>   
+  <li>Is fuel turned on?</li>   
+  <li>Is a calibration in progress?</li>  
+  <li>Is a rigging in progress?</li>
+</ul>
+<p>If any of the above statements are true, the engine selection is not allowed to proceed until they are all false. Once the conditions are false, if the engine is still being requested to change, then the change continues. When the engine selection is allowed, the system changes to engine select mode and the engine selection screen is displayed. The engine list filters itself to only show the engine that is selected.</p>
+<h4>To accept the engine change request:</h4>
+<ul>
+  <li>When the engine list updates and shows the selected engine, press the<strong> Download</strong> button.<br>
+    The engine is loaded from the master configuration file.
+    <ul>
+      <li>If there is an actuator defined and it needs to be rigged, the throttle quadrant automatically moves to the Rigging Mode screen</li>  
+      <li>If the actuator does not need to be rigged or a resolver or RVDT is defined, the throttle quadrant automatically moves to the Run screen</li>
+    </ul>
+  </li>
+</ul>
+<h3><a name="SelectproDAS"></a>Selecting an Engine Using proDAS</h3>
+<p>An Engine can be selected remotely using proDAS.</p>
+<p>If the throttle controller detects that a new engine is requested via proDAS, it checks for interlocks to see if it is safe to transition to a new engine type. The following interlocks prevent transition: </p>
+<ul>
+  <li>Is the system in Run Mode?</li>   
+  <li>Is fuel turned on?</li>   
+  <li>Is a calibration in progress?</li>  
+  <li>Is a rigging in progress?</li>
+</ul>
+<p>If any of the above statements are true, the engine selection is not allowed to proceed until they are all false. Once the conditions are false, if the engine is still being requested to change, then the change continues. When the engine selection is allowed, the system changes to engine select mode and the engine selection screen is displayed. The engine list filters itself to only show the engine that is selected.</p>
+<h4>To accept the engine change request:</h4>
+<ul>
+  <li>When the engine list updates and shows the selected engine, press the<strong> Download</strong> button.<br>
+    The engine is loaded from the master configuration file.
+      <ul>
+      <li>If there is an actuator defined and it needs to be rigged, the throttle quadrant automatically moves to the <strong>Rigging</strong> <strong>Mode</strong> screen</li>  
+      <li>If the actuator does not need to be rigged or a resolver or RVDT is defined, the throttle quadrant automatically moves to the <strong>Run</strong> screen.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3><a name="SelecEngQuad"></a>Selecting an Engine Using the Throttle Quadrant</h3>
+<p>To select an engine:</p>
+<ol>
+  <li>At the bottom of the display computer screen, press the <strong>Engine</strong> button.<br>
+  The Engine Selection screen is displayed.</li>  
+  <br><div class="Container"><img src="images/EngineSelectMode.png" alt="Engine Select Mode" width="450" height="618" border="1"></div><br>
+
+<p>The Engine button is <em><strong>disabled</strong></em> if any of the following conditions are true:</p>
+<ul>
+  <li> Is the system in Run Mode?</li>
+  <li> Is fuel turned on?</li>
+  <li> Is a calibration in progress?</li>
+  <li> Is a rigging in progress?</li>
+</ul>
+<br>
+  <li>Select the desired engine from the list box. If required, press the<strong> Up</strong> or <strong>Down</strong> arrow to scroll the list.</li>
+  <li>Press the <strong>Download</strong> button.<br>
+    The engine is loaded from the master configuration file and the configuration values in the <strong>Information about selected engine </strong>table updates:
+  <ul>
+    <li>If there is an actuator defined and it needs to be rigged, the throttle quadrant automatically moves to the Rigging Mode screen</li>   
+    <li>If a resolver or RVDT is defined, the throttle quadrant automatically moves to the Run Mode screen</li>  
+    <li>If there is no actuator, resolver or RVDT defined, an error is generated </li>
+    </ul>
+  </li>
+</ol>
+<!-- #EndEditable -->
+</body>
+<!-- #EndTemplate --></html>
+<!--Start, needed for Search highlighting-->
+<script type="text/javascript">highlight();</script>
+<!--End, needed for Search highlighting-->
